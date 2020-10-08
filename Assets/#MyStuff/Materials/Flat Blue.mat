@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTexture1:
+        m_Texture: {fileID: 2800000, guid: 6344bf96fbda94141a525046d088fb23, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -40,7 +44,7 @@ Material:
     - _Light: {r: 0.3808247, g: 0.4433962, b: 0.3241812, a: 0}
     - _LitColor: {r: 0.48350984, g: 0.6571523, b: 0.71, a: 0}
     - _Shadow: {r: 0.62587595, g: 0.735849, b: 0.3922214, a: 0}
-    - _ShadowColor: {r: 0.24524738, g: 0.14921425, b: 0.33962262, a: 1}
+    - _ShadowColor: {r: 0.2452473, g: 0.14921418, b: 0.33962256, a: 1}
     - _StippleColor: {r: 0.18903518, g: 0.6792453, b: 0.64504457, a: 0}
-    - _UnlitColor: {r: 0.22745058, g: 0.26934698, b: 0.31372508, a: 0}
+    - _UnlitColor: {r: 0.22745049, g: 0.26934692, b: 0.31372502, a: 0}
   m_BuildTextureStacks: []
