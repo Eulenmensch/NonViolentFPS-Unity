@@ -16,7 +16,9 @@ namespace MoreMountains.Feedbacks
         public enum TriggerModes { SetTrigger, ResetTrigger }
 
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.GameObjectColor; } }
+        #endif
 
         [Header("Animation")]
         /// the animator whose parameters you want to update

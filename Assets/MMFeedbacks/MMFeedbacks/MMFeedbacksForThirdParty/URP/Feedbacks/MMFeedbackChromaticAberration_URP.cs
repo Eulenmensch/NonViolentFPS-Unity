@@ -16,7 +16,9 @@ namespace MoreMountains.FeedbacksForThirdParty
     public class MMFeedbackChromaticAberration_URP : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
+        #endif
 
         [Header("Chromatic Aberration")]
         /// the channel to emit on

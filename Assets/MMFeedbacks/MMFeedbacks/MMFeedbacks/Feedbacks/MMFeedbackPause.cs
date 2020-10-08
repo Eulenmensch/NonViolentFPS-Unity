@@ -11,7 +11,9 @@ namespace MoreMountains.Feedbacks
     [FeedbackPath("Pause/Pause")]
     public class MMFeedbackPause : MMFeedback
     {
-        public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PauseColor; } }        
+        #if UNITY_EDITOR
+        public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PauseColor; } }
+        #endif
         public override YieldInstruction Pause { get { return _waitForSeconds; } }
         
         [Header("Pause")]

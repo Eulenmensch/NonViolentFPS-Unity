@@ -23,14 +23,22 @@ namespace MoreMountains.Feedbacks
         public bool LoopAtLastLoopStart = true;
 
         [Header("Loop")]
+        /// if this is true, the looper will loop forever
+        public bool InfiniteLoop = false;
         /// how many times this loop should run
         public int NumberOfLoops = 2;
         /// the amount of loops left (updated at runtime)
         [MMFReadOnly]
         public int NumberOfLoopsLeft = 1;
+        /// whether we are in an infinite loop at this time or not
+        [MMFReadOnly]
+        public bool InInfiniteLoop = false;
+
 
         /// sets the color of this feedback in the inspector
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.LooperColor; } }
+        #endif
         public override bool LooperPause { get { return true; } }
         public override YieldInstruction Pause { get { return _waitForSeconds; } }
 
@@ -44,6 +52,7 @@ namespace MoreMountains.Feedbacks
         protected override void CustomInitialization(GameObject owner)
         {
             base.CustomInitialization(owner);
+            InInfiniteLoop = InfiniteLoop;
             NumberOfLoopsLeft = NumberOfLoops;
         }
 
@@ -62,11 +71,23 @@ namespace MoreMountains.Feedbacks
         }
 
         /// <summary>
+        /// On custom stop, we exit our infinite loop
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="attenuation"></param>
+        protected override void CustomStopFeedback(Vector3 position, float attenuation = 1)
+        {
+            base.CustomStopFeedback(position, attenuation);
+            InInfiniteLoop = false;
+        }
+
+        /// <summary>
         /// On reset we reset our amount of loops left
         /// </summary>
         protected override void CustomReset()
         {
             base.CustomReset();
+            InInfiniteLoop = InfiniteLoop;
             NumberOfLoopsLeft = NumberOfLoops;
         }
     }

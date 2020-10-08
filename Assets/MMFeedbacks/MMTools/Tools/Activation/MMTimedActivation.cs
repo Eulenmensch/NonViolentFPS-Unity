@@ -17,6 +17,9 @@ namespace MoreMountains.Tools
         public enum ActivationModes { Awake, Start, OnEnable, OnTriggerEnter, OnTriggerExit, OnTriggerEnter2D, OnTriggerExit2D, Script }
         /// the possible ways to check if the collider matches
         public enum TriggerModes { None, Tag, Layer }
+        /// the possible delay modes
+        public enum DelayModes { Time, Frames }
+
         [Header("Trigger Mode")]
         /// the moment you want the countdown to state change to start
         public ActivationModes ActivationMode = ActivationModes.Start;
@@ -29,26 +32,36 @@ namespace MoreMountains.Tools
         /// the tag the target collider should have
         [MMEnumCondition("TriggerMode", (int)TriggerModes.Tag)]
         public string TargetTriggerTag;
-        [Header("Delay in seconds")]
+
+        
+
+        [Header("Delay")]
+        /// the chosen delay mode, whether to wait in seconds or frames
+        public DelayModes DelayMode = DelayModes.Time;
         /// The time (in seconds) before we destroy the object
+        [MMEnumCondition("DelayMode", (int)DelayModes.Time)]
         public float TimeBeforeStateChange = 2;
+        /// the amount of frames to wait for when in Frames DelayMode
+        [MMEnumCondition("DelayMode", (int)DelayModes.Frames)]
+        public int FrameCount = 1;
+
         [Header("Timed Activation")]
         /// the possible targets you want the state to change
         public List<GameObject> TargetGameObjects;
+        /// the possible targets you want the state to change
+        public List<MonoBehaviour> TargetBehaviours;
         /// the destruction mode for this object : destroy or disable
         public TimedStatusChange TimeDestructionMode = TimedStatusChange.Disable;
+
         [Header("Actions")]
         /// Unity events to trigger after the delay
         public UnityEvent TimedActions;
-
-        protected WaitForSeconds _timeBeforeDestructionWFS;
-
+        
         /// <summary>
         /// On awake, initialize our delay and trigger our change state countdown if needed
         /// </summary>
         protected virtual void Awake()
         {
-            _timeBeforeDestructionWFS = new WaitForSeconds(TimeBeforeStateChange);
             if (ActivationMode == ActivationModes.Awake)
             {
                 StartChangeState();
@@ -172,7 +185,14 @@ namespace MoreMountains.Tools
         /// </summary>
         protected virtual IEnumerator TimedActivationSequence()
         {
-            yield return _timeBeforeDestructionWFS;
+            if (DelayMode == DelayModes.Time)
+            {
+                yield return MMCoroutine.WaitFor(TimeBeforeStateChange);
+            }
+            else
+            {
+                yield return StartCoroutine(MMCoroutine.WaitForFrames(FrameCount));
+            }
             StateChange();
             Activate();
         }
@@ -209,7 +229,25 @@ namespace MoreMountains.Tools
                         targetGameObject.SetActive(true);
                         break;
                 }
-            }            
+            }
+
+            foreach (MonoBehaviour targetBehaviour in TargetBehaviours)
+            {
+                switch (TimeDestructionMode)
+                {
+                    case TimedStatusChange.Destroy:
+                        Destroy(targetBehaviour);
+                        break;
+
+                    case TimedStatusChange.Disable:
+                        targetBehaviour.enabled = false;
+                        break;
+
+                    case TimedStatusChange.Enable:
+                        targetBehaviour.enabled = true;
+                        break;
+                }
+            }
         }
     }
 }

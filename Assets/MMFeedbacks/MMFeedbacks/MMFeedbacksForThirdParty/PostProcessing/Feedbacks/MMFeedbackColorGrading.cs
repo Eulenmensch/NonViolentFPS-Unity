@@ -18,8 +18,10 @@ namespace MoreMountains.FeedbacksForThirdParty
     public class MMFeedbackColorGrading : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
-        
+        #endif
+
         [Header("Color Grading")]
         /// the channel to emit on
         public int Channel = 0;

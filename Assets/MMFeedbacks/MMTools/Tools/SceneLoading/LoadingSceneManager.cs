@@ -61,6 +61,7 @@ namespace MoreMountains.Tools
 		protected float _fadeDuration = 0.5f;
 		protected float _fillTarget=0f;
 		protected string _loadingTextValue;
+        protected Image _progressBarImage;
 
         protected static MMTweenType _tween;
 
@@ -96,6 +97,8 @@ namespace MoreMountains.Tools
 		protected virtual void Start()
         {
             _tween = new MMTweenType(MMTween.MMTweenCurve.EaseOutCubic);
+            _progressBarImage = LoadingProgressBar.GetComponent<Image>();
+            
             _loadingTextValue =LoadingText.text;
 			if (!string.IsNullOrEmpty(_sceneToLoad))
 			{
@@ -109,7 +112,7 @@ namespace MoreMountains.Tools
 		protected virtual void Update()
 		{
             Time.timeScale = 1f;
-			LoadingProgressBar.GetComponent<Image>().fillAmount = MMMaths.Approach(LoadingProgressBar.GetComponent<Image>().fillAmount,_fillTarget,Time.deltaTime*ProgressBarSpeed);
+            _progressBarImage.fillAmount = MMMaths.Approach(_progressBarImage.fillAmount,_fillTarget,Time.deltaTime*ProgressBarSpeed);
 		}
 
 		/// <summary>
@@ -120,6 +123,10 @@ namespace MoreMountains.Tools
 			// we setup our various visual elements
 			LoadingSetup();
 
+            // we fade from black
+            MMFadeOutEvent.Trigger(StartFadeDuration, _tween);
+            yield return new WaitForSeconds(StartFadeDuration);
+            
 			// we start loading the scene
 			_asyncOperation = SceneManager.LoadSceneAsync(_sceneToLoad,LoadSceneMode.Single );
 			_asyncOperation.allowSceneActivation = false;
@@ -134,7 +141,7 @@ namespace MoreMountains.Tools
 			_fillTarget = 1f;
 
 			// we wait for the bar to be visually filled to continue
-			while (LoadingProgressBar.GetComponent<Image>().fillAmount != _fillTarget)
+			while (_progressBarImage.fillAmount != _fillTarget)
 			{
 				yield return null;
 			}
@@ -143,12 +150,12 @@ namespace MoreMountains.Tools
 			LoadingComplete();
 			yield return new WaitForSeconds(LoadCompleteDelay);
 
-			// we fade to black
-			MMFadeInEvent.Trigger(ExitFadeDuration, _tween);
-			yield return new WaitForSeconds(ExitFadeDuration);
+            // we fade to black
+            MMFadeInEvent.Trigger(ExitFadeDuration, _tween);
+            yield return new WaitForSeconds(ExitFadeDuration);
 
-			// we switch to the new scene
-			_asyncOperation.allowSceneActivation = true;
+            // we switch to the new scene
+            _asyncOperation.allowSceneActivation = true;
             LoadingSceneEvent.Trigger(_sceneToLoad, LoadingStatus.NewSceneLoaded);
         }
 
@@ -157,9 +164,8 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void LoadingSetup() 
 		{
-			MMFadeOutEvent.Trigger(StartFadeDuration, _tween);
 			LoadingCompleteAnimation.alpha=0;
-			LoadingProgressBar.GetComponent<Image>().fillAmount = 0f;
+            _progressBarImage.fillAmount = 0f;
 			LoadingText.text = _loadingTextValue;
 		}
 

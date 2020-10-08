@@ -8,27 +8,27 @@ namespace MoreMountains.Tools
 {
     /// <summary>
     /// A class to use to get more controlled randomness, taking values out of the bag randomly, and never getting them again.
-    /// 
+    ///
     /// Usage :
-    /// 
+    ///
     /// var shuffleBag = new ShuffleBag(40);
     /// for (int i = 0; i<40; i++)
     /// {
     ///     newValue = something;
     ///     shuffleBag.Add(newValue, amount);
     /// }
-    /// 
+    ///
     /// then :
     /// float something = shuffleBag.Pick();
-    /// 
+    ///
     /// </summary>
-    public class MMShufflebag : MonoBehaviour
+    public class MMShufflebag<T> 
     {
         public int Capacity { get { return _contents.Capacity; } }
         public int Size { get { return _contents.Count; } }
 
-        protected List<float> _contents;
-        protected float _currentItem;
+        protected List<T> _contents;
+        protected T _currentItem;
         protected int _currentIndex = -1;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace MoreMountains.Tools
         /// <param name="initialCapacity"></param>
         public MMShufflebag(int initialCapacity)
         {
-            _contents = new List<float>(initialCapacity);
+            _contents = new List<T>(initialCapacity);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace MoreMountains.Tools
         /// </summary>
         /// <param name="item"></param>
         /// <param name="quantity"></param>
-        public void Add(float item, int quantity)
+        public void Add(T item, int quantity)
         {
             for (int i = 0; i < quantity; i++)
             {
@@ -58,7 +58,7 @@ namespace MoreMountains.Tools
         /// Returns a random item from the bag
         /// </summary>
         /// <returns></returns>
-        public float Pick()
+        public T Pick()
         {
             if (_currentIndex < 1)
             {

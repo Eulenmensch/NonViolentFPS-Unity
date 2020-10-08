@@ -75,8 +75,8 @@ namespace MoreMountains.Tools
 		protected bool _originalTransformPositionStatus=false;
         /// if this is true, the object can move along the path
         public virtual bool CanMove { get; set; }
-
-		protected bool _active=false;
+        
+        protected bool _active=false;
 	    protected IEnumerator<Vector3> _currentPoint;
 		protected int _direction = 1;
 		protected Vector3 _initialPosition;
@@ -95,15 +95,27 @@ namespace MoreMountains.Tools
 			Initialization ();
 		}
 
+        /// <summary>
+        /// On Start we store our initial position
+        /// </summary>
         protected virtual void Start()
         {
             _originalTransformPosition = transform.position;
         }
 
-		/// <summary>
-		/// Flag inits, initial movement determination, and object positioning
-		/// </summary>
-		protected virtual void Initialization()
+        /// <summary>
+        /// A public method you can call to reset the path
+        /// </summary>
+        public virtual void ResetPath()
+        {
+            Initialization();
+            CanMove = false;
+        }
+
+        /// <summary>
+        /// Flag inits, initial movement determination, and object positioning
+        /// </summary>
+        protected virtual void Initialization()
 		{
 			// on Start, we set our active flag to true
 			_active=true;
@@ -164,6 +176,22 @@ namespace MoreMountains.Tools
             }
         }
 
+        /// <summary>
+        /// Override this to describe what happens when a point is reached
+        /// </summary>
+        protected virtual void PointReached()
+        {
+
+        }
+
+        /// <summary>
+        /// Override this to describe what happens when the end of the path is reached
+        /// </summary>
+        protected virtual void EndReached()
+        {
+
+        }
+
 		/// <summary>
 		/// On update we keep moving along the path
 		/// </summary>
@@ -210,18 +238,22 @@ namespace MoreMountains.Tools
 				{
 					_waiting = PathElements[_currentIndex].Delay;				 
 				}
-
-				_previousPoint = _currentPoint.Current;
+                PointReached();
+                _previousPoint = _currentPoint.Current;
 				_currentPoint.MoveNext();
 			}
 
 			// we determine the current speed		
 			_finalPosition = transform.position;
-			CurrentSpeed = (_finalPosition-_initialPosition) / Time.deltaTime;
+            if (Time.deltaTime != 0f)
+            {
+                CurrentSpeed = (_finalPosition - _initialPosition) / Time.deltaTime;
+            }
 
-			if (_endReached) 
+            if (_endReached) 
 			{
-				CurrentSpeed = Vector3.zero;
+                EndReached();
+                CurrentSpeed = Vector3.zero;
 			}
 		}
 

@@ -12,7 +12,9 @@ namespace MoreMountains.FeedbacksForThirdParty
     public class MMFeedbackCinemachineImpulse : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.CameraColor; } }
+        #endif
 
         [Header("Cinemachine Impulse")]
         [CinemachineImpulseDefinitionProperty]

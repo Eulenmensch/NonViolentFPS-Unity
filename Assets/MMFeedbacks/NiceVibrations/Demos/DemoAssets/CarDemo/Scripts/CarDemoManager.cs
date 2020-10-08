@@ -71,7 +71,7 @@ namespace MoreMountains.NiceVibrations
                     _carStarted = true;
                     _carStartedAt = Time.time;
                     _lastStartClickAt = Time.time;
-                    MMVibrationManager.ContinuousHaptic(_knobValue, _knobValue, MaximumPowerDuration, HapticTypes.MediumImpact, this);
+                    MMVibrationManager.ContinuousHaptic(_knobValue, _knobValue, MaximumPowerDuration, HapticTypes.MediumImpact, this, false, -1, false);
                     CarEngineAudioSource.Play();
                 }
                 else

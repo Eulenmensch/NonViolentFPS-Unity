@@ -100,6 +100,21 @@ namespace MoreMountains.Feedbacks
         }
 
         /// <summary>
+        /// Plays or stops the sequence based on its current state
+        /// </summary>
+        public virtual void ToggleSequence()
+        {
+            if (Playing)
+            {
+                StopSequence();
+            }
+            else
+            {
+                PlaySequence();
+            }
+        }
+
+        /// <summary>
         /// Starts playing the sequence
         /// </summary>
         public virtual void PlaySequence()

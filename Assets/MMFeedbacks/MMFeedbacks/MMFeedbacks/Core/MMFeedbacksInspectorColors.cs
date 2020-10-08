@@ -17,10 +17,12 @@ namespace MoreMountains.Feedbacks
         public static Color32 TimeColor = new Color32(240, 172, 172, 255);
         public static Color32 LightColor = new Color32(254, 192, 7, 255);
         public static Color32 ParticlesColor = new Color32(0, 149, 135, 255);
+        public static Color32 UIColor = new Color32(225, 2, 65, 255);
 
         public static Color32 PauseColor = new Color32(98, 115, 0, 255);
         public static Color32 HoldingPauseColor = new Color32(0, 114, 61, 255);
         public static Color32 LooperColor = new Color32(12, 100, 128, 255);
+        public static Color32 DebugColor = new Color32(255, 0, 0, 255);
         public static Color32 LooperStartColor = new Color32(166, 75, 5, 255); 
     }
 }

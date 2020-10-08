@@ -43,12 +43,29 @@ namespace MoreMountains.Tools
         public float CountdownFrom = 60f;
         /// the time (in seconds) to count down to
         public float CountdownTo = 0f;
+        /// if this is true, the countdown will have no end and will just keep counting in its direction 
+        public bool Infinite = false;
+
+        public enum FormatMethods { Explicit, Choices }
 
         [Header("Display")]
-        /// the format (standard Unity ToString) to use when displaying the time left in the text field
-        public string Format = "00.00";
+        /// the selected format method 
+        public FormatMethods FormatMethod = FormatMethods.Choices;
         /// whether or not values should be floored before displaying them
+        [MMEnumCondition("FormatMethod", (int)FormatMethods.Explicit)]
         public bool FloorValues = true;
+        /// the format (standard Unity ToString) to use when displaying the time left in the text field
+        [MMEnumCondition("FormatMethod", (int)FormatMethods.Explicit)]
+        public string Format = "00.00";
+        [MMEnumCondition("FormatMethod", (int)FormatMethods.Choices)]
+        public bool Hours = false;
+        [MMEnumCondition("FormatMethod", (int)FormatMethods.Choices)]
+        public bool Minutes = true;
+        [MMEnumCondition("FormatMethod", (int)FormatMethods.Choices)]
+        public bool Seconds = true;
+        [MMEnumCondition("FormatMethod", (int)FormatMethods.Choices)]
+        public bool Milliseconds = false;
+
 
         [Header("Settings")]
         [MMInformation("You can choose whether or not the countdown should automatically start on its Start, at what frequency (in seconds) it should refresh (0 means every frame), and the countdown's speed multiplier " +
@@ -58,6 +75,9 @@ namespace MoreMountains.Tools
         public bool AutoStart = true;
         /// if this is true, the countdown will automatically go back to its initial value when it reaches its destination
         public bool AutoReset = false;
+        /// if this is true, the countdown will pingpong in the other direction when end is met 
+        public bool PingPong = false;
+
         /// the frequency (in seconds) at which to refresh the text field
         public float RefreshFrequency = 0.02f;
         /// the speed of the countdown (2 : twice the normal speed, 0.5 : twice slower)
@@ -89,9 +109,11 @@ namespace MoreMountains.Tools
 
         protected virtual void Initialization()
         {
-            CurrentTime = CountdownFrom;
             _lastUnitValue = (int)CurrentTime;
             Direction = (CountdownFrom > CountdownTo) ? MMCountdownDirections.Descending : MMCountdownDirections.Ascending;
+
+            CurrentTime = CountdownFrom;
+
             if (AutoStart)
             {
                 StartCountdown();
@@ -144,14 +166,25 @@ namespace MoreMountains.Tools
             {
                 if (_text != null)
                 {
-                    if (FloorValues)
+                    string newText = "";
+
+                    if (FormatMethod == FormatMethods.Explicit)
                     {
-                        _text.text = Mathf.Floor(CurrentTime).ToString(Format);
+                        if (FloorValues)
+                        {
+                            newText = Mathf.Floor(CurrentTime).ToString(Format);
+                        }
+                        else
+                        {
+                            newText = CurrentTime.ToString(Format);
+                        }
                     }
                     else
                     {
-                        _text.text = CurrentTime.ToString(Format);
+                        newText = MMTime.FloatToTimeString(CurrentTime, Hours, Minutes, Seconds, Milliseconds);
                     }                    
+
+                    _text.text = newText;
                 }
                 if (CountdownRefreshEvent != null)
                 {
@@ -166,13 +199,28 @@ namespace MoreMountains.Tools
         /// </summary>
         protected virtual void CheckForEnd()
         {
-            if (CurrentTime <= CountdownTo)
+            if (Infinite)
+            {
+                return;
+            }
+
+            bool endReached = (Direction == MMCountdownDirections.Ascending) ? (CurrentTime >= CountdownTo) : (CurrentTime <= CountdownTo);
+            
+            if (endReached)
             {
                 if (CountdownCompleteEvent != null)
                 {
                     CountdownCompleteEvent.Invoke();
                 }
-                if (AutoReset)
+                if (PingPong)
+                {
+                    Direction = (Direction == MMCountdownDirections.Ascending) ? MMCountdownDirections.Descending : MMCountdownDirections.Ascending;
+                    _countdowning = true;
+                    float temp = CountdownFrom;
+                    CountdownFrom = CountdownTo;
+                    CountdownTo = temp;
+                }
+                else if (AutoReset)
                 {
                     _countdowning = true;
                     CurrentTime = CountdownFrom;

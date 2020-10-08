@@ -18,7 +18,9 @@ namespace MoreMountains.FeedbacksForThirdParty
     public class MMFeedbackDepthOfField_URP : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
+        #endif
 
         [Header("Depth Of Field")]
         /// the channel to emit on

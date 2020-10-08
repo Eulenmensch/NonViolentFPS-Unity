@@ -38,7 +38,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackSound : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.SoundsColor; } }
+        #endif
 
         /// <summary>
         /// The possible methods to play the sound with. 
@@ -59,10 +61,12 @@ namespace MoreMountains.Feedbacks
         [Header("Test")]
         [MMFInspectorButton("TestPlaySound")]
         public bool TestButton;
+        [MMFInspectorButton("TestStopSound")]
+        public bool TestStopButton;
 
         [Header("Method")]
         /// the play method to use when playing the sound (event, cached or on demand)
-        public PlayMethods PlayMethod = PlayMethods.Cached;
+        public PlayMethods PlayMethod = PlayMethods.Event;
         [MMFEnumCondition("PlayMethod", (int)PlayMethods.Pool)]
         public int PoolSize = 10;
 
@@ -90,6 +94,7 @@ namespace MoreMountains.Feedbacks
         protected AudioSource[] _pool;
         protected AudioSource _tempAudioSource;
         protected float _duration;
+        protected AudioSource _editorAudioSource;
 
         /// <summary>
         /// Custom init to cache the audiosource if required
@@ -180,7 +185,7 @@ namespace MoreMountains.Feedbacks
                 temporaryAudioHost.transform.position = position;
                 // we add an audio source to that host
                 AudioSource audioSource = temporaryAudioHost.AddComponent<AudioSource>() as AudioSource;
-                PlayAudioSource(audioSource, sfx, volume, pitch);
+                PlayAudioSource(audioSource, sfx, volume, pitch, SfxAudioMixerGroup);
                 // we destroy the host after the clip has played
                 Destroy(temporaryAudioHost, sfx.length);
             }
@@ -188,7 +193,7 @@ namespace MoreMountains.Feedbacks
             if (PlayMethod == PlayMethods.Cached)
             {
                 // we set that audio source clip to the one in paramaters
-                PlayAudioSource(_cachedAudioSource, sfx, volume, pitch);
+                PlayAudioSource(_cachedAudioSource, sfx, volume, pitch, SfxAudioMixerGroup);
             }
 
             if (PlayMethod == PlayMethods.Pool)
@@ -196,7 +201,7 @@ namespace MoreMountains.Feedbacks
                 _tempAudioSource = GetAudioSourceFromPool();
                 if (_tempAudioSource != null)
                 {
-                    PlayAudioSource(_tempAudioSource, sfx, volume, pitch);
+                    PlayAudioSource(_tempAudioSource, sfx, volume, pitch, SfxAudioMixerGroup);
                 }
             }
         }
@@ -208,7 +213,7 @@ namespace MoreMountains.Feedbacks
         /// <param name="sfx"></param>
         /// <param name="volume"></param>
         /// <param name="pitch"></param>
-        protected virtual void PlayAudioSource(AudioSource audioSource, AudioClip sfx, float volume, float pitch)
+        protected virtual void PlayAudioSource(AudioSource audioSource, AudioClip sfx, float volume, float pitch, AudioMixerGroup audioMixerGroup = null)
         {
             // we set that audio source clip to the one in paramaters
             audioSource.clip = sfx;
@@ -217,8 +222,12 @@ namespace MoreMountains.Feedbacks
             audioSource.pitch = pitch;
             // we set our loop setting
             audioSource.loop = false;
+            if (audioMixerGroup != null)
+            {
+                audioSource.outputAudioMixerGroup = audioMixerGroup;
+            }
             // we start playing the sound
-            audioSource.Play();
+            audioSource.Play(); 
         }
 
         /// <summary>
@@ -236,7 +245,7 @@ namespace MoreMountains.Feedbacks
             }
             return null;
         }
-        
+
         /// <summary>
         /// A test method that creates an audiosource, plays it, and destroys itself after play
         /// </summary>
@@ -256,7 +265,7 @@ namespace MoreMountains.Feedbacks
 
             if (tmpAudioClip == null)
             {
-                Debug.LogError(Label + " on "+this.gameObject.name + " can't play in editor mode, you haven't set its Sfx.");
+                Debug.LogError(Label + " on " + this.gameObject.name + " can't play in editor mode, you haven't set its Sfx.");
                 return;
             }
 
@@ -264,11 +273,22 @@ namespace MoreMountains.Feedbacks
             float pitch = Random.Range(MinPitch, MaxPitch);
             GameObject temporaryAudioHost = new GameObject("EditorTestAS_WillAutoDestroy");
             temporaryAudioHost.transform.position = this.transform.position;
-            AudioSource audioSource = temporaryAudioHost.AddComponent<AudioSource>() as AudioSource;
-            PlayAudioSource(audioSource, tmpAudioClip, volume, pitch);
+            _editorAudioSource = temporaryAudioHost.AddComponent<AudioSource>() as AudioSource;
+            PlayAudioSource(_editorAudioSource, tmpAudioClip, volume, pitch);
             float length = 1000 * tmpAudioClip.length;
             await Task.Delay((int)length);
             DestroyImmediate(temporaryAudioHost);
+        }
+
+        /// <summary>
+        /// A test method that stops the test sound
+        /// </summary>
+        protected virtual void TestStopSound()
+        {
+            if (_editorAudioSource != null)
+            {
+                _editorAudioSource.Stop();
+            }            
         }
     }
 }

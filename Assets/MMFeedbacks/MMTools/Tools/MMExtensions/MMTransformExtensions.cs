@@ -77,5 +77,33 @@ namespace MoreMountains.Tools
             }
             return null;
         }
+
+        /// <summary>
+        /// Changes the layer of a transform and all its children to the new one
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="layerName"></param>
+        public static void ChangeLayersRecursively(this Transform transform, string layerName)
+        {
+            transform.gameObject.layer = LayerMask.NameToLayer(layerName);
+            foreach (Transform child in transform)
+            {
+                child.ChangeLayersRecursively(layerName);
+            }
+        }
+
+        /// <summary>
+        /// Changes the layer of a transform and all its children to the new one
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="layerIndex"></param>
+        public static void ChangeLayersRecursively(this Transform transform, int layerIndex)
+        {
+            transform.gameObject.layer = layerIndex;
+            foreach (Transform child in transform)
+            {
+                child.ChangeLayersRecursively(layerIndex);
+            }
+        }
     }
 }

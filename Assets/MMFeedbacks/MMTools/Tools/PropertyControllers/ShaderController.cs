@@ -18,7 +18,7 @@ namespace MoreMountains.Tools
         /// the possible types of properties
         public enum PropertyTypes { Bool, Float, Int, Vector, Keyword, Color }
         /// the possible control modes
-        public enum ControlModes { PingPong, Random, OneTime, AudioAnalyzer, ToDestination }
+        public enum ControlModes { PingPong, Random, OneTime, AudioAnalyzer, ToDestination, Driven }
 
         [Header("Target")]
         /// the type of renderer to pilot
@@ -32,6 +32,9 @@ namespace MoreMountains.Tools
         /// the Image with the shader you want to control
         [MMEnumCondition("TargetType", (int)TargetTypes.Image)]
         public Image TargetImage;
+        /// if this is true, the 'materialForRendering' for this Image will be used, instead of the regular material
+        [MMEnumCondition("TargetType", (int)TargetTypes.Image)]
+        public bool UseMaterialForRendering = false;
         /// the RawImage with the shader you want to control
         [MMEnumCondition("TargetType", (int)TargetTypes.RawImage)]
         public RawImage TargetRawImage;
@@ -87,6 +90,10 @@ namespace MoreMountains.Tools
         /// the duration of the pause between two ping (or pongs) (in seconds)
         public float PingPongPauseDuration = 1f;
 
+        [Header("Driven")]
+        /// the value that will be applied to the controlled float in driven mode 
+        public float DrivenLevel = 0f;
+
         [Header("Random")]
         [MMVector("Min", "Max")]
         /// the noise amplitude
@@ -114,6 +121,8 @@ namespace MoreMountains.Tools
         public bool OneTimeButton;
         /// whether or not this controller should go back to sleep after a OneTime
         public bool DisableAfterOneTime = false;
+        /// whether or not this controller should go back to sleep after a OneTime
+        public bool DisableGameObjectAfterOneTime = false;
 
         [Header("AudioAnalyzer")]
         /// the bound audio analyzer used to drive this controller
@@ -311,7 +320,27 @@ namespace MoreMountains.Tools
                 
             _shaking = false;
         }
-                
+
+        /// <summary>
+        /// Sets the level to the value passed in parameters
+        /// </summary>
+        /// <param name="level"></param>
+        public virtual void SetDrivenLevelAbsolute(float level)
+        {
+            DrivenLevel = level;
+        }
+
+        /// <summary>
+        /// Sets the level to the remapped value passed in parameters
+        /// </summary>
+        /// <param name="normalizedLevel"></param>
+        /// <param name="remapZero"></param>
+        /// <param name="remapOne"></param>
+        public virtual void SetDrivenLevelNormalized(float normalizedLevel, float remapZero, float remapOne)
+        {
+            DrivenLevel = MMMaths.Remap(normalizedLevel, 0f, 1f, remapZero, remapOne);
+        }
+
         /// <summary>
         /// Triggers a one time shake of the shader controller
         /// </summary>
@@ -328,6 +357,7 @@ namespace MoreMountains.Tools
             }
             else
             {
+                this.gameObject.SetActive(true);
                 this.enabled = true;
                 ControlMode = ControlModes.OneTime;
                 _startedTimestamp = Time.time;
@@ -449,6 +479,9 @@ namespace MoreMountains.Tools
                 case ControlModes.AudioAnalyzer:
                     CurrentValue = Mathf.Lerp(CurrentValue, AudioAnalyzer.Beats[BeatID].CurrentValue * AudioAnalyzerMultiplier + AudioAnalyzerOffset, AudioAnalyzerLerp * Time.deltaTime);
                     break;
+                case ControlModes.Driven:
+                    CurrentValue = DrivenLevel;
+                    break;
                 case ControlModes.ToDestination:
                     if (!_shaking)
                     {
@@ -491,7 +524,11 @@ namespace MoreMountains.Tools
                 if (DisableAfterOneTime)
                 {
                     this.enabled = false;
-                }                
+                }     
+                if (DisableGameObjectAfterOneTime)
+                {
+                    this.gameObject.SetActive(false);
+                }
                 return;
             }
 
@@ -563,6 +600,11 @@ namespace MoreMountains.Tools
         /// <param name="newValue"></param>
         protected virtual void SetValue(float newValue)
         {
+            if (TargetType == TargetTypes.Image && UseMaterialForRendering && TargetImage != null)
+            {
+                TargetMaterial = TargetImage.materialForRendering;
+            }
+
             switch (PropertyType)
             {
                 case PropertyTypes.Bool:

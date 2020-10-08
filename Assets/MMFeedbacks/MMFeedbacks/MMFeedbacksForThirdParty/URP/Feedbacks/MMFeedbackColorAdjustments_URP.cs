@@ -17,8 +17,10 @@ namespace MoreMountains.FeedbacksForThirdParty
             "with Color Adjustments active, and a MMColorAdjustmentsShaker_URP component.")]
     public class MMFeedbackColorAdjustments_URP : MMFeedback
     {
-        /// sets the inspector color for this feedback
+        /// sets the inspector color for this feedback        
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
+        #endif
 
         [Header("Color Grading")]
         /// the channel to emit on

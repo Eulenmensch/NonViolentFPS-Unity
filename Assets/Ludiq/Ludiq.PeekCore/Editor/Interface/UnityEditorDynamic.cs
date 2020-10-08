@@ -41,8 +41,6 @@ namespace Ludiq.PeekCore
 
 		public static readonly dynamic SceneView;
 
-		public static readonly dynamic AssetPreview;
-
 		static UnityEditorDynamic()
 		{
 			UnityEditorAssembly = typeof(UnityEditor.Editor).Assembly;
@@ -66,7 +64,6 @@ namespace Ludiq.PeekCore
 			SearchFilter = UnityEditorAssembly.GetType("UnityEditor.SearchFilter", true).AsDynamicType();
 			SearchUtility = UnityEditorAssembly.GetType("UnityEditor.SearchUtility", true).AsDynamicType();
 			SceneView = typeof(SceneView).AsDynamicType();
-			AssetPreview = typeof(AssetPreview).AsDynamicType();
 		}
 	}
 }

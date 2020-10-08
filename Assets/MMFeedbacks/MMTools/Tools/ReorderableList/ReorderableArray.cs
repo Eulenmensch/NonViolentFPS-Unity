@@ -6,16 +6,16 @@ using System.Collections.Generic;
 namespace MoreMountains.Tools
 {
 	[Serializable]
-	public abstract class ReorderableArray<T> : ICloneable, IList<T>, ICollection<T>, IEnumerable<T> {
+	public abstract class MMReorderableArray<T> : ICloneable, IList<T>, ICollection<T>, IEnumerable<T> {
 
 		[SerializeField]
 		private List<T> array = new List<T>();
 
-		public ReorderableArray()
+		public MMReorderableArray()
 			: this(0) {
 		}
 
-		public ReorderableArray(int length) {
+		public MMReorderableArray(int length) {
 
 			array = new List<T>(length);
 		}

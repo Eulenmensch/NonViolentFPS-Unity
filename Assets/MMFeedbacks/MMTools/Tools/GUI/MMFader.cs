@@ -41,6 +41,10 @@ namespace MoreMountains.Tools
             WorldPosition = worldPosition;
         }
         static MMFadeEvent e;
+        public static void Trigger(float duration, float targetAlpha)
+        {
+            Trigger(duration, targetAlpha, new MMTweenType(MMTween.MMTweenCurve.EaseInCubic));
+        }
         public static void Trigger(float duration, float targetAlpha, MMTweenType tween, int id = 0, 
             bool ignoreTimeScale = true, Vector3 worldPosition = new Vector3())
         {
@@ -180,6 +184,7 @@ namespace MoreMountains.Tools
 
         protected bool _fading = false;
         protected float _fadeStartedAt;
+        protected bool _frameCountOne;
 
         /// <summary>
         /// Test method triggered by an inspector button
@@ -252,6 +257,19 @@ namespace MoreMountains.Tools
         protected virtual void Fade()
         {
             float currentTime = IgnoreTimescale ? Time.unscaledTime : Time.time;
+
+            if (_frameCountOne)
+            {
+                if (Time.frameCount <= 2)
+                {
+                    _canvasGroup.alpha = _initialAlpha;
+                    return;
+                }
+                _fadeStartedAt = IgnoreTimescale ? Time.unscaledTime : Time.time;
+                currentTime = _fadeStartedAt;
+                _frameCountOne = false;
+            }
+                        
             float endTime = _fadeStartedAt + _currentDuration;
             if (currentTime - _fadeStartedAt < _currentDuration)
             {
@@ -315,6 +333,10 @@ namespace MoreMountains.Tools
             _fadeStartedAt = IgnoreTimescale ? Time.unscaledTime : Time.time;
             _currentCurve = curve;
             _currentDuration = duration;
+            if (Time.frameCount == 1)
+            {
+                _frameCountOne = true;
+            }
         }
 
         /// <summary>

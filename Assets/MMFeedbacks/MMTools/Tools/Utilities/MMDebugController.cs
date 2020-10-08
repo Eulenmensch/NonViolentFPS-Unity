@@ -20,8 +20,8 @@ namespace MoreMountains.Tools
         /// </summary>
         protected virtual void Awake()
         {
-            MMDebug.DebugLogsEnabled = DebugLogsEnabled;
-            MMDebug.DebugDrawEnabled = DebugDrawEnabled;
+            MMDebug.SetDebugLogsEnabled(DebugLogsEnabled);
+            MMDebug.SetDebugDrawEnabled(DebugDrawEnabled);
         }
     }
 }

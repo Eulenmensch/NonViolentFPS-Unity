@@ -25,6 +25,8 @@ namespace MoreMountains.NiceVibrations
         public MMNVRumbleWaveForm WaveForm;
 
         [Header("AHAP")]
-        public TextAsset AHAPFile;        
+        public TextAsset AHAPFile;
+        public float IntensityMultiplier = 1f;
+        public float SharpnessMultiplier = 1f;
     }
 }

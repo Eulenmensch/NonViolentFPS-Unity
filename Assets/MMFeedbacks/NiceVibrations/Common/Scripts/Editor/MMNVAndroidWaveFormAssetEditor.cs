@@ -21,7 +21,7 @@ namespace MoreMountains.NiceVibrations
         {
             serializedObject.Update();
 
-            MMNVAndroidWaveFormAsset waveformAsset = (MMNVAndroidWaveFormAsset)target;
+            MMNVAndroidWaveFormAsset waveformAsset = (MMNVAndroidWaveFormAsset)target;            
 
             DrawDefaultInspector();
 
@@ -29,7 +29,7 @@ namespace MoreMountains.NiceVibrations
             {
                 if (GUILayout.Button("Import from AHAP"))
                 {
-                    MMNVAndroidWaveForm tempWaveform = MMNVAHAP.AHAPtoAndroidWaveForm(waveformAsset.AHAPFile.text);
+                    MMNVAndroidWaveForm tempWaveform = MMNVAHAP.AHAPtoAndroidWaveForm(waveformAsset.AHAPFile.text, waveformAsset.IntensityMultiplier, waveformAsset.SharpnessMultiplier);
                     waveformAsset.WaveForm.Pattern = tempWaveform.Pattern;
                     waveformAsset.WaveForm.Amplitudes = tempWaveform.Amplitudes;
                 }

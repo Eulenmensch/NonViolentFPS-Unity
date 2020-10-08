@@ -43,14 +43,8 @@ namespace Ludiq.PeekCore
 
 		private static void OnProjectItemGUI(string guid, Rect position)
 		{
-			var path = AssetDatabase.GUIDToAssetPath(guid);
-
-			if (!AssetDatabase.IsMainAssetAtPathLoaded(path))
-			{
-				return;
-			}
-
-			var item = AssetDatabase.LoadMainAssetAtPath(path);
+			// TODO: Is that expensive?
+			var item = AssetDatabase.LoadAssetAtPath<UnityObject>(AssetDatabase.GUIDToAssetPath(guid));
 			
 			OnItemGUI(item, position);
 		}

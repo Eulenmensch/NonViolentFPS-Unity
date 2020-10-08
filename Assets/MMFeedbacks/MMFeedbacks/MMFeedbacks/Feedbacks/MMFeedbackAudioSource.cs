@@ -11,7 +11,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackAudioSource : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.SoundsColor; } }
+        #endif
 
         /// the possible ways to interact with the audiosource
         public enum Modes { Play, Pause, UnPause, Stop }

@@ -60,7 +60,7 @@ namespace MoreMountains.Tools
     /// 3 - Implement the MMEventListener interface for that event. For example :
     /// public void OnMMEvent(MMGameEvent gameEvent)
     /// {
-    /// 	if (gameEvent.eventName == "GameOver")
+    /// 	if (gameEvent.EventName == "GameOver")
     ///		{
     ///			// DO SOMETHING
     ///		}

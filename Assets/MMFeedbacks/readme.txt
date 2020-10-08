@@ -1,7 +1,7 @@
 A more user friendly doc is available at http://feedbacks-docs.moremountains.com/
 Find out more about the asset at http://feedbacks.moremountains.com/
 
-MMFeedbacks v1.3
+MMFeedbacks v1.6
 
 ## WHAT'S IN THE ASSET ?
 -------------------------

@@ -17,7 +17,9 @@ namespace MoreMountains.FeedbacksForThirdParty
     public class MMFeedbackWhiteBalance_URP : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
+        #endif
 
         [Header("White Balance")]
         /// the channel to emit on

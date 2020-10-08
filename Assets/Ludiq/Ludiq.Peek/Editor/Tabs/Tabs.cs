@@ -28,10 +28,6 @@ namespace Ludiq.Peek
 
 		private static bool reopenedTabs;
 		
-		private static EditorWindow lastFocusedWindow;
-
-		private static bool lastFocusedWindowWasMaximized;
-
 		static Tabs()
 		{
 			toolbar = new TabsToolbar();
@@ -42,7 +38,7 @@ namespace Ludiq.Peek
 			toolbarControl.isActivator = true;
 
 			ShortcutsIntegration.secondaryToolbar = toolbarControl;
-			EditorApplication.update += WatchWindowLayout;
+			EditorApplication.update += AnalyzeWindowLayout;
 			toolbarControlProvider.cleaningUp += SaveOpenTabs;
 		}
 
@@ -76,24 +72,10 @@ namespace Ludiq.Peek
 			}
 		}
 
-		private static void WatchWindowLayout()
-		{
-			var focusedWindow = EditorWindow.focusedWindow;
-			var isMaximized = focusedWindow != null && focusedWindow.maximized;
-
-			if (focusedWindow != lastFocusedWindow ||
-			    isMaximized != lastFocusedWindowWasMaximized)
-			{
-				AnalyzeWindowLayout();
-				lastFocusedWindow = focusedWindow;
-				lastFocusedWindowWasMaximized = isMaximized;
-			}
-		}
-
 		private static void AnalyzeWindowLayout()
 		{
 			var tabs = ListPool<EditorWindow>.New();
-			
+
 			try
 			{
 				foreach (var window in Resources.FindObjectsOfTypeAll<EditorWindow>())

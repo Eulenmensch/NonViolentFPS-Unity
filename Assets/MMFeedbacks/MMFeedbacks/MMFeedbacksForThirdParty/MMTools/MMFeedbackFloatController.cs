@@ -16,7 +16,9 @@ namespace MoreMountains.Feedbacks
         /// the different possible modes 
         public enum Modes { OneTime, ToDestination }
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.GameObjectColor; } }
+        #endif
 
         [Header("Float Controller")]
         /// the mode this controller is in

@@ -16,7 +16,9 @@ namespace MoreMountains.FeedbacksForThirdParty
     public class MMFeedbackBloom : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
+        #endif
 
         [Header("Bloom")]
         /// the channel to emit on

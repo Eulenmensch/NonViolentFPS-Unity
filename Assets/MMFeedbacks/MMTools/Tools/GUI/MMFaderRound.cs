@@ -217,6 +217,9 @@ namespace MoreMountains.Tools
             _fadeStartedAt = IgnoreTimescale ? Time.unscaledTime : Time.time;
             _currentCurve = curve;
             _currentDuration = duration;
+
+            float newScale = MMTween.Tween(0f, 0f, duration, _initialScale, _currentTargetScale, _currentCurve);
+            FaderMask.transform.localScale = newScale * Vector3.one;
         }
 
         /// <summary>

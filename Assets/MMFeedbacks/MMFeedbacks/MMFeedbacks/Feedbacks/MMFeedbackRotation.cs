@@ -19,7 +19,9 @@ namespace MoreMountains.Feedbacks
         public enum TimeScales { Scaled, Unscaled }
 
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.TransformColor; } }
+        #endif
 
         [Header("Rotation Target")]
         /// the object whose rotation you want to animate
@@ -232,7 +234,7 @@ namespace MoreMountains.Feedbacks
         /// <param name="curveX"></param>
         /// <param name="curveY"></param>
         /// <param name="curveZ"></param>
-        /// <param name="percent"></param>
+        /// <param name="percent"></param> 
         protected virtual void ApplyRotation(Transform targetTransform, float remapZero, float remapOne, AnimationCurve curveX, AnimationCurve curveY, AnimationCurve curveZ, float percent)
         {
             targetTransform.transform.rotation = _initialRotation;

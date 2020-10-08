@@ -29,7 +29,7 @@ namespace MoreMountains.NiceVibrations
             {
                 if (GUILayout.Button("Import from AHAP"))
                 {
-                    MMNVRumbleWaveForm tempWaveform = MMNVAHAP.AHAPtoRumbleWaveForm(waveformAsset.AHAPFile.text);
+                    MMNVRumbleWaveForm tempWaveform = MMNVAHAP.AHAPtoRumbleWaveForm(waveformAsset.AHAPFile.text, waveformAsset.IntensityMultiplier, waveformAsset.SharpnessMultiplier);
                     waveformAsset.WaveForm.Pattern = tempWaveform.Pattern;
                     waveformAsset.WaveForm.LowFrequencyAmplitudes = tempWaveform.LowFrequencyAmplitudes;
                     waveformAsset.WaveForm.HighFrequencyAmplitudes = tempWaveform.HighFrequencyAmplitudes;

@@ -313,7 +313,33 @@ MonoBehaviour:
   InactiveAlpha: 0
   ActiveAlpha: 1
   DefaultDuration: 0.2
-  DefaultTween: 0
+  DefaultTween:
+    MMTweenDefinitionType: 0
+    MMTweenCurve: 0
+    Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   IgnoreTimescale: 1
   ShouldBlockRaycasts: 0
   FadeIn1SecondButton: 0
@@ -1140,9 +1166,9 @@ MonoBehaviour:
   LoadingProgressBar: {fileID: 485648907}
   LoadingAnimation: {fileID: 1383385375}
   LoadingCompleteAnimation: {fileID: 1858372246}
-  StartFadeDuration: 0.2
+  StartFadeDuration: 0.5
   ProgressBarSpeed: 2
-  ExitFadeDuration: 0.2
+  ExitFadeDuration: 0.5
   LoadCompleteDelay: 0.5
 --- !u!4 &1904868560
 Transform:

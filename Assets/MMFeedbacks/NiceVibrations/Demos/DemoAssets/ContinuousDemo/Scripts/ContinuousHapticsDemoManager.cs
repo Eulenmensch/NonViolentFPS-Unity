@@ -112,7 +112,7 @@ namespace MoreMountains.NiceVibrations
         {
             if (_continuousActive)
             {
-                MMVibrationManager.UpdateContinuousHaptic(ContinuousIntensity, ContinuousSharpness, true);
+                MMVibrationManager.UpdateContinuousHaptic(ContinuousIntensity, ContinuousSharpness, true, -1, true);
                 DebugAudioContinuous.volume = ContinuousIntensity;
                 DebugAudioContinuous.pitch = 0.5f + ContinuousSharpness / 2f;
             }
@@ -123,7 +123,7 @@ namespace MoreMountains.NiceVibrations
             if (!_continuousActive)
             {
                 // START
-                MMVibrationManager.ContinuousHaptic(ContinuousIntensity, ContinuousSharpness, ContinuousDuration, HapticTypes.LightImpact, this, true);
+                MMVibrationManager.ContinuousHaptic(ContinuousIntensity, ContinuousSharpness, ContinuousDuration, HapticTypes.LightImpact, this, true, -1, true);
                 _timeLeft = ContinuousDuration;
                 ContinuousButtonText.text = "Stop continuous haptic pattern";
                 DurationSlider.interactable = false;

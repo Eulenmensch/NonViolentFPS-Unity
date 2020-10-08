@@ -14,7 +14,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackAudioFilterHighPass : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.SoundsColor; } }
+        #endif
         /// returns the duration of the feedback
         public override float FeedbackDuration { get { return Duration; } }
 

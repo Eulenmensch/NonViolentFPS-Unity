@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Feedbacks;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -25,6 +26,14 @@ namespace MoreMountains.Feedbacks
         public enum InitializationModes { Script, Awake, Start }
         /// the chosen initialization mode
         public InitializationModes InitializationMode = InitializationModes.Start;
+        /// the possible SafeModes (will perform checks to make sure no serialization error has damaged them)
+        /// - nope : no safety
+        /// - editor only : performs checks on enable
+        /// - runtime only : performs checks on Awake
+        /// - full : performs both editor and runtime checks, recommended setting
+        public enum SafeModes { Nope, EditorOnly, RuntimeOnly, Full }
+        /// the selected safe mode
+        public SafeModes SafeMode = SafeModes.Full;
         /// whether or not to play this feedbacks automatically on Start
         public bool AutoPlayOnStart = false;
         [HideInInspector]
@@ -33,6 +42,8 @@ namespace MoreMountains.Feedbacks
         /// whether or not this MMFeedbacks is playing right now - meaning it hasn't been stopped yet.
         /// if you don't stop your MMFeedbacks it'll remain true of course
         public bool IsPlaying { get; protected set; }
+        /// a global switch used to turn all feedbacks on or off globally
+        public static bool GlobalMMFeedbacksActive = true;
 
         protected float _startTime = 0f;
         protected float _holdingMax = 0f;
@@ -71,7 +82,6 @@ namespace MoreMountains.Feedbacks
         {
             for (int i = 0; i < Feedbacks.Count; i++)
             {
-
                 Feedbacks[i].Initialization(this.gameObject);
             }
         }
@@ -83,6 +93,11 @@ namespace MoreMountains.Feedbacks
         /// <param name="feedbacksOwner"></param>
         public virtual void Initialization(GameObject owner)
         {
+            if ((SafeMode == MMFeedbacks.SafeModes.RuntimeOnly) || (SafeMode == MMFeedbacks.SafeModes.Full))
+            {
+                AutoRepair();
+            }
+
             IsPlaying = false;
             for (int i = 0; i < Feedbacks.Count; i++)
             {
@@ -121,6 +136,18 @@ namespace MoreMountains.Feedbacks
         /// <param name="attenuation"></param>
         protected virtual void PlayFeedbacksInternal(Vector3 position, float attenuation)
         {
+            // if this MMFeedbacks is disabled in any way, we stop and don't play
+            if (!this.isActiveAndEnabled)
+            {
+                return;
+            }
+
+            // if all MMFeedbacks are disabled globally, we stop and don't play
+            if (!GlobalMMFeedbacksActive)
+            {
+                return;
+            }
+
             _startTime = Time.time;
             _holdingMax = 0f;
             _lastStartAt = _startTime;
@@ -157,6 +184,12 @@ namespace MoreMountains.Feedbacks
             }            
         }
 
+        /// <summary>
+        /// A coroutine used to pause feedbacks
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="attenuation"></param>
+        /// <returns></returns>
         protected virtual IEnumerator PausedFeedbacksCo(Vector3 position, float attenuation)
         {
             IsPlaying = true;
@@ -214,7 +247,7 @@ namespace MoreMountains.Feedbacks
                 // handles looper
                 if ( (Feedbacks[i].LooperPause == true) 
                     && (Feedbacks[i].Active) 
-                    && ((Feedbacks[i] as MMFeedbackLooper).NumberOfLoopsLeft > 0) )
+                    && (((Feedbacks[i] as MMFeedbackLooper).NumberOfLoopsLeft > 0) || (Feedbacks[i] as MMFeedbackLooper).InInfiniteLoop))
                 {
                     // we determine the index we should start again at
                     bool loopAtLastPause = (Feedbacks[i] as MMFeedbackLooper).LoopAtLastPause;
@@ -320,7 +353,34 @@ namespace MoreMountains.Feedbacks
             }
             #endif
         }
-            
-    }
 
+        /// <summary>
+        /// Unity sometimes has serialization issues. 
+        /// This method fixes that by fixing any bad sync that could happen.
+        /// </summary>
+        public virtual void AutoRepair()
+        {
+            List<Component> components = components = new List<Component>();
+            components = this.gameObject.GetComponents<Component>().ToList();
+            foreach (var component in components)
+            {
+                if (component is MMFeedback)
+                {
+                    bool found = false;
+                    for (int i = 0; i < Feedbacks.Count; i++)
+                    {
+                        if (Feedbacks[i] == (MMFeedback)component)
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        Feedbacks.Add((MMFeedback)component);
+                    }
+                }
+            }
+        }            
+    }
 }

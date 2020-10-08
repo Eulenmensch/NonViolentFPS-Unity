@@ -14,6 +14,7 @@ namespace MoreMountains.Tools
 		public LayerMask ObstaclesLayerMask; 
 		/// the bounds adjustment variable
 		public float SkinWidth = 0.1f;
+        public bool RepositionRigidbody = true;
 
 		protected float _smallestBoundsWidth; 
 		protected float _adjustedSmallestBoundsWidth; 
@@ -60,7 +61,7 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void FixedUpdate() 
 		{ 
-			_lastMovement = _rigidbody.position - _positionLastFrame; 
+			_lastMovement = this.transform.position - _positionLastFrame; 
 			_lastMovementSquared = _lastMovement.sqrMagnitude;
 
 			// if we've moved further than our bounds, we may have missed something
@@ -84,11 +85,16 @@ namespace MoreMountains.Tools
 
 					if (!hitInfo.collider.isTrigger)
 					{
-						_rigidbody.position = hitInfo.point - (_lastMovement / movementMagnitude) * _adjustedSmallestBoundsWidth; 
+                        this.gameObject.SendMessage("PreventedCollision3D", hitInfo, SendMessageOptions.DontRequireReceiver);
+                        if (RepositionRigidbody)
+                        {
+                            this.transform.position = hitInfo.point - (_lastMovement / movementMagnitude) * _adjustedSmallestBoundsWidth;
+                            _rigidbody.position = hitInfo.point - (_lastMovement / movementMagnitude) * _adjustedSmallestBoundsWidth;
+                        }						
 					}
 				}
 			} 
-			_positionLastFrame = _rigidbody.position; 
+			_positionLastFrame = this.transform.position; 
 		}
 	}
 }

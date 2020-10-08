@@ -8,19 +8,15 @@ namespace MoreMountains.Tools
     public class MMGyroscope : MonoBehaviour
     {
         public enum TimeScales { Scaled, Unscaled }
-               
-        [Header("Settings")]
-        /// whether this rig should move in scaled or unscaled time
-        public TimeScales TimeScale = TimeScales.Scaled;
-        /// the clamps to apply to the values
-        [MMVector("Min","Max")]
-        public Vector2 Clamps = new Vector2(-1f, 1f);
-        /// the speed at which to move towards the new position
-        public float LerpSpeed = 1f;
 
+        public static TimeScales TimeScale = TimeScales.Scaled;
+        public static Vector2 Clamps = new Vector2(-1f, 1f);
+        public static float LerpSpeed = 1f;
+        public static bool TestMode;
+        
         [Header("Debug")]
         /// turn this on if you want to use the inspector to test this camera
-        public bool TestMode = false;
+        public bool _TestMode = false;
         /// the rotation to apply on the x axiswhen in test mode
         [Range(-1f, 1f)]
         public float TestXAcceleration = 0f;
@@ -31,58 +27,120 @@ namespace MoreMountains.Tools
         [Range(-1f, 1f)]
         public float TestZAcceleration = 0f;
 
+        public static Quaternion GyroscopeAttitude { get { GetValues(); return m_GyroscopeAttitude; } }
+        public static Vector3 GyroscopeRotationRate { get { GetValues(); return m_GyroscopeRotationRate; } }
+        public static Vector3 GyroscopeAcceleration { get { GetValues(); return m_GyroscopeAcceleration; } }
+        public static Vector3 InputAcceleration { get { GetValues(); return m_InputAcceleration; } }
+        public static Vector3 GyroscopeGravity { get { GetValues(); return m_GyroscopeGravity; } }
+
+        public static Quaternion InitialGyroscopeAttitude { get { GetValues(); return m_InitialGyroscopeAttitude; } }
+        public static Vector3 InitialGyroscopeRotationRate { get { GetValues(); return m_InitialGyroscopeRotationRate; } }
+        public static Vector3 InitialGyroscopeAcceleration { get { GetValues(); return m_InitialGyroscopeAcceleration; } }
+        public static Vector3 InitialInputAcceleration { get { GetValues(); return m_InitialInputAcceleration; } }
+        public static Vector3 InitialGyroscopeGravity { get { GetValues(); return m_InitialGyroscopeGravity; } }
+
+        public static Vector3 CalibratedInputAcceleration { get { GetValues(); return m_CalibratedInputAcceleration; } }
+        public static Vector3 CalibratedGyroscopeGravity { get { GetValues(); return m_CalibratedGyroscopeGravity; } }
+
+        public static Vector3 LerpedCalibratedInputAcceleration { get { GetValues(); return m_LerpedCalibratedInputAcceleration; } }
+        public static Vector3 LerpedCalibratedGyroscopeGravity { get { GetValues(); return m_LerpedCalibratedGyroscopeGravity; } }
+        
+        private static Quaternion m_GyroscopeAttitude;
+        private static Vector3 m_GyroscopeRotationRate;
+        private static Vector3 m_GyroscopeAcceleration;
+        private static Vector3 m_InputAcceleration;
+        private static Vector3 m_GyroscopeGravity;
+        private static Quaternion m_InitialGyroscopeAttitude;
+        private static Vector3 m_InitialGyroscopeRotationRate;
+        private static Vector3 m_InitialGyroscopeAcceleration;
+        private static Vector3 m_InitialInputAcceleration;
+        private static Vector3 m_InitialGyroscopeGravity;
+        private static Vector3 m_CalibratedInputAcceleration;
+        private static Vector3 m_CalibratedGyroscopeGravity;
+        private static Vector3 m_LerpedCalibratedInputAcceleration;
+        private static Vector3 m_LerpedCalibratedGyroscopeGravity;
+
+        [Header("Settings")]
+        /// whether this rig should move in scaled or unscaled time
+        [SerializeField]
+        private TimeScales _TimeScale = TimeScales.Scaled;
+        /// the clamps to apply to the values
+        [SerializeField]
+        private Vector2 _Clamps = new Vector2(-1f, 1f);
+        /// the speed at which to move towards the new position
+        [SerializeField]
+        private float _LerpSpeed = 1f;
+
         [Header("Raw Values")]
         [MMReadOnly]
-        public Quaternion GyroscopeAttitude;
+        [SerializeField]
+        private Quaternion _GyroscopeAttitude;
         [MMReadOnly]
-        public Vector3 GyroscopeRotationRate;
+        [SerializeField]
+        private Vector3 _GyroscopeRotationRate;
         [MMReadOnly]
-        public Vector3 GyroscopeAcceleration;
+        [SerializeField]
+        private Vector3 _GyroscopeAcceleration;
         [MMReadOnly]
-        public Vector3 InputAcceleration;
+        [SerializeField]
+        private Vector3 _InputAcceleration;
         [MMReadOnly]
-        public Vector3 GyroscopeGravity;
+        [SerializeField]
+        private Vector3 _GyroscopeGravity;
 
         [Header("AutoCalibration Values")]
         [MMReadOnly]
-        public Quaternion InitialGyroscopeAttitude;
+        [SerializeField]
+        private Quaternion _InitialGyroscopeAttitude;
         [MMReadOnly]
-        public Vector3 InitialGyroscopeRotationRate;
+        [SerializeField]
+        private Vector3 _InitialGyroscopeRotationRate;
         [MMReadOnly]
-        public Vector3 InitialGyroscopeAcceleration;
+        [SerializeField]
+        private Vector3 _InitialGyroscopeAcceleration;
         [MMReadOnly]
-        public Vector3 InitialInputAcceleration;
+        [SerializeField]
+        private Vector3 _InitialInputAcceleration;
         [MMReadOnly]
-        public Vector3 InitialGyroscopeGravity;
+        [SerializeField]
+        private Vector3 _InitialGyroscopeGravity;
 
         [Header("Relative Values")]
         [MMReadOnly]
-        public Vector3 CalibratedInputAcceleration;
+        [SerializeField]
+        private Vector3 _CalibratedInputAcceleration;
         [MMReadOnly]
-        public Vector3 CalibratedGyroscopeGravity;
+        [SerializeField]
+        private Vector3 _CalibratedGyroscopeGravity;
 
         [Header("Lerped Values")]
         [MMReadOnly]
-        public Vector3 LerpedCalibratedInputAcceleration;
+        [SerializeField]
+        private Vector3 _LerpedCalibratedInputAcceleration;
         [MMReadOnly]
-        public Vector3 LerpedCalibratedGyroscopeGravity;
+        [SerializeField]
+        private Vector3 _LerpedCalibratedGyroscopeGravity;
 
         [MMInspectorButton("Calibrate")]
         public bool CalibrateButton;
 
-        protected Gyroscope _gyroscope;
-        protected Vector3 _testVector = Vector3.zero;
-        protected bool _initialized = false;
-        protected Matrix4x4 _accelerationMatrix;
-        protected Matrix4x4 _gravityMatrix;
-
-
+        private static Gyroscope _gyroscope;
+        protected static Vector3 _testVector = Vector3.zero;
+        private static bool _initialized = false;
+        private static Matrix4x4 _accelerationMatrix;
+        private static Matrix4x4 _gravityMatrix;
+        private static float _lastGetValuesAt = 0f;
+        
         protected virtual void Start()
         {
+            TimeScale = _TimeScale;
+            Clamps = _Clamps;
+            LerpSpeed = _LerpSpeed;
+            TestMode = _TestMode;
             GyroscopeInitialization();
         }
 
-        public virtual void GyroscopeInitialization()
+        public static void GyroscopeInitialization()
         {
             _gyroscope = Input.gyro;
             _gyroscope.enabled = true;
@@ -90,37 +148,62 @@ namespace MoreMountains.Tools
 
         protected virtual void Update()
         {
-            AutoCalibration();
-            GetGyroValues();
+            HandleTestMode();
+            GetValues();
+            _GyroscopeAttitude = m_GyroscopeAttitude;
+            _GyroscopeRotationRate = m_GyroscopeRotationRate;
+            _GyroscopeAcceleration = m_GyroscopeAcceleration;
+            _InputAcceleration = m_InputAcceleration;
+            _GyroscopeGravity = m_GyroscopeGravity;
+            _InitialGyroscopeAttitude = m_InitialGyroscopeAttitude;
+            _InitialGyroscopeRotationRate = m_InitialGyroscopeRotationRate;
+            _InitialGyroscopeAcceleration = m_InitialGyroscopeAcceleration;
+            _InitialInputAcceleration = m_InitialInputAcceleration;
+            _InitialGyroscopeGravity = m_InitialGyroscopeGravity;
+            _CalibratedInputAcceleration = m_CalibratedInputAcceleration;
+            _CalibratedGyroscopeGravity = m_CalibratedGyroscopeGravity;
+            _LerpedCalibratedInputAcceleration = m_LerpedCalibratedInputAcceleration;
+            _LerpedCalibratedGyroscopeGravity = m_LerpedCalibratedGyroscopeGravity;
         }
 
-        protected virtual void GetGyroValues()
+        public static void GetValues()
+        {
+            if (Time.frameCount == _lastGetValuesAt)
+            {
+                return;
+            }
+            AutoCalibration();
+            GetGyroValues();
+            _lastGetValuesAt = Time.frameCount;
+        }
+
+        private static void GetGyroValues()
         {
             float deltaTime = (TimeScale == TimeScales.Scaled) ? Time.deltaTime : Time.unscaledDeltaTime;
 
-            GyroscopeAttitude = GyroscopeToUnity(Input.gyro.attitude);
-            GyroscopeRotationRate = Input.gyro.rotationRateUnbiased;
-            GyroscopeAcceleration = Input.gyro.userAcceleration;
-
-            HandleTestMode();
-
-            ClampAcceleration();
+            m_GyroscopeAttitude = GyroscopeToUnity(Input.gyro.attitude);
+            m_GyroscopeRotationRate = Input.gyro.rotationRateUnbiased;
+            m_GyroscopeAcceleration = Input.gyro.userAcceleration;
             
-            CalibratedInputAcceleration = CalibratedAcceleration(InputAcceleration, _accelerationMatrix);
-            CalibratedGyroscopeGravity = CalibratedAcceleration(GyroscopeGravity, _gravityMatrix);
+            GetAccelerationAndGravity();
+            ClampAcceleration();
 
-            LerpedCalibratedInputAcceleration = Vector3.Lerp(LerpedCalibratedInputAcceleration, CalibratedInputAcceleration, Time.deltaTime * LerpSpeed);
-            LerpedCalibratedGyroscopeGravity = Vector3.Lerp(LerpedCalibratedGyroscopeGravity, CalibratedGyroscopeGravity, Time.deltaTime * LerpSpeed);
+            m_CalibratedInputAcceleration = CalibratedAcceleration(m_InputAcceleration, _accelerationMatrix);
+            m_CalibratedGyroscopeGravity = CalibratedAcceleration(m_GyroscopeGravity, _gravityMatrix);
+
+            m_LerpedCalibratedInputAcceleration = Vector3.Lerp(m_LerpedCalibratedInputAcceleration, m_CalibratedInputAcceleration, deltaTime * LerpSpeed);
+            m_LerpedCalibratedGyroscopeGravity = Vector3.Lerp(m_LerpedCalibratedGyroscopeGravity, m_CalibratedGyroscopeGravity, deltaTime * LerpSpeed);
         }
 
-        protected virtual void AutoCalibration()
+        private static void AutoCalibration()
         {
             if (!_initialized && Time.time > 0.5f)
             {
-                InitialGyroscopeAttitude = GyroscopeToUnity(Input.gyro.attitude);
-                InitialGyroscopeRotationRate = Input.gyro.rotationRateUnbiased;
-                InitialGyroscopeAcceleration = Input.gyro.userAcceleration;
-                InitialInputAcceleration = Input.acceleration;
+                m_InitialGyroscopeAttitude = GyroscopeToUnity(Input.gyro.attitude);
+                m_InitialGyroscopeRotationRate = Input.gyro.rotationRateUnbiased;
+                m_InitialGyroscopeAcceleration = Input.gyro.userAcceleration;
+                m_InitialInputAcceleration = Input.acceleration;
+                m_InitialGyroscopeGravity = Input.gyro.gravity; 
 
                 Calibrate();
 
@@ -133,15 +216,15 @@ namespace MoreMountains.Tools
             return new Quaternion(q.x, q.y, -q.z, -q.w);
         }
 
-        protected virtual void ClampAcceleration()
+        private static void ClampAcceleration()
         {
-            InputAcceleration.x = Mathf.Clamp(InputAcceleration.x, Clamps.x, Clamps.y);
-            InputAcceleration.y = Mathf.Clamp(InputAcceleration.y, Clamps.x, Clamps.y);
-            InputAcceleration.z = Mathf.Clamp(InputAcceleration.z, Clamps.x, Clamps.y);
+            m_InputAcceleration.x = Mathf.Clamp(m_InputAcceleration.x, Clamps.x, Clamps.y);
+            m_InputAcceleration.y = Mathf.Clamp(m_InputAcceleration.y, Clamps.x, Clamps.y);
+            m_InputAcceleration.z = Mathf.Clamp(m_InputAcceleration.z, Clamps.x, Clamps.y);
 
-            GyroscopeGravity.x = Mathf.Clamp(GyroscopeGravity.x, Clamps.x, Clamps.y);
-            GyroscopeGravity.y = Mathf.Clamp(GyroscopeGravity.y, Clamps.x, Clamps.y);
-            GyroscopeGravity.z = Mathf.Clamp(GyroscopeGravity.z, Clamps.x, Clamps.y);
+            m_GyroscopeGravity.x = Mathf.Clamp(m_GyroscopeGravity.x, Clamps.x, Clamps.y);
+            m_GyroscopeGravity.y = Mathf.Clamp(m_GyroscopeGravity.y, Clamps.x, Clamps.y);
+            m_GyroscopeGravity.z = Mathf.Clamp(m_GyroscopeGravity.z, Clamps.x, Clamps.y);
         }
 
         protected virtual void HandleTestMode()
@@ -151,32 +234,38 @@ namespace MoreMountains.Tools
                 _testVector.x = TestXAcceleration;
                 _testVector.y = TestYAcceleration;
                 _testVector.z = TestZAcceleration;
-                InputAcceleration = _testVector;
-                GyroscopeGravity = _testVector;
+                m_InputAcceleration = _testVector;
+                m_GyroscopeGravity = _testVector;
             }
             else
             {
-                InputAcceleration = Input.acceleration;
-                GyroscopeGravity = Input.gyro.gravity;
+                GetAccelerationAndGravity();
             }
         }
 
-
-
-        protected virtual void Calibrate()
+        private static void GetAccelerationAndGravity()
         {
-            _accelerationMatrix = CalibrateAcceleration(InputAcceleration);
+            if (!TestMode)
+            {
+                m_InputAcceleration = Input.acceleration;
+                m_GyroscopeGravity = Input.gyro.gravity;
+            }            
+        }
+
+        private static void Calibrate()
+        {
+            _accelerationMatrix = CalibrateAcceleration(m_InputAcceleration);
             _gravityMatrix = CalibrateAcceleration(Input.gyro.gravity);
         }
 
-        protected virtual Matrix4x4 CalibrateAcceleration(Vector3 initialAcceleration)
+        private static Matrix4x4 CalibrateAcceleration(Vector3 initialAcceleration)
         {
             Quaternion rotationQuaternion = Quaternion.FromToRotation(-Vector3.forward, initialAcceleration);
             Matrix4x4 newMatrix = Matrix4x4.TRS(Vector3.zero, rotationQuaternion, Vector3.one);
             return newMatrix.inverse;
         }
 
-        protected virtual Vector3 CalibratedAcceleration(Vector3 accelerator, Matrix4x4 matrix)
+        private static Vector3 CalibratedAcceleration(Vector3 accelerator, Matrix4x4 matrix)
         {
             Vector3 fixedAcceleration = matrix.MultiplyVector(accelerator);
             return fixedAcceleration;

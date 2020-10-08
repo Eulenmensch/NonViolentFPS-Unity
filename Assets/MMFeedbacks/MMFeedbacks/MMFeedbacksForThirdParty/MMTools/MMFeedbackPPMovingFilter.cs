@@ -14,7 +14,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackPPMovingFilter : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
+        #endif
 
         /// the possible modes for this feedback 
         public enum Modes { Toggle, On, Off }

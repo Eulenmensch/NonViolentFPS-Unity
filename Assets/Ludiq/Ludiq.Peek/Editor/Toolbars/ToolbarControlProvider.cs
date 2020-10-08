@@ -12,7 +12,7 @@ namespace Ludiq.Peek
 	{
 		private readonly Dictionary<Key, ToolbarControl> controlsByKeys = new Dictionary<Key, ToolbarControl>();
 
-		public ToolbarWindow window { get; }
+		private readonly ToolbarWindow window;
 
 		public event Action cleaningUp;
 

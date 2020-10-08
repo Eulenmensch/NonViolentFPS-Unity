@@ -56,7 +56,7 @@ namespace MoreMountains.Tools
     public class FloatController : MonoBehaviour
     {
         /// the possible control modes
-        public enum ControlModes { PingPong, Random, OneTime, AudioAnalyzer, ToDestination }
+        public enum ControlModes { PingPong, Random, OneTime, AudioAnalyzer, ToDestination, Driven }
 
         [Header("Target")]
         /// the mono on which the float you want to control is
@@ -71,6 +71,10 @@ namespace MoreMountains.Tools
         public bool UseUnscaledTime = true;
         /// whether or not you want to revert to the InitialValue after the control ends
         public bool RevertToInitialValueAfterEnd = true;
+
+        [Header("Driven")]
+        /// the value that will be applied to the controlled float in driven mode 
+        public float DrivenLevel = 0f;
 
         [Header("Ping Pong")]
         /// the curve to apply to the tween
@@ -108,6 +112,8 @@ namespace MoreMountains.Tools
         public AnimationCurve OneTimeCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.5f, 1), new Keyframe(1, 0));
         /// whether or not this controller should go to sleep after a one time shake
         public bool DisableAfterOneTime;
+        /// whether or not this controller should go back to sleep after a OneTime
+        public bool DisableGameObjectAfterOneTime = false;
         [MMInspectorButton("OneTime")]
         /// a test button for the one time shake
         public bool OneTimeButton;
@@ -269,6 +275,10 @@ namespace MoreMountains.Tools
             _shaking = false;
         }
 
+        /// <summary>
+        /// Grabs the initial float value
+        /// </summary>
+        /// <returns></returns>
         protected virtual float GetInitialValue()
         {
             if (TargetAttribute.MemberType == MonoAttribute.MemberTypes.Property)
@@ -283,6 +293,26 @@ namespace MoreMountains.Tools
         }
 
         /// <summary>
+        /// Sets the level to the value passed in parameters
+        /// </summary>
+        /// <param name="level"></param>
+        public virtual void SetDrivenLevelAbsolute(float level)
+        {
+            DrivenLevel = level;
+        }
+
+        /// <summary>
+        /// Sets the level to the remapped value passed in parameters
+        /// </summary>
+        /// <param name="normalizedLevel"></param>
+        /// <param name="remapZero"></param>
+        /// <param name="remapOne"></param>
+        public virtual void SetDrivenLevelNormalized(float normalizedLevel, float remapZero, float remapOne)
+        {
+            DrivenLevel = MMMaths.Remap(normalizedLevel, 0f, 1f, remapZero, remapOne);
+        }
+
+        /// <summary>
         /// Triggers a one time shake of the float controller
         /// </summary>
         public virtual void OneTime()
@@ -293,6 +323,7 @@ namespace MoreMountains.Tools
             }
             else
             {
+                this.gameObject.SetActive(true);
                 this.enabled = true;
                 _shakeStartTimestamp = Time.time;
                 _shaking = true;
@@ -372,8 +403,6 @@ namespace MoreMountains.Tools
                         _pingPongDirection = -_pingPongDirection;
                         _lastPingPongPauseAt = GetTime();
                     }
-
-
                     CurrentValue = MMTween.Tween(PingPong, 0f, Duration, MinValue, MaxValue, Curve);
                     break;
                 case ControlModes.Random:
@@ -393,11 +422,14 @@ namespace MoreMountains.Tools
                 case ControlModes.AudioAnalyzer:
                     CurrentValue = AudioAnalyzer.Beats[BeatID].CurrentValue * AudioAnalyzerMultiplier;
                     break;
+                case ControlModes.Driven:
+                    CurrentValue = DrivenLevel;
+                    break;
                 case ControlModes.ToDestination:
                     if (!_shaking)
                     {
                         return;
-                    }
+                    }                    
                     _remappedTimeSinceStart = MMMaths.Remap(Time.time - _shakeStartTimestamp, 0f, ToDestinationDuration, 0f, 1f);
                     float time = ToDestinationCurve.Evaluate(_remappedTimeSinceStart);
                     CurrentValue = Mathf.LerpUnclamped(_initialValue, ToDestinationValue, time);
@@ -431,28 +463,36 @@ namespace MoreMountains.Tools
                     {
                         this.enabled = false;
                     }
+                    if (DisableGameObjectAfterOneTime)
+                    {
+                        this.gameObject.SetActive(false);
+                    }
                     return;
                 }
             }
 
             if (ControlMode == ControlModes.ToDestination)
             {
-                if (_shaking && (Time.time - _shakeStartTimestamp > OneTimeDuration))
+                if (_shaking && (Time.time - _shakeStartTimestamp > ToDestinationDuration))
                 {
                     _shaking = false;
                     if (RevertToInitialValueAfterEnd)
                     {
                         CurrentValue = InitialValue;
-                        TargetAttribute.SetValue(CurrentValue);
                     }
                     else
                     {
-                        float time = ToDestinationCurve.Evaluate(1f);
-                        CurrentValue = Mathf.LerpUnclamped(_initialValue, ToDestinationValue, time);
+                        CurrentValue = ToDestinationValue;
                     }
+                    TargetAttribute.SetValue(CurrentValue);
+
                     if (DisableAfterOneTime)
                     {
                         this.enabled = false;
+                    }
+                    if (DisableGameObjectAfterOneTime)
+                    {
+                        this.gameObject.SetActive(false);
                     }
                     return;
                 }

@@ -14,7 +14,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackParticlesInstantiation : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.ParticlesColor; } }
+        #endif
         /// the different ways to position the instantiated object :
         /// - FeedbackPosition : object will be instantiated at the position of the feedback, plus an optional offset
         /// - Transform : the object will be instantiated at the specified Transform's position, plus an optional offset
@@ -34,6 +36,8 @@ namespace MoreMountains.Feedbacks
         public bool CachedRecycle = true;
         /// the particle system to spawn
         public ParticleSystem ParticlesPrefab;
+        /// the possible random particle systems
+        public List<ParticleSystem> RandomParticlePrefabs;
 
         [Header("Position")]
         /// the selected position mode
@@ -50,6 +54,7 @@ namespace MoreMountains.Feedbacks
         public bool NestParticles = true;
 
         protected ParticleSystem _instantiatedParticleSystem;
+        protected List<ParticleSystem> _instantiatedRandomParticleSystems;
 
         /// <summary>
         /// On init, instantiates the particle system, positions it and nests it if needed
@@ -66,6 +71,9 @@ namespace MoreMountains.Feedbacks
             }
         }
 
+        /// <summary>
+        /// Instantiates the particle system
+        /// </summary>
         protected virtual void InstantiateParticleSystem()
         {
             if ((Mode == Modes.OnDemand) && (!CachedRecycle))
@@ -80,9 +88,44 @@ namespace MoreMountains.Feedbacks
                 }
             }
 
-            _instantiatedParticleSystem = GameObject.Instantiate(ParticlesPrefab) as ParticleSystem;
-            _instantiatedParticleSystem.Stop();
+            if (RandomParticlePrefabs.Count > 0)
+            {
+                if (Mode == Modes.Cached)
+                {
+                    _instantiatedRandomParticleSystems = new List<ParticleSystem>();
+                    foreach(ParticleSystem system in RandomParticlePrefabs)
+                    {
+                        ParticleSystem newSystem = GameObject.Instantiate(system) as ParticleSystem;
+                        _instantiatedRandomParticleSystems.Add(newSystem);
+                    }
+                }
+                else
+                {
+                    int random = Random.Range(0, RandomParticlePrefabs.Count);
+                    _instantiatedParticleSystem = GameObject.Instantiate(RandomParticlePrefabs[random]) as ParticleSystem;
+                }
+            }
+            else
+            {
+                _instantiatedParticleSystem = GameObject.Instantiate(ParticlesPrefab) as ParticleSystem;
+            }
 
+            if (_instantiatedParticleSystem != null)
+            {
+                PositionParticleSystem(_instantiatedParticleSystem);
+            }
+
+            if ((_instantiatedRandomParticleSystems != null) && (_instantiatedRandomParticleSystems.Count > 0))
+            {
+                foreach (ParticleSystem system in _instantiatedRandomParticleSystems)
+                {
+                    PositionParticleSystem(system);
+                }
+            }
+        }
+
+        protected virtual void PositionParticleSystem(ParticleSystem system)
+        {
             if (InstantiateParticlesPosition == null)
             {
                 if (Owner != null)
@@ -91,21 +134,32 @@ namespace MoreMountains.Feedbacks
                 }
             }
 
+            if (system != null)
+            {
+                system.Stop();
+            }
+
             if (NestParticles)
             {
                 if (PositionMode == PositionModes.FeedbackPosition)
                 {
-                    _instantiatedParticleSystem.transform.SetParent(this.transform);
+                    system.transform.SetParent(this.transform);
                 }
                 if (PositionMode == PositionModes.Transform)
                 {
-                    _instantiatedParticleSystem.transform.SetParent(InstantiateParticlesPosition);
+                    system.transform.SetParent(InstantiateParticlesPosition);
                 }
             }
-            _instantiatedParticleSystem.transform.position = GetPosition(this.transform.position);
-            _instantiatedParticleSystem.Clear();
+
+            system.transform.position = GetPosition(this.transform.position);
+            system.Clear();
         }
 
+        /// <summary>
+        /// Gets the position 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
         protected virtual Vector3 GetPosition(Vector3 position)
         {
             switch (PositionMode)
@@ -143,10 +197,20 @@ namespace MoreMountains.Feedbacks
             if (_instantiatedParticleSystem != null)
             {
                 _instantiatedParticleSystem?.Stop();
+                _instantiatedParticleSystem.transform.position = GetPosition(position);
+                _instantiatedParticleSystem?.Play();
             }
 
-            _instantiatedParticleSystem.transform.position = GetPosition(position);                        
-            _instantiatedParticleSystem?.Play();
+            if ((_instantiatedRandomParticleSystems != null) && (_instantiatedRandomParticleSystems.Count > 0))
+            {
+                foreach (ParticleSystem system in _instantiatedRandomParticleSystems)
+                {
+                    system.Stop();
+                    system.transform.position = GetPosition(position);
+                }
+                int random = Random.Range(0, _instantiatedRandomParticleSystems.Count);
+                _instantiatedRandomParticleSystems[random].Play();
+            }
         }
 
         /// <summary>
@@ -163,7 +227,14 @@ namespace MoreMountains.Feedbacks
             if (_instantiatedParticleSystem != null)
             {
                 _instantiatedParticleSystem?.Stop();
-            }            
+            }    
+            if ((_instantiatedRandomParticleSystems != null) && (_instantiatedRandomParticleSystems.Count > 0))
+            {
+                foreach(ParticleSystem system in _instantiatedRandomParticleSystems)
+                {
+                    system.Stop();
+                }
+            }
         }
 
         /// <summary>
@@ -178,10 +249,22 @@ namespace MoreMountains.Feedbacks
                 return;
             }
 
+            if (InCooldown)
+            {
+                return;
+            }
+
             if (_instantiatedParticleSystem != null)
             {
                 _instantiatedParticleSystem?.Stop();
-            }            
+            }
+            if ((_instantiatedRandomParticleSystems != null) && (_instantiatedRandomParticleSystems.Count > 0))
+            {
+                foreach (ParticleSystem system in _instantiatedRandomParticleSystems)
+                {
+                    system.Stop();
+                }
+            }
         }
     }
 }

@@ -41,7 +41,9 @@ namespace MoreMountains.Feedbacks
             public SerializedProperty LimitedTimeFalloff;
             public SerializedProperty LimitedTimeResetValue;
         }
-        
+
+        protected SerializedProperty _updateMode;
+
         protected SerializedProperty _positionActive;
         protected SerializedProperty _rotationActive;
         protected SerializedProperty _scaleActive;
@@ -63,6 +65,8 @@ namespace MoreMountains.Feedbacks
         protected virtual void OnEnable()
         {
             _mmWiggle = (MMWiggle)target;
+
+            _updateMode = serializedObject.FindProperty("UpdateMode");
 
             _positionProperties = serializedObject.FindProperty("PositionWiggleProperties");
             _rotationProperties = serializedObject.FindProperty("RotationWiggleProperties");
@@ -114,7 +118,8 @@ namespace MoreMountains.Feedbacks
             
 
             EditorGUILayout.Space();
-
+            EditorGUILayout.PropertyField(_updateMode);
+            EditorGUILayout.Space();
             MMFeedbackStyling.DrawSplitter();
             DrawValueEditor("Position", _positionActive, _positionEditorProperties, _mmWiggle.PositionWiggleProperties.WiggleType);
             DrawValueEditor("Rotation", _rotationActive, _rotationEditorProperties, _mmWiggle.RotationWiggleProperties.WiggleType);

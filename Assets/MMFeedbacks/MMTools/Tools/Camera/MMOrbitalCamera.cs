@@ -1,35 +1,62 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 namespace MoreMountains.Tools
 {
+    /// <summary>
+    /// A class used to make a camera orbit around a target
+    /// </summary>
     [AddComponentMenu("More Mountains/Tools/Camera/MMOrbitalCamera")]
     public class MMOrbitalCamera : MonoBehaviour
     {
+        /// the possible input modes for this camera
         public enum Modes { Mouse, Touch }
+
         [Header("Setup")]
+        /// the selected input mode
         public Modes Mode = Modes.Touch;
+        /// the object to orbit around
         public Transform Target;
+        /// the offset to apply while orbiting
         public Vector3 TargetOffset;
-        [MMReadOnly]
+        /// the current distance to target
+        [MMReadOnly]        
         public float DistanceToTarget = 5f;
 
         [Header("Rotation")]
+        /// whether or not rotation is enabled
         public bool RotationEnabled = true;
+        /// the speed of the rotation
         public Vector2 RotationSpeed = new Vector2(200f, 200f);
+        /// the minimum vertical angle limit
         public int MinVerticalAngleLimit = -80;
+        /// the maximum vertical angle limit
         public int MaxVerticalAngleLimit = 80;
 
         [Header("Zoom")]
+        /// whether or not zoom is enabled
         public bool ZoomEnabled = true;
+        /// the minimum distance at which the user can zoom in
         public float MinimumZoomDistance = 0.6f;
-        public float MaximumZoomDistance = 20;     
+        /// the max distance at which the user can zoom out
+        public float MaximumZoomDistance = 20;
+        /// the speed of the zoom interpolation
         public int ZoomSpeed = 40;
+        /// the dampening to apply to the zoom
         public float ZoomDampening = 5f;
 
         [Header("Mouse Zoom")]
+        /// the speed at which scrolling the mouse wheel will zoom
         public float MouseWheelSpeed = 10f;
+        /// the max value at which to clamp the mouse wheel
         public float MaxMouseWheelClamp = 10f;
+
+        [Header("Steps")]
+        /// the distance after which to trigger a step
+        public float StepThreshold = 1;
+        /// an event to trigger when a step is met
+        public UnityEvent StepFeedback;
 
         protected float _angleX = 0f;
         protected float _angleY = 0f;
@@ -40,12 +67,19 @@ namespace MoreMountains.Tools
         protected Quaternion _rotation;
         protected Vector3 _position;
         protected float _scrollWheelAmount = 0;
+        protected float _stepBuffer = 0f;
 
+        /// <summary>
+        /// On Start we initialize our orbital camera
+        /// </summary>
         protected virtual void Start()
         {
             Initialization();
         }
 
+        /// <summary>
+        /// On init we store our positions and rotations
+        /// </summary>
         public virtual void Initialization()
         {
             // if no target is set, we throw an error and exit
@@ -68,6 +102,9 @@ namespace MoreMountains.Tools
             _angleY = Vector3.Angle(Vector3.up, transform.up);
         }
 
+        /// <summary>
+        /// On late update we rotate, zoom, detect steps and finally apply our movement
+        /// </summary>
         protected virtual void LateUpdate()
         {
             if (Target == null)
@@ -77,9 +114,13 @@ namespace MoreMountains.Tools
 
             Rotation();
             Zoom();
+            StepDetection();
             ApplyMovement();
         }
 
+        /// <summary>
+        /// Rotates the camera around the object
+        /// </summary>
         protected virtual void Rotation()
         {
             if (!RotationEnabled)
@@ -91,10 +132,17 @@ namespace MoreMountains.Tools
             {
                 if ((Input.touches[0].phase == TouchPhase.Moved) && (Input.touchCount == 1))
                 {
+                    float screenHeight = Screen.currentResolution.height;
+                    if (Input.touches[0].position.y < screenHeight/4)
+                    {
+                        return;
+                    }
+
                     float swipeSpeed = Input.touches[0].deltaPosition.magnitude / Input.touches[0].deltaTime;
 
                     _angleX += Input.touches[0].deltaPosition.x * RotationSpeed.x * Time.deltaTime * swipeSpeed * 0.00001f;
                     _angleY -= Input.touches[0].deltaPosition.y * RotationSpeed.y * Time.deltaTime * swipeSpeed * 0.00001f;
+                    _stepBuffer += Input.touches[0].deltaPosition.x;
 
                     _angleY = MMMaths.ClampAngle(_angleY, MinVerticalAngleLimit, MaxVerticalAngleLimit);
                     _desiredRotation = Quaternion.Euler(_angleY, _angleX, 0);
@@ -127,6 +175,21 @@ namespace MoreMountains.Tools
             }            
         }
 
+        /// <summary>
+        /// Detects steps 
+        /// </summary>
+        protected virtual void StepDetection()
+        {
+            if (Mathf.Abs(_stepBuffer) > StepThreshold)
+            {
+                StepFeedback?.Invoke();
+                _stepBuffer = 0f;
+            }
+        }
+
+        /// <summary>
+        /// Zooms
+        /// </summary>
         protected virtual void Zoom()
         {
             if (!ZoomEnabled)
@@ -167,6 +230,9 @@ namespace MoreMountains.Tools
             }
         }
 
+        /// <summary>
+        /// Moves the transform
+        /// </summary>
         protected virtual void ApplyMovement()
         {
             _position = Target.position - (_rotation * Vector3.forward * _currentDistance + TargetOffset);

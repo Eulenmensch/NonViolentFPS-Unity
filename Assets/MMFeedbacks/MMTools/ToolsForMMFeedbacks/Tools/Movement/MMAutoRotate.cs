@@ -116,6 +116,24 @@ namespace MoreMountains.Tools
         }
 
         /// <summary>
+        /// Sets Rotating to true or false
+        /// </summary>
+        /// <param name="status"></param>
+        public virtual void Rotate(bool status)
+        {
+            Rotating = status;
+        }
+
+        /// <summary>
+        /// Sets Orbiting to true or false
+        /// </summary>
+        /// <param name="status"></param>
+        public virtual void Orbit(bool status)
+        {
+            Orbiting = status;
+        }
+
+        /// <summary>
         /// Rotates the object
         /// </summary>
         protected virtual void Rotate()

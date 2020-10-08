@@ -28,9 +28,9 @@ namespace MoreMountains.Tools
 		/// <summary>
 		/// On Start, we instantiate our joystick's image if there's one
 		/// </summary>
-		protected override void Start()
+		protected override void Awake()
 		{
-			base.Start();
+			base.Awake();
 
 			// we store the detection zone's initial position
 			_initialPosition = GetComponent<RectTransform>().localPosition;	

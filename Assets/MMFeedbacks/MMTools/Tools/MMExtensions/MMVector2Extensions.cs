@@ -8,7 +8,7 @@ namespace MoreMountains.Tools
     /// <summary>
     /// Vector2 extensions
     /// </summary>
-    public static class Vector2Extensions
+    public static class MMVector2Extensions
     {
         /// <summary>
         /// Rotates a vector2 by angleInDegrees

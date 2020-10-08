@@ -85,7 +85,7 @@ namespace Ludiq.PeekCore
 			};
 		}
 		
-		public static string ScopeRoot(SettingsScope scope)
+		private static string ScopeRoot(SettingsScope scope)
 		{
 			switch (scope)
 			{
@@ -94,8 +94,8 @@ namespace Ludiq.PeekCore
 				default: throw scope.Unexpected();
 			}
 		}
-
-		public static string ScopeName(SettingsScope scope)
+		
+		private static string ScopeName(SettingsScope scope)
 		{
 			switch (scope)
 			{
@@ -185,7 +185,7 @@ namespace Ludiq.PeekCore
 
 		}
 
-		public void OnFooterGUI(SettingsScope scope)
+		private void OnFooterGUI(SettingsScope scope)
 		{
 			if (!PluginContainer.initialized)
 			{

@@ -5,11 +5,11 @@ using UnityEngine;
 namespace MoreMountains.Tools
 {
     [System.Serializable]
-    public class AIActionsList : ReorderableArray<AIAction>
+    public class AIActionsList : MMReorderableArray<AIAction>
     {
     }
     [System.Serializable]
-    public class AITransitionsList : ReorderableArray<AITransition>
+    public class AITransitionsList : MMReorderableArray<AITransition>
     {
     }
 
@@ -22,9 +22,9 @@ namespace MoreMountains.Tools
         /// the name of the state (will be used as a reference in Transitions
         public string StateName;
 
-        [Reorderable(null, "Action", null)]
+        [MMReorderableAttribute(null, "Action", null)]
         public AIActionsList Actions;
-        [Reorderable(null, "Transition", null)]
+        [MMReorderableAttribute(null, "Transition", null)]
         public AITransitionsList Transitions;/*
 
         /// a list of actions to perform in this state

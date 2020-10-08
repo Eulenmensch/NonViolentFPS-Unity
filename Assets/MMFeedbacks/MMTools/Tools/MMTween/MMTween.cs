@@ -28,7 +28,7 @@ namespace MoreMountains.Tools
             EaseInExponential,  EaseOutExponential, EaseInOutExponential,
             EaseInElastic,      EaseOutElastic,     EaseInOutElastic,
             EaseInCircular,     EaseOutCircular,    EaseInOutCircular,
-            AntiLinearTween
+            AntiLinearTween,    AlmostIdentity
         }
 
         // Core methods ---------------------------------------------------------------------------------------------------------------
@@ -90,6 +90,8 @@ namespace MoreMountains.Tools
                 case MMTweenCurve.EaseInCircular: currentTime = MMTweenDefinitions.EaseIn_Circular(currentTime); break;
                 case MMTweenCurve.EaseOutCircular: currentTime = MMTweenDefinitions.EaseOut_Circular(currentTime); break;
                 case MMTweenCurve.EaseInOutCircular: currentTime = MMTweenDefinitions.EaseInOut_Circular(currentTime); break;
+
+                case MMTweenCurve.AlmostIdentity: currentTime = MMTweenDefinitions.AlmostIdentity(currentTime); break;
 
             }
             return startValue + currentTime * (endValue - startValue);
@@ -200,6 +202,17 @@ namespace MoreMountains.Tools
         }
 
         // MOVE METHODS ---------------------------------------------------------------------------------------------------------
+        public static Coroutine MoveTransform(MonoBehaviour mono, Transform targetTransform, Vector3 origin, Vector3 destination, 
+            WaitForSeconds delay, float delayDuration, float duration, MMTween.MMTweenCurve curve)
+        {
+            return mono.StartCoroutine(MoveTransformCo(targetTransform, origin, destination, delay, delayDuration, duration, curve));
+        }
+
+        public static Coroutine MoveRectTransform(MonoBehaviour mono, RectTransform targetTransform, Vector3 origin, Vector3 destination,
+            WaitForSeconds delay, float delayDuration, float duration, MMTween.MMTweenCurve curve)
+        {
+            return mono.StartCoroutine(MoveRectTransformCo(targetTransform, origin, destination, delay, delayDuration, duration, curve));
+        }
 
         public static Coroutine MoveTransform(MonoBehaviour mono, Transform targetTransform, Transform origin, Transform destination, WaitForSeconds delay, float delayDuration, float duration, MMTween.MMTweenCurve curve, bool updatePosition = true, bool updateRotation = true)
         {
@@ -209,6 +222,40 @@ namespace MoreMountains.Tools
         public static Coroutine RotateTransformAround(MonoBehaviour mono, Transform targetTransform, Transform center, Transform destination, float angle, WaitForSeconds delay, float delayDuration, float duration, MMTween.MMTweenCurve curve)
         {
             return mono.StartCoroutine(RotateTransformAroundCo(targetTransform, center, destination, angle, delay, delayDuration, duration, curve));
+        }
+
+        protected static IEnumerator MoveRectTransformCo(RectTransform targetTransform, Vector3 origin, Vector3 destination, WaitForSeconds delay,
+            float delayDuration, float duration, MMTween.MMTweenCurve curve)
+        {
+            if (delayDuration > 0f)
+            {
+                yield return delay;
+            }
+            float timeLeft = duration;
+            while (timeLeft > 0f)
+            {
+                targetTransform.localPosition = MMTween.Tween(duration - timeLeft, 0f, duration, origin, destination, curve);
+                timeLeft -= Time.deltaTime;
+                yield return null;
+            }
+            targetTransform.localPosition = destination;
+        }
+
+        protected static IEnumerator MoveTransformCo(Transform targetTransform, Vector3 origin, Vector3 destination, WaitForSeconds delay, 
+            float delayDuration, float duration, MMTween.MMTweenCurve curve)
+        {
+            if (delayDuration > 0f)
+            {
+                yield return delay;
+            }
+            float timeLeft = duration;
+            while (timeLeft > 0f)
+            {
+                targetTransform.transform.position = MMTween.Tween(duration - timeLeft, 0f, duration, origin, destination, curve);
+                timeLeft -= Time.deltaTime;
+                yield return null;
+            }
+            targetTransform.transform.position = destination;
         }
 
         protected static IEnumerator MoveTransformCo(Transform targetTransform, Transform origin, Transform destination, WaitForSeconds delay, float delayDuration, float duration, MMTween.MMTweenCurve curve, bool updatePosition = true, bool updateRotation = true)

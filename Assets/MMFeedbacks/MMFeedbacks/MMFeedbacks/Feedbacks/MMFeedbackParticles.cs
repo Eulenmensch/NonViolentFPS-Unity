@@ -14,13 +14,17 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackParticles : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.ParticlesColor; } }
+        #endif
 
         [Header("Bound Particles")]
         /// the particle system to play with this feedback
         public ParticleSystem BoundParticleSystem;
         /// if this is true, the particles will be moved to the position passed in parameters
         public bool MoveToPosition = false;
+
+        public List<ParticleSystem> RandomParticleSystems;
 
         /// <summary>
         /// On init we stop our particle system
@@ -29,7 +33,7 @@ namespace MoreMountains.Feedbacks
         protected override void CustomInitialization(GameObject owner)
         {
             base.CustomInitialization(owner);
-            BoundParticleSystem?.Stop();
+            StopParticles();
         }
 
         /// <summary>
@@ -43,11 +47,7 @@ namespace MoreMountains.Feedbacks
             {
                 return;
             }
-            if (MoveToPosition)
-            {
-                BoundParticleSystem.transform.position = position;
-            }
-            BoundParticleSystem?.Play();
+            PlayParticles(position);
         }
         
         /// <summary>
@@ -61,8 +61,7 @@ namespace MoreMountains.Feedbacks
             {
                 return;
             }
-
-            BoundParticleSystem?.Stop();
+            StopParticles();
         }
 
         /// <summary>
@@ -71,7 +70,55 @@ namespace MoreMountains.Feedbacks
         protected override void CustomReset()
         {
             base.CustomReset();
-            BoundParticleSystem?.Stop();
+
+            if (InCooldown)
+            {
+                return;
+            }
+
+            StopParticles();
+        }
+
+        /// <summary>
+        /// Plays a particle system
+        /// </summary>
+        /// <param name="position"></param>
+        protected virtual void PlayParticles(Vector3 position)
+        {
+            if (MoveToPosition)
+            {
+                BoundParticleSystem.transform.position = position;
+                foreach (ParticleSystem system in RandomParticleSystems)
+                {
+                    system.transform.position = position;
+                }
+            }
+
+            if (RandomParticleSystems.Count > 0)
+            {
+                int random = Random.Range(0, RandomParticleSystems.Count);
+                RandomParticleSystems[random].Play();
+                return;
+            }
+            else if (BoundParticleSystem != null)
+            {
+                BoundParticleSystem?.Play();
+            }
+        }
+
+        /// <summary>
+        /// Stops all particle systems
+        /// </summary>
+        protected virtual void StopParticles()
+        {
+            foreach(ParticleSystem system in RandomParticleSystems)
+            {
+                system?.Stop();
+            }
+            if (BoundParticleSystem != null)
+            {
+                BoundParticleSystem.Stop();
+            }            
         }
     }
 }

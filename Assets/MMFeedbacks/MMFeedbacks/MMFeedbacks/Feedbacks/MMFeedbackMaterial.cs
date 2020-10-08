@@ -10,28 +10,46 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackMaterial : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.RendererColor; } }
+        #endif
 
+        /// the possible methods to switch materials
         public enum Methods { Sequential, Random }
 
         [Header("Material")]
+        /// the renderer to change material on
         public Renderer TargetRenderer;
+        /// the selected method
         public Methods Method;
+        /// whether or not the sequential order should loop
         [MMFEnumCondition("Method", (int)Methods.Sequential)]
         public bool Loop = true;
-        [MMFEnumCondition("Method", (int)Methods.Random)]
+        /// whether or not to always pick a new material in random mode
+        [MMFEnumCondition("Method", (int)Methods.Random)]        
         public bool AlwaysNewMaterial = true;
+        /// the initial index to start with
         public int InitialIndex = 0;
+        /// the list of materials to pick from
         public List<Material> Materials;
 
         protected int _currentIndex;
 
+        /// <summary>
+        /// On init, grabs the current index
+        /// </summary>
+        /// <param name="owner"></param>
         protected override void CustomInitialization(GameObject owner)
         {
             base.CustomInitialization(owner);
             _currentIndex = InitialIndex;
         }
 
+        /// <summary>
+        /// On play feedback, we change the material if possible
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="attenuation"></param>
         protected override void CustomPlayFeedback(Vector3 position, float attenuation = 1.0f)
         {
             if (Materials.Count == 0)
@@ -51,6 +69,10 @@ namespace MoreMountains.Feedbacks
             TargetRenderer.material = Materials[newIndex];
         }
 
+        /// <summary>
+        /// Determines the new material to pick
+        /// </summary>
+        /// <returns></returns>
         protected virtual int DetermineNextIndex()
         {
             switch(Method)

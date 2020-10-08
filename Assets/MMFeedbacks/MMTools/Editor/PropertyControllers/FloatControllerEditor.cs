@@ -30,7 +30,10 @@ namespace MoreMountains.Tools
         protected SerializedProperty _OneTimeRemapMax;
         protected SerializedProperty _OneTimeCurve;
         protected SerializedProperty _DisableAfterOneTime;
+        protected SerializedProperty _DisableGameObjectAfterOneTime;
         protected SerializedProperty _OneTimeButton;
+
+        protected SerializedProperty _DrivenLevel;
 
         protected SerializedProperty _ToDestinationValue;
         protected SerializedProperty _ToDestinationDuration;
@@ -73,7 +76,10 @@ namespace MoreMountains.Tools
             _OneTimeRemapMax = serializedObject.FindProperty("OneTimeRemapMax");
             _OneTimeCurve = serializedObject.FindProperty("OneTimeCurve");
             _DisableAfterOneTime = serializedObject.FindProperty("DisableAfterOneTime");
+            _DisableGameObjectAfterOneTime = serializedObject.FindProperty("DisableGameObjectAfterOneTime");
             _OneTimeButton = serializedObject.FindProperty("OneTimeButton");
+
+            _DrivenLevel = serializedObject.FindProperty("DrivenLevel");
 
             _ToDestinationValue = serializedObject.FindProperty("ToDestinationValue");
             _ToDestinationDuration = serializedObject.FindProperty("ToDestinationDuration");
@@ -176,8 +182,8 @@ namespace MoreMountains.Tools
                     Editor.DrawPropertiesExcluding(serializedObject, new string[] { "m_Script", "TargetObject", "Curve", "MinValue", "MaxValue", "Duration", "Amplitude",
                                                                             "Frequency", "Shift", "InitialValue", "CurrentValue", "PingPongPauseDuration",
                                                                             "OneTimeDuration", "OneTimeAmplitude", "OneTimeRemapMin", "OneTimeRemapMax",
-                                                                            "OneTimeCurve", "OneTimeButton", "DisableAfterOneTime",
-                                                                            "AudioAnalyzer", "BeatID", "AudioAnalyzerMultiplier", "DisableAfterToDestination",
+                                                                            "OneTimeCurve", "OneTimeButton", "DisableAfterOneTime", "DisableGameObjectAfterOneTime",
+                                                                            "AudioAnalyzer", "BeatID", "AudioAnalyzerMultiplier", "DisableAfterToDestination", "DrivenLevel",
                                                                             "ToDestinationDuration", "ToDestinationValue", "ToDestinationCurve", "ToDestinationButton"});
 
                     if (myTarget.ControlMode == FloatController.ControlModes.PingPong)
@@ -194,6 +200,10 @@ namespace MoreMountains.Tools
                         EditorGUILayout.PropertyField(_Frequency);
                         EditorGUILayout.PropertyField(_Shift);
                     }
+                    else if (myTarget.ControlMode == FloatController.ControlModes.Driven)
+                    {
+                        EditorGUILayout.PropertyField(_DrivenLevel);
+                    }
                     else if (myTarget.ControlMode == FloatController.ControlModes.OneTime)
                     {
                         EditorGUILayout.PropertyField(_OneTimeDuration);
@@ -202,6 +212,7 @@ namespace MoreMountains.Tools
                         EditorGUILayout.PropertyField(_OneTimeRemapMax);
                         EditorGUILayout.PropertyField(_OneTimeCurve);
                         EditorGUILayout.PropertyField(_DisableAfterOneTime);
+                        EditorGUILayout.PropertyField(_DisableGameObjectAfterOneTime);
                         EditorGUILayout.PropertyField(_OneTimeButton);
                     }
                     else if (myTarget.ControlMode == FloatController.ControlModes.AudioAnalyzer)

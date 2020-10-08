@@ -20,7 +20,9 @@ namespace MoreMountains.Feedbacks
         public enum PositionModes { FeedbackPosition, Transform, WorldPosition, Script }
 
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.GameObjectColor; } }
+        #endif
 
         [Header("Instantiate Object")]
         /// the vfx object to instantiate

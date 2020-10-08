@@ -9,14 +9,251 @@ namespace MoreMountains.Tools
 	/// Math helpers
 	/// </summary>
 
-	public static class MMMaths 
-	{
-		/// <summary>
-		/// Takes a Vector3 and turns it into a Vector2
-		/// </summary>
-		/// <returns>The vector2.</returns>
-		/// <param name="target">The Vector3 to turn into a Vector2.</param>
-		public static Vector2 Vector3ToVector2 (Vector3 target) 
+	public static class MMMaths
+    {
+        /// <summary>
+        /// Internal method used to compute the spring velocity
+        /// </summary>
+        /// <param name="currentValue"></param>
+        /// <param name="targetValue"></param>
+        /// <param name="velocity"></param>
+        /// <param name="damping"></param>
+        /// <param name="frequency"></param>
+        /// <param name="speed"></param>
+        /// <param name="deltaTime"></param>
+        /// <returns></returns>
+        private static float SpringVelocity(float currentValue, float targetValue, float velocity, float damping, float frequency, float speed, float deltaTime)
+        {
+            frequency = frequency * 2f * Mathf.PI;
+            return velocity + (deltaTime * frequency * frequency * (targetValue - currentValue)) + (-2.0f * deltaTime * frequency * damping * velocity);
+        }
+
+        /// <summary>
+        /// Springs a float towards a target value 
+        /// </summary>
+        /// <param name="currentValue">the current value to spring, passed as a ref</param>
+        /// <param name="targetValue">the target value we're aiming for</param>
+        /// <param name="velocity">a velocity value, passed as ref, used to compute the current speed of the springed value</param>
+        /// <param name="damping">the damping, between 0.01f and 1f, the higher the daming, the less springy it'll be</param>
+        /// <param name="frequency">the frequency, in Hz, so the amount of periods the spring should go over in 1 second</param>
+        /// <param name="speed">the speed (between 0 and 1) at which the spring should operate</param>
+        /// <param name="deltaTime">the delta time (usually Time.deltaTime or Time.unscaledDeltaTime)</param>
+        public static void Spring(ref float currentValue, float targetValue, ref float velocity, float damping, float frequency, float speed, float deltaTime)
+        {
+            float initialVelocity = velocity;
+            velocity = SpringVelocity(currentValue, targetValue, velocity, damping, frequency, speed, deltaTime);
+            velocity = MMMaths.Lerp(initialVelocity, velocity, speed, Time.deltaTime);
+            currentValue += deltaTime * velocity;
+        }
+
+        /// <summary>
+        /// Springs a Vector2 towards a target value 
+        /// </summary>
+        /// <param name="currentValue">the current value to spring, passed as a ref</param>
+        /// <param name="targetValue">the target value we're aiming for</param>
+        /// <param name="velocity">a velocity value, passed as ref, used to compute the current speed of the springed value</param>
+        /// <param name="damping">the damping, between 0.01f and 1f, the higher the daming, the less springy it'll be</param>
+        /// <param name="frequency">the frequency, in Hz, so the amount of periods the spring should go over in 1 second</param>
+        /// <param name="speed">the speed (between 0 and 1) at which the spring should operate</param>
+        /// <param name="deltaTime">the delta time (usually Time.deltaTime or Time.unscaledDeltaTime)</param>
+        public static void Spring(ref Vector2 currentValue, Vector2 targetValue, ref Vector2 velocity, float damping, float frequency, float speed, float deltaTime)
+        {
+            Vector2 initialVelocity = velocity;
+            velocity.x = SpringVelocity(currentValue.x, targetValue.x, velocity.x, damping, frequency, speed, deltaTime);
+            velocity.y = SpringVelocity(currentValue.y, targetValue.y, velocity.y, damping, frequency, speed, deltaTime);
+            velocity.x = MMMaths.Lerp(initialVelocity.x, velocity.x, speed, Time.deltaTime);
+            velocity.y = MMMaths.Lerp(initialVelocity.y, velocity.y, speed, Time.deltaTime);
+            currentValue += deltaTime * velocity;
+        }
+
+        /// <summary>
+        /// Springs a Vector3 towards a target value 
+        /// </summary>
+        /// <param name="currentValue">the current value to spring, passed as a ref</param>
+        /// <param name="targetValue">the target value we're aiming for</param>
+        /// <param name="velocity">a velocity value, passed as ref, used to compute the current speed of the springed value</param>
+        /// <param name="damping">the damping, between 0.01f and 1f, the higher the daming, the less springy it'll be</param>
+        /// <param name="frequency">the frequency, in Hz, so the amount of periods the spring should go over in 1 second</param>
+        /// <param name="speed">the speed (between 0 and 1) at which the spring should operate</param>
+        /// <param name="deltaTime">the delta time (usually Time.deltaTime or Time.unscaledDeltaTime)</param>
+        public static void Spring(ref Vector3 currentValue, Vector3 targetValue, ref Vector3 velocity, float damping, float frequency, float speed, float deltaTime)
+        {
+            Vector3 initialVelocity = velocity;
+            velocity.x = SpringVelocity(currentValue.x, targetValue.x, velocity.x, damping, frequency, speed, deltaTime);
+            velocity.y = SpringVelocity(currentValue.y, targetValue.y, velocity.y, damping, frequency, speed, deltaTime);
+            velocity.z = SpringVelocity(currentValue.z, targetValue.z, velocity.z, damping, frequency, speed, deltaTime);
+            velocity.x = MMMaths.Lerp(initialVelocity.x, velocity.x, speed, Time.deltaTime);
+            velocity.y = MMMaths.Lerp(initialVelocity.y, velocity.y, speed, Time.deltaTime);
+            velocity.z = MMMaths.Lerp(initialVelocity.z, velocity.z, speed, Time.deltaTime);
+            currentValue += deltaTime * velocity;
+        }
+
+        /// <summary>
+        /// Springs a Vector4 towards a target value 
+        /// </summary>
+        /// <param name="currentValue">the current value to spring, passed as a ref</param>
+        /// <param name="targetValue">the target value we're aiming for</param>
+        /// <param name="velocity">a velocity value, passed as ref, used to compute the current speed of the springed value</param>
+        /// <param name="damping">the damping, between 0.01f and 1f, the higher the daming, the less springy it'll be</param>
+        /// <param name="frequency">the frequency, in Hz, so the amount of periods the spring should go over in 1 second</param>
+        /// <param name="speed">the speed (between 0 and 1) at which the spring should operate</param>
+        /// <param name="deltaTime">the delta time (usually Time.deltaTime or Time.unscaledDeltaTime)</param>
+        public static void Spring(ref Vector4 currentValue, Vector4 targetValue, ref Vector4 velocity, float damping, float frequency, float speed, float deltaTime)
+        {
+            Vector4 initialVelocity = velocity;
+            velocity.x = SpringVelocity(currentValue.x, targetValue.x, velocity.x, damping, frequency, speed, deltaTime);
+            velocity.y = SpringVelocity(currentValue.y, targetValue.y, velocity.y, damping, frequency, speed, deltaTime);
+            velocity.z = SpringVelocity(currentValue.z, targetValue.z, velocity.z, damping, frequency, speed, deltaTime);
+            velocity.w = SpringVelocity(currentValue.w, targetValue.w, velocity.w, damping, frequency, speed, deltaTime);
+            velocity.x = MMMaths.Lerp(initialVelocity.x, velocity.x, speed, Time.deltaTime);
+            velocity.y = MMMaths.Lerp(initialVelocity.y, velocity.y, speed, Time.deltaTime);
+            velocity.z = MMMaths.Lerp(initialVelocity.z, velocity.z, speed, Time.deltaTime);
+            velocity.w = MMMaths.Lerp(initialVelocity.w, velocity.w, speed, Time.deltaTime);
+            currentValue += deltaTime * velocity;
+        }
+
+        /// <summary>
+        /// internal method used to determine the lerp rate
+        /// </summary>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        private static float LerpRate(float rate, float deltaTime)
+        {
+            rate = Mathf.Clamp01(rate);
+            float invRate = - Mathf.Log(1.0f - rate, 2.0f) * 60f;
+            return Mathf.Pow(2.0f, -invRate * deltaTime);
+        }
+
+        /// <summary>
+        /// Lerps a float towards a target at the specified rate
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="target"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        public static float Lerp(float value, float target, float rate, float deltaTime)
+        {
+            if (deltaTime == 0f) { return value; }
+            return Mathf.Lerp(target, value, LerpRate(rate, deltaTime));
+        }
+
+        /// <summary>
+        /// Lerps a Vector2 towards a target at the specified rate
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="target"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        public static Vector2 Lerp(Vector2 value, Vector2 target, float rate, float deltaTime)
+        {
+            if (deltaTime == 0f) { return value; }
+            return Vector2.Lerp(target, value, LerpRate(rate, deltaTime));
+        }
+
+        /// <summary>
+        /// Lerps a Vector3 towards a target at the specified rate
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="target"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        public static Vector3 Lerp(Vector3 value, Vector3 target, float rate, float deltaTime)
+        {
+            if (deltaTime == 0f) { return value; }
+            return Vector3.Lerp(target, value, LerpRate(rate, deltaTime));
+        }
+
+        /// <summary>
+        /// Lerps a Vector4 towards a target at the specified rate
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="target"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        public static Vector4 Lerp(Vector4 value, Vector4 target, float rate, float deltaTime)
+        {
+            if (deltaTime == 0f) { return value; }
+            return Vector4.Lerp(target, value, LerpRate(rate, deltaTime));
+        }
+
+        /// <summary>
+        /// Lerps a Quaternion towards a target at the specified rate
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="target"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        public static Quaternion Lerp(Quaternion value, Quaternion target, float rate, float deltaTime)
+        {
+            if (deltaTime == 0f) { return value; }
+            return Quaternion.Lerp(target, value, LerpRate(rate, deltaTime));
+        }
+
+        /// <summary>
+        /// Lerps a Color towards a target at the specified rate
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="target"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        public static Color Lerp(Color value, Color target, float rate, float deltaTime)
+        {
+            if (deltaTime == 0f) { return value; }
+            return Color.Lerp(target, value, LerpRate(rate, deltaTime));
+        }
+
+        /// <summary>
+        /// Lerps a Color32 towards a target at the specified rate
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="target"></param>
+        /// <param name="rate"></param>
+        /// <returns></returns>
+        public static Color32 Lerp(Color32 value, Color32 target, float rate, float deltaTime)
+        {
+            if (deltaTime == 0f) { return value; }
+            return Color32.Lerp(target, value, LerpRate(rate, deltaTime));
+        }
+
+        /// <summary>
+        /// Clamps a float between min and max, both bounds being optional and driven by clampMin and clampMax respectively
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="clampMin"></param>
+        /// <param name="clampMax"></param>
+        /// <returns></returns>
+        public static float Clamp(float value, float min, float max, bool clampMin, bool clampMax)
+        {
+            float returnValue = value;
+            if (clampMin && (returnValue < min))
+            {
+                returnValue = min;
+            }
+            if (clampMax && (returnValue > max))
+            {
+                returnValue = max;
+            }
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Rounds a float to the nearest half value : 1, 1.5, 2, 2.5 etc
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static float RoundToNearestHalf(float a)
+        {
+            return a = a - (a % 0.5f);
+        }
+
+        /// <summary>
+        /// Takes a Vector3 and turns it into a Vector2
+        /// </summary>
+        /// <returns>The vector2.</returns>
+        /// <param name="target">The Vector3 to turn into a Vector2.</param>
+        public static Vector2 Vector3ToVector2 (Vector3 target) 
 		{
 			return new Vector2(target.x, target.y);
 		}
@@ -308,7 +545,7 @@ namespace MoreMountains.Tools
         /// <param name="value"></param>
         /// <param name="possibleValues"></param>
         /// <returns></returns>
-        public static float RoundToClosest(float value, float[] possibleValues)
+        public static float RoundToClosest(float value, float[] possibleValues, bool pickSmallestDistance = false)
 		{
 			if (possibleValues.Length == 0) 
 			{
@@ -319,12 +556,22 @@ namespace MoreMountains.Tools
 
 			foreach (float possibleValue in possibleValues)
 			{
-				if (Mathf.Abs(closestValue - value) > Mathf.Abs(possibleValue - value))
+                float closestDistance = Mathf.Abs(closestValue - value);
+                float possibleDistance = Mathf.Abs(possibleValue - value);
+
+                if (closestDistance > possibleDistance)
 				{
 					closestValue = possibleValue;
-				}	
+				}
+                else if (closestDistance == possibleDistance)
+                {                    
+                    if ((pickSmallestDistance && closestValue > possibleValue) || (!pickSmallestDistance && closestValue < possibleValue))
+                    {
+                        closestValue = (value < 0) ? closestValue : possibleValue;
+                    }
+                }
 			}
-			return closestValue;
+            return closestValue;
 
         }
 

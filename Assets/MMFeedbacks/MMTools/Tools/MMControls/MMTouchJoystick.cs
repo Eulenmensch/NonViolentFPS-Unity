@@ -59,12 +59,13 @@ namespace MoreMountains.Tools
 
 	    protected CanvasGroup _canvasGroup;
 		protected float _initialOpacity;
+		protected Transform _knobTransform;
 
 
 		/// <summary>
 		/// On Start, we get our working canvas, and we set our neutral position
 		/// </summary>
-		protected virtual void Start()
+		protected virtual void Awake()
 		{
 			Initialize();
 		}
@@ -74,14 +75,21 @@ namespace MoreMountains.Tools
 			_canvasRectTransform = GetComponentInParent<Canvas>().transform as RectTransform;
 			_canvasGroup = GetComponent<CanvasGroup>();
 
+			SetKnobTransform(this.transform);
 			SetNeutralPosition();
 			if (TargetCamera == null)
 			{
 				throw new Exception("MMTouchJoystick : you have to set a target camera");
 			}
 			ParentCanvasRenderMode = GetComponentInParent<Canvas>().renderMode;
-			_initialZPosition = transform.position.z;
+			_initialZPosition = _knobTransform.position.z;
 			_initialOpacity = _canvasGroup.alpha;
+			
+		}
+
+		public virtual void SetKnobTransform(Transform newTransform)
+		{
+			_knobTransform = newTransform;
 		}
 
 		/// <summary>
@@ -149,7 +157,7 @@ namespace MoreMountains.Tools
 			_newJoystickPosition.z = _initialZPosition;
 
 			// We move the joystick to its dragged position
-			transform.position = _newJoystickPosition;
+			_knobTransform.position = _newJoystickPosition;
 		}
 
 		/// <summary>
@@ -160,7 +168,7 @@ namespace MoreMountains.Tools
 			// we reset the stick's position
 			_newJoystickPosition = _neutralPosition;
 			_newJoystickPosition.z = _initialZPosition;
-			transform.position = _newJoystickPosition;
+			_knobTransform.position = _newJoystickPosition;
 			_joystickValue.x = 0f;
 			_joystickValue.y = 0f;
 

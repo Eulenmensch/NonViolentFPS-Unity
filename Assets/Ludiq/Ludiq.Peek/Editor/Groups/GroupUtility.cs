@@ -72,12 +72,10 @@ namespace Ludiq.Peek
 				return new GameObject(name);
 			}
 		}
-		
+
 		public static Transform GroupLocally(Transform[] targets, string name = "Group")
 		{
 			var transformType = InferTransformTypeOrFail(targets);
-			
-			var firstSiblingIndex = targets.Select(t => t.GetSiblingIndex()).Min();
 
 			var group = CreateGroup(name, transformType);
 			Undo.RegisterCreatedObjectUndo(group, "Group");
@@ -85,13 +83,10 @@ namespace Ludiq.Peek
 			var shallowestTarget = TransformOperations.FindShallowest(targets);
 			Undo.SetTransformParent(group.transform, shallowestTarget.transform.parent, "Group");
 
-			foreach (var target in targets.OrderBy(t => t.GetSiblingIndex()))
+			foreach (var target in targets)
 			{
 				Undo.SetTransformParent(target.transform, group.transform, "Group");
 			}
-			
-			Undo.RecordObject(group.transform, "Group");
-			group.transform.SetSiblingIndex(firstSiblingIndex);
 
 			if (transformType == typeof(RectTransform))
 			{
@@ -108,11 +103,11 @@ namespace Ludiq.Peek
 		public static Transform GroupGlobally(Transform[] targets, string name = "Group")
 		{
 			var transformType = InferTransformTypeOrFail(targets);
-			
+
 			var group = CreateGroup(name, transformType);
 			Undo.RegisterCreatedObjectUndo(group, "Group");
 			
-			foreach (var target in targets.OrderBy(t => t.GetSiblingIndex()))
+			foreach (var target in targets)
 			{
 				Undo.SetTransformParent(target.transform, group.transform, "Group");
 			}

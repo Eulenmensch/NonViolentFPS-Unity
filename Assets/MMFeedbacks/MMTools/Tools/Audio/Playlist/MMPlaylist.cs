@@ -287,7 +287,7 @@ namespace MoreMountains.Tools
             }            
             
             // initial delay
-            yield return new WaitForSeconds(Random.Range(Songs[index].InitialDelay.x, Songs[index].InitialDelay.y));
+            yield return MMCoroutine.WaitFor(Random.Range(Songs[index].InitialDelay.x, Songs[index].InitialDelay.y));
 
             if (Songs[index].TargetAudioSource == null)
             {

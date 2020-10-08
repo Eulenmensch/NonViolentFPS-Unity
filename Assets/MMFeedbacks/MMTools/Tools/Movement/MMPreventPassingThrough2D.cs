@@ -14,11 +14,16 @@ namespace MoreMountains.Tools
 		public LayerMask ObstaclesLayerMask; 
 		/// the bounds adjustment variable
 		public float SkinWidth = 0.1f;
+        public bool RepositionRigidbody = true;
+
+        [Header("Debug")]
+        [MMReadOnly]
+        public RaycastHit2D Hit;
 
 		protected float _smallestBoundsWidth; 
 		protected float _adjustedSmallestBoundsWidth; 
 		protected float _squaredBoundsWidth; 
-		protected Vector2 _positionLastFrame; 
+		protected Vector3 _positionLastFrame; 
 		protected Rigidbody2D _rigidbody;
 		protected Collider2D _collider;
 		protected Vector2 _lastMovement;
@@ -60,7 +65,7 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void Update() 
 		{ 
-			_lastMovement = _rigidbody.position - _positionLastFrame; 
+			_lastMovement = this.transform.position - _positionLastFrame; 
 			_lastMovementSquared = _lastMovement.sqrMagnitude;
 
 			// if we've moved further than our bounds, we may have missed something
@@ -69,7 +74,7 @@ namespace MoreMountains.Tools
 				float movementMagnitude = Mathf.Sqrt(_lastMovementSquared);
 
                 // we cast a ray backwards to see if we should have hit something
-                RaycastHit2D hitInfo = Physics2D.Raycast(_positionLastFrame, _lastMovement, movementMagnitude, ObstaclesLayerMask);
+                RaycastHit2D hitInfo = MMDebug.RayCast(_positionLastFrame, _lastMovement.normalized, movementMagnitude, ObstaclesLayerMask, Color.blue, true);
 
                 if (hitInfo.collider != null)
 				{				
@@ -80,12 +85,18 @@ namespace MoreMountains.Tools
 					}						
 
 					if (!hitInfo.collider.isTrigger)
-					{
-						_rigidbody.position = hitInfo.point - (_lastMovement / movementMagnitude) * _adjustedSmallestBoundsWidth; 
+                    {
+                        Hit = hitInfo;
+                        this.gameObject.SendMessage("PreventedCollision2D", Hit, SendMessageOptions.DontRequireReceiver);
+                        if (RepositionRigidbody)
+                        {
+                            this.transform.position = hitInfo.point - (_lastMovement / movementMagnitude) * _adjustedSmallestBoundsWidth;
+                            _rigidbody.position = hitInfo.point - (_lastMovement / movementMagnitude) * _adjustedSmallestBoundsWidth;
+                        }                        
 					}
 				}
 			} 
-			_positionLastFrame = _rigidbody.position; 
+			_positionLastFrame = this.transform.position; 
 		}
 	}
 }

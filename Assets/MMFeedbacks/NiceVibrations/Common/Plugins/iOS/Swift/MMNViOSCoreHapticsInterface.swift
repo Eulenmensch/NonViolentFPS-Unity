@@ -7,6 +7,7 @@ public class MMNViOSCoreHapticsInterface : NSObject
 {
     //MARK: Variables
 
+    static var QueueID = "MMQueue";
     static var HapticEngine: CHHapticEngine!
     static var ContinuousPlayer: CHHapticAdvancedPatternPlayer!
     static var EngineStarted = false;
@@ -44,22 +45,25 @@ public class MMNViOSCoreHapticsInterface : NSObject
 
   //MARK: Engine initialization
 
-  @objc static func CreateEngine()
+  @objc public static func CreateEngine()
   {
     DebugLog("CreateEngine method");
 
     if (EngineStarted)
     {
+        DebugLog("CreateEngine method exit : engine already started");
         return;
     }
 
     if (!CoreHapticsSupported())
     {
+      DebugLog("CreateEngine method exit : core haptics not supported");
       return;
     }
 
     do
     {
+        DebugLog("CreateEngine method : CHHapticEngine()");
         self.HapticEngine = try CHHapticEngine();
     }
     catch let error
@@ -67,6 +71,8 @@ public class MMNViOSCoreHapticsInterface : NSObject
         DebugLog("Engine Creation Error: \(error)");
     }
 
+    DebugLog("CreateEngine method : engine started");
+    EngineStarted = true;
     self.HapticEngine.playsHapticsOnly = true;
 
     self.HapticEngine.stoppedHandler = { reason in
@@ -80,20 +86,23 @@ public class MMNViOSCoreHapticsInterface : NSObject
             case .notifyWhenFinished: DebugLog("Playback finished");
             @unknown default: DebugLog("Unknown error");
         }
+            DebugLog("Engine not started");
         EngineStarted = false;
     }
 
-    self.HapticEngine.resetHandler = {
-
+    self.HapticEngine.resetHandler =
+    {
 		if (HapticEngineResetCallback != nil) { HapticEngineResetCallback!(); }
         DebugLog("Reset Handler: restarting the engine.");
         do
         {
             try self.HapticEngine.start();
             EngineStarted = true;
+            DebugLog("CreateEngine method : engine started 1");
         }
         catch
         {
+            EngineStarted = false;
             DebugLog("Failed to restart the engine");
         }
     }
@@ -101,11 +110,13 @@ public class MMNViOSCoreHapticsInterface : NSObject
     {
         try self.HapticEngine.start();
         EngineStarted = true;
+        DebugLog("CreateEngine method : engine started 2");
     }
     catch
     {
 		if (HapticEngineErrorCallback != nil) { HapticEngineErrorCallback!(); }
         DebugLog("Failed to start the engine: \(error)");
+        EngineStarted = false;
     }
   }
 
@@ -113,46 +124,77 @@ public class MMNViOSCoreHapticsInterface : NSObject
     {
         self.HapticEngine.stop();
         EngineStarted = false;
+        DebugLog("StopEngine method, engine started : false");
     }
 
 
 
   //MARK: Transient
 
-  @objc public static func PlayTransientHaptic(intensity: Float, sharpness: Float)
+    @objc public static func PlayTransientHaptic(intensity: Float, sharpness: Float, threaded: Bool)
   {
-    DebugLog("PlayTransientHaptic method");
-
-    if (!CoreHapticsSupported())
+    if (threaded)
     {
-        return;
+        let queue = DispatchQueue(label: QueueID, qos: .userInitiated);
+        queue.async {
+            PlayTransientHapticThread(intensity: intensity, sharpness: sharpness);
+        }
     }
-
-    CreateEngine();
-
-    let clampedIntensity = Clamp(value: intensity, min: 0, max: 1);
-    let clampedSharpness = Clamp(value: sharpness, min: 0, max: 1);
-
-    let hapticIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: clampedIntensity);
-    let hapticSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: clampedSharpness);
-    let event = CHHapticEvent(eventType: .hapticTransient, parameters: [hapticIntensity, hapticSharpness], relativeTime: 0);
-
-    do {
-        let pattern = try CHHapticPattern(events: [event], parameters: []);
-        let player = try self.HapticEngine?.makePlayer(with: pattern);
-        try player?.start(atTime: CHHapticTimeImmediate);
-    }
-    catch let error
+    else
     {
-		if (HapticEngineErrorCallback != nil) { HapticEngineErrorCallback!(); }
-        DebugLog("Failed to play pattern: \(error.localizedDescription).");
+        PlayTransientHapticThread(intensity: intensity, sharpness: sharpness);
     }
   }
+
+    @objc static func PlayTransientHapticThread(intensity: Float, sharpness: Float)
+    {
+        DebugLog("PlayTransientHaptic method, intensity : \(intensity) sharpness : \(sharpness)");
+
+        if (!CoreHapticsSupported())
+        {
+            return;
+        }
+
+        CreateEngine();
+
+        let clampedIntensity = Clamp(value: intensity, min: 0, max: 1);
+        let clampedSharpness = Clamp(value: sharpness, min: 0, max: 1);
+
+        let hapticIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: clampedIntensity);
+        let hapticSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: clampedSharpness);
+        let event = CHHapticEvent(eventType: .hapticTransient, parameters: [hapticIntensity, hapticSharpness], relativeTime: 0);
+
+        do {
+            let pattern = try CHHapticPattern(events: [event], parameters: []);
+            let player = try self.HapticEngine?.makePlayer(with: pattern);
+            try player?.start(atTime: CHHapticTimeImmediate);
+        }
+        catch let error
+        {
+            if (HapticEngineErrorCallback != nil) { HapticEngineErrorCallback!(); }
+            DebugLog("Failed to play pattern: \(error.localizedDescription).");
+        }
+    }
 
   //MARK: From JSON string
 
 
-  @objc public static func PlayHapticsFromJSON(patternAsString: String)
+  @objc public static func PlayHapticsFromJSON(patternAsString: String, threaded: Bool)
+{
+    if (threaded)
+    {
+        let queue = DispatchQueue(label: QueueID, qos: .userInitiated);
+        queue.async {
+            PlayHapticsFromJSONThread(patternAsString: patternAsString);
+        }
+    }
+    else
+    {
+        PlayHapticsFromJSONThread(patternAsString: patternAsString);
+    }
+}
+
+  @objc static func PlayHapticsFromJSONThread(patternAsString: String)
   {
     DebugLog("PlayHapticsFromJSON method");
 
@@ -188,10 +230,25 @@ public class MMNViOSCoreHapticsInterface : NSObject
 
   //MARK: Continuous
 
-  @objc public static func PlayContinuousHaptic(intensity: Float, sharpness: Float, duration: Double)
+    @objc public static func PlayContinuousHaptic(intensity: Float, sharpness: Float, duration: Double, threaded: Bool, fullIntensity: Bool)
+{
+    if (threaded)
+    {
+        let queue = DispatchQueue(label: QueueID, qos: .userInitiated);
+        queue.async {
+            PlayContinuousHapticThread(intensity:intensity, sharpness:sharpness, duration:duration, threaded: threaded, fullIntensity: fullIntensity);
+        }
+    }
+    else
+    {
+        PlayContinuousHapticThread(intensity:intensity, sharpness:sharpness, duration:duration, threaded: threaded, fullIntensity: fullIntensity);
+    }
+}
+
+    @objc static func PlayContinuousHapticThread(intensity: Float, sharpness: Float, duration: Double, threaded:Bool, fullIntensity: Bool)
   {
     DebugLog("PlayContinuousHaptic method, intensity : \(intensity) sharpness : \(sharpness) duration : \(duration)");
-    
+
     if (!CoreHapticsSupported())
     {
         return;
@@ -202,15 +259,33 @@ public class MMNViOSCoreHapticsInterface : NSObject
     let clampedIntensity = Clamp(value: intensity, min: 0, max: 1);
     let clampedSharpness = Clamp(value: sharpness, min: 0, max: 1);
 
-    let hapticIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: clampedIntensity);
+    let originalIntensity = clampedIntensity;
+    var forcedValue = clampedIntensity;
+    if (fullIntensity)
+    {
+        forcedValue = 1;
+    }
+
+    let hapticIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: forcedValue);
     let hapticSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: clampedSharpness);
     let event = CHHapticEvent(eventType: .hapticContinuous, parameters: [hapticIntensity, hapticSharpness], relativeTime: 0, duration: duration);
+
+    DebugLog("Continuous event, intensity : \(hapticIntensity.value) sharpness : \(hapticSharpness.value) duration : \(duration)");
 
     do
     {
         let pattern = try CHHapticPattern(events: [event], parameters: []);
         self.ContinuousPlayer = try self.HapticEngine?.makeAdvancedPlayer(with: pattern);
         try self.ContinuousPlayer.start(atTime: CHHapticTimeImmediate);
+
+        if (fullIntensity)
+        {
+            let queue = DispatchQueue(label: QueueID, qos: .userInitiated);
+            queue.asyncAfter(deadline: .now() + 0.01)
+            {
+                UpdateContinuousHaptic(intensity: originalIntensity, sharpness: clampedSharpness, threaded: threaded);
+            }
+        }
     }
     catch
     {
@@ -230,8 +305,24 @@ public class MMNViOSCoreHapticsInterface : NSObject
     }
   }
 
-  @objc public static func UpdateContinuousHaptic(intensity: Float, sharpness: Float)
+@objc public static func UpdateContinuousHaptic(intensity: Float, sharpness: Float, threaded: Bool)
+{
+    if (threaded)
+    {
+        let queue = DispatchQueue(label: QueueID, qos: .userInitiated);
+        queue.async {
+            UpdateContinuousHapticThread(intensity:intensity, sharpness:sharpness, threaded:threaded);
+        }
+    }
+    else
+    {
+        UpdateContinuousHapticThread(intensity:intensity, sharpness:sharpness, threaded:threaded);
+    }
+}
+
+  @objc public static func UpdateContinuousHapticThread(intensity: Float, sharpness: Float, threaded: Bool)
   {
+      DebugLog("UpdateContinuousHapticThread method, intensity : \(intensity) sharpness : \(sharpness) threaded : \(threaded)");
     if (!CoreHapticsSupported())
     {
         return;
@@ -261,7 +352,7 @@ public class MMNViOSCoreHapticsInterface : NSObject
         try self.ContinuousPlayer.sendParameters([intensityParameter, sharpnessParameter],
         atTime: 0)
     }
-	catch let error
+	   catch let error
 	{
 		if (HapticEngineErrorCallback != nil) { HapticEngineErrorCallback!(); }
         DebugLog("Error updating continuous player: \(error)")

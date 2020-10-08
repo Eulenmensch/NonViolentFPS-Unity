@@ -2,6 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Reflection;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,26 +15,347 @@ namespace MoreMountains.Tools
 	/// <summary>
 	/// Debug helpers
 	/// </summary>
-
 	public static class MMDebug 
 	{
-		public static MMConsole _console;
-        /// whether or not debug logs (MMDebug.DebugLogTime, MMDebug.DebugOnScreen) should be displayed
-        public static bool DebugLogsEnabled = true;
-        /// whether or not debug draws should be executed
-        public static bool DebugDrawEnabled = true;
+        #region Commands
 
-		/// <summary>
-		/// Draws a debug ray in 2D and does the actual raycast
-		/// </summary>
-		/// <returns>The raycast hit.</returns>
-		/// <param name="rayOriginPoint">Ray origin point.</param>
-		/// <param name="rayDirection">Ray direction.</param>
-		/// <param name="rayDistance">Ray distance.</param>
-		/// <param name="mask">Mask.</param>
-		/// <param name="debug">If set to <c>true</c> debug.</param>
-		/// <param name="color">Color.</param>
-		public static RaycastHit2D RayCast(Vector2 rayOriginPoint, Vector2 rayDirection, float rayDistance, LayerMask mask, Color color,bool drawGizmo=false)
+        // the cached list of debug log commands
+        private static MethodInfo[] _commands;
+        // the max length of the log
+        private static readonly int _logHistoryMaxLength = 256;
+
+        /// <summary>
+        /// Returns a list of all the debug command lines found in the project's assemblies
+        /// </summary>
+        public static MethodInfo[] Commands
+        {
+            get
+            {
+                if (_commands == null)
+                {
+                    _commands = AppDomain.CurrentDomain.GetAssemblies()
+                      .SelectMany(
+                                m => m.GetTypes().SelectMany(
+                                    n => n.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
+                                        .Where(o => o.GetCustomAttribute<MMDebugLogCommandAttribute>() != null))).ToArray();
+                }
+
+                return _commands;
+            }
+        }
+
+        /// <summary>
+        /// Tries to input a command
+        /// </summary>
+        /// <param name="command"></param>
+        public static void DebugLogCommand(string command)
+        {
+            // if the command is empty we output an empty line
+            if (command == string.Empty || command == null)
+            {
+                LogCommand("", "#ff2a00");
+                return; 
+            }
+
+            // we split around spaces
+            string[] splitCommand = command.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            if (splitCommand == null || splitCommand.Length == 0)
+            {
+                LogCommand("Empty command", "#ff2a00");
+                return;
+            }
+            
+            // we check if the first command exists
+            string commandFirst = MMString.UppercaseFirst(splitCommand[0]);
+            MethodInfo[] methods = Commands.Where(m => m.Name == commandFirst).ToArray();
+            if (methods.Length == 0)
+            {
+                LogCommand("Command " + commandFirst + " not found.", "#ff2a00");
+                return;
+            }
+
+            MethodInfo commandInfo;
+            object[] parameters = null;
+
+            if (splitCommand.Length > 1)
+            { 
+                // if there are arguments
+                commandInfo = methods.Where(m => m.GetParameters().Length > 0).FirstOrDefault();
+
+                if (commandInfo == null)
+                {
+                    LogCommand("A version of command " + commandFirst + " with arguments could not be found. Maybe try without arguments.", "#ff2a00");
+                    return;
+                }
+
+                MMDebugLogCommandArgumentCountAttribute argumentAttribute = commandInfo.GetCustomAttributes<MMDebugLogCommandArgumentCountAttribute>(true).FirstOrDefault();
+                if (argumentAttribute != null && argumentAttribute.ArgumentCount > splitCommand.Length - 1)
+                { 
+                    LogCommand("A version of command " + commandFirst + " needs at least " + argumentAttribute.ArgumentCount + " arguments.", "#ff2a00");
+                    return;
+                }
+
+                parameters = new object[] { splitCommand };
+            }
+            else
+            { 
+                // if there are no arguments 
+                commandInfo = methods.Where(m => m.GetParameters().Length == 0).FirstOrDefault();
+
+                if (commandInfo == null)
+                {
+                    LogCommand("A version of command " + commandFirst + " without arguments could not be found.", "#ff2a00");
+                    return;
+                }
+            }
+
+            LogCommand(command, "#FFC400");
+            methods[0].Invoke(null, parameters);
+        }
+
+        /// <summary>
+        /// Logs the command, adding it to the log history and triggers an event
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="color"></param>
+        private static void LogCommand(string command, string color)
+        {
+            DebugLogItem item = new DebugLogItem(command, color, Time.frameCount, Time.time, 3, true);
+            LogHistory.Add(item);
+            MMDebugLogEvent.Trigger(new DebugLogItem(null, "", Time.frameCount, Time.time, 0, false));
+        }
+
+        #endregion
+
+        #region DebugLog
+
+        /// <summary>
+        /// A struct used to store log items
+        /// </summary>
+        public struct DebugLogItem
+        {
+            public object Message;
+            public string Color;
+            public int Framecount;
+            public float Time;
+            public int TimePrecision;
+            public bool DisplayFrameCount;
+
+            public DebugLogItem(object message, string color, int framecount, float time, int timePrecision, bool displayFrameCount)
+            {
+                Message = message;
+                Color = color;
+                Framecount = framecount;
+                Time = time;
+                TimePrecision = timePrecision;
+                DisplayFrameCount = displayFrameCount;
+            }
+        }
+
+        /// <summary>
+        /// A list of all the debug logs (up to DebugLogMaxLength entries)
+        /// </summary>
+        public static List<DebugLogItem> LogHistory = new List<DebugLogItem>(_logHistoryMaxLength);
+
+        /// <summary>
+        /// Returns a string with all log history condensed
+        /// </summary>
+        public static string LogHistoryText
+        {
+            get
+            {
+                string colorPrefix = "";
+                string colorSuffix = "";
+
+                StringBuilder log = new StringBuilder();
+                for (int i = 0; i < LogHistory.Count; i++)
+                {
+                    // colors
+                    if (!string.IsNullOrEmpty(LogHistory[i].Color))
+                    {
+                        colorPrefix = "<color=" + LogHistory[i].Color + ">";
+                        colorSuffix = "</color>";
+                    }
+
+                    // build output
+                    if (LogHistory[i].DisplayFrameCount)
+                    {
+                        log.Append("<color=#82d3f9>[" + LogHistory[i].Framecount + "]</color> ");
+                    }
+                    log.Append("<color=#f9a682>[" + MMTime.FloatToTimeString(LogHistory[i].Time, false, true, true, true) + "]</color> ");
+                    log.Append(colorPrefix + LogHistory[i].Message + colorSuffix);
+                    log.Append(Environment.NewLine);
+                }
+                return log.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Clears the debug log
+        /// </summary>
+        public static void DebugLogClear()
+        {
+            LogHistory.Clear();
+            MMDebugLogEvent.Trigger(new DebugLogItem(null, "", Time.frameCount, Time.time, 0, false));
+        }
+
+        /// <summary>
+        /// Outputs the message object to the console, prefixed with the current timestamp
+        /// </summary>
+        /// <param name="message">Message.</param>
+        public static void DebugLogTime(object message, string color = "", int timePrecision = 3, bool displayFrameCount = true)
+        {
+            if (!DebugLogsEnabled)
+            {
+                return;
+            }
+
+            // colors
+            string colorPrefix = "";
+            string colorSuffix = "";
+            if (!string.IsNullOrEmpty(color))
+            {
+                colorPrefix = "<color=" + color + ">";
+                colorSuffix = "</color>";
+            }
+
+            // build output
+            string output = "";
+            if (displayFrameCount)
+            {
+                output += "<color=#82d3f9>[" + Time.frameCount + "]</color> ";
+            }
+            output += "<color=#f9a682>[" + MMTime.FloatToTimeString(Time.time, false, true, true, true) + "]</color> ";
+            output += colorPrefix + message + colorSuffix;
+
+            // we output to the console
+            Debug.Log(output);
+
+            DebugLogItem item = new DebugLogItem(message, color, Time.frameCount, Time.time, timePrecision, displayFrameCount);
+
+            // we add to our DebugLog 
+            if (LogHistory.Count > _logHistoryMaxLength)
+            {
+                LogHistory.RemoveAt(0);
+            }
+
+            LogHistory.Add(item);
+
+            // we trigger an event
+            MMDebugLogEvent.Trigger(item);
+
+        }
+
+        /// <summary>
+        /// An event used to broadcast debug logs
+        /// </summary>
+        public struct MMDebugLogEvent
+        {
+            public delegate void Delegate(DebugLogItem item);
+            static private event Delegate OnEvent;
+
+            static public void Register(Delegate callback)
+            {
+                OnEvent += callback;
+            }
+
+            static public void Unregister(Delegate callback)
+            {
+                OnEvent -= callback;
+            }
+
+            static public void Trigger(DebugLogItem item)
+            {
+                OnEvent?.Invoke(item);
+            }
+        }
+
+        #endregion
+
+        #region EnableDisableDebugs
+
+        /// <summary>
+        /// whether or not debug logs (MMDebug.DebugLogTime, MMDebug.DebugOnScreen) should be displayed
+        /// </summary>
+        public static bool DebugLogsEnabled
+        {
+            get
+            {
+                if (PlayerPrefs.HasKey(_editorPrefsDebugLogs))
+                {
+                    return (PlayerPrefs.GetInt(_editorPrefsDebugLogs) == 0) ? false : true;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            private set { }
+        }
+
+        /// <summary>
+        /// whether or not debug draws should be executed
+        /// </summary>
+        public static bool DebugDrawEnabled
+        {
+            get
+            {
+                if (PlayerPrefs.HasKey(_editorPrefsDebugDraws))
+                {
+                    return (PlayerPrefs.GetInt(_editorPrefsDebugDraws) == 0) ? false : true;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            private set { }
+        }
+
+        private const string _editorPrefsDebugLogs = "DebugLogsEnabled";
+        private const string _editorPrefsDebugDraws = "DebugDrawsEnabled";
+
+        /// <summary>
+        /// Enables or disables debug logs 
+        /// </summary>
+        /// <param name="status"></param>
+        public static void SetDebugLogsEnabled(bool status)
+        {
+            DebugLogsEnabled = status;
+            #if UNITY_EDITOR
+                int newStatus = status ? 1 : 0;
+                PlayerPrefs.SetInt(_editorPrefsDebugLogs, newStatus);
+            #endif
+        }
+
+        /// <summary>
+        /// Enables or disables debug draws
+        /// </summary>
+        /// <param name="status"></param>
+        public static void SetDebugDrawEnabled(bool status)
+        {
+            DebugDrawEnabled = status;
+            #if UNITY_EDITOR
+                int newStatus = status ? 1 : 0;
+                PlayerPrefs.SetInt(_editorPrefsDebugDraws, newStatus);
+            #endif
+        }
+
+        #endregion
+
+        #region Casts
+
+        /// <summary>
+        /// Draws a debug ray in 2D and does the actual raycast
+        /// </summary>
+        /// <returns>The raycast hit.</returns>
+        /// <param name="rayOriginPoint">Ray origin point.</param>
+        /// <param name="rayDirection">Ray direction.</param>
+        /// <param name="rayDistance">Ray distance.</param>
+        /// <param name="mask">Mask.</param>
+        /// <param name="debug">If set to <c>true</c> debug.</param>
+        /// <param name="color">Color.</param>
+        public static RaycastHit2D RayCast(Vector2 rayOriginPoint, Vector2 rayDirection, float rayDistance, LayerMask mask, Color color,bool drawGizmo=false)
 		{	
 			if (drawGizmo && DebugDrawEnabled) 
 			{
@@ -137,44 +462,19 @@ namespace MoreMountains.Tools
 			return hit;
 		}
 
-		/// <summary>
-		/// Outputs the message object to the console, prefixed with the current timestamp
-		/// </summary>
-		/// <param name="message">Message.</param>
-		public static void DebugLogTime(object message, string color="", int timePrecision = 3, bool displayFrameCount = true)
-		{
-            if (!DebugLogsEnabled)
-            {
-                return;
-            }
+        #endregion
 
-            // colors
-			string colorPrefix = "";
-			string colorSuffix = "";
-			if (!string.IsNullOrEmpty(color))
-			{
-				colorPrefix = "<color="+color+">";
-				colorSuffix = "</color>";
-			}
-
-            // build output
-            string output = "";
-            if (displayFrameCount)
-            {
-                output += "<color=#82d3f9>[" + Time.frameCount + "]</color> ";
-            }
-            output += "<color=#f9a682>[" + MMTime.FloatToTimeString(Time.time, false, true, true, true) + "]</color> ";
-            output += colorPrefix + message + colorSuffix;
-
-            // output
-            Debug.Log (output);
-		}
-
-		/// <summary>
-		/// Instantiates a MMConsole if there isn't one already, and adds the message in parameter to it.
-		/// </summary>
-		/// <param name="message">Message.</param>
-		public static void DebugOnScreen(string message)
+        #region DebugOnScreen
+        
+        //public static MMConsole _console;
+        public static MMDebugOnScreenConsole _console;
+        private const string _debugConsolePrefabPath = "MMDebugOnScreenConsole";
+                
+        /// <summary>
+        /// Instantiates a MMConsole if there isn't one already, and adds the message in parameter to it.
+        /// </summary>
+        /// <param name="message">Message.</param>
+        public static void DebugOnScreen(string message)
         {
             if (!DebugLogsEnabled)
             {
@@ -182,7 +482,7 @@ namespace MoreMountains.Tools
             }
 
             InstantiateOnScreenConsole();
-			_console.AddMessage(message);
+			_console.AddMessage(message, "", 30);
 		}
 
 		/// <summary>
@@ -191,7 +491,7 @@ namespace MoreMountains.Tools
 		/// <param name="label">Label.</param>
 		/// <param name="value">Value.</param>
 		/// <param name="fontSize">The optional font size.</param>
-		public static void DebugOnScreen(string label, object value, int fontSize=10)
+		public static void DebugOnScreen(string label, object value, int fontSize=25)
         {
             if (!DebugLogsEnabled)
             {
@@ -199,13 +499,13 @@ namespace MoreMountains.Tools
             }
 
             InstantiateOnScreenConsole(fontSize);
-			_console.AddMessage("<b>"+label+"</b> : "+value);
+			_console.AddMessage(label, value, fontSize);
 		}
 
 		/// <summary>
 		/// Instantiates the on screen console if there isn't one already
 		/// </summary>
-		public static void InstantiateOnScreenConsole(int fontSize=10)
+		public static void InstantiateOnScreenConsole(int fontSize=25)
 		{
             if (!DebugLogsEnabled)
             {
@@ -214,21 +514,24 @@ namespace MoreMountains.Tools
 
             if (_console == null)
 			{
-				// we instantiate the console
-				GameObject newGameObject = new GameObject();
-				newGameObject.name="MMConsole";
-				_console = newGameObject.AddComponent<MMConsole>();
-				_console.SetFontSize(fontSize);
-			}
+                // we instantiate the console
+                GameObject loaded = UnityEngine.Object.Instantiate(Resources.Load(_debugConsolePrefabPath) as GameObject);
+                loaded.name = "MMDebugOnScreenConsole";
+                _console = loaded.GetComponent<MMDebugOnScreenConsole>();                
+            }
 		}
 
-		/// <summary>
-		/// Draws a gizmo arrow going from the origin position and along the direction Vector3
-		/// </summary>
-		/// <param name="origin">Origin.</param>
-		/// <param name="direction">Direction.</param>
-		/// <param name="color">Color.</param>
-		public static void DrawGizmoArrow(Vector3 origin, Vector3 direction, Color color, float arrowHeadLength = 3f, float arrowHeadAngle = 25f)
+        #endregion
+
+        #region DebugDraw
+
+        /// <summary>
+        /// Draws a gizmo arrow going from the origin position and along the direction Vector3
+        /// </summary>
+        /// <param name="origin">Origin.</param>
+        /// <param name="direction">Direction.</param>
+        /// <param name="color">Color.</param>
+        public static void DrawGizmoArrow(Vector3 origin, Vector3 direction, Color color, float arrowHeadLength = 3f, float arrowHeadAngle = 25f)
 	    {
             if (!DebugDrawEnabled)
             {
@@ -366,7 +669,7 @@ namespace MoreMountains.Tools
                 return;
             }
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             Vector3 boundsCenter = bounds.center;
 		    Vector3 boundsExtents = bounds.extents;
 		  
@@ -396,7 +699,7 @@ namespace MoreMountains.Tools
 			Handles.DrawLine (v3FrontTopRight, v3BackTopRight);
 			Handles.DrawLine (v3FrontBottomRight, v3BackBottomRight);
 			Handles.DrawLine (v3FrontBottomLeft, v3BackBottomLeft);  
-			#endif
+#endif
 		}
 
         /// <summary>
@@ -413,7 +716,7 @@ namespace MoreMountains.Tools
                 return;
             }
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
 
             Vector3 halfSize = size / 2f;
 
@@ -424,7 +727,7 @@ namespace MoreMountains.Tools
             verts[3] = new Vector3(halfSize.x, -halfSize.y, halfSize.z);
             Handles.DrawSolidRectangleWithOutline(verts, solidColor, borderColor);
             
-            #endif
+#endif
         }
         
         /// <summary>
@@ -526,14 +829,44 @@ namespace MoreMountains.Tools
 			Gizmos.DrawLine(v3TopRight,v3BottomRight);
 			Gizmos.DrawLine(v3BottomRight,v3BottomLeft);
 			Gizmos.DrawLine(v3BottomLeft,v3TopLeft);
-		}
+        }
 
-		/// <summary>
-		/// Draws a rectangle based on a Rect and color
-		/// </summary>
-		/// <param name="rectangle">Rectangle.</param>
-		/// <param name="color">Color.</param>
-		public static void DrawRectangle (Rect rectangle, Color color)
+        /// <summary>
+        /// Draws a gizmo rectangle
+        /// </summary>
+        /// <param name="center">Center.</param>
+        /// <param name="size">Size.</param>
+        /// <param name="color">Color.</param>
+        public static void DrawGizmoRectangle(Vector2 center, Vector2 size, Matrix4x4 rotationMatrix, Color color)
+        {
+            if (!DebugDrawEnabled)
+            {
+                return;
+            }
+
+            GL.PushMatrix();
+
+            Gizmos.color = color;
+
+            Vector3 v3TopLeft = rotationMatrix * new Vector3(center.x - size.x / 2, center.y + size.y / 2, 0);
+            Vector3 v3TopRight = rotationMatrix * new Vector3(center.x + size.x / 2, center.y + size.y / 2, 0); ;
+            Vector3 v3BottomRight = rotationMatrix * new Vector3(center.x + size.x / 2, center.y - size.y / 2, 0); ;
+            Vector3 v3BottomLeft = rotationMatrix * new Vector3(center.x - size.x / 2, center.y - size.y / 2, 0); ;
+
+            
+            Gizmos.DrawLine(v3TopLeft, v3TopRight);
+            Gizmos.DrawLine(v3TopRight, v3BottomRight);
+            Gizmos.DrawLine(v3BottomRight, v3BottomLeft);
+            Gizmos.DrawLine(v3BottomLeft, v3TopLeft);
+            GL.PopMatrix();
+        }
+
+        /// <summary>
+        /// Draws a rectangle based on a Rect and color
+        /// </summary>
+        /// <param name="rectangle">Rectangle.</param>
+        /// <param name="color">Color.</param>
+        public static void DrawRectangle (Rect rectangle, Color color)
         {
             if (!DebugDrawEnabled)
             {
@@ -614,5 +947,44 @@ namespace MoreMountains.Tools
 			Debug.DrawLine (points[5], points[2], color ); 
 			Debug.DrawLine (points[5], points[3], color ); 
 		}
-	}
+
+        #endregion
+
+        #region Info
+
+        public static string GetSystemInfo()
+        {
+            string result = "SYSTEM INFO";
+
+            #if UNITY_IOS
+                 result += "\n[iPhone generation]iPhone.generation.ToString()";
+            #endif
+
+            #if UNITY_ANDROID
+                result += "\n[system info]" + SystemInfo.deviceModel;
+            #endif
+
+            result += "\n<color=#FFFFFF>Device Type :</color> " + SystemInfo.deviceType;
+            result += "\n<color=#FFFFFF>OS Version :</color> " + SystemInfo.operatingSystem;
+            result += "\n<color=#FFFFFF>System Memory Size :</color> " + SystemInfo.systemMemorySize;
+            result += "\n<color=#FFFFFF>Graphic Device Name :</color> " + SystemInfo.graphicsDeviceName + " (version " + SystemInfo.graphicsDeviceVersion + ")";
+            result += "\n<color=#FFFFFF>Graphic Memory Size :</color> " + SystemInfo.graphicsMemorySize;
+            result += "\n<color=#FFFFFF>Graphic Max Texture Size :</color> " + SystemInfo.maxTextureSize;
+            result += "\n<color=#FFFFFF>Graphic Shader Level :</color> " + SystemInfo.graphicsShaderLevel;
+            result += "\n<color=#FFFFFF>Compute Shader Support :</color> " + SystemInfo.supportsComputeShaders;
+
+            result += "\n<color=#FFFFFF>Processor Count :</color> " + SystemInfo.processorCount;
+            result += "\n<color=#FFFFFF>Processor Type :</color> " + SystemInfo.processorType;
+            result += "\n<color=#FFFFFF>3D Texture Support :</color> " + SystemInfo.supports3DTextures;
+            result += "\n<color=#FFFFFF>Shadow Support :</color> " + SystemInfo.supportsShadows;
+
+            result += "\n<color=#FFFFFF>Platform :</color> " + Application.platform;
+            result += "\n<color=#FFFFFF>Screen Size :</color> " + Screen.width + " x " + Screen.height;
+            result += "\n<color=#FFFFFF>DPI :</color> " + Screen.dpi;
+
+            return result;
+        }
+
+        #endregion
+    }
 }

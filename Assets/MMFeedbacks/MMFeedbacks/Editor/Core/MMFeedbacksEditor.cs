@@ -114,6 +114,7 @@ namespace MoreMountains.Feedbacks
 
         protected SerializedProperty _mmfeedbacks;
         protected SerializedProperty _mmfeedbacksInitializationMode;
+        protected SerializedProperty _mmfeedbacksSafeMode;
         protected SerializedProperty _mmfeedbacksAutoPlayOnStart;
         protected Dictionary<MMFeedback, Editor> _editors;
         protected List<FeedbackTypePair> _typesAndNames = new List<FeedbackTypePair>();
@@ -130,7 +131,11 @@ namespace MoreMountains.Feedbacks
             // Get properties
             _mmfeedbacks = serializedObject.FindProperty("Feedbacks");
             _mmfeedbacksInitializationMode = serializedObject.FindProperty("InitializationMode");
+            _mmfeedbacksSafeMode = serializedObject.FindProperty("SafeMode");
             _mmfeedbacksAutoPlayOnStart = serializedObject.FindProperty("AutoPlayOnStart");
+
+            // Repair routine to catch feedbacks that may have escaped due to Unity's serialization issues
+            RepairRoutine();
 
             // Create editors
             _editors = new Dictionary<MMFeedback, Editor>();
@@ -150,18 +155,37 @@ namespace MoreMountains.Feedbacks
                 FeedbackTypePair newType = new FeedbackTypePair();
                 newType.FeedbackType = types[i];
                 newType.FeedbackName = FeedbackPathAttribute.GetFeedbackDefaultPath(types[i]);
+                if (newType.FeedbackName == "MMFeedbackBase")
+                {
+                    continue;
+                }
                 _typesAndNames.Add(newType);
             }
 
             _typesAndNames = _typesAndNames.OrderBy(t => t.FeedbackName).ToList();
             
             typeNames.Add("Add new feedback...");
-            for (int i = 0; i < types.Count; i++)
+            for (int i = 0; i < _typesAndNames.Count; i++)
             {
                 typeNames.Add(_typesAndNames[i].FeedbackName);
             }
 
             _typeDisplays = typeNames.ToArray();
+        }
+
+        /// <summary>
+        /// Calls the repair routine if needed
+        /// </summary>
+        protected virtual void RepairRoutine()
+        {
+            MMFeedbacks feedbacks = target as MMFeedbacks;
+
+            if ((feedbacks.SafeMode == MMFeedbacks.SafeModes.EditorOnly) || (feedbacks.SafeMode == MMFeedbacks.SafeModes.Full))
+            {
+                feedbacks.AutoRepair();
+            }
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         /// <summary>
@@ -179,6 +203,14 @@ namespace MoreMountains.Feedbacks
 
             EditorGUILayout.Space();
 
+            if (!MMFeedbacks.GlobalMMFeedbacksActive)
+            {
+                Color baseColor = GUI.color;
+                GUI.color = Color.red;
+                EditorGUILayout.HelpBox("All MMFeedbacks, including this one, are currently disabled. This is done via script, by changing the value of the MMFeedbacks.GlobalMMFeedbacksActive boolean. Right now this value has been set to false. Setting it back to true will allow MMFeedbacks to play again.", MessageType.Warning);
+                EditorGUILayout.Space();
+                GUI.color = baseColor;
+            }
 
             EditorGUILayout.HelpBox("Select feedbacks from the 'add a feedback' dropdown and customize them. Remember, if you don't use auto initialization (Awake or Start), " +
                                     "you'll need to initialize them via script.", MessageType.None);
@@ -189,6 +221,7 @@ namespace MoreMountains.Feedbacks
 
             EditorGUILayout.PropertyField(_mmfeedbacksInitializationMode);
             EditorGUILayout.PropertyField(_mmfeedbacksAutoPlayOnStart);
+            EditorGUILayout.PropertyField(_mmfeedbacksSafeMode);
 
             // Draw list
 
@@ -200,16 +233,17 @@ namespace MoreMountains.Feedbacks
 
                 SerializedProperty property = _mmfeedbacks.GetArrayElementAtIndex(i);
 
-                // Failsafe but should not happend
-
+                // Failsafe but should not happen
                 if (property.objectReferenceValue == null)
+                {
                     continue;
+                }                    
 
                 // Retrieve feedback
 
                 MMFeedback feedback = property.objectReferenceValue as MMFeedback;
                 feedback.hideFlags = _debugView ? HideFlags.None : HideFlags.HideInInspector;
-
+                
                 Undo.RecordObject(feedback, "Modified Feedback");
 
                 // Draw header
@@ -225,7 +259,14 @@ namespace MoreMountains.Feedbacks
                 }
                 if ((feedback.LooperPause == true) && (Application.isPlaying))
                 {
-                    label = label + "[ " + (feedback as MMFeedbackLooper).NumberOfLoopsLeft + " loops left ] ";
+                    if ((feedback as MMFeedbackLooper).InfiniteLoop)
+                    {
+                        label = label + "[Infinite Loop] ";
+                    }
+                    else
+                    {
+                        label = label + "[ " + (feedback as MMFeedbackLooper).NumberOfLoopsLeft + " loops left ] ";
+                    }                    
                 }
 
                 Rect headerRect = MMFeedbackStyling.DrawHeader(
@@ -357,7 +398,9 @@ namespace MoreMountains.Feedbacks
 
                 int newItem = EditorGUILayout.Popup(0, _typeDisplays) - 1;
                 if (newItem >= 0)
+                {
                     AddFeedback(_typesAndNames[newItem].FeedbackType);
+                }
 
                 // Paste feedback copy as new
 
@@ -506,7 +549,6 @@ namespace MoreMountains.Feedbacks
             MMFeedback newFeedback = Undo.AddComponent(gameObject, type) as MMFeedback;
             newFeedback.hideFlags = _debugView ? HideFlags.None : HideFlags.HideInInspector;
             newFeedback.Label = FeedbackPathAttribute.GetFeedbackDefaultName(type);
-            //newFeedback.ResetFeedback();
 
             AddEditor(newFeedback);
 

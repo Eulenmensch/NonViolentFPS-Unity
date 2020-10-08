@@ -13,7 +13,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackFlicker : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.RendererColor; } }
+        #endif
 
         /// the possible modes
         /// Color : will control material.color
@@ -110,6 +112,12 @@ namespace MoreMountains.Feedbacks
         protected override void CustomReset()
         {
             base.CustomReset();
+
+            if (InCooldown)
+            {
+                return;
+            }
+
             if (Active && (BoundRenderer != null))
             {
                 SetColor(_initialFlickerColor);                

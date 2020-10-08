@@ -18,6 +18,8 @@ namespace MoreMountains.FeedbacksForThirdParty
         public Transform CameraTransform;
         /// a list of all possible targets
         public Transform[] FocusTargets;
+        /// an offset to apply to the focus target
+        public Vector3 Offset;
         [Header("Setup")]
         /// the current target of this auto focus
         public float FocusTargetID;
@@ -45,7 +47,7 @@ namespace MoreMountains.FeedbacksForThirdParty
         /// </summary>
         void Update()
         {
-            float distance = Vector3.Distance(CameraTransform.position, FocusTargets[Mathf.FloorToInt(FocusTargetID)].position);
+            float distance = Vector3.Distance(CameraTransform.position, FocusTargets[Mathf.FloorToInt(FocusTargetID)].position + Offset);
             _depthOfField.focusDistance.Override(distance);
             _depthOfField.aperture.Override(Aperture);
         }

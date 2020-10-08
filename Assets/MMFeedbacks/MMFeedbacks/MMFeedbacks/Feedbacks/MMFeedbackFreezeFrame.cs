@@ -13,7 +13,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackFreezeFrame : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.TimeColor; } }
+        #endif
 
         [Header("Freeze Frame")]
         /// the duration of the freeze frame

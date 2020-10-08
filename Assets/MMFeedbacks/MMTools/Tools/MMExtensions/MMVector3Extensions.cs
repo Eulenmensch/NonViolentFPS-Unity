@@ -8,7 +8,7 @@ namespace MoreMountains.Tools
     /// <summary>
     /// Vector3 Extensions
     /// </summary>
-    public static class Vector3Extensions
+    public static class MMVector3Extensions
     {
         /// <summary>
         /// Sets the x value of a vector

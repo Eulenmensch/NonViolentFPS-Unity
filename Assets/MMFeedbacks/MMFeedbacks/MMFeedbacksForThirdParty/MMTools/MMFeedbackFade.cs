@@ -14,7 +14,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackFade : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.CameraColor; } }
+        #endif
         /// the different possible types of fades
         public enum FadeTypes { FadeIn, FadeOut, Custom }
         /// the different ways to send the position to the fader :

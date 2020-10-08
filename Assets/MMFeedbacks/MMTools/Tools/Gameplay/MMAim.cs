@@ -6,9 +6,9 @@ using UnityEngine;
 namespace MoreMountains.Tools
 {
     [Serializable]
-    public class MMAim 
+    public class MMAim
     {
-        /// the list of possible control modes
+        /// the list of possible control modes .
         public enum AimControls { Off, PrimaryMovement, SecondaryMovement, Mouse, Script }
         /// the list of possible rotation modes
         public enum RotationModes { Free, Strict4Directions, Strict8Directions }
@@ -90,7 +90,7 @@ namespace MoreMountains.Tools
 
                     break;
 
-                case AimControls.PrimaryMovement:                    
+                case AimControls.PrimaryMovement:
                     _currentAim = PrimaryMovement;
                     break;
 

@@ -13,7 +13,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackLooperStart : MMFeedbackPause
     {
         /// sets the color of this feedback in the inspector
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.LooperStartColor; } }
+        #endif
         public override bool LooperStart { get { return true; } }
         public override YieldInstruction Pause { get { return _waitForSeconds; } }
 

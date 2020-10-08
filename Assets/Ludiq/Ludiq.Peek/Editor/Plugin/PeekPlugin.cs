@@ -40,17 +40,27 @@ namespace Ludiq.Peek
 		public static PeekResources Resources => (PeekResources)instance.resources;
 
 		public static PeekResources.Icons Icons => Resources.icons;
-		
+
 		[SettingsProvider]
 		private static SettingsProvider ProjectSettingsProvider()
 		{
-			return CreateEarlySettingsProvider(ID, SettingsScope.Project);
+			if (!PluginContainer.initialized)
+			{
+				return null;
+			}
+
+			return Configuration.CreateSettingsProvider(SettingsScope.Project);
 		}
 
 		[SettingsProvider]
 		private static SettingsProvider EditorPrefsProvider()
 		{
-			return CreateEarlySettingsProvider(ID, SettingsScope.User);
+			if (!PluginContainer.initialized)
+			{
+				return null;
+			}
+
+			return Configuration.CreateSettingsProvider(SettingsScope.User);
 		}
 	}
 }

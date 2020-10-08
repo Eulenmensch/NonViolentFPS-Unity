@@ -106,7 +106,7 @@ namespace MoreMountains.FeedbacksForThirdParty
             _colorGrading.hueShift.Override(newHueShift);
             float newSaturation = ShakeFloat(ShakeSaturation, RemapSaturationZero, RemapSaturationOne, RelativeValues, _initialSaturation);
             _colorGrading.saturation.Override(newSaturation);
-            float newContrast = ShakeFloat(ShakeContrast, RemapContrastZero, RemapContrastOne, RelativeValues, _initialSaturation);
+            float newContrast = ShakeFloat(ShakeContrast, RemapContrastZero, RemapContrastOne, RelativeValues, _initialContrast);
             _colorGrading.contrast.Override(newContrast);
         }
 

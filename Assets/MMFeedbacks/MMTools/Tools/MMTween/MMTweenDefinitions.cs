@@ -18,6 +18,13 @@ namespace MoreMountains.Tools
             return 1 - t;
         }
 
+        // Almost Identity 
+
+        public static float AlmostIdentity(float t)
+        {
+            return t * t * (2.0f - t);
+        }
+
         // Quadratic    ---------------------------------------------------------------------------------------------------------------------------
 
         public static float EaseIn_Quadratic(float t)

@@ -281,6 +281,15 @@ namespace MoreMountains.Tools
 			}
 		}
 
+        /// <summary>
+        /// Updates the bar's values, using a normalized value
+        /// </summary>
+        /// <param name="normalizedValue"></param>
+        public virtual void UpdateBar01(float normalizedValue)
+        {
+            UpdateBar(Mathf.Clamp01(normalizedValue), 0f, 1f);
+        }
+
 		/// <summary>
 		/// Updates the bar's values based on the specified parameters
 		/// </summary>

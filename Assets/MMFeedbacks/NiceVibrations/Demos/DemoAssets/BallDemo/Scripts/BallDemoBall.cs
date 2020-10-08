@@ -24,6 +24,7 @@ namespace MoreMountains.NiceVibrations
             _rigidBody = this.gameObject.GetComponent<Rigidbody2D>();
             _ballAnimator = this.gameObject.GetComponent<Animator>();
             _hitAnimationParameter = Animator.StringToHash("Hit");
+            MMNViOSCoreHaptics.CreateEngine();
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -70,7 +71,7 @@ namespace MoreMountains.NiceVibrations
         public virtual void HitPusher()
         {
             HitPusherParticles.Play();
-            MMVibrationManager.TransientHaptic(0.15f, 0.1f, true, this);
+            MMVibrationManager.TransientHaptic(0.85f, 0.05f, true, this);
             TransientAudioSource.volume = 0.1f;
             StartCoroutine(LogoShaker.Shake(0.2f));
             TransientAudioSource.Play();

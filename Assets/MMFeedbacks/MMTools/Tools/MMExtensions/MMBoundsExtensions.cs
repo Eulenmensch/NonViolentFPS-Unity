@@ -9,6 +9,20 @@ namespace MoreMountains.Tools
 	public class MMBoundsExtensions : MonoBehaviour 
 	{
         /// <summary>
+        /// Returns a random point within the bounds set as parameter
+        /// </summary>
+        /// <param name="bounds"></param>
+        /// <returns></returns>
+        public static Vector3 MMRandomPointInBounds(Bounds bounds)
+        {
+            return new Vector3(
+                Random.Range(bounds.min.x, bounds.max.x),
+                Random.Range(bounds.min.y, bounds.max.y),
+                Random.Range(bounds.min.z, bounds.max.z)
+            );
+        }
+
+        /// <summary>
         /// Gets collider bounds for an object (from Collider2D)
         /// </summary>
         /// <param name="theObject"></param>

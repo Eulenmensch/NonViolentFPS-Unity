@@ -15,7 +15,7 @@ namespace MoreMountains.FeedbacksForThirdParty
     {
         [Header("Intensity")]
         /// whether or not to add to the initial value
-        public bool RelativeIntensity = false;
+        public bool RelativeIntensity = true;
         /// the curve used to animate the intensity value on
         public AnimationCurve ShakeIntensity = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.5f, 1), new Keyframe(1, 0));
         /// the value to remap the curve's 0 to
@@ -23,8 +23,8 @@ namespace MoreMountains.FeedbacksForThirdParty
         public float RemapIntensityZero = 0f;
         /// the value to remap the curve's 1 to
         [Range(0f, 1f)]
-        public float RemapIntensityOne = 1f;
-        
+        public float RemapIntensityOne = 0.1f;
+
         protected PostProcessVolume _volume;
         protected Vignette _vignette;
         protected float _initialIntensity;
@@ -33,7 +33,7 @@ namespace MoreMountains.FeedbacksForThirdParty
         protected float _originalRemapIntensityZero;
         protected float _originalRemapIntensityOne;
         protected bool _originalRelativeIntensity;
-        
+
         /// <summary>
         /// On init we initialize our values
         /// </summary>
@@ -70,14 +70,14 @@ namespace MoreMountains.FeedbacksForThirdParty
         /// <param name="relativeIntensity"></param>
         /// <param name="attenuation"></param>
         /// <param name="channel"></param>
-        public virtual void OnVignetteShakeEvent(AnimationCurve intensity, float duration, float remapMin, float remapMax, bool relativeIntensity = false, 
+        public virtual void OnVignetteShakeEvent(AnimationCurve intensity, float duration, float remapMin, float remapMax, bool relativeIntensity = false,
             float attenuation = 1.0f, int channel = 0, bool resetShakerValuesAfterShake = true, bool resetTargetValuesAfterShake = true)
         {
             if (!CheckEventAllowed(channel) || Shaking)
             {
                 return;
             }
-            
+
             _resetShakerValuesAfterShake = resetShakerValuesAfterShake;
             _resetTargetValuesAfterShake = resetTargetValuesAfterShake;
 
@@ -88,7 +88,7 @@ namespace MoreMountains.FeedbacksForThirdParty
                 _originalRemapIntensityZero = RemapIntensityZero;
                 _originalRemapIntensityOne = RemapIntensityOne;
                 _originalRelativeIntensity = RelativeIntensity;
-            }            
+            }
 
             ShakeDuration = duration;
             ShakeIntensity = intensity;
@@ -145,7 +145,7 @@ namespace MoreMountains.FeedbacksForThirdParty
     /// </summary>
     public struct MMVignetteShakeEvent
     {
-        public delegate void Delegate(AnimationCurve intensity, float duration, float remapMin, float remapMax, bool relativeIntensity = false, 
+        public delegate void Delegate(AnimationCurve intensity, float duration, float remapMin, float remapMax, bool relativeIntensity = false,
             float attenuation = 1.0f, int channel = 0, bool resetShakerValuesAfterShake = true, bool resetTargetValuesAfterShake = true);
         static private event Delegate OnEvent;
         static public void Register(Delegate callback)

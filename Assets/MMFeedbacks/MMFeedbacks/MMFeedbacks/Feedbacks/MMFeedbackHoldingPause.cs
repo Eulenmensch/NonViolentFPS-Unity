@@ -12,7 +12,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackHoldingPause : MMFeedbackPause
     {
         /// sets the color of this feedback in the inspector
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.HoldingPauseColor; } }
+        #endif
         public override bool HoldingPause { get { return true; } }
         public override YieldInstruction Pause { get { return _waitForSeconds; } }
                 

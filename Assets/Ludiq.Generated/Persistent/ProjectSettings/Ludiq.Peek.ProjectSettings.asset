@@ -298,10 +298,10 @@ MonoBehaviour:
       Data: 1
     - Name: minor
       Entry: 3
-      Data: 3
+      Data: 1
     - Name: patch
       Entry: 3
-      Data: 0
+      Data: 8
     - Name: label
       Entry: 6
       Data: 

@@ -14,7 +14,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackBlink : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.RendererColor; } }
+        #endif
 
         /// the possible modes for this feedback, that correspond to MMBlink's public methods
         public enum BlinkModes { Toggle, Start, Stop }

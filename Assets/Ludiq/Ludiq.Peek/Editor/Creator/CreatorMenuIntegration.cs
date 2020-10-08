@@ -9,11 +9,6 @@ namespace Ludiq.Peek
 
 	public static class CreatorMenuIntegration
 	{
-		// HACK: For multiple targets, we receive the command once per object instead of altogether,
-		// however we use the selection as targets to regroup them, which ends up in us enqueing
-		// the same group command as many times as there are selected objects.
-		private static bool enqueuedMultiTargetsCommand;
-
 		// Note: MenuItem names cannot have "..." in the string, otherwise MenuCommand.context returns null.
 		
 		[MenuItem("GameObject/Create Prefab", true)]
@@ -57,19 +52,7 @@ namespace Ludiq.Peek
 		private static void CreateParent(MenuCommand menuCommand)
 		{
 			var targets = GetTargets(menuCommand);
-
-			if (enqueuedMultiTargetsCommand)
-			{
-				return;
-			}
-
-			enqueuedMultiTargetsCommand = true;
-			
-			GuiCallback.Enqueue(() => 
-			{ 
-				GameObjectOperations.CreateParent(targets, activatorPosition);
-				enqueuedMultiTargetsCommand = false;
-			});
+			GuiCallback.Enqueue(() => { GameObjectOperations.CreateParent(targets, activatorPosition); });
 		}
 
 		[MenuItem("GameObject/Create Sibling", false, -9998)]
@@ -90,19 +73,7 @@ namespace Ludiq.Peek
 		private static void Replace(MenuCommand menuCommand)
 		{
 			var targets = GetTargets(menuCommand);
-
-			if (enqueuedMultiTargetsCommand)
-			{
-				return;
-			}
-
-			enqueuedMultiTargetsCommand = true;
-
-			GuiCallback.Enqueue(() => 
-			{
-				GameObjectOperations.Replace(targets, activatorPosition);
-				enqueuedMultiTargetsCommand = false;
-			});
+			GuiCallback.Enqueue(() => { GameObjectOperations.Replace(targets, activatorPosition); });
 		}
 
 		private static bool ValidateTarget(MenuCommand menuCommand, bool allowMultiple)

@@ -18,7 +18,9 @@ namespace MoreMountains.FeedbacksForThirdParty
         public enum Actions { Blend, BlendBack }
 
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.PostProcessColor; } }
+        #endif
         /// defines the duration of the feedback
         public override float FeedbackDuration
         {

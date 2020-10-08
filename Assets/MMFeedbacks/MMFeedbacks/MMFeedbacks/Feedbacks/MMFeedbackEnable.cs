@@ -14,7 +14,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackEnable : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.GameObjectColor; } }
+        #endif
 
         /// the possible effects the feedback can have on the target object's status 
         public enum PossibleStates { Enabled, Disabled, Toggle }
@@ -100,6 +102,11 @@ namespace MoreMountains.Feedbacks
         protected override void CustomReset()
         {
             base.CustomReset();
+
+            if (InCooldown)
+            {
+                return;
+            }
 
             if (Active && (TargetBehaviour != null))
             {

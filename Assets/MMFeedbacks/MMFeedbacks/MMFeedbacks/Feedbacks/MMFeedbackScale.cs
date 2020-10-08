@@ -18,7 +18,9 @@ namespace MoreMountains.Feedbacks
         /// the possible timescales for the animation of the scale
         public enum TimeScales { Scaled, Unscaled }
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.TransformColor; } }
+        #endif
 
         [Header("Scale")]
         /// the mode this feedback should operate on
@@ -125,19 +127,30 @@ namespace MoreMountains.Feedbacks
             float journey = 0f;
 
             _initialScale = AnimateScaleTarget.localScale;
+            _newScale = _initialScale;
 
             while (journey < AnimateScaleDuration)
             {
                 float percent = Mathf.Clamp01(journey / AnimateScaleDuration);
 
-                _newScale.x = Mathf.LerpUnclamped(_initialScale.x, DestinationScale.x, AnimateScaleX.Evaluate(percent) + Offset);
-                _newScale.y = Mathf.LerpUnclamped(_initialScale.y, DestinationScale.y, AnimateScaleY.Evaluate(percent) + Offset);
-                _newScale.z = Mathf.LerpUnclamped(_initialScale.z, DestinationScale.z, AnimateScaleZ.Evaluate(percent) + Offset);
+                if (AnimateX)
+                {
+                    _newScale.x = Mathf.LerpUnclamped(_initialScale.x, DestinationScale.x, AnimateScaleX.Evaluate(percent) + Offset);
+                    _newScale.x = MMFeedbacksHelpers.Remap(_newScale.x, 0f, 1f, RemapCurveZero, RemapCurveOne);    
+                }
 
-                _newScale.x = MMFeedbacksHelpers.Remap(_newScale.x, 0f, 1f, RemapCurveZero, RemapCurveOne);
-                _newScale.y = MMFeedbacksHelpers.Remap(_newScale.y, 0f, 1f, RemapCurveZero, RemapCurveOne);
-                _newScale.z = MMFeedbacksHelpers.Remap(_newScale.z, 0f, 1f, RemapCurveZero, RemapCurveOne);
+                if (AnimateY)
+                {
+                    _newScale.y = Mathf.LerpUnclamped(_initialScale.y, DestinationScale.y, AnimateScaleY.Evaluate(percent) + Offset);
+                    _newScale.y = MMFeedbacksHelpers.Remap(_newScale.y, 0f, 1f, RemapCurveZero, RemapCurveOne);    
+                }
 
+                if (AnimateZ)
+                {
+                    _newScale.z = Mathf.LerpUnclamped(_initialScale.z, DestinationScale.z, AnimateScaleZ.Evaluate(percent) + Offset);
+                    _newScale.z = MMFeedbacksHelpers.Remap(_newScale.z, 0f, 1f, RemapCurveZero, RemapCurveOne);    
+                }
+                
                 AnimateScaleTarget.localScale = _newScale;
 
                 journey += (TimeScale == TimeScales.Scaled) ? Time.deltaTime : Time.unscaledDeltaTime;
@@ -178,42 +191,104 @@ namespace MoreMountains.Feedbacks
             }
 
             float journey = 0f;
+            _initialScale = targetTransform.localScale;
             
             while (journey < duration)
             {
+                vector = Vector3.zero;
                 float percent = Mathf.Clamp01(journey / duration);
 
-                vector.x = AnimateX ? curveX.Evaluate(percent) + Offset : targetTransform.localScale.x;
-                vector.y = AnimateY ? curveY.Evaluate(percent) + Offset : targetTransform.localScale.y;
-                vector.z = AnimateZ ? curveZ.Evaluate(percent) + Offset : targetTransform.localScale.z;
-
-                vector.x = MMFeedbacksHelpers.Remap(vector.x, 0f, 1f, RemapCurveZero, RemapCurveOne);
-                vector.y = MMFeedbacksHelpers.Remap(vector.y, 0f, 1f, RemapCurveZero, RemapCurveOne);
-                vector.z = MMFeedbacksHelpers.Remap(vector.z, 0f, 1f, RemapCurveZero, RemapCurveOne);
-                
-                if (Mode == Modes.Additive)
+                if (AnimateX)
                 {
-                    vector += _initialScale;
+                    vector.x = AnimateX ? curveX.Evaluate(percent) + Offset : targetTransform.localScale.x;
+                    vector.x = MMFeedbacksHelpers.Remap(vector.x, 0f, 1f, RemapCurveZero, RemapCurveOne);
+                    if (Mode == Modes.Additive)
+                    {
+                        vector.x += _initialScale.x;
+                    }
+                }
+                else
+                {
+                    vector.x = targetTransform.localScale.x;
                 }
 
+                if (AnimateY)
+                {
+                    vector.y = AnimateY ? curveY.Evaluate(percent) + Offset : targetTransform.localScale.y;
+                    vector.y = MMFeedbacksHelpers.Remap(vector.y, 0f, 1f, RemapCurveZero, RemapCurveOne);    
+                    if (Mode == Modes.Additive)
+                    {
+                        vector.y += _initialScale.y;
+                    }
+                }
+                else 
+                {
+                    vector.y = targetTransform.localScale.y;
+                }
+
+                if (AnimateZ)
+                {
+                    vector.z = AnimateZ ? curveZ.Evaluate(percent) + Offset : targetTransform.localScale.z;
+                    vector.z = MMFeedbacksHelpers.Remap(vector.z, 0f, 1f, RemapCurveZero, RemapCurveOne);    
+                    if (Mode == Modes.Additive)
+                    {
+                        vector.z += _initialScale.z;
+                    }
+                }
+                else 
+                {
+                    vector.z = targetTransform.localScale.z;
+                }
                 targetTransform.localScale = vector;
 
                 journey += (TimeScale == TimeScales.Scaled) ? Time.deltaTime : Time.unscaledDeltaTime;
                 yield return null;
             }
+            
+            vector = Vector3.zero;
 
-            vector.x = AnimateX ? curveX.Evaluate(1f) + Offset : targetTransform.localScale.x;
-            vector.y = AnimateY ? curveY.Evaluate(1f) + Offset : targetTransform.localScale.y;
-            vector.z = AnimateZ ? curveZ.Evaluate(1f) + Offset : targetTransform.localScale.z;
-                       
-            vector.x = MMFeedbacksHelpers.Remap(vector.x, 0f, 1f, RemapCurveZero, RemapCurveOne);
-            vector.y = MMFeedbacksHelpers.Remap(vector.y, 0f, 1f, RemapCurveZero, RemapCurveOne);
-            vector.z = MMFeedbacksHelpers.Remap(vector.z, 0f, 1f, RemapCurveZero, RemapCurveOne);
-
-            if (Mode == Modes.Additive)
+            if (AnimateX)
             {
-                vector += _initialScale;
+                vector.x = AnimateX ? curveX.Evaluate(1f) + Offset : targetTransform.localScale.x;
+                vector.x = MMFeedbacksHelpers.Remap(vector.x, 0f, 1f, RemapCurveZero, RemapCurveOne);
+                if (Mode == Modes.Additive)
+                {
+                    vector.x += _initialScale.x;
+                }
             }
+            else 
+            {
+                vector.x = targetTransform.localScale.x;
+            }
+
+            if (AnimateY)
+            {
+                vector.y = AnimateY ? curveY.Evaluate(1f) + Offset : targetTransform.localScale.y;
+                vector.y = MMFeedbacksHelpers.Remap(vector.y, 0f, 1f, RemapCurveZero, RemapCurveOne);
+                if (Mode == Modes.Additive)
+                {
+                    vector.y += _initialScale.y;
+                }
+            }
+            else 
+            {
+                vector.y = targetTransform.localScale.y;
+            }
+
+            if (AnimateZ)
+            {
+                vector.z = AnimateZ ? curveZ.Evaluate(1f) + Offset : targetTransform.localScale.z;
+                vector.z = MMFeedbacksHelpers.Remap(vector.z, 0f, 1f, RemapCurveZero, RemapCurveOne);    
+                if (Mode == Modes.Additive)
+                {
+                    vector.z += _initialScale.z;
+                }
+            }
+            else 
+            {
+                vector.z = targetTransform.localScale.z;
+            }
+            
             targetTransform.localScale = vector;
 
             yield return null;

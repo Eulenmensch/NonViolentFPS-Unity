@@ -86,7 +86,7 @@ namespace MoreMountains.NiceVibrations
         /// </summary>
         /// <param name="AHAPasString"></param>
         /// <returns></returns>
-        public static MMNVAndroidWaveForm AHAPtoAndroidWaveForm(string AHAPasString)
+        public static MMNVAndroidWaveForm AHAPtoAndroidWaveForm(string AHAPasString, float intensityMultiplier, float sharpnessMultiplier)
         {
             MMNVAHAP ahap = JsonConvert.DeserializeObject<MMNVAHAP>(AHAPasString);
 
@@ -103,12 +103,11 @@ namespace MoreMountains.NiceVibrations
                     {
                         foreach (MMNVAHAPParameterCurveControlPoint point in pattern.ParameterCurve.ParameterCurveControlPoints)
                         {
-
                             double timeStamp = point.Time - previousTimeStamp;
                             totalTimeStamp += timeStamp;
                             patterns.Add((long)(timeStamp * 1000));
 
-                            float originalIntensity = (float)point.ParameterValue;
+                            float originalIntensity = (float)point.ParameterValue * intensityMultiplier;
                             int intensity = (int)Remap(originalIntensity, 0f, 1f, 0f, 255f);
                             amplitudes.Add(intensity);
 
@@ -131,7 +130,7 @@ namespace MoreMountains.NiceVibrations
         /// </summary>
         /// <param name="AHAPasString"></param>
         /// <returns></returns>
-        public static MMNVRumbleWaveForm AHAPtoRumbleWaveForm(string AHAPasString)
+        public static MMNVRumbleWaveForm AHAPtoRumbleWaveForm(string AHAPasString, float intensityMultiplier, float sharpnessMultiplier)
         {
             MMNVAHAP ahap = JsonConvert.DeserializeObject<MMNVAHAP>(AHAPasString);
 
@@ -154,7 +153,7 @@ namespace MoreMountains.NiceVibrations
                             totalTimeStamp += timeStamp;
                             patterns.Add((long)(timeStamp * 1000));
 
-                            float originalIntensity = (float)point.ParameterValue;
+                            float originalIntensity = (float)point.ParameterValue * intensityMultiplier;
                             int intensity = (int)Remap(originalIntensity, 0f, 1f, 0f, 255f);
                             lowFreqAmplitudes.Add(intensity);
 
@@ -169,7 +168,7 @@ namespace MoreMountains.NiceVibrations
                             totalTimeStamp += timeStamp;
                             patterns.Add((long)(timeStamp * 1000));
 
-                            float originalIntensity = (float)point.ParameterValue;
+                            float originalIntensity = (float)point.ParameterValue * sharpnessMultiplier;
                             int intensity = (int)Remap(originalIntensity, 0f, 1f, 0f, 255f);
                             highFreqAmplitudes.Add(intensity);
 

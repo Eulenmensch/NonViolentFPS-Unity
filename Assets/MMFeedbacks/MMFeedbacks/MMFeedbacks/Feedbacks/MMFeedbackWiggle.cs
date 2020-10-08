@@ -13,7 +13,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackWiggle : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.TransformColor; } }
+        #endif
 
         public MMWiggle TargetWiggle;
         [Header("Position")]

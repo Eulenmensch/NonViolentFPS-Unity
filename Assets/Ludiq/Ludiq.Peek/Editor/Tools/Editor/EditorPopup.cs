@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Ludiq.PeekCore.ReflectionMagic;
 using UnityEditor;
+using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
-#if UNITY_2020_2_OR_NEWER
-using UnityEditor.AssetImporters;
-#else
-using UnityEditor.Experimental.AssetImporters;
-
-#endif
 
 namespace Ludiq.Peek
 {
@@ -22,25 +18,19 @@ namespace Ludiq.Peek
 	{
 		public Rect activatorPosition { get; set; }
 
-		[NonSerialized]
 		private float autoHeight;
-
-		[SerializeField]
+		
 		private UnityObject[] initializationTargets;
-
-#if UNITY_2019_2_OR_NEWER
-		[SerializeField]
-		private string[] initializationTargetIdData;
-#endif
 
 		public Editor editor { get; private set; }
 
-		[NonSerialized]
 		private Editor importerTargetEditor;
 
 		public bool isPopup { get; private set; }
 
 		public bool isPinned => !isPopup;
+
+		private bool shouldClose => editor == null || editor.targets.All(t => t == null);
 
 		public static EditorPopup Open(UnityObject target, Rect activator)
 		{
@@ -90,25 +80,12 @@ namespace Ludiq.Peek
 			minSize = new Vector2(200, 16);
 			maxSize = new Vector2(4000, 4000);
 			autoRepaintOnSceneChange = true;
-
-			// Exiting play mode does not reload assemblies, which can do weird  
-			// things to some editors, like the Mesh Renderer Editor, who seem to keep
-			// references to destroyed objects. We manually dispose the editors and revalidate
-			// to ensure a reinitialization if possible.
-			EditorApplicationUtility.onExitPlayMode += DisposeEditors;
-			EditorApplicationUtility.onEnterEditMode += DisposeEditors;
 		}
 
 		protected override void OnDisable()
 		{
-			EditorApplicationUtility.onExitPlayMode -= DisposeEditors;
-			EditorApplicationUtility.onEnterEditMode -= DisposeEditors;
-			DisposeEditors();
 			base.OnDisable();
-		}
 
-		private void DisposeEditors()
-		{
 			if (editor != null)
 			{
 				DestroyImmediate(editor);
@@ -124,14 +101,7 @@ namespace Ludiq.Peek
 
 		private void Initialize(UnityObject[] targets)
 		{
-			Ensure.That(nameof(targets)).IsNotNull(targets);
-			Ensure.That(nameof(targets)).HasItems(targets);
-
 			initializationTargets = targets;
-
-#if UNITY_2019_2_OR_NEWER
-			initializationTargetIdData = targets.Select(t => t == null ? null : GlobalObjectId.GetGlobalObjectIdSlow(t).ToString()).ToArray();
-#endif
 
 			editor = Editor.CreateEditor(targets);
 
@@ -156,34 +126,7 @@ namespace Ludiq.Peek
 
 			if (importer != null)
 			{
-				// Comment from AssetImporterEditor.cs (reference source) about InternalSetAssetImporterTargetEditor:
-				// "Called from ActiveEditorTracker.cpp to setup the target editor once created before Awake and OnEnable of the Editor."
-
-				Editor importerEditor = null;
-
-				try
-				{
-					importerEditor = Editor.CreateEditor(importer);
-				}
-				catch (Exception ex)
-				{
-					// Unfortunately we cannot hook our call before Awake, so there might be some unexpected behaviour.
-					// PrefabImporterEditor would need it, for example, to iterate over assetTargets in Awake(), and will NRE:
-					// https://support.ludiq.io/communities/41/topics/5246-
-
-					Debug.Log(ex.GetType() + " " + importerEditor.GetType());
-
-					if (ex is NullReferenceException &&
-					    importerEditor != null &&
-					    importerEditor.GetType().Name == "PrefabImporterEditor")
-					{
-						// Eat the known issue.
-					}
-					else
-					{
-						throw;
-					}
-				}
+				var importerEditor = Editor.CreateEditor(importer);
 
 				if (importerEditor is AssetImporterEditor)
 				{
@@ -208,112 +151,13 @@ namespace Ludiq.Peek
 			}
 		}
 
-		private bool Validate()
-		{
-			// Validate should return whether the popup is alive.  
-			// If not, it should try reinitializing it from serialized data, if possible.
-			// If it returns false, the popup may have been closed by Validate, and the caller should abort.
-
-			// If we're already alive, no need to do anything, just return true.
-			var isAlive = editor != null &&
-			              editor.targets.All(t => t != null) &&
-			              editor.serializedObject != null &&
-			              editor.serializedObject.targetObject != null &&
-			              editor.serializedObject.targetObjects.All(t => t != null);
-
-			if (isAlive)
-			{
-				return true;
-			}
-
-			// If we don't have initialization data and we're not alive, we close and abort.
-			// Normally though, this shouldn't happen, since this gets set in Initialize() then serialized.
-
-			var isInitializable = initializationTargets != null
-#if UNITY_2019_2_OR_NEWER
-			                    && initializationTargetIdData != null 
-			                    && initializationTargets.Length == initializationTargetIdData.Length
-#endif
-				;
-
-			if (!isInitializable)
-			{
-				Close();
-				return false;
-			}
-
-			// We wait for the plugin container to be initialized, but don't close yet if it isn't.
-			if (!PluginContainer.initialized)
-			{
-				return false;
-			}
-
-			// Check that we do want persistent editors. Currently an experimental feature.
-			if (!PeekPlugin.Configuration.persistentPinnedEditors)
-			{
-				Close();
-				return false;
-			}
-
-			// The strategy will be to try to use the serialized object reference if available,
-			// then otherwise parse and return the GOID. Normally we should be able to rely on 
-			// the GOID alone, but there's a bug (TODO: REPORT) in the UnityEditor.GUID.TryParse
-			// function which will return false for zero values, the case for objects within
-			// unsaved scenes.
-
-			var targets = new List<UnityObject>();
-
-			for (var i = 0; i < initializationTargets.Length; i++)
-			{
-				var initializationTarget = initializationTargets[i];
-
-				// We have a direct alive reference, keep that
-				if (initializationTarget != null)
-				{
-					targets.Add(initializationTarget);
-					continue;
-				}
-
-#if UNITY_2019_2_OR_NEWER
-				// Fallback to parsing the GOID
-
-				var initializationTargetIdDatum = initializationTargetIdData[i];
-				
-				if (!GlobalObjectId.TryParse(initializationTargetIdDatum, out var initializationTargetId))
-				{
-					continue;
-				}
-
-				var target = GlobalObjectId.GlobalObjectIdentifierToObjectSlow(initializationTargetId);
-
-				if (target == null)
-				{
-					continue;
-				}
-
-				targets.Add(target);
-#endif
-			}
-
-			// If we couldn't find any initialization target that's still alive, we have nothing to display,
-			// so we close and abort.
-			if (targets.Count == 0)
-			{
-				Close();
-				return false;
-			}
-
-			// If we did find alive targets to reinitialize, we use those to reinitialize the popup and return true.
-			Initialize(targets.ToArray());
-			return true;
-		}
-
 		protected override void Update()
 		{
 			base.Update();
 
-			if (!Validate())
+			if (shouldClose)
 			{
+				Close();
 				return;
 			}
 
@@ -326,7 +170,7 @@ namespace Ludiq.Peek
 				activatorPositionBar.xMin = 0;
 				activatorPositionBar.xMax = 4000;
 				var positionX = this.GetDropdownPositionCropped(activatorPosition, new Vector2(position.width, 1));
-				var positionY = this.GetDropdownPositionCropped(activatorPositionBar, new Vector2(position.width, autoHeight));
+				var positionY =  this.GetDropdownPositionCropped(activatorPositionBar, new Vector2(position.width, autoHeight));
 
 				position = new Rect
 				(
@@ -342,26 +186,18 @@ namespace Ludiq.Peek
 		{
 			var instance = CreateInstance<EditorPopup>();
 			instance.Initialize(initializationTargets);
-
-			if (PeekPlugin.Configuration.persistentPinnedEditors)
-			{
-				instance.Show();
-			}
-			else
-			{
-				instance.ShowUtility();
-			}
-
+			instance.ShowUtility();
 			instance.position = position;
 			Close();
 		}
-
+		
 		protected override void OnGUI()
 		{
 			base.OnGUI();
 
-			if (!Validate())
+			if (shouldClose)
 			{
+				Close();
 				return;
 			}
 
@@ -418,7 +254,7 @@ namespace Ludiq.Peek
 
 				GUILayout.EndVertical();
 			}
-
+			
 			GUILayout.BeginVertical(Styles.smallHeaderExtra, GUILayout.ExpandHeight(true));
 
 			if (largeHeader)
@@ -446,11 +282,11 @@ namespace Ludiq.Peek
 					}
 				}
 			}
-
+			
 			EditorGUI.EndDisabledGroup();
 
 			var wantsPin = GUILayout.Toggle(isPinned, GUIContent.none, PeekStyles.pinButton);
-
+			
 			EditorGUI.BeginDisabledGroup(!editable);
 
 			if (isPinned != wantsPin)
@@ -498,7 +334,7 @@ namespace Ludiq.Peek
 
 					GUILayout.Space(2);
 					GUILayout.Label("Create", GUILayout.ExpandWidth(false));
-
+					
 					if (GUILayout.Button("Prefab", EditorStyles.miniButtonLeft, GUILayout.ExpandWidth(true)))
 					{
 						GameObjectOperations.CreateOriginalPrefab(go);
@@ -534,7 +370,7 @@ namespace Ludiq.Peek
 			{
 				height += GUILayoutUtility.GetRect(GUIContent.none, GUIStyle.none, GUILayout.Height(0)).yMin;
 			}
-
+			
 			EditorGUI.EndDisabledGroup();
 
 			scroll = EditorGUILayout.BeginScrollView(scroll);
@@ -550,6 +386,7 @@ namespace Ludiq.Peek
 			editor.OnInspectorGUI();
 			EditorGUI.EndDisabledGroup();
 			GUILayout.EndVertical();
+
 
 			if (isPinned)
 			{

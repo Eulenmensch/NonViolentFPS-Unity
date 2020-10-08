@@ -13,7 +13,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackFlash : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.CameraColor; } }
+        #endif
 
         [Header("Flash")]
         /// the channel to broadcast that flash event on

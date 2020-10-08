@@ -4,21 +4,21 @@ using UnityEngine;
 
 namespace MoreMountains.Tools
 {
-	[CustomPropertyDrawer(typeof(ReorderableAttribute))]
+	[CustomPropertyDrawer(typeof(MMReorderableAttributeAttribute))]
 	public class ReorderableDrawer : PropertyDrawer {
 
 		private static Dictionary<int, ReorderableList> lists = new Dictionary<int, ReorderableList>();
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
 
-			ReorderableList list = GetList(property, attribute as ReorderableAttribute);
+			ReorderableList list = GetList(property, attribute as MMReorderableAttributeAttribute);
 
 			return list != null ? list.GetHeight() : EditorGUIUtility.singleLineHeight;
 		}		
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 
-			ReorderableList list = GetList(property, attribute as ReorderableAttribute);
+			ReorderableList list = GetList(property, attribute as MMReorderableAttributeAttribute);
 
 			if (list != null) {
 
@@ -48,7 +48,7 @@ namespace MoreMountains.Tools
 			return GetList(property, null, GetListId(property));
 		}
 
-		public static ReorderableList GetList(SerializedProperty property, ReorderableAttribute attrib) {
+		public static ReorderableList GetList(SerializedProperty property, MMReorderableAttributeAttribute attrib) {
 
 			return GetList(property, attrib, GetListId(property));
 		}
@@ -58,7 +58,7 @@ namespace MoreMountains.Tools
 			return GetList(property, null, id);
 		}
 
-		public static ReorderableList GetList(SerializedProperty property, ReorderableAttribute attrib, int id) {
+		public static ReorderableList GetList(SerializedProperty property, MMReorderableAttributeAttribute attrib, int id) {
 
 			if (property == null) {
 

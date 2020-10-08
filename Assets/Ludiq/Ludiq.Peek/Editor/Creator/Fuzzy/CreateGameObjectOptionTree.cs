@@ -117,15 +117,15 @@ namespace Ludiq.Peek
 			);
 		}
 
-		private bool IncludeAsset(HierarchyPropertyCache asset)
+		private bool IncludeAsset(AssetDatabaseEntry asset)
 		{
 			if (PeekPlugin.Configuration.createFolderBlacklist.Count == 0)
 			{
 				return true;
 			}
 
-			var path = PathUtility.NaiveNormalize(asset.assetPath).Trim().ToLowerInvariant();
-			
+			var path = PathUtility.NaiveNormalize(asset.path).Trim().ToLowerInvariant();
+
 			foreach (var blacklisted in PeekPlugin.Configuration.createFolderBlacklist)
 			{
 				var _blacklisted = PathUtility.NaiveNormalize(blacklisted).Trim().ToLowerInvariant();
@@ -198,7 +198,7 @@ namespace Ludiq.Peek
 
 			foreach (var assetOption in assetOptions)
 			{
-				if (PathUtility.NaiveContains(path, assetOption.assetPath))
+				if (PathUtility.NaiveContains(path, assetOption.assetDatabaseEntry.path))
 				{
 					yield return assetOption;
 				}

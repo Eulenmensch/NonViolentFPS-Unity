@@ -19,7 +19,10 @@ namespace Ludiq.Peek
 
 		internal static void OnSceneGUI(SceneView sceneView)
 		{
-			if (PeekPlugin.Configuration.sceneHierarchyShortcut.Check(e))
+			if (e.type == EventType.KeyDown &&
+			    (
+				    (PeekPlugin.Configuration.enableHierarchySpaceShortcut && e.modifiers == EventModifiers.None && e.keyCode == KeyCode.Space) ||
+				    (PeekPlugin.Configuration.enableHierarchyFindShortcut && e.CtrlOrCmd() && e.keyCode == KeyCode.F && !e.shift && !e.alt)))
 			{
 				var width = Mathf.Min(sceneView.position.width * 0.9f, 400);
 

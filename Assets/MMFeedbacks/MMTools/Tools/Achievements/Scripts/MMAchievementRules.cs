@@ -7,7 +7,7 @@ namespace MoreMountains.Tools
 	/// <summary>
 	/// That class is meant to be extended to implement the achievement rules specific to your game.
 	/// </summary>
-	public class MMAchievementRules : MonoBehaviour, MMEventListener<MMGameEvent>
+	public abstract class MMAchievementRules : MonoBehaviour, MMEventListener<MMGameEvent>
 	{
 		/// <summary>
 		/// On Awake, loads the achievement list and the saved file

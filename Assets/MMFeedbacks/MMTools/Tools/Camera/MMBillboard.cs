@@ -13,26 +13,37 @@ namespace MoreMountains.Tools
 		public Camera MainCamera { get; set; }
 		/// whether or not this object should automatically grab a camera on start
 		public bool GrabMainCameraOnStart = true;
+        /// whether or not to nest this object below a parent container
+        public bool NestObject = true;
 
-		protected GameObject _parentContainer;	
+		protected GameObject _parentContainer;
+        private Transform _transform;
 
 		/// <summary>
 		/// On awake we grab a camera if needed, and nest our object
 		/// </summary>
 		protected virtual void Awake()
 		{
+            _transform = transform;
+
 			if (GrabMainCameraOnStart == true)
 			{
 				GrabMainCamera ();
 			}
-
-			NestThisObject ();
 		}
 
-		/// <summary>
-		/// Nests this object below a parent container
-		/// </summary>
-		protected virtual void NestThisObject()
+        private void Start()
+        {
+            if (NestObject)
+            {
+                NestThisObject();
+            }                
+        }
+
+        /// <summary>
+        /// Nests this object below a parent container
+        /// </summary>
+        protected virtual void NestThisObject()
 		{
 			_parentContainer = new GameObject();
 			_parentContainer.name = "Parent"+transform.gameObject.name;
@@ -53,7 +64,14 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void Update()
 		{
-			_parentContainer.transform.LookAt(_parentContainer.transform.position + MainCamera.transform.rotation * Vector3.back, MainCamera.transform.rotation * Vector3.up);
-		}
+            if (NestObject)
+            {
+                _parentContainer.transform.LookAt(_parentContainer.transform.position + MainCamera.transform.rotation * Vector3.back, MainCamera.transform.rotation * Vector3.up);
+            }                
+            else
+            {
+                _transform.LookAt(_transform.position + MainCamera.transform.rotation * Vector3.back, MainCamera.transform.rotation * Vector3.up);
+            }
+        }
 	}
 }

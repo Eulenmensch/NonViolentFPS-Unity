@@ -27,17 +27,19 @@ namespace MoreMountains.NiceVibrations
         [DllImport("__Internal")]
         private static extern bool MMNViOS_CoreHapticsSupported();
         [DllImport("__Internal")]
+        private static extern void MMNViOS_CreateEngine();
+        [DllImport("__Internal")]
         private static extern void MMNViOS_StopEngine();
         [DllImport("__Internal")]
-        private static extern void MMNViOS_PlayTransientHapticPattern(float intensity, float sharpness);
+        private static extern void MMNViOS_PlayTransientHapticPattern(float intensity, float sharpness, bool threaded);
         [DllImport("__Internal")]
-        private static extern void MMNViOS_PlayContinuousHapticPattern(float intensity, float sharpness, float duration);
+        private static extern void MMNViOS_PlayContinuousHapticPattern(float intensity, float sharpness, float duration, bool threaded, bool fullIntensity);
         [DllImport("__Internal")]
-        private static extern void MMNViOS_UpdateContinuousHapticPattern(float intensity, float sharpness);
+        private static extern void MMNViOS_UpdateContinuousHapticPattern(float intensity, float sharpness, bool threaded);
         [DllImport("__Internal")]
         private static extern void MMNViOS_StopContinuousHaptic();
         [DllImport("__Internal")]
-        private static extern void MMNViOS_PlayCoreHapticsFromJSON(string jsonString);
+        private static extern void MMNViOS_PlayCoreHapticsFromJSON(string jsonString, bool threaded);
         [DllImport("__Internal")]
         private static extern void MMNViOS_CoreHapticsRegisterHapticEngineFinishedCallback(Action callback);
         [DllImport("__Internal")]
@@ -49,12 +51,13 @@ namespace MoreMountains.NiceVibrations
 #else
         private static bool MMNViOS_CoreHapticsSupported() { return false; }
         private static void MMNViOS_CoreHapticsSetDebugMode(bool status) { }
+        private static void MMNViOS_CreateEngine() { }
         private static void MMNViOS_StopEngine() { }
-        private static void MMNViOS_PlayTransientHapticPattern(float intensity, float sharpness) { }
-        private static void MMNViOS_PlayContinuousHapticPattern(float intensity, float sharpness, float duration) { }
-        private static void MMNViOS_UpdateContinuousHapticPattern(float intensity, float sharpness) { }
+        private static void MMNViOS_PlayTransientHapticPattern(float intensity, float sharpness, bool threaded) { }
+        private static void MMNViOS_PlayContinuousHapticPattern(float intensity, float sharpness, float duration, bool threaded, bool fullIntensity) { }
+        private static void MMNViOS_UpdateContinuousHapticPattern(float intensity, float sharpness, bool threaded) { }
         private static void MMNViOS_StopContinuousHaptic() { }
-        private static void MMNViOS_PlayCoreHapticsFromJSON(string jsonString) { }
+        private static void MMNViOS_PlayCoreHapticsFromJSON(string jsonString, bool threaded) { }
         private static void MMNViOS_CoreHapticsRegisterHapticEngineFinishedCallback(Action callback) { }
         private static void MMNViOS_CoreHapticsRegisterHapticEngineErrorCallback(Action callback) { }
         private static void MMNViOS_CoreHapticsRegisterHapticEngineResetCallback(Action callback) { }
@@ -74,9 +77,13 @@ namespace MoreMountains.NiceVibrations
         /// Plays a core haptics pattern from a JSON string that matches the AHAP format
         /// </summary>
         /// <param name="jsonString"></param>
-        public static void PlayCoreHapticsFromJSON(string jsonString)
+        public static void PlayCoreHapticsFromJSON(string jsonString, bool threaded = false)
         {
-            MMNViOS_PlayCoreHapticsFromJSON(jsonString);
+            if ((jsonString == null) || (jsonString == ""))
+            {
+                return;
+            }
+            MMNViOS_PlayCoreHapticsFromJSON(jsonString, threaded);
         }
 
         /// <summary>
@@ -85,9 +92,9 @@ namespace MoreMountains.NiceVibrations
         /// </summary>
         /// <param name="intensity"></param>
         /// <param name="sharpness"></param>
-        public static void PlayTransientHapticPattern(float intensity, float sharpness)
+        public static void PlayTransientHapticPattern(float intensity, float sharpness, bool threaded = false)
         {
-            MMNViOS_PlayTransientHapticPattern(intensity, sharpness);
+            MMNViOS_PlayTransientHapticPattern(intensity, sharpness, threaded);
         }
 
         /// <summary>
@@ -99,7 +106,8 @@ namespace MoreMountains.NiceVibrations
         /// <param name="sharpness"></param>
         /// <param name="duration"></param>
         /// <param name="coroutineMonobehaviour"></param>
-        public static void PlayContinuousHapticPattern(float intensity, float sharpness, float duration, MonoBehaviour coroutineMonobehaviour = null)
+        public static void PlayContinuousHapticPattern(float intensity, float sharpness,
+            float duration, MonoBehaviour coroutineMonobehaviour = null, bool threaded = false, bool fullIntensity = true)
         {
             if (intensity < 0.01f)
             {
@@ -109,16 +117,7 @@ namespace MoreMountains.NiceVibrations
             _initialContinuousIntensity = intensity;
             _initialContinuousSharpness = sharpness;
 
-            if (coroutineMonobehaviour != null)
-            {
-                _initialContinuousIntensity = 1f;
-                MMNViOS_PlayContinuousHapticPattern(1f, sharpness, duration);
-                coroutineMonobehaviour.StartCoroutine(ContinuousHapticPatternCoroutine(intensity, sharpness));
-            }
-            else
-            {
-                MMNViOS_PlayContinuousHapticPattern(intensity, sharpness, duration);
-            }
+            MMNViOS_PlayContinuousHapticPattern(intensity, sharpness, duration, threaded, fullIntensity);
         }
 
         /// <summary>
@@ -127,10 +126,10 @@ namespace MoreMountains.NiceVibrations
         /// <param name="intensity"></param>
         /// <param name="sharpness"></param>
         /// <returns></returns>
-        public static IEnumerator ContinuousHapticPatternCoroutine(float intensity, float sharpness)
+        public static IEnumerator ContinuousHapticPatternCoroutine(float intensity, float sharpness, bool threaded = false)
         {
             yield return null;
-            MMNViOS_UpdateContinuousHapticPattern(intensity, sharpness);
+            MMNViOS_UpdateContinuousHapticPattern(intensity, sharpness, threaded);
         }
 
         /// <summary>
@@ -144,9 +143,9 @@ namespace MoreMountains.NiceVibrations
         /// </summary>
         /// <param name="intensity"></param>
         /// <param name="sharpness"></param>
-        public static void UpdateContinuousHapticPattern(float intensity, float sharpness)
+        public static void UpdateContinuousHapticPattern(float intensity, float sharpness, bool threaded = false)
         {
-            MMNViOS_UpdateContinuousHapticPattern(intensity, sharpness);
+            MMNViOS_UpdateContinuousHapticPattern(intensity, sharpness, threaded);
         }
 
         /// <summary>
@@ -157,7 +156,7 @@ namespace MoreMountains.NiceVibrations
         /// </summary>
         /// <param name="intensity"></param>
         /// <param name="sharpness"></param>
-        public static void UpdateContinuousHapticPatternRational(float intensity, float sharpness)
+        public static void UpdateContinuousHapticPatternRational(float intensity, float sharpness, bool threaded = false)
         {
             if (_initialContinuousIntensity < 0.01f)
             {
@@ -167,7 +166,7 @@ namespace MoreMountains.NiceVibrations
             float newIntensity = intensity / _initialContinuousIntensity;
             float newSharpness = sharpness - _initialContinuousSharpness;
 
-            MMNViOS_UpdateContinuousHapticPattern(newIntensity, newSharpness);
+            MMNViOS_UpdateContinuousHapticPattern(newIntensity, newSharpness, threaded);
         }
 
         /// <summary>
@@ -178,13 +177,21 @@ namespace MoreMountains.NiceVibrations
             MMNViOS_StopContinuousHaptic();
         }
 
-				/// <summary>
-				/// Stops the haptic engine entirely, cutting short any AHAP or transient that may have been playing
-				/// </summary>
-				public static void StopEngine()
-				{
-					MMNViOS_StopEngine();
-				}
+        /// <summary>
+        /// Stops the haptic engine entirely, cutting short any AHAP or transient that may have been playing
+        /// </summary>
+        public static void CreateEngine()
+        {
+            MMNViOS_CreateEngine();
+        }
+
+        /// <summary>
+        /// Stops the haptic engine entirely, cutting short any AHAP or transient that may have been playing
+        /// </summary>
+        public static void StopEngine()
+		{
+			MMNViOS_StopEngine();
+		}
 
         /// <summary>
         /// Sets the debug mode to true or false.

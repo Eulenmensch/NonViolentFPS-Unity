@@ -429,6 +429,7 @@ namespace MoreMountains.Tools
                 _rect.width = _columnWidth;
                 _rect.height = -_columnHeight;
                 EditorGUI.DrawRect(_rect, _barColor);
+
                 // bar number label
                 float labelCorrection = (i > 9) ? -5f : 0f;
                 _rect.x = _positionX + _columnWidth / 2 - 5 + labelCorrection;
@@ -606,7 +607,7 @@ namespace MoreMountains.Tools
                 {
                     float xPosition = _spectrumBoxPosition.x + _externalMargin + MMMaths.Remap(i, 0, points, 0f, _spectrumBoxSize.x - _externalMargin * 2);
                     float yPosition = _spectrumBoxPosition.y + _spectrumBoxSize.y / 2;
-                    float deltaX = (_spectrumBoxSize.x - _externalMargin * 2) / points;
+                    float deltaBetweenXandXPrevious = (_spectrumBoxSize.x - _externalMargin * 2) / points;
 
                     float spectrumValue = Foobar(i);
                     float spectrumValuePrevious = Foobar(i-1);
@@ -614,11 +615,15 @@ namespace MoreMountains.Tools
                     float factor = _spectrumBoxSize.y / 2;
 
                     Handles.color = _inactiveColor;
-                    _axisOrigin.x = xPosition - deltaX;
+                    _axisOrigin.x = xPosition - deltaBetweenXandXPrevious;
                     _axisOrigin.y = yPosition + spectrumValuePrevious;
                     _axisDestination.x = xPosition;
                     _axisDestination.y = yPosition + spectrumValue ;
-                    Handles.DrawLine(_axisOrigin, _axisDestination);
+
+                    var p1 = _axisOrigin;
+                    var p2 = _axisDestination;
+                    var thickness = 3;
+                    Handles.DrawBezier(p1, p2, p1, p2, _spectrumColor, null, thickness);
                 }
             }
             Handles.EndGUI();

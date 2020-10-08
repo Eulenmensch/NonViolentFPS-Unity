@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-namespace MoreMountains.Feedbacks
+namespace MoreMountains.NiceVibrations
 {
 #if UNITY_EDITOR
     /// <summary>

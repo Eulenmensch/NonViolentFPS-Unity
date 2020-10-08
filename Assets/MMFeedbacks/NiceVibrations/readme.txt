@@ -1,9 +1,9 @@
 A more user friendly doc is available at http://nice-vibrations-docs.moremountains.com/
 Find out more about the asset at http://nice-vibrations.moremountains.com/
 
-Nice Vibrations v3.2
+Nice Vibrations v3.8
 
-## WHAT'S IN THE ASSET ?
+## WHAT'S IN THE ASSET ? 
 -------------------------
 
 The asset contains three main folders : Common, Demos, and ThirdParty.
@@ -12,7 +12,7 @@ The asset contains three main folders : Common, Demos, and ThirdParty.
 You'll want to keep that folder in your game. 
 
 - Demos contains a demo scene meant to be compiled for Android or iOS.
-It's recommended to keep that folder, but if you really want to, you can remove it safely.
+It's recommended to keep that folder, but if you really want to, you can remove it safely. 
 
 - ThirdParty contains an open source json parsing library used to convert AHAP files to Android Waveforms.
 You'll also want to keep that folder.

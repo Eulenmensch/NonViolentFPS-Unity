@@ -13,7 +13,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackCameraZoom : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.CameraColor; } }
+        #endif
 
         [Header("Camera Zoom")]
         /// the channel to broadcast that zoom event on

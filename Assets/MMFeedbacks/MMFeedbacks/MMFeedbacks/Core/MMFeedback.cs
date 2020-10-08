@@ -14,7 +14,7 @@ namespace MoreMountains.Feedbacks
     public abstract class MMFeedback : MonoBehaviour
     {
         /// whether or not this feedback is active
-        public bool Active = true;        
+        public bool Active = true;
         /// the name of this feedback to display in the inspector
         public string Label = "MMFeedback";
         /// the chance of this feedback happening (in percent : 100 : happens all the time, 0 : never happens, 50 : happens once every two calls, etc)
@@ -37,7 +37,11 @@ namespace MoreMountains.Feedbacks
         public virtual bool LooperStart { get { return false; } }
         /// an overridable color for your feedback, that can be redefined per feedback. White is the only reserved color, and the feedback will revert to 
         /// normal (light or dark skin) when left to White
+        #if UNITY_EDITOR
         public virtual Color FeedbackColor { get { return Color.white;  } }
+        #endif
+        /// returns true if this feedback is in cooldown at this time (and thus can't play), false otherwise
+        public virtual bool InCooldown { get { return (Timing.CooldownDuration > 0f) && (FeedbackTime - _lastPlayTimestamp < Timing.CooldownDuration); } }
         
         /// the time (or unscaled time) based on the selected Timing settings
         public float FeedbackTime { get {
@@ -86,6 +90,12 @@ namespace MoreMountains.Feedbacks
         protected Coroutine _repeatedPlayCoroutine;
         protected int _sequenceTrackID = 0;
 
+        protected float _beatInterval;
+        protected bool BeatThisFrame = false;
+        protected int LastBeatIndex = 0;
+        protected int CurrentSequenceIndex = 0;
+        protected float LastBeatTimestamp = 0f;
+
         /// <summary>
         /// Initializes the feedback and its timing related variables
         /// </summary>
@@ -96,32 +106,13 @@ namespace MoreMountains.Feedbacks
             Owner = owner;
             _playsLeft = Timing.NumberOfRepeats + 1;
 
-            if (Timing.InitialDelay > 0f)
-            {
-                _initialDelayWaitForSeconds = new WaitForSeconds(Timing.InitialDelay);
-            }
-
-            if (Timing.DelayBetweenRepeats > 0f)
-            {
-                _betweenDelayWaitForSeconds = new WaitForSeconds(Timing.DelayBetweenRepeats + FeedbackDuration);
-            }
-            
-            if (Timing.Sequence != null)
-            {
-                _sequenceDelayWaitForSeconds = new WaitForSeconds(Timing.DelayBetweenRepeats + Timing.Sequence.Length);
-
-                for (int i = 0; i < Timing.Sequence.SequenceTracks.Count; i++)
-                {
-                    if (Timing.Sequence.SequenceTracks[i].ID == Timing.TrackID)
-                    {
-                        _sequenceTrackID = i;
-                    }
-                }
-            }
+            SetInitialDelay(Timing.InitialDelay);
+            SetDelayBetweenRepeats(Timing.DelayBetweenRepeats);
+            SetSequence(Timing.Sequence);
 
             CustomInitialization(owner);            
         }
-
+        
         /// <summary>
         /// Plays the feedback
         /// </summary>
@@ -140,7 +131,7 @@ namespace MoreMountains.Feedbacks
             }
             
             // we check the cooldown
-            if ((Timing.CooldownDuration > 0f) && (FeedbackTime - _lastPlayTimestamp < Timing.CooldownDuration))
+            if (InCooldown)
             {
                 return;
             }
@@ -261,12 +252,12 @@ namespace MoreMountains.Feedbacks
             _playsLeft = Timing.NumberOfRepeats + 1;
         }
 
-        protected float _beatInterval;
-        protected bool BeatThisFrame = false;
-        protected int LastBeatIndex = 0;
-        protected int CurrentSequenceIndex = 0;
-        protected float LastBeatTimestamp = 0f;
-
+        /// <summary>
+        /// A coroutine used to play this feedback on a sequence
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="attenuation"></param>
+        /// <returns></returns>
         protected virtual IEnumerator SequenceCoroutine(Vector3 position, float attenuation = 1.0f)
         {
             yield return null;
@@ -337,12 +328,62 @@ namespace MoreMountains.Feedbacks
             CustomStopFeedback(position, attenuation);
         }
 
+        /// <summary>
+        /// Calls this feedback's custom reset 
+        /// </summary>
         public virtual void ResetFeedback()
         {
             _playsLeft = Timing.NumberOfRepeats + 1;
             CustomReset();
         }
-        
+
+        /// <summary>
+        /// Use this method to change this feedback's sequence at runtime
+        /// </summary>
+        /// <param name="newSequence"></param>
+        public virtual void SetSequence(MMSequence newSequence)
+        {
+            Timing.Sequence = newSequence;
+            if (Timing.Sequence != null)
+            {
+                _sequenceDelayWaitForSeconds = new WaitForSeconds(Timing.DelayBetweenRepeats + Timing.Sequence.Length);
+
+                for (int i = 0; i < Timing.Sequence.SequenceTracks.Count; i++)
+                {
+                    if (Timing.Sequence.SequenceTracks[i].ID == Timing.TrackID)
+                    {
+                        _sequenceTrackID = i;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Use this method to specify a new delay between repeats at runtime
+        /// </summary>
+        /// <param name="delay"></param>
+        public virtual void SetDelayBetweenRepeats(float delay)
+        {
+            Timing.DelayBetweenRepeats = delay;
+            if (Timing.DelayBetweenRepeats > 0f)
+            {
+                _betweenDelayWaitForSeconds = new WaitForSeconds(Timing.DelayBetweenRepeats + FeedbackDuration);
+            }
+        }
+
+        /// <summary>
+        /// Use this method to specify a new initial delay at runtime
+        /// </summary>
+        /// <param name="delay"></param>
+        public virtual void SetInitialDelay(float delay)
+        {
+            Timing.InitialDelay = delay;
+            if (Timing.InitialDelay > 0f)
+            {
+                _initialDelayWaitForSeconds = new WaitForSeconds(Timing.InitialDelay);
+            }
+        }
+
         /// <summary>
         /// This method describes all custom initialization processes the feedback requires, in addition to the main Initialization method
         /// </summary>

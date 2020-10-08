@@ -19,18 +19,19 @@ namespace MoreMountains.FeedbacksForThirdParty
     public class MMFeedbackHaptics : MMFeedback
     {
         /// the possible haptic methods for this feedback
-        public enum HapticMethods { NativePreset, Transient, Continuous, AdvancedPattern, Stop }
+        public enum HapticMethods { NativePreset, Transient, Continuous, AdvancedPattern, Stop, AdvancedTransient, AdvancedContinuous }
         /// the timescale to operate on
         public enum Timescales { ScaledTime, UnscaledTime }
 
+        // NATIVE PRESET -----------------------------------------------------------------------------------------------------
         [Header("Haptics")]
         /// the method to use when triggering this haptic feedback
         public HapticMethods HapticMethod = HapticMethods.NativePreset;
-
         /// the type of native preset to use
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.NativePreset)]
         public HapticTypes HapticType = HapticTypes.None;
-        
+
+        // TRANSIENT ---------------------------------------------------------------------------------------------------------
         /// the intensity of the transient haptic
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.Transient)]
         public float TransientIntensity = 1f;
@@ -38,6 +39,42 @@ namespace MoreMountains.FeedbacksForThirdParty
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.Transient)]
         public float TransientSharpness = 1f;
 
+        // ADV TRANSIENT ---------------------------------------------------------------------------------------------------------
+        /// whether or not to vibrate on iOS when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public bool ATVibrateIOS = true;
+        /// the intensity on iOS when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public float ATIOSIntensity = 1f;
+        /// the sharpness on iOS when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public float ATIOSSharpness = 1f;
+        /// whether onr not to vibrate on android when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public bool ATVibrateAndroid = true;
+        /// whether or not to vibrate on android if no support for advanced vibrations when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public bool ATVibrateAndroidIfNoSupport = false;
+        /// the intensity on android when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public float ATAndroidIntensity = 1f;
+        /// the sharpness on android when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public float ATAndroidSharpness = 1f;
+        /// whether or not to rumble when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public bool ATRumble = true;
+        /// the rumble intensity when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public float ATRumbleIntensity = 1f;
+        /// the rumble sharpness when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public float ATRumbleSharpness = 1f;
+        /// the controllerID when in AdvancedTransient mode
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedTransient)]
+        public int ATRumbleControllerID = -1;
+
+        // CONTINUOUS ---------------------------------------------------------------------------------------------------------
         /// the intensity that should be used to initialize the continuous haptic
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.Continuous)]
         public float InitialContinuousIntensity = 1f;
@@ -54,12 +91,24 @@ namespace MoreMountains.FeedbacksForThirdParty
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.Continuous)]
         public float ContinuousDuration = 1f;
 
+        // ADV PATTERN ---------------------------------------------------------------------------------------------------------
+
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
+        public bool APVibrateIOS = true;
         /// the AHAP file to use to trigger a pattern on iOS
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
         public TextAsset AHAPFileForIOS;
+
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
+        public bool APVibrateAndroid = true;
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
+        public bool APVibrateAndroidIfNoSupport = false;
         /// the WaveFormFile to use to trigger a pattern on Android
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
         public MMNVAndroidWaveFormAsset AndroidWaveFormFile;
+
+        [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
+        public bool APRumble = true;
         /// the file to use to trigger a rumble on gamepad
         [MMNVEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
         public MMNVRumbleWaveFormAsset RumbleWaveFormFile;
@@ -75,7 +124,8 @@ namespace MoreMountains.FeedbacksForThirdParty
         /// whether to run this on scaled or unscaled time
         [MMFEnumCondition("HapticMethod", (int)HapticMethods.AdvancedPattern)]
         public Timescales Timescale = Timescales.UnscaledTime;
-
+        
+        // RUMBLE -------------------------------------------------------------------------------------------------------------
         [Header("Rumble")]
         /// whether or not this feedback should trigger a rumble on gamepad
         public bool AllowRumble = true;
@@ -110,7 +160,8 @@ namespace MoreMountains.FeedbacksForThirdParty
                     int[] lowFreqAmplitude = (RumbleWaveFormFile == null) ? null : RumbleWaveFormFile.WaveForm.LowFrequencyAmplitudes;
                     int[] highFreqAmplitude = (RumbleWaveFormFile == null) ? null : RumbleWaveFormFile.WaveForm.HighFrequencyAmplitudes;
 
-                    MMVibrationManager.AdvancedHapticPattern(iOSString, androidPattern, androidAmplitude, AndroidRepeat,
+                    MMVibrationManager.AdvancedHapticPattern(APVibrateIOS, iOSString, APVibrateAndroid, androidPattern, androidAmplitude, 
+                        AndroidRepeat, APVibrateAndroidIfNoSupport, APRumble, 
                                                                         rumblePattern, lowFreqAmplitude, highFreqAmplitude, RumbleRepeat,
                                                                 OldIOSFallback, this, ControllerID);
                     break;
@@ -125,6 +176,16 @@ namespace MoreMountains.FeedbacksForThirdParty
 
                 case HapticMethods.Transient:
                     MMVibrationManager.TransientHaptic(TransientIntensity, TransientSharpness, AllowRumble, this, ControllerID);
+                    break;
+
+                case HapticMethods.AdvancedTransient:
+                    MMVibrationManager.TransientHaptic(ATVibrateIOS, ATIOSIntensity, ATIOSSharpness, ATVibrateAndroid,
+                        ATAndroidIntensity, ATAndroidSharpness, ATVibrateAndroidIfNoSupport, ATRumble,
+                        ATRumbleIntensity, ATRumbleSharpness, ATRumbleControllerID, this);
+                    break;
+
+                case HapticMethods.AdvancedContinuous:
+
                     break;
 
                 case HapticMethods.Stop:

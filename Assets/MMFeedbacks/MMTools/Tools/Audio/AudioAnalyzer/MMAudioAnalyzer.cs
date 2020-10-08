@@ -247,9 +247,9 @@ namespace MoreMountains.Tools
                 GameObject audioSourceGo = new GameObject("Microphone");
                 audioSourceGo.transform.SetParent(this.gameObject.transform);
                 TargetAudioSource = audioSourceGo.AddComponent<AudioSource>();                
-                string _microphone = Microphone.devices[MicrophoneID].ToString();
-                TargetAudioSource.clip = Microphone.Start(_microphone, true, _microphoneDuration, (int)_microphoneFrequency);
-                TargetAudioSource.Play();
+                //UNCOMMENT_MICROPHONE string _microphone = Microphone.devices[MicrophoneID].ToString();
+                //UNCOMMENT_MICROPHONE TargetAudioSource.clip = Microphone.Start(_microphone, true, _microphoneDuration, (int)_microphoneFrequency);
+                //UNCOMMENT_MICROPHONE TargetAudioSource.Play();
                 _microphoneStartedAt = Time.time;
 #endif
             }
@@ -280,7 +280,8 @@ namespace MoreMountains.Tools
                         break;
                     case Modes.Microphone:
 #if !UNITY_WEBGL
-                        int microphoneSamples = Microphone.GetPosition(_microphone);
+                        int microphoneSamples = 0;
+                        //UNCOMMENT_MICROPHONE microphoneSamples = Microphone.GetPosition(_microphone);
                         if (microphoneSamples / _microphoneFrequency > _microphoneDelay)
                         {
                             if (!TargetAudioSource.isPlaying)

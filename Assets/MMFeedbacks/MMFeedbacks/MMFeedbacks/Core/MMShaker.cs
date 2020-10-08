@@ -64,7 +64,16 @@ namespace MoreMountains.Feedbacks
                 _shakeStartedTimestamp = Time.time;
                 Shaking = true;
                 GrabInitialValues();
+                ShakeStarts();
             }
+        }
+
+        /// <summary>
+        /// Describes what happens when a shake starts
+        /// </summary>
+        protected virtual void ShakeStarts()
+        {
+
         }
 
         /// <summary>
@@ -210,7 +219,7 @@ namespace MoreMountains.Feedbacks
         /// </summary>
         /// <param name="channel"></param>
         /// <returns></returns>
-        protected virtual bool CheckEventAllowed(int channel)
+        protected virtual bool CheckEventAllowed(int channel, bool useRange = false, float range = 0f, Vector3 eventOriginPosition = default(Vector3))
         {
             if ((channel != Channel) && (channel != -1) && (Channel != -1))
             {
@@ -222,6 +231,14 @@ namespace MoreMountains.Feedbacks
             }
             else
             {
+                if (useRange)
+                {
+                    if (Vector3.Distance(this.transform.position, eventOriginPosition) > range)
+                    {
+                        return false;
+                    }
+                }
+
                 return true;
             }
         }

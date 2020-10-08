@@ -9,7 +9,7 @@ namespace MoreMountains.Tools
 	/// Still handles common stuff like singleton and initialization on start().
 	/// DO NOT add this class to a prefab, nothing would happen. Instead, add SimpleObjectPooler or MultipleObjectPooler.
 	/// </summary>
-	public class MMObjectPooler : MonoBehaviour
+	public abstract class MMObjectPooler : MonoBehaviour
 	{
 		/// singleton pattern
 		public static MMObjectPooler Instance;
@@ -36,11 +36,6 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void CreateWaitingPool()
 		{
-			if (!NestWaitingPool)
-			{
-				return;
-			}
-			
 			if (!MutualizeWaitingPools)
 			{
 				// we create a container that will hold all the instances we create

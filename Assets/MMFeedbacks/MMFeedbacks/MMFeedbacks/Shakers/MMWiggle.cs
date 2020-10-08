@@ -123,6 +123,11 @@ namespace MoreMountains.Feedbacks
     [AddComponentMenu("More Mountains/Feedbacks/Shakers/Various/MMWiggle")]
     public class MMWiggle : MonoBehaviour 
     {
+        /// the possible update modes
+        public enum UpdateModes { Update, FixedUpdate, LateUpdate }
+
+        /// the selected update mode
+        public UpdateModes UpdateMode = UpdateModes.Update;
         /// whether or not position wiggle is active
         public bool PositionActive = false;
         /// whether or not rotation wiggle is active
@@ -219,11 +224,44 @@ namespace MoreMountains.Feedbacks
             internalProperties.newValue = DetermineNewValue(properties, internalProperties.newValue, internalProperties.initialValue, ref internalProperties.startValue, 
                 ref internalProperties.randomAmplitude, ref internalProperties.randomFrequency, ref internalProperties.pauseDuration);
         }
-        
+
         /// <summary>
         /// Every frame we update our object's position, rotation and scale
         /// </summary>
         protected virtual void Update()
+        {
+            if (UpdateMode == UpdateModes.Update)
+            {
+                ProcessUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Every frame we update our object's position, rotation and scale
+        /// </summary>
+        protected virtual void LateUpdate()
+        {
+            if (UpdateMode == UpdateModes.LateUpdate)
+            {
+                ProcessUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Every frame we update our object's position, rotation and scale
+        /// </summary>
+        protected virtual void FixedUpdate()
+        {
+            if (UpdateMode == UpdateModes.FixedUpdate)
+            {
+                ProcessUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Meant to be executed at the selected UpdateMode
+        /// </summary>
+        protected virtual void ProcessUpdate()
         {
             _positionInternalProperties.returnVector = transform.localPosition;
             if (UpdateValue(PositionActive, PositionWiggleProperties, ref _positionInternalProperties))

@@ -34,9 +34,9 @@ namespace MoreMountains.Tools
 	        while (Time.time<flickerStop)
 			{
 				renderer.material.color = flickerColor;
-				yield return new WaitForSeconds(flickerSpeed);
+				yield return MMCoroutine.WaitFor(flickerSpeed);
 	            renderer.material.color = initialColor;
-	            yield return new WaitForSeconds(flickerSpeed);
+	            yield return MMCoroutine.WaitFor(flickerSpeed);
 	        }
 
 	        renderer.material.color = initialColor;        

@@ -14,8 +14,9 @@ namespace MoreMountains.Feedbacks
     public class MMFeedbackPosition : MMFeedback
     {
         /// sets the inspector color for this feedback
+        #if UNITY_EDITOR
         public override Color FeedbackColor { get { return MMFeedbacksInspectorColors.TransformColor; } }
-
+        #endif
         public enum Spaces { World, Local, RectTransform }
         public enum Modes { AtoB, AlongCurve, ToDestination }
         public enum TimeScales { Scaled, Unscaled }

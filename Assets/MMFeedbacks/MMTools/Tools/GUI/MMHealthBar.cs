@@ -61,7 +61,7 @@ namespace MoreMountains.Tools
 		/// the animation curve to map the bump animation on
 		public AnimationCurve BumpAnimationCurve = AnimationCurve.Constant(0,1,1);
         /// the mode the bar should follow the target in
-        public MMFollowTarget.Modes FollowTargetMode = MMFollowTarget.Modes.LateUpdate;
+        public MMFollowTarget.UpdateModes FollowTargetMode = MMFollowTarget.UpdateModes.LateUpdate;
 
 		[Header("Death")]
 		/// a gameobject (usually a particle system) to instantiate when the healthbar reaches zero
@@ -103,9 +103,11 @@ namespace MoreMountains.Tools
 
         public virtual void Initialization()
         {
+            _finalHideStarted = false;
+
             if (_progressBar != null)
             {
-                _progressBar.gameObject.SetActive(true);
+                _progressBar.gameObject.SetActive(AlwaysVisible);
                 return;
             }
 
@@ -272,7 +274,7 @@ namespace MoreMountains.Tools
             }
             else
             {
-                yield return new WaitForSeconds(HideBarAtZeroDelay);
+                yield return MMCoroutine.WaitFor(HideBarAtZeroDelay);
                 _showBar = false;
                 _progressBar.gameObject.SetActive(false);
             }            
