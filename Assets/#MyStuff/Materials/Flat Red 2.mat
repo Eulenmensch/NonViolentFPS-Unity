@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Flat Green
+  m_Name: Flat Red 2
   m_Shader: {fileID: 4800000, guid: c811448a05a7c1b419fcfb98535286f3, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -18,15 +18,29 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Emissive: 1
+    - _Metallic: 0
+    - _Smoothness: 0
+    - _StippleAngle: 0
+    - _StippleGap: 7.2
+    - _StippleGradientSmoothness: 0.81
+    - _StippleOffset: 0.84
+    - _StippleScale: 62.82
+    - _StippleSize: 0
+    - _StippleTreshold: 0.22
     - __dirty: 0
     m_Colors:
     - _Color: {r: 0.4707191, g: 0.7735849, b: 0.6417983, a: 1}
     - _Light: {r: 0.3808247, g: 0.4433962, b: 0.3241812, a: 0}
-    - _LitColor: {r: 0.5205875, g: 0.5943396, b: 0.3625471, a: 0}
+    - _LitColor: {r: 0.8962264, g: 0.7315608, b: 0.14011085, a: 0}
     - _Shadow: {r: 0.62587595, g: 0.735849, b: 0.3922214, a: 0}
-    - _ShadowColor: {r: 0.3153102, g: 0.279826, b: 0.362, a: 0}
-    - _UnlitColor: {r: 0.26782298, g: 0.31199998, b: 0.22916812, a: 0}
+    - _ShadowColor: {r: 0.24524738, g: 0.14921425, b: 0.33962262, a: 1}
+    - _StippleColor: {r: 0.5188679, g: 0.12027665, b: 0.3910056, a: 0}
+    - _UnlitColor: {r: 0.67300004, g: 0.51581836, b: 0.072011, a: 0}
   m_BuildTextureStacks: []
