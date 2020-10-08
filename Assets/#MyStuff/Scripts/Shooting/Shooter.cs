@@ -6,13 +6,13 @@ public class Shooter : MonoBehaviour
 {
     [SerializeField] float FireRate = 0;
     [SerializeField] float FireForce = 0;
-    [SerializeField] Projectile[] ProjectileTypes = null;
+    [SerializeField] GameObject[] ProjectileTypes = null;
     [SerializeField] Transform ProjectileSpawnPoint = null;
     [SerializeField] Transform ProjectileContainer = null;
 
     private bool Shooting = false;
     private float Timer = 0;
-    private Projectile ActiveProjectile = null;
+    private GameObject ActiveProjectile = null;
 
     void Start()
     {
@@ -35,7 +35,8 @@ public class Shooter : MonoBehaviour
 
     void Shoot()
     {
-        GameObject projectile = Instantiate(ActiveProjectile.gameObject, ProjectileSpawnPoint.position, Quaternion.identity, ProjectileContainer);
+        GameObject projectileSpace = Instantiate(ActiveProjectile, ProjectileSpawnPoint.position, Quaternion.identity, ProjectileContainer);
+        Projectile projectile = projectileSpace.GetComponentInChildren<Projectile>();
         Rigidbody rigidBody = projectile.GetComponent<Rigidbody>();
         print(rigidBody);
 
