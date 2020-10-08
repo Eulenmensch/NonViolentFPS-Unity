@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4178011348408908631}
   - component: {fileID: 4178011348408908616}
   - component: {fileID: 2277696791097435117}
-  - component: {fileID: -3963001132874212104}
+  - component: {fileID: 3235042557048481643}
   m_Layer: 0
   m_Name: Projectile 2
   m_TagString: Untagged
@@ -113,7 +113,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-3963001132874212104
+--- !u!114 &3235042557048481643
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,6 +122,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4178011348408908617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d674a7300066aa469c49de401fdf17f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c4ec5af93cf4e446bc938b7dd970449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
