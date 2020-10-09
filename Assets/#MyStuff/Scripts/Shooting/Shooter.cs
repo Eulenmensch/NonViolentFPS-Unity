@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Shooter : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Shooter : MonoBehaviour
     [SerializeField] GameObject[] ProjectileTypes = null;
     [SerializeField] Transform ProjectileSpawnPoint = null;
     [SerializeField] Transform ProjectileContainer = null;
+    [SerializeField] Slider ProjectileSlider = null;
 
     private bool Shooting = false;
     private float Timer = 0;
@@ -35,7 +37,7 @@ public class Shooter : MonoBehaviour
 
     void Shoot()
     {
-        GameObject projectileSpace = Instantiate(ActiveProjectile, ProjectileSpawnPoint.position, Quaternion.identity, ProjectileContainer);
+        GameObject projectileSpace = Instantiate(ActiveProjectile, ProjectileSpawnPoint.position, Quaternion.identity/*, ProjectileContainer*/);
         Projectile projectile = projectileSpace.GetComponentInChildren<Projectile>();
         Rigidbody rigidBody = projectile.GetComponent<Rigidbody>();
         print(rigidBody);
@@ -46,25 +48,42 @@ public class Shooter : MonoBehaviour
     public void ChangeProjectile(InputAction.CallbackContext context)
     {
         Vector2 input = context.ReadValue<Vector2>();
+        int projectileCount = ProjectileTypes.Length - 1;
+        int currentIndex = Array.IndexOf(ProjectileTypes, ActiveProjectile);
 
         if (context.started)
         {
             int direction = Mathf.RoundToInt(input.y);
-            print(direction);
-            int currentIndex = Array.IndexOf(ProjectileTypes, ActiveProjectile);
-            if (currentIndex < ProjectileTypes.Length - 1 && currentIndex > 0)
+
+            if (currentIndex < projectileCount && currentIndex > 0)
             {
                 ActiveProjectile = ProjectileTypes[currentIndex + direction];
             }
-            else if (currentIndex == ProjectileTypes.Length - 1 && direction > 0)
+            else if (currentIndex == projectileCount)
             {
-                ActiveProjectile = ProjectileTypes[0];
+                if (direction > 0)
+                {
+                    ActiveProjectile = ProjectileTypes[0];
+                }
+                else if (direction < 0)
+                {
+                    ActiveProjectile = ProjectileTypes[currentIndex + direction];
+                }
             }
-            else if (currentIndex == 0 && direction < 0)
+            else if (currentIndex == 0)
             {
-                ActiveProjectile = ProjectileTypes[ProjectileTypes.Length - 1];
+                if (direction < 0)
+                {
+                    ActiveProjectile = ProjectileTypes[projectileCount];
+                }
+                else if (direction > 0)
+                {
+                    ActiveProjectile = ProjectileTypes[1];
+                }
             }
         }
+
+        ProjectileSlider.value = (float)currentIndex / (float)projectileCount;
     }
 
     public void GetShootInput(InputAction.CallbackContext context)
