@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: 2c7c02d3f2ad8984dabcc35e6b2bd4e9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTexture1:
         m_Texture: {fileID: 2800000, guid: 2c7c02d3f2ad8984dabcc35e6b2bd4e9, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -28,6 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Cutoff: 0.5
     - _Emissive: 1
     - _Metallic: 0
     - _Smoothness: 0
