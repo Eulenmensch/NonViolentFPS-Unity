@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4178011348408908631}
   - component: {fileID: 4178011348408908616}
   - component: {fileID: 7980068176957056637}
+  - component: {fileID: -4168638998812958802}
   - component: {fileID: 2700048188908368035}
   - component: {fileID: 1102869879708998496}
   - component: {fileID: 6565086135063070995}
@@ -108,13 +109,27 @@ Rigidbody:
   m_GameObject: {fileID: 4178011348408908617}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-4168638998812958802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4178011348408908617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff87dbe5cbfea74eb396d54dd836bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drag: 0
+  angularDrag: 0
 --- !u!114 &2700048188908368035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad25032d2918a64d922f9e027e6eca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeDrag: 0.5
+  activeAngularDrag: 1
   RiseForce: 12
   MaxSize: {x: 1.5, y: 1.5, z: 1.5}
   GrowthDuration: 0.4
@@ -143,10 +160,10 @@ SpringJoint:
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0.1, z: -2}
   serializedVersion: 2
-  m_Spring: 100
+  m_Spring: 300
   m_Damper: 2
-  m_MinDistance: 0
-  m_MaxDistance: 1
+  m_MinDistance: 0.5
+  m_MaxDistance: 0
   m_Tolerance: 0.025
   m_BreakForce: Infinity
   m_BreakTorque: Infinity

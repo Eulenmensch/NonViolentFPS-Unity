@@ -38,9 +38,8 @@ public class Shooter : MonoBehaviour
     void Shoot()
     {
         GameObject projectileSpace = Instantiate(ActiveProjectile, ProjectileSpawnPoint.position, Quaternion.identity/*, ProjectileContainer*/);
-        Projectile projectile = projectileSpace.GetComponentInChildren<Projectile>();
+        PhysicsProjectile projectile = projectileSpace.GetComponentInChildren<PhysicsProjectile>();
         Rigidbody rigidBody = projectile.GetComponent<Rigidbody>();
-        print(rigidBody);
 
         rigidBody.AddForce(Camera.main.transform.forward * FireForce, ForceMode.VelocityChange);
     }

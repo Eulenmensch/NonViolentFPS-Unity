@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4178011348408908616}
   - component: {fileID: 2277696791097435117}
   - component: {fileID: 3235042557048481643}
+  - component: {fileID: -5878364645625783512}
   m_Layer: 0
   m_Name: HeavyProjectile
   m_TagString: Untagged
@@ -106,8 +107,8 @@ Rigidbody:
   m_GameObject: {fileID: 4178011348408908617}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 3
-  m_AngularDrag: 20
+  m_Drag: 0
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -125,6 +126,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4ec5af93cf4e446bc938b7dd970449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeDrag: 5
+  activeAngularDrag: 5
   MaxSize: {x: 0.5, y: 0.5, z: 0.5}
-  ActiveWeight: 0
+  ActiveWeight: 10
   GrowthDuration: 0.3
+--- !u!114 &-5878364645625783512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4178011348408908617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff87dbe5cbfea74eb396d54dd836bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drag: 0
+  angularDrag: 0

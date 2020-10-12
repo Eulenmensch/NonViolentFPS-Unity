@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class BouncyProjectile : Projectile
+public class BouncyProjectile : PhysicsProjectile
 {
     [SerializeField] Vector3 MaxSize;
     [SerializeField] float ActiveWeight;
@@ -9,18 +9,33 @@ public class BouncyProjectile : Projectile
 
     Rigidbody RigidbodyRef;
     FixedJoint Joint;
+    Collision Other;
+    Rigidbody OtherRigidbody;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         RigidbodyRef = GetComponent<Rigidbody>();
     }
 
-    public override void ImpactAction(Collision other)
+    private void FixedUpdate()
     {
+        if (Activated)
+        {
+            if (OtherRigidbody != null)
+            {
+                OtherRigidbody.AddForceAtPosition(Vector3.down * ActiveWeight, transform.position, ForceMode.Acceleration);
+            }
+        }
+    }
+
+    protected override void ImpactAction(Collision other)
+    {
+        Other = other;
         transform.DOScale(MaxSize, GrowthDuration).SetEase(Ease.OutBounce);
-        Rigidbody body = other.gameObject.GetComponent<Rigidbody>();
-        RigidbodyRef.mass = ActiveWeight;
+        OtherRigidbody = other.transform.root.gameObject.GetComponent<Rigidbody>();
+        // RigidbodyRef.mass = ActiveWeight;
         Joint = gameObject.AddComponent<FixedJoint>();
-        Joint.connectedBody = body;
+        Joint.connectedBody = OtherRigidbody;
     }
 }

@@ -3,15 +3,13 @@ using System.Collections;
 using DG.Tweening;
 using Obi;
 
-public class BalloonProjectile : Projectile
+public class BalloonProjectile : PhysicsProjectile
 {
     [SerializeField] float RiseForce;
     [SerializeField] Vector3 MaxSize;
     [SerializeField] float GrowthDuration;
     [SerializeField] float ActiveWeight;
 
-    float timer;
-    bool Rising;
     bool Ground;
     Rigidbody RigidbodyRef;
     SpringJoint Joint;
@@ -19,34 +17,50 @@ public class BalloonProjectile : Projectile
     float DefaultSpringForce;
     GameObject BalloonStringStart;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         RigidbodyRef = GetComponent<Rigidbody>();
-        Joint = GetComponent<SpringJoint>();
         Line = GetComponent<LineRenderer>();
+
+        Joint = GetComponent<SpringJoint>();
         DefaultSpringForce = Joint.spring;
         Joint.spring = 0;
     }
 
     private void FixedUpdate()
     {
-        if (Rising)
+        if (Activated)
         {
-            RigidbodyRef.AddForce(Vector3.up * RiseForce, ForceMode.Acceleration);
-            Line.SetPosition(0, transform.position);
-            if (Ground) { return; }
-            Line.SetPosition(1, BalloonStringStart.transform.position);
+            Rise();
+            UpdateStringLine();
         }
     }
 
-    public override void ImpactAction(Collision other)
+    private void Rise()
+    {
+        RigidbodyRef.AddForce(Vector3.up * RiseForce, ForceMode.Acceleration);
+    }
+
+    private void UpdateStringLine()
+    {
+        Line.SetPosition(0, transform.position);
+        if (Ground) { return; }
+        Line.SetPosition(1, BalloonStringStart.transform.position);
+    }
+
+    protected override void ImpactAction(Collision other)
     {
         transform.DOScale(MaxSize, GrowthDuration).SetEase(Ease.OutBounce);
+
         Rigidbody body = other.gameObject.GetComponent<Rigidbody>();
         RigidbodyRef.mass = ActiveWeight;
+
         Joint.spring = DefaultSpringForce;
         Joint.connectedBody = body;
         Joint.connectedAnchor = transform.InverseTransformPoint(other.contacts[0].point);
+
         BalloonStringStart = new GameObject("BalloonStringStart");
         BalloonStringStart.transform.position = other.contacts[0].point;
         BalloonStringStart.transform.parent = other.gameObject.transform;
@@ -55,6 +69,5 @@ public class BalloonProjectile : Projectile
         {
             Ground = true;
         }
-        Rising = true;
     }
 }

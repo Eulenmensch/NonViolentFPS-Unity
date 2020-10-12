@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class HeavyProjectile : Projectile
+public class HeavyProjectile : PhysicsProjectile
 {
     [SerializeField] Vector3 MaxSize;
     [SerializeField] float ActiveWeight;
@@ -9,18 +9,36 @@ public class HeavyProjectile : Projectile
 
     Rigidbody RigidbodyRef;
     FixedJoint Joint;
+    Rigidbody OtherRigidbody;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         RigidbodyRef = GetComponent<Rigidbody>();
     }
 
-    public override void ImpactAction(Collision other)
+    private void FixedUpdate()
     {
+        if (Activated)
+        {
+            if (OtherRigidbody != null)
+            {
+                OtherRigidbody.AddForceAtPosition(Vector3.down * ActiveWeight, transform.position, ForceMode.Acceleration);
+                // OtherRigidbody.AddForce(Vector3.down * ActiveWeight, ForceMode.Acceleration);
+            }
+        }
+    }
+
+    protected override void ImpactAction(Collision other)
+    {
+        RigidbodyRef.isKinematic = true;
+        Destroy(RigidbodyRef);
+        transform.parent = other.transform.root;
         transform.DOScale(MaxSize, GrowthDuration).SetEase(Ease.OutBounce);
-        Rigidbody body = other.gameObject.GetComponent<Rigidbody>();
-        RigidbodyRef.mass = ActiveWeight;
-        Joint = gameObject.AddComponent<FixedJoint>();
-        Joint.connectedBody = body;
+        OtherRigidbody = other.transform.root.gameObject.GetComponent<Rigidbody>();
+        // RigidbodyRef.mass = ActiveWeight;
+        // Joint = gameObject.AddComponent<FixedJoint>();
+        // Joint.connectedBody = OtherRigidbody;
+        // Joint.connectedAnchor = transform.InverseTransformPoint(other.contacts[0].point);
     }
 }
