@@ -20,22 +20,21 @@ public class BouncyProjectile : PhysicsProjectile
 
     private void FixedUpdate()
     {
-        if (Activated)
+        if ( Activated )
         {
-            if (OtherRigidbody != null)
+            if ( OtherRigidbody != null )
             {
-                OtherRigidbody.AddForceAtPosition(Vector3.down * ActiveWeight, transform.position, ForceMode.Acceleration);
+                OtherRigidbody.AddForceAtPosition( Vector3.down * ActiveWeight, transform.position, ForceMode.Acceleration );
             }
         }
     }
 
     protected override void ImpactAction(Collision other)
     {
-        Other = other;
-        transform.DOScale(MaxSize, GrowthDuration).SetEase(Ease.OutBounce);
+        RigidbodyRef.isKinematic = true;
+        Destroy( RigidbodyRef );
+        transform.parent = other.transform.root;
+        transform.DOScale( MaxSize, GrowthDuration ).SetEase( Ease.OutBounce );
         OtherRigidbody = other.transform.root.gameObject.GetComponent<Rigidbody>();
-        // RigidbodyRef.mass = ActiveWeight;
-        Joint = gameObject.AddComponent<FixedJoint>();
-        Joint.connectedBody = OtherRigidbody;
     }
 }
