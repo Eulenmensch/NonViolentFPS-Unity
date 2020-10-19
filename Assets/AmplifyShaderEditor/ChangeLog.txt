@@ -1,4 +1,64 @@
 Release Notes:
+v1.8.6 rev 00:
+* Improvements:
+    * Improved Plane Clip sample
+
+v1.8.5 rev 06:
+* Fixes:
+    * Locking 'Decode Depth Normals' usage to Builtin pipeline and informing of that when used on SRP
+        * Was currently generating compilation errors over SRP
+    * Fixed issue on Auto-Register flag over property nodes not being correctly registered in certain cases
+    * Fixed issue where graph sampling macro flag was incorrectly being set by non main master nodes
+
+* Improvements:
+    * Auto-register check on texture property type node also register sampler if 'Use Sampling Macros' flag is enabled on master node
+    * Adding support for mask maps over 'Four Splats First Pass Terrain' shader function
+        * Only available on SRP and output node must have 'Use Sampling Macros' flag turned on
+
+v1.8.5 rev 05:
+* Fixes:
+    * Fixed issue with incorrect values returned from nodes using internal 'Texture Object' instances
+    * Fixed duplicate uv declarations issue when being requested different sizes by 'Texture Sampler' nodes
+    * Fixed duplicate directives issue caused by adding directives on both 'Outline' node generated surface and main one
+
+v1.8.5 rev 04:
+* Fixes:
+    * Fixed issue on texture node types auto-sampler generator
+
+v1.8.5 rev 03:
+* New Sample:
+    * Plane Clip
+
+* Fixes:
+    * Fixed issue on 'Blend Normals' node preview not taking SRP options into account
+    * Fixed visual issue on node properties menu over nodes:
+        * Template Parameter 
+        * Template Local Var
+        * Template Vertex Data
+        * Template Fragment Data
+
+* Improvements:
+    * Simplified 'Template Parameter' usage
+        * User no longer need to choose scope to parameters to be available
+        * New Advanced View toggle added to switch to old view
+    * Added widget on 'Texture Coordinates' node to change output size directly from the node
+
+v1.8.5 rev 02:
+* New Community Shader Function
+    * Depth Masked Refraction by @saismirk
+
+Fixes:
+    * Fixed incorrect uv variable name being used when set is greater that 3
+    * Fixed incorrect swizzling when using texture sets on vertex data over surface shaders
+    * Fixed issue over texture array tool on not being able to use compressed formats
+
+v1.8.5 rev 01:
+* Fixes:
+    * Fixed issue regarding uv coordinates usage with tessellation on URP PBR template
+
+* Improvements:
+    * Replaced fmod instruction usage on 'Remainder' node by faster true remainder calculation
+
 v1.8.5 rev 00:
 * Fixes:
     * Fixed desync issue between graph and master node sampling macro flag
