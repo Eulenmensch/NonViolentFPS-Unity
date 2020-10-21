@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/Conditions/GroundedCondition" )]
+[CreateAssetMenu( menuName = "AI Kit/Conditions/Physics/GroundedCondition" )]
 public class GroundedCondition : Condition
 {
     public override bool Evaluate(StateMachine _stateMachine)
