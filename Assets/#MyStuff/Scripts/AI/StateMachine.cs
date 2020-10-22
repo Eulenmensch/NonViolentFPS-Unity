@@ -36,18 +36,6 @@ public class StateMachine : MonoBehaviour
     }
 
     [Header( "Dialogue" )]
-    [SerializeField] Yarn.Unity.DialogueRunner yarnRunner;
-    public Yarn.Unity.DialogueRunner YarnRunner
-    {
-        get => yarnRunner;
-        set => yarnRunner = value;
-    }
-    [SerializeField] Yarn.Unity.DialogueUI yarnUI;
-    public Yarn.Unity.DialogueUI YarnUi
-    {
-        get => yarnUI;
-        set => yarnUI = value;
-    }
     [SerializeField] YarnProgram yarnDialogue;
     public YarnProgram YarnDialogue
     {

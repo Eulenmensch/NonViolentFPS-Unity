@@ -10,12 +10,12 @@ public class InteractionPopUpBehaviour : Behaviour
     {
         if ( Input.GetKeyDown( KeyCode.E ) )
         {
-            _stateMachine.YarnUi.dialogueContainer = _stateMachine.DialogueContainer;
-            if ( !_stateMachine.YarnRunner.yarnScripts.Contains( _stateMachine.YarnDialogue ) )
+            DialogueManager.Instance.YarnUI.dialogueContainer = _stateMachine.DialogueContainer;
+            if ( !DialogueManager.Instance.YarnRunner.yarnScripts.Contains( _stateMachine.YarnDialogue ) )
             {
-                _stateMachine.YarnRunner.Add( _stateMachine.YarnDialogue );
+                DialogueManager.Instance.YarnRunner.Add( _stateMachine.YarnDialogue );
             }
-            _stateMachine.YarnRunner.StartDialogue( _stateMachine.StartNode );
+            DialogueManager.Instance.YarnRunner.StartDialogue( _stateMachine.StartNode );
         }
     }
 }
