@@ -19,11 +19,11 @@ public class HeavyProjectile : PhysicsProjectile
 
     private void FixedUpdate()
     {
-        if (Activated)
+        if ( Activated )
         {
-            if (OtherRigidbody != null)
+            if ( OtherRigidbody != null )
             {
-                OtherRigidbody.AddForceAtPosition(Vector3.down * ActiveWeight, transform.position, ForceMode.Acceleration);
+                OtherRigidbody.AddForceAtPosition( Vector3.down * ActiveWeight, transform.position, ForceMode.Acceleration );
                 // OtherRigidbody.AddForce(Vector3.down * ActiveWeight, ForceMode.Acceleration);
             }
         }
@@ -32,9 +32,9 @@ public class HeavyProjectile : PhysicsProjectile
     protected override void ImpactAction(Collision other)
     {
         RigidbodyRef.isKinematic = true;
-        Destroy(RigidbodyRef);
-        transform.parent = other.transform.root;
-        transform.DOScale(MaxSize, GrowthDuration).SetEase(Ease.OutBounce);
+        Destroy( RigidbodyRef );
+        transform.parent = other.transform.root; //FIXME: this has to be fixed so that physics objects can exist as children of other game objects!
+        transform.DOScale( MaxSize, GrowthDuration ).SetEase( Ease.OutBounce );
         OtherRigidbody = other.transform.root.gameObject.GetComponent<Rigidbody>();
         // RigidbodyRef.mass = ActiveWeight;
         // Joint = gameObject.AddComponent<FixedJoint>();
