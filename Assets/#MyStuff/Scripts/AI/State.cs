@@ -3,20 +3,20 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "AI Kit/State" )]
 public class State : ScriptableObject
 {
-    [SerializeField] Behaviour[] Behaviours;
-    [SerializeField] EnterAction[] enterActions;
+    [SerializeField] private Behaviour[] behaviours;
+    [SerializeField] private EnterAction[] enterActions;
     public EnterAction[] EnterActions
     {
         get => enterActions;
         private set => enterActions = value;
     }
-    [SerializeField] ExitAction[] exitActions;
+    [SerializeField] private ExitAction[] exitActions;
     public ExitAction[] ExitActions
     {
         get => exitActions;
         private set => exitActions = value;
     }
-    [SerializeField] Transition[] Transitions;
+    [SerializeField] private Transition[] transitions;
 
     public void UpdateState(StateMachine _stateMachine)
     {
@@ -26,7 +26,7 @@ public class State : ScriptableObject
 
     private void DoBehaviours(StateMachine _stateMachine)
     {
-        foreach ( var behaviour in Behaviours )
+        foreach ( var behaviour in behaviours )
         {
             behaviour.DoBehaviour( _stateMachine );
         }
@@ -34,7 +34,7 @@ public class State : ScriptableObject
 
     private void EvaluateConditions(StateMachine _stateMachine)
     {
-        foreach ( var transition in Transitions )
+        foreach ( var transition in transitions )
         {
             var conditionTrue = transition.condition.Evaluate( _stateMachine );
 

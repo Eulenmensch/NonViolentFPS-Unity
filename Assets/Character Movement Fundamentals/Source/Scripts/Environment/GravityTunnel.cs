@@ -9,9 +9,9 @@ namespace CMF
 	public class GravityTunnel : MonoBehaviour {
 
 		//List of rigidbodies inside the attached trigger;
-		List<Rigidbody> rigidbodies = new List<Rigidbody>();
+		private List<Rigidbody> rigidbodies = new List<Rigidbody>();
 
-		void FixedUpdate ()
+		private void FixedUpdate ()
 		{
 			for(int i = 0; i < rigidbodies.Count; i++)
 			{
@@ -23,7 +23,7 @@ namespace CMF
 			}
 		}
 
-		void OnTriggerEnter(Collider col)
+		private void OnTriggerEnter(Collider col)
 		{
 			Rigidbody _rigidbody = col.GetComponent<Rigidbody>();
 			if(!_rigidbody)
@@ -36,7 +36,7 @@ namespace CMF
 			rigidbodies.Add(_rigidbody);
 		}
 
-		void OnTriggerExit(Collider col)
+		private void OnTriggerExit(Collider col)
 		{
 			Rigidbody _rigidbody = col.GetComponent<Rigidbody>();
 			if(!_rigidbody)
@@ -59,7 +59,7 @@ namespace CMF
 			_rigidbody.MoveRotation(Quaternion.Euler(_eulerAngles));
 		}
 
-		void RotateRigidbody(Transform _transform, Vector3 _targetDirection)
+		private void RotateRigidbody(Transform _transform, Vector3 _targetDirection)
 		{
 			//Get rigidbody component of transform;
 			Rigidbody _rigidbody = _transform.GetComponent<Rigidbody>();
@@ -78,7 +78,7 @@ namespace CMF
 		}
 
 		//Calculate a counter rotation from a rotation;
-		Quaternion GetCounterRotation(Quaternion _rotation)
+		private Quaternion GetCounterRotation(Quaternion _rotation)
 		{
 			Vector3 _axis;
 			float _angle;

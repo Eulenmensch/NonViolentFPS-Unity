@@ -16,10 +16,10 @@ namespace CMF
 		protected CeilingDetector ceilingDetector;
 
         //Jump key variables;
-        bool jumpInputIsLocked = false;
-        bool jumpKeyWasPressed = false;
-		bool jumpKeyWasLetGo = false;
-		bool jumpKeyIsPressed = false;
+        private bool jumpInputIsLocked = false;
+        private bool jumpKeyWasPressed = false;
+        private bool jumpKeyWasLetGo = false;
+        private bool jumpKeyIsPressed = false;
 
 		//Movement speed;
 		public float movementSpeed = 7f;
@@ -33,7 +33,7 @@ namespace CMF
 
 		//Jump duration variables;
 		public float jumpDuration = 0.2f;
-		float currentJumpStartTime = 0f;
+		private float currentJumpStartTime = 0f;
 
 		//'AirFriction' determines how fast the controller loses its momentum while in the air;
 		//'GroundFriction' is used instead, if the controller is grounded;
@@ -44,10 +44,10 @@ namespace CMF
 		protected Vector3 momentum = Vector3.zero;
 
 		//Saved velocity from last frame;
-		Vector3 savedVelocity = Vector3.zero;
+		private Vector3 savedVelocity = Vector3.zero;
 
 		//Saved horizontal movement velocity from last frame;
-		Vector3 savedMovementVelocity = Vector3.zero;
+		private Vector3 savedMovementVelocity = Vector3.zero;
 
 		//Amount of downward gravity;
 		public float gravity = 30f;
@@ -76,7 +76,7 @@ namespace CMF
 		public Transform cameraTransform;
 		
 		//Get references to all necessary components;
-		void Awake () {
+		private void Awake () {
 			mover = GetComponent<Mover>();
 			tr = transform;
 			characterInput = GetComponent<CharacterInput>();
@@ -94,13 +94,13 @@ namespace CMF
 
 		}
 
-		void Update()
+		private void Update()
 		{
 			HandleJumpKeyInput();
 		}
 
         //Handle jump booleans for later use in FixedUpdate;
-        void HandleJumpKeyInput()
+        private void HandleJumpKeyInput()
         {
             bool _newJumpKeyPressedState = IsJumpKeyPressed();
 
@@ -116,14 +116,14 @@ namespace CMF
             jumpKeyIsPressed = _newJumpKeyPressedState;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
 		{
 			ControllerUpdate();
 		}
 
 		//Update controller;
 		//This function must be called every fixed update, in order for the controller to work correctly;
-		void ControllerUpdate()
+		private void ControllerUpdate()
 		{
 			//Check if mover is grounded;
 			mover.CheckForGround();
@@ -230,7 +230,7 @@ namespace CMF
 
 		//Determine current controller state based on current momentum and whether the controller is grounded (or not);
 		//Handle state transitions;
-		ControllerState DetermineControllerState()
+		private ControllerState DetermineControllerState()
 		{
 			//Check if vertical momentum is pointing upwards;
 			bool _isRising = IsRisingOrFalling() && (VectorMath.GetDotProduct(GetMomentum(), tr.up) > 0f);
@@ -343,7 +343,7 @@ namespace CMF
 		}
 
         //Check if player has initiated a jump;
-        void HandleJumping()
+        private void HandleJumping()
         {
             if (currentControllerState == ControllerState.Grounded)
             {
@@ -360,7 +360,7 @@ namespace CMF
 
         //Apply friction to both vertical and horizontal momentum based on 'friction' and 'gravity';
         //Handle sliding down steep slopes;
-        void HandleMomentum()
+        private void HandleMomentum()
 		{
 			//If local momentum is used, transform momentum into world coordinates first;
 			if(useLocalMomentum)
@@ -419,7 +419,7 @@ namespace CMF
 		//Events;
 
 		//This function is called when the player has initiated a jump;
-		void OnJumpStart()
+		private void OnJumpStart()
 		{
 			//If local momentum is used, transform momentum into world coordinates first;
 			if(useLocalMomentum)
@@ -443,7 +443,7 @@ namespace CMF
 		}
 
 		//This function is called when the controller has lost ground contact, i.e. is either falling or rising, or generally in the air;
-		void OnGroundContactLost()
+		private void OnGroundContactLost()
 		{
 			//Calculate current velocity;
 			//If velocity would exceed the controller's movement speed, decrease movement velocity appropriately;
@@ -476,7 +476,7 @@ namespace CMF
 		}
 
 		//This function is called when the controller has landed on a surface after being in the air;
-		void OnGroundContactRegained(Vector3 _collisionVelocity)
+		private void OnGroundContactRegained(Vector3 _collisionVelocity)
 		{
 			//Call 'OnLand' event;
 			if(OnLand != null)
@@ -484,7 +484,7 @@ namespace CMF
 		}
 
 		//This function is called when the controller has collided with a ceiling while jumping or moving upwards;
-		void OnCeilingContact()
+		private void OnCeilingContact()
 		{
 			//If local momentum is used, transform momentum into world coordinates first;
 			if(useLocalMomentum)

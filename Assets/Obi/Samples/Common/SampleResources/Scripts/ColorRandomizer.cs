@@ -8,10 +8,10 @@ namespace Obi
 	[RequireComponent(typeof(ObiActor))]
 	public class ColorRandomizer : MonoBehaviour
 	{
-		ObiActor actor;
+		private ObiActor actor;
 		public Gradient gradient = new Gradient();
 
-		void Start()
+		private void Start()
         {
 			actor = GetComponent<ObiActor>();
 

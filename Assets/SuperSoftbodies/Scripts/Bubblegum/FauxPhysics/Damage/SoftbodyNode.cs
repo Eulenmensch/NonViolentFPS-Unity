@@ -297,7 +297,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// <summary>
 		/// Awaken this object
 		/// </summary>
-		void Awake ()
+		private void Awake ()
 		{
 			sqrResponseDistance = responseDistance * responseDistance;
 			damagedMeshVertexMovements = new Vector3[vertexIndexes.Count];
@@ -310,7 +310,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// <summary>
 		/// Draw this node
 		/// </summary>
-		void OnDrawGizmos ()
+		private void OnDrawGizmos ()
 		{
 #if UNITY_EDITOR
 			if (!Selection.transforms.Contains (transform) && !Selection.transforms.Contains (transform.root))

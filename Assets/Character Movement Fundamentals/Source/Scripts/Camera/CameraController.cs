@@ -9,8 +9,8 @@ namespace CMF
 	public class CameraController : MonoBehaviour {
 
 		//Current rotation values (in degrees);
-		float currentXAngle = 0f;
-		float currentYAngle = 0f;
+		private float currentXAngle = 0f;
+		private float currentYAngle = 0f;
 
 		//Upper and lower limits (in degrees) for vertical rotation (along the local x-axis of the gameobject);
 		[Range(0f, 90f)]
@@ -19,8 +19,8 @@ namespace CMF
 		public float lowerVerticalLimit = 60f;
 
 		//Variables to store old rotation values for interpolation purposes;
-		float oldHorizontalInput = 0f;
-		float oldVerticalInput = 0f;
+		private float oldHorizontalInput = 0f;
+		private float oldVerticalInput = 0f;
 
 		//Camera turning speed; 
 		public float cameraSpeed = 250f;
@@ -36,8 +36,8 @@ namespace CMF
 		public float cameraSmoothingFactor = 25f;
 
 		//Variables for storing current facing direction and upwards direction;
-		Vector3 facingDirection;
-		Vector3 upwardsDirection;
+		private Vector3 facingDirection;
+		private Vector3 upwardsDirection;
 
 		//References to transform and camera components;
 		protected Transform tr;
@@ -45,7 +45,7 @@ namespace CMF
 		protected CameraInput cameraInput;
 
 		//Setup references.
-		void Awake () {
+		private void Awake () {
 			tr = transform;
 			cam = GetComponent<Camera>();
 			cameraInput = GetComponent<CameraInput>();
@@ -73,7 +73,7 @@ namespace CMF
 			
 		}
 
-		void Update()
+		private void Update()
 		{
 			HandleCameraRotation();
 		}

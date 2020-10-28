@@ -3,14 +3,14 @@ using DG.Tweening;
 
 public class BouncyProjectile : PhysicsProjectile
 {
-    [SerializeField] Vector3 MaxSize;
-    [SerializeField] float ActiveWeight;
-    [SerializeField] float GrowthDuration;
+    [SerializeField] private Vector3 MaxSize;
+    [SerializeField] private float ActiveWeight;
+    [SerializeField] private float GrowthDuration;
 
-    Rigidbody RigidbodyRef;
-    FixedJoint Joint;
-    Collision Other;
-    Rigidbody OtherRigidbody;
+    private Rigidbody RigidbodyRef;
+    private FixedJoint Joint;
+    private Collision Other;
+    private Rigidbody OtherRigidbody;
 
     protected override void Start()
     {

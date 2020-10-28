@@ -11,15 +11,15 @@ namespace CMF
 		public float checkInterval = 1f;
 
 		//Variables to keep track of passed time and frames;
-		int currentPassedFrames = 0;
-		float currentPassedTime = 0f;
+		private int currentPassedFrames = 0;
+		private float currentPassedTime = 0f;
 
 		//Current framerate;
 		public float currentFrameRate = 0f;
-		string currentFrameRateString = "";
+		private string currentFrameRateString = "";
 		
 		// Update;
-		void Update () {
+		private void Update () {
 
 			//Increment passed frames;
 			currentPassedFrames ++;
@@ -48,7 +48,7 @@ namespace CMF
 		}
 
 		//Render framerate in the upper right corner of the screen;
-		void OnGUI()
+		private void OnGUI()
 		{
 			GUI.contentColor = Color.black;
 

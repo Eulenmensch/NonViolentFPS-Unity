@@ -5,22 +5,21 @@ using Obi;
 
 [RequireComponent(typeof(ObiSolver))]
 public class ColliderHighlighter : MonoBehaviour {
+	private ObiSolver solver;
 
- 	ObiSolver solver;
-
-	void Awake(){
+	private void Awake(){
 		solver = GetComponent<Obi.ObiSolver>();
 	}
 
-	void OnEnable () {
+	private void OnEnable () {
 		solver.OnCollision += Solver_OnCollision;
 	}
 
-	void OnDisable(){
+	private void OnDisable(){
 		solver.OnCollision -= Solver_OnCollision;
 	}
-	
-	void Solver_OnCollision (object sender, Obi.ObiSolver.ObiCollisionEventArgs e)
+
+	private void Solver_OnCollision (object sender, Obi.ObiSolver.ObiCollisionEventArgs e)
 	{
         var colliderWorld = ObiColliderWorld.GetInstance();
 

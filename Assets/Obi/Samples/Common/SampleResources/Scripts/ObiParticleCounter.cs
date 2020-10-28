@@ -5,27 +5,26 @@ using Obi;
 
 [RequireComponent(typeof(ObiSolver))]
 public class ObiParticleCounter : MonoBehaviour {
-
-    ObiSolver solver;
+    private ObiSolver solver;
     public int counter = 0;
     public Collider2D targetCollider = null;
-    
-    Obi.ObiSolver.ObiCollisionEventArgs frame;
-    HashSet<int> particles = new HashSet<int>();
 
-    void Awake(){
+    private Obi.ObiSolver.ObiCollisionEventArgs frame;
+    private HashSet<int> particles = new HashSet<int>();
+
+    private void Awake(){
         solver = GetComponent<Obi.ObiSolver>();
     }
 
-    void OnEnable () {
+    private void OnEnable () {
         solver.OnCollision += Solver_OnCollision;
     }
 
-    void OnDisable(){
+    private void OnDisable(){
         solver.OnCollision -= Solver_OnCollision;
     }
-    
-    void Solver_OnCollision (object sender, Obi.ObiSolver.ObiCollisionEventArgs e)
+
+    private void Solver_OnCollision (object sender, Obi.ObiSolver.ObiCollisionEventArgs e)
     {
         HashSet<int> currentParticles = new HashSet<int>();
         

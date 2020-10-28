@@ -19,7 +19,7 @@ public class RopeTensionColorizer : MonoBehaviour
     private ObiRope rope;
     private Material localMaterial;
 
-    void Awake()
+    private void Awake()
     {
 		rope = GetComponent<ObiRope>();
         localMaterial = GetComponent<MeshRenderer>().material;
@@ -30,7 +30,7 @@ public class RopeTensionColorizer : MonoBehaviour
         Destroy(localMaterial);
     }
 
-    void Update()
+    private void Update()
     {
         if (tenser == null)
             return;

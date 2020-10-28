@@ -43,7 +43,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// <summary>
 		/// Start this object
 		/// </summary>
-		void Start ()
+		private void Start ()
 		{
 			if (playOnStart)
 				StartCoroutine (CrumpleAnimation ());
@@ -62,7 +62,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// Crumple our softbody
 		/// </summary>
 		/// <returns></returns>
-		IEnumerator CrumpleAnimation ()
+		private IEnumerator CrumpleAnimation ()
 		{
 			SoftbodyNode[] nodes = GetComponentsInChildren<SoftbodyNode> ();
 

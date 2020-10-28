@@ -4,18 +4,17 @@ using UnityEngine;
 using Obi;
 
 public class CraneController : MonoBehaviour {
-
-	ObiRopeCursor cursor;
-	ObiRope rope;
+	private ObiRopeCursor cursor;
+	private ObiRope rope;
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		cursor = GetComponentInChildren<ObiRopeCursor>();
 		rope = cursor.GetComponent<ObiRope>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 		if (Input.GetKey(KeyCode.W)){
 			if (rope.restLength > 6.5f)
 				cursor.ChangeLength(rope.restLength - 1f * Time.deltaTime);

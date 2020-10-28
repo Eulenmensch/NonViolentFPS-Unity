@@ -70,7 +70,7 @@ namespace Bubblegum.Timing
 		/// Initialize this object
 		/// </summary>
 		[RuntimeInitializeOnLoadMethod (RuntimeInitializeLoadType.BeforeSceneLoad)]
-		static void Initialize ()
+		private static void Initialize ()
 		{
 			defaultDeltaTime = UnityEngine.Time.fixedDeltaTime;
 		}
@@ -123,7 +123,7 @@ namespace Bubblegum.Timing
 		/// </summary>
 		/// <param name="newScale"></param>
 		/// <returns></returns>
-		IEnumerator AnimateTime (float newScale)
+		private IEnumerator AnimateTime (float newScale)
 		{
 			float fromScale = UnityEngine.Time.timeScale;
 			float time = 0f;

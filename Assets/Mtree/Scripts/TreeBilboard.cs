@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Mtree
 {
-    class Billboard
+    internal class Billboard
     {
         private Camera cam;
         private GameObject target;
@@ -19,7 +19,7 @@ namespace Mtree
         private float ZBuffer = 0.03f;
         private float TopCardPosition = 0.5f;
         private bool hasTopCard,isSingleSided;
-        int cards = 2;
+        private int cards = 2;
         public Billboard(Camera cam, GameObject target, int width, int height, float TopCardPosition, bool hasTopCard, bool isSingleSided)
         {
             this.cam = cam;

@@ -71,7 +71,7 @@ namespace Bubblegum
 		/// <summary>
 		/// Awaken this instance
 		/// </summary>
-		void OnEnable ()
+		private void OnEnable ()
 		{
 			localInstance = this;
 			mainThread = Thread.CurrentThread;
@@ -85,7 +85,7 @@ namespace Bubblegum
 		/// <summary>
 		/// Update this object
 		/// </summary>
-		void Update ()
+		private void Update ()
 		{
 			lock (lockObject)
 				while (actions.Count > 0)

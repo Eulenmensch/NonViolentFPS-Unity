@@ -105,7 +105,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// <summary>
 		/// Start this object
 		/// </summary>
-		void Start ()
+		private void Start ()
 		{
 			softbody = transform.GetComponentInParent<Softbody> ();
 			rbody = transform.GetComponentInParent<Rigidbody> ();

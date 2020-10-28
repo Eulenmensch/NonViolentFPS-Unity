@@ -3,32 +3,32 @@ using UnityEditor;
 
 public class StateMachine : MonoBehaviour
 {
-    [SerializeField] State StartState;
-    [SerializeField] float range;
+    [SerializeField] private State StartState;
+    [SerializeField] private float range;
     public float Range
     {
         get => range;
         set => range = value;
     }
-    [SerializeField] Transform lookAtTarget;
+    [SerializeField] private Transform lookAtTarget;
     public Transform LookAtTarget
     {
         get => lookAtTarget;
         set => lookAtTarget = value;
     }
-    [SerializeField] Transform head;
+    [SerializeField] private Transform head;
     public Transform Head
     {
         get => head;
         set => head = value;
     }
-    [SerializeField] bool playerInTrigger;
+    [SerializeField] private bool playerInTrigger;
     public bool PlayerInTrigger
     {
         get => playerInTrigger;
         set => playerInTrigger = value;
     }
-    [SerializeField] GameObject dialogueContainer;
+    [SerializeField] private GameObject dialogueContainer;
     public GameObject DialogueContainer
     {
         get => dialogueContainer;
@@ -36,13 +36,13 @@ public class StateMachine : MonoBehaviour
     }
 
     [Header( "Dialogue" )]
-    [SerializeField] YarnProgram yarnDialogue;
+    [SerializeField] private YarnProgram yarnDialogue;
     public YarnProgram YarnDialogue
     {
         get => yarnDialogue;
         set => yarnDialogue = value;
     }
-    [SerializeField] string startNode;
+    [SerializeField] private string startNode;
     public string StartNode
     {
         get => startNode;

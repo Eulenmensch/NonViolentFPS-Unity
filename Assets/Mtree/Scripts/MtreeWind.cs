@@ -19,15 +19,16 @@ public class MtreeWind : MonoBehaviour {
     [Range(0,1)]public float BillboardWindInfluence = .5f;
 
     // Updatecheck values
-    float m_windStrength, m_windDirection, m_windPulse, m_windTurbulence;
-    void Awake(){
+    private float m_windStrength, m_windDirection, m_windPulse, m_windTurbulence;
+
+    private void Awake(){
         windZone = (WindZone)FindObjectOfType(typeof(WindZone));
         if(!windZone){
 			windZone = (WindZone)gameObject.AddComponent (typeof(WindZone));
         }
     }
 
-	void Update () {
+    private void Update () {
         if(windZone){
             if(m_windStrength != windZone.windMain || m_windDirection != windZone.transform.rotation.eulerAngles.y || m_windPulse != windZone.windPulseFrequency || m_windTurbulence != windZone.windTurbulence){
                 UpdateWindZone();

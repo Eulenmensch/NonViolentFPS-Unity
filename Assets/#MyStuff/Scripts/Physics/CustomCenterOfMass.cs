@@ -8,7 +8,7 @@ public class CustomCenterOfMass : MonoBehaviour
         get { return centerOfMass; }
         private set { centerOfMass = value; }
     }
-    [SerializeField] Transform centerOfMass;
+    [SerializeField] private Transform centerOfMass;
 
     private Rigidbody RB;
 

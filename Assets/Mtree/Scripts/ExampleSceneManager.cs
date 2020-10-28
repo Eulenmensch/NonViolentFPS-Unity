@@ -7,12 +7,12 @@ using Mtree;
 [ExecuteInEditMode]
 public class ExampleSceneManager : MonoBehaviour
 {
-    List<Material> BarkMaterials,LeafMaterials;
-    Material Floor;
-    GameObject Trees,PostProcessing;
-    bool Setup = true;
-    
-    void PostProcessActive()
+    private List<Material> BarkMaterials,LeafMaterials;
+    private Material Floor;
+    private GameObject Trees,PostProcessing;
+    private bool Setup = true;
+
+    private void PostProcessActive()
     {
     #if UNITY_POST_PROCESSING_STACK_V2
 
@@ -51,7 +51,8 @@ public class ExampleSceneManager : MonoBehaviour
 	#endif
     
     }
-    void LegacySetup(){
+
+    private void LegacySetup(){
 	#if UNITY_2019_1_OR_NEWER
 		var obj = Instantiate(Resources.Load("Mtree/Examples/2019_1 Legacy") as GameObject,this.transform);
 		obj.name = "Legacy 2019.1+";
@@ -62,7 +63,8 @@ public class ExampleSceneManager : MonoBehaviour
 		Debug.Log("Legacy 2017.4+ was loaded!");
 	#endif
     }
-    void LWRPSetup()
+
+    private void LWRPSetup()
     {
     #if UNITY_2018_3_OR_NEWER
         var obj = Instantiate(Resources.Load("Mtree/Examples/2018_4 LWRP") as GameObject,this.transform);
@@ -71,7 +73,7 @@ public class ExampleSceneManager : MonoBehaviour
     #endif
     }
 
-    void HDRPSetup()
+    private void HDRPSetup()
     {
         
     #if UNITY_2019_3_OR_NEWER
@@ -84,14 +86,16 @@ public class ExampleSceneManager : MonoBehaviour
 		Debug.Log("HDRP 2018.4+ Scene loaded!");
     #endif
     }
-    void URPSetup()
+
+    private void URPSetup()
     {
     #if UNITY_2019_3_OR_NEWER
 		Instantiate(Resources.Load("Mtree/Examples/2019_3 URP") as GameObject,this.transform);
         Debug.Log("URP 2019.3+ Scene loaded!");
     #endif       
     }
-    void Start()
+
+    private void Start()
     {
         
         if(Setup){
@@ -120,7 +124,8 @@ public class ExampleSceneManager : MonoBehaviour
             Setup = false;
         }
     }
-    void UpdateMaterials(){
+
+    private void UpdateMaterials(){
         
         BarkMaterials = new List<Material>();
         LeafMaterials = new List<Material>();

@@ -6,7 +6,7 @@ using Obi;
 public class RuntimeRopeGeneratorUse : MonoBehaviour
 {
 	public ObiCollider pendulum;
-	RuntimeRopeGenerator rg;
+	private RuntimeRopeGenerator rg;
 
 	public IEnumerator Start()
 	{

@@ -95,7 +95,7 @@ namespace Bubblegum
 		/// <summary>
 		/// When the application quits
 		/// </summary>
-		void OnApplicationQuit ()
+		private void OnApplicationQuit ()
 		{
 			applicationQuiting = true;
 		}

@@ -14,7 +14,7 @@ namespace CMF
         //Transform component of camera target;
 		public Transform cameraTargetTransform;
 
-		Transform tr;
+		private Transform tr;
 
 		//Whether a raycast or spherecast is used to scan for obstacles;
 		public CastType castType;
@@ -28,15 +28,15 @@ namespace CMF
 		public LayerMask layerMask = ~0;
 
 		//Layer number for 'Ignore Raycast' layer;
-		int ignoreRaycastLayer;
+		private int ignoreRaycastLayer;
 
 		//List of colliders to ignore when raycasting;
 		public Collider[] ignoreList;
 
 		//Array to store layers of colliders in ignore list;
-		int[] ignoreListLayers;
+		private int[] ignoreListLayers;
 
-		float currentDistance;
+		private float currentDistance;
 
 		//Additional distance which is added to the raycast's length to prevent the camera from clipping into level geometry;
 		//For most situations, the default value of '0.1f' is sufficient;
@@ -53,7 +53,7 @@ namespace CMF
 		//Radius of spherecast, only used if 'Spherecast' is chosen as 'castType';
 		public float spherecastRadius = 0.2f;
 
-		void Awake () {
+		private void Awake () {
 			tr = transform;
 
             //Setup array to store ignore list layers;
@@ -82,7 +82,7 @@ namespace CMF
 			currentDistance = (cameraTargetTransform.position - tr.position).magnitude; 
 		}
 
-		void LateUpdate () {
+		private void LateUpdate () {
 
 			//Check if ignore list length has been changed since last frame;
 			if(ignoreListLayers.Length != ignoreList.Length)
@@ -116,7 +116,7 @@ namespace CMF
 		}
 
 		//Calculate maximum distance by casting a ray (or sphere) from this transform to the camera target transform;
-		float GetCameraDistance()
+		private float GetCameraDistance()
 		{
 			RaycastHit _hit;
 

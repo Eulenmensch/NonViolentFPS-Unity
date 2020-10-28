@@ -5,13 +5,13 @@ using System.Collections;
 [RequireComponent( typeof( NavMeshAgent ) )]
 public class NavMeshAgentStateMachine : StateMachine
 {
-    [SerializeField] float wanderRadius;
+    [SerializeField] private float wanderRadius;
     public float WanderRadius
     {
         get => wanderRadius;
         set => wanderRadius = value;
     }
-    [SerializeField] float pauseTime;
+    [SerializeField] private float pauseTime;
     public float PauseTime
     {
         get => pauseTime;

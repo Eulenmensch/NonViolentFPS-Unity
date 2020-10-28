@@ -17,9 +17,9 @@ namespace CMF
 		[SerializeField] public Vector3 colliderOffset = Vector3.zero;
 
 		//References to attached collider(s);
-		BoxCollider boxCollider;
-		SphereCollider sphereCollider;
-		CapsuleCollider capsuleCollider;
+		private BoxCollider boxCollider;
+		private SphereCollider sphereCollider;
+		private CapsuleCollider capsuleCollider;
 
 		//Sensor variables;
 		[Header("Sensor Options :")]
@@ -35,22 +35,22 @@ namespace CMF
 		[HideInInspector] public Vector3[] raycastArrayPreviewPositions;
 
 		//Ground detection variables;
-		bool isGrounded = false;
+		private bool isGrounded = false;
 
 		//Sensor range variables;
-		bool IsUsingExtendedSensorRange  = true;
-		float baseSensorRange = 0f;
+		private bool IsUsingExtendedSensorRange  = true;
+		private float baseSensorRange = 0f;
 
 		//Current upwards (or downwards) velocity necessary to keep the correct distance to the ground;
-		Vector3 currentGroundAdjustmentVelocity = Vector3.zero;
+		private Vector3 currentGroundAdjustmentVelocity = Vector3.zero;
 
 		//References to attached components;
-		Collider col;
-		Rigidbody rig;
-		Transform tr;
-		Sensor sensor;
+		private Collider col;
+		private Rigidbody rig;
+		private Transform tr;
+		private Sensor sensor;
 
-		void Awake()
+		private void Awake()
 		{
 			Setup();
 
@@ -60,11 +60,11 @@ namespace CMF
 			RecalibrateSensor();
 		}
 
-		void Reset () {
+		private void Reset () {
 			Setup();
 		}
 
-		void OnValidate()
+		private void OnValidate()
 		{
 			//Recalculate collider dimensions;
 			if(this.gameObject.activeInHierarchy)
@@ -77,7 +77,7 @@ namespace CMF
 		}
 
 		//Setup references to components;
-		void Setup()
+		private void Setup()
 		{
 			tr = transform;
 			col = GetComponent<Collider>();
@@ -108,7 +108,7 @@ namespace CMF
 		}
 
 		//Draw debug information if debug mode is enabled;
-		void LateUpdate()
+		private void LateUpdate()
 		{
 			if(isInDebugMode)
 				sensor.DrawDebug();
@@ -172,7 +172,7 @@ namespace CMF
 		}
 
 		//Recalibrate sensor variables;
-		void RecalibrateSensor()
+		private void RecalibrateSensor()
 		{
 			//Set sensor ray origin and direction;
 			sensor.SetCastOrigin(GetColliderCenter());
@@ -225,7 +225,7 @@ namespace CMF
 		}
 
 		//Recalculate sensor layermask based on current physics settings;
-		void RecalculateSensorLayerMask()
+		private void RecalculateSensorLayerMask()
 		{
 			int _layerMask = 0;
 			int _objectLayer = this.gameObject.layer;
@@ -251,7 +251,7 @@ namespace CMF
 		}
 
 		//Returns the collider's center in world coordinates;
-		Vector3 GetColliderCenter()
+		private Vector3 GetColliderCenter()
 		{
 			if(col == null)
 				Setup();
@@ -262,7 +262,7 @@ namespace CMF
 		//Check if mover is grounded;
 		//Store all relevant collision information for later;
 		//Calculate necessary adjustment velocity to keep the correct distance to the ground;
-		void Check()
+		private void Check()
 		{
 			//Reset ground adjustment velocity;
 			currentGroundAdjustmentVelocity = Vector3.zero;

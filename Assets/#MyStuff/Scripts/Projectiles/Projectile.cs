@@ -3,13 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(QuadraticDrag))]
 public abstract class PhysicsProjectile : MonoBehaviour
 {
-    [SerializeField] float activeDrag;
+    [SerializeField] private float activeDrag;
     public float ActiveDrag
     {
         get { return activeDrag; }
         set { activeDrag = value; }
     }
-    [SerializeField] float activeAngularDrag;
+    [SerializeField] private float activeAngularDrag;
     public float ActiveAngularDrag
     {
         get { return activeAngularDrag; }

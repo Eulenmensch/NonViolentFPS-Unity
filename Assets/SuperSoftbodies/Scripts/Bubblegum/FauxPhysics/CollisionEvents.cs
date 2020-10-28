@@ -39,7 +39,7 @@ namespace Bubblegum.FauxPhysics.Colliders
 		/// <summary>
 		/// Awaken this instance
 		/// </summary>
-		void Awake ()
+		private void Awake ()
 		{
 			rBody2D = GetComponent<Rigidbody2D> ();
 		}
@@ -48,7 +48,7 @@ namespace Bubblegum.FauxPhysics.Colliders
 		/// When a collision starts
 		/// </summary>
 		/// <param name="collision"></param>
-		void OnCollisionEnter (Collision collision)
+		private void OnCollisionEnter (Collision collision)
 		{
 			if (!is2D)
 			{
@@ -63,7 +63,7 @@ namespace Bubblegum.FauxPhysics.Colliders
 		/// When a collision starts
 		/// </summary>
 		/// <param name="collision"></param>
-		void OnCollisionEnter2D (Collision2D collision)
+		private void OnCollisionEnter2D (Collision2D collision)
 		{
 			if (is2D)
 			{

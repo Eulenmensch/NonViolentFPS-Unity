@@ -21,16 +21,16 @@ namespace CMF
 		private bool isWaiting = false;
 
 		//References to attached components;
-		Rigidbody r;
-		TriggerArea triggerArea;
+		private Rigidbody r;
+		private TriggerArea triggerArea;
 
 		//List of transforms used as waypoints;
 		public List<Transform> waypoints = new List<Transform>();
-		int currentWaypointIndex = 0;
-		Transform currentWaypoint;
+		private int currentWaypointIndex = 0;
+		private Transform currentWaypoint;
 
 		//Start;
-		void Start () {
+		private void Start () {
 
 			//Get references to components;
 			r = GetComponent<Rigidbody>();
@@ -55,7 +55,7 @@ namespace CMF
 		}
 
 		//This coroutine ensures that platform movement always occurs after Fixed Update;
-		IEnumerator LateFixedUpdate()
+		private IEnumerator LateFixedUpdate()
 		{
 			WaitForFixedUpdate _instruction = new WaitForFixedUpdate();
 			while(true)
@@ -65,7 +65,7 @@ namespace CMF
 			}
 		}
 
-		void MovePlatform () {
+		private void MovePlatform () {
 
 			//If no waypoints have been assigned, return;
 			if(waypoints.Count <= 0)
@@ -129,7 +129,7 @@ namespace CMF
 		}
 
 		//Coroutine that keeps track of the wait time and sets 'isWaiting' back to 'false', after 'waitTime' has passed;
-		IEnumerator WaitRoutine()
+		private IEnumerator WaitRoutine()
 		{
 			WaitForSeconds _waitInstruction = new WaitForSeconds(waitTime);
 

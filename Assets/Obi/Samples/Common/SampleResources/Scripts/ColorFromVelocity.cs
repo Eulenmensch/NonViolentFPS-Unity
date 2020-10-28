@@ -11,16 +11,16 @@ namespace Obi
 	[RequireComponent(typeof(ObiActor))]
 	public class ColorFromVelocity : MonoBehaviour
 	{
-		ObiActor actor;
+		private ObiActor actor;
 		public float sensibility = 0.2f;
 
-		void Awake(){
+		private void Awake(){
 			actor = GetComponent<ObiActor>();
 		}
 
 		public void OnEnable(){}
 
-		void LateUpdate()
+		private void LateUpdate()
 		{
             if (!isActiveAndEnabled || actor.solver == null)
 				return;

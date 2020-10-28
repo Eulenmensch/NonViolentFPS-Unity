@@ -3,13 +3,13 @@ using UnityEngine;
 [RequireComponent( typeof( Rigidbody ) )]
 public class RigidbodyStateMachine : StateMachine
 {
-    [SerializeField] float jumpForce;
+    [SerializeField] private float jumpForce;
     public float JumpForce
     {
         get => jumpForce;
         set => jumpForce = value;
     }
-    [SerializeField] float turnTorque;
+    [SerializeField] private float turnTorque;
     public float TurnTorque
     {
         get => turnTorque;

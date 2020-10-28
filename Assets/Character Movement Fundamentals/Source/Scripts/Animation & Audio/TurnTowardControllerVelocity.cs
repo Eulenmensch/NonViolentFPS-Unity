@@ -13,21 +13,21 @@ namespace CMF
 		//Speed at which this gameobject turns toward the controller's velocity;
 		public float turnSpeed = 500f;
 
-		Transform parentTransform;
-		Transform tr;
+		private Transform parentTransform;
+		private Transform tr;
 
 		//Current (local) rotation around the (local) y axis of this gameobject;
-		float currentYRotation = 0f;
+		private float currentYRotation = 0f;
 
 		//If the angle between the current and target direction falls below 'fallOffAngle', 'turnSpeed' becomes progressively slower (and eventually approaches '0f');
 		//This adds a smoothing effect to the rotation;
-		float fallOffAngle = 90f;
+		private float fallOffAngle = 90f;
 
 		//Whether the current controller momentum should be ignored when calculating the new direction;
 		public bool ignoreControllerMomentum = false;
 
 		//Setup;
-		void Start () {
+		private void Start () {
 			tr = transform;
 			parentTransform = tr.parent;
 
@@ -39,7 +39,7 @@ namespace CMF
 			}	
 		}
 
-		void LateUpdate () {
+		private void LateUpdate () {
 
 			//Get controller velocity;
 			Vector3 _velocity;
@@ -92,11 +92,11 @@ namespace CMF
 
 		}
 
-		void OnDisable()
+		private void OnDisable()
 		{ 
 		}
 
-		void OnEnable()
+		private void OnEnable()
 		{
 			currentYRotation = transform.localEulerAngles.y;
 		}

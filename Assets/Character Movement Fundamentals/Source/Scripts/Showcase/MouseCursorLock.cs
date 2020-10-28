@@ -17,7 +17,7 @@ namespace CMF
 		public KeyCode lockKeyCode = KeyCode.Mouse0;
 
 		//Start;
-		void Start () {
+		private void Start () {
 
 			if(lockCursorAtGameStart)
 			{
@@ -28,7 +28,7 @@ namespace CMF
 		}
 		
 		//Update;
-		void Update () {
+		private void Update () {
 
 			if(Input.GetKeyDown(unlockKeyCode))
 			{

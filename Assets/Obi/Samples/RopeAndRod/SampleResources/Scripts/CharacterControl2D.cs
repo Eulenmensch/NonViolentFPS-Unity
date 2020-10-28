@@ -14,8 +14,8 @@ public class CharacterControl2D : MonoBehaviour {
 		unityRigidbody = GetComponent<Rigidbody>();
 	}
 
-	
-	void FixedUpdate () {
+
+	private void FixedUpdate () {
 
 		unityRigidbody.AddForce(new Vector3(Input.GetAxis("Horizontal")*acceleration,0,0));
 	

@@ -13,8 +13,8 @@ namespace CMF
 		public KeyCode menuKey = KeyCode.C;
 
 		//References to secondary components;
-		DisableShadows disableShadows;
-		FPSCounter fpsCounter;
+		private DisableShadows disableShadows;
+		private FPSCounter fpsCounter;
 
 		//Reference to game object containing the demo menu UI;
 		public GameObject demoMenuObject;
@@ -34,7 +34,7 @@ namespace CMF
 		//Color of currently selected controller prefab button;
 		public Color activeButtonColor = Color.cyan;
 
-		void Start () {
+		private void Start () {
 
 			//Get references;
 			disableShadows = GetComponent<DisableShadows>();
@@ -76,7 +76,7 @@ namespace CMF
 		}
 		
 		// Update is called once per frame
-		void Update () {
+		private void Update () {
 
 			//Hide/show demo menu;
 			if(Input.GetKeyDown(menuKey))

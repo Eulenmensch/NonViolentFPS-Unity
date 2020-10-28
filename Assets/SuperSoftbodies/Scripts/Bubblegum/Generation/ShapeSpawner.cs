@@ -33,7 +33,7 @@ namespace Bubblegum.Generation
 		/// <summary>
 		/// Draw all gizmo objects
 		/// </summary>
-		void OnDrawGizmos ()
+		private void OnDrawGizmos ()
 		{
 			Gizmos.color = Color.blue;
 

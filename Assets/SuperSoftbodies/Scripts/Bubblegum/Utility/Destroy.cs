@@ -82,7 +82,7 @@ namespace Bubblegum.Utility
 		/// <summary>
 		/// Called when all objects have been initialized regardless of whether the script is enabled
 		/// </summary>
-		void OnEnable ()
+		private void OnEnable ()
 		{
 			OnSpawn ();
 		}
@@ -184,13 +184,13 @@ namespace Bubblegum.Utility
 		{
 
 			//Declaring properties here means we can have multi object editing
-			SerializedProperty destroyAfterSeconds;
-			SerializedProperty seconds;
-			SerializedProperty destroyComponent;
-			SerializedProperty components;
-			SerializedProperty destroyEffect;
-			SerializedProperty destroyEffectOffset;
-			SerializedProperty OnDestroy;
+			private SerializedProperty destroyAfterSeconds;
+			private SerializedProperty seconds;
+			private SerializedProperty destroyComponent;
+			private SerializedProperty components;
+			private SerializedProperty destroyEffect;
+			private SerializedProperty destroyEffectOffset;
+			private SerializedProperty OnDestroy;
 
 			/// <summary>
 			/// Raises the enable event.

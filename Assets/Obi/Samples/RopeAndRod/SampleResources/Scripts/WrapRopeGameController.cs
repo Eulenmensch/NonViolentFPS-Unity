@@ -7,8 +7,7 @@ using Obi;
 [RequireComponent(typeof(ObiSolver))]
 public class WrapRopeGameController : MonoBehaviour
 {
-
-	ObiSolver solver;
+	private ObiSolver solver;
 
 	public Wrappable[] wrappables;
 	public UnityEvent onFinish = new UnityEvent();
@@ -19,7 +18,7 @@ public class WrapRopeGameController : MonoBehaviour
 	}
 
 	// Start is called before the first frame update
-	void OnEnable()
+	private void OnEnable()
 	{
 		solver.OnCollision += Solver_OnCollision;
 	}

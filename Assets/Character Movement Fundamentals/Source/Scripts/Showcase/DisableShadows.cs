@@ -9,13 +9,13 @@ namespace CMF
 	public class DisableShadows : MonoBehaviour {
 
 		//Whether shadows are cast;
-		bool shadowsAreActive = true;
+		private bool shadowsAreActive = true;
 
 		//Reference to light component;
 		public Light sceneLight;
 
 		//Start;
-		void Start () {
+		private void Start () {
 			sceneLight = this.GetComponent<Light>();
 		}
 

@@ -5,17 +5,17 @@ using Obi;
 
 public class BalloonProjectile : PhysicsProjectile
 {
-    [SerializeField] float RiseForce;
-    [SerializeField] Vector3 MaxSize;
-    [SerializeField] float GrowthDuration;
-    [SerializeField] float ActiveWeight;
+    [SerializeField] private float RiseForce;
+    [SerializeField] private Vector3 MaxSize;
+    [SerializeField] private float GrowthDuration;
+    [SerializeField] private float ActiveWeight;
 
-    bool Ground;
-    Rigidbody RigidbodyRef;
-    SpringJoint Joint;
-    LineRenderer Line;
-    float DefaultSpringForce;
-    GameObject BalloonStringStart;
+    private bool Ground;
+    private Rigidbody RigidbodyRef;
+    private SpringJoint Joint;
+    private LineRenderer Line;
+    private float DefaultSpringForce;
+    private GameObject BalloonStringStart;
 
     protected override void Start()
     {

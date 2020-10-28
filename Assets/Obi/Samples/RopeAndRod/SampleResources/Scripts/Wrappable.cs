@@ -9,7 +9,7 @@ public class Wrappable : MonoBehaviour
 	public Color normalColor = new Color(0.2f,0.2f,0.8f);
 	public Color wrappedColor = new Color(0.9f, 0.9f, 0.2f);
 
-	Material localMaterial;
+	private Material localMaterial;
 
     public void Awake()
 	{

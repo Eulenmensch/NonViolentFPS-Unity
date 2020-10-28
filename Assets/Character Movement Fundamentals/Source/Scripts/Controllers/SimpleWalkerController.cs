@@ -9,27 +9,27 @@ namespace CMF
     public class SimpleWalkerController : Controller
     {
         private Mover mover;
-        float currentVerticalSpeed = 0f;
-        bool isGrounded;
+        private float currentVerticalSpeed = 0f;
+        private bool isGrounded;
         public float movementSpeed = 7f;
         public float jumpSpeed = 10f;
         public float gravity = 10f;
 
-        Vector3 lastVelocity = Vector3.zero;
+        private Vector3 lastVelocity = Vector3.zero;
 
         public Transform cameraTransform;
-        CharacterInput characterInput;
-        Transform tr;
+        private CharacterInput characterInput;
+        private Transform tr;
 
         // Use this for initialization
-        void Start()
+        private void Start()
         {
             tr = transform;
             mover = GetComponent<Mover>();
             characterInput = GetComponent<CharacterInput>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             //Run initial mover ground check;
             mover.CheckForGround();
@@ -105,7 +105,7 @@ namespace CMF
         }
 
         //This function is called when the controller has landed on a surface after being in the air;
-        void OnGroundContactRegained(Vector3 _collisionVelocity)
+        private void OnGroundContactRegained(Vector3 _collisionVelocity)
         {
             //Call 'OnLand' delegate function;
             if ( OnLand != null )
@@ -113,7 +113,7 @@ namespace CMF
         }
 
         //This function is called when the controller has started a jump;
-        void OnJumpStart()
+        private void OnJumpStart()
         {
             //Call 'OnJump' delegate function;
             if ( OnJump != null )

@@ -9,7 +9,7 @@ public class RobotArmController : MonoBehaviour {
 	public float speed = 40;
 
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 	
 		if (Input.GetKey(KeyCode.A)){
 			section1.Rotate(0,speed*Time.deltaTime,0,Space.World);

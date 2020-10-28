@@ -46,7 +46,7 @@ public class MtreeComponent : MonoBehaviour
     public bool isHDRP = false;
     public RenderPipelineAsset hdrpAsset;
 #endif
-    void InitializeTree()
+    private void InitializeTree()
     {
         MtreeVersion = MtreeVariables.MtreeVersion;
         filter = GetComponent<MeshFilter>();
@@ -186,7 +186,7 @@ public class MtreeComponent : MonoBehaviour
         }
     }
 
-    Mesh CreateMesh()
+    private Mesh CreateMesh()
     {
         Mesh mesh = new Mesh();
 
@@ -389,7 +389,7 @@ public class MtreeComponent : MonoBehaviour
     }
 
 
-    Light[] lights = new Light[0];
+    private Light[] lights = new Light[0];
     public void ResetGlobalWind()
     {
         Shader.SetGlobalFloat("_WindStrength", 0);

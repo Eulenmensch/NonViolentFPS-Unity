@@ -8,11 +8,11 @@ namespace CMF
 	public class TurnTowardTransformDirection : MonoBehaviour {
 
 		public Transform targetTransform;
-		Transform tr;
-		Transform parentTransform;
+		private Transform tr;
+		private Transform parentTransform;
 
 		//Setup;
-		void Start () {
+		private void Start () {
 			tr = transform;
 			parentTransform = transform.parent;
 
@@ -21,7 +21,7 @@ namespace CMF
 		}
 		
 		//Update;
-		void LateUpdate () {
+		private void LateUpdate () {
 
 			if(!targetTransform)
 				return;

@@ -32,15 +32,15 @@ public class FPSDisplay : MonoBehaviour
         get { return average; }
     }
 
-    Text uguiText;
+    private Text uguiText;
 
-    void Start()
+    private void Start()
     {
         uguiText = GetComponent<Text>();
         timeleft = updateInterval;
     }
 
-    void Update()
+    private void Update()
     {
         // Timing inside the editor is not accurate. Only use in actual build.
 

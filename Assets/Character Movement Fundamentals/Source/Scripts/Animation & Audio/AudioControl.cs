@@ -8,10 +8,10 @@ namespace CMF
 	public class AudioControl : MonoBehaviour {
 
 		//References to components;
-		Controller controller;
-		Animator animator;
-		Mover mover;
-		Transform tr;
+		private Controller controller;
+		private Animator animator;
+		private Mover mover;
+		private Transform tr;
 		public AudioSource audioSource;
 
 		//Whether footsteps will be based on the currently playing animation or calculated based on walked distance (see further below);
@@ -19,7 +19,7 @@ namespace CMF
 
 		//Footsteps will be played every time the traveled distance reaches this value (if 'useAnimationBasedFootsteps' is set to 'true');
 		public float footstepDistance = 0.2f;
-		float currentFootstepDistance = 0f;
+		private float currentFootstepDistance = 0f;
 
 		private float currentFootStepValue = 0f;
 
@@ -37,7 +37,7 @@ namespace CMF
 		public AudioClip landClip;
 
 		//Setup;
-		void Start () {
+		private void Start () {
 			//Get component references;
 			controller = GetComponent<Controller>();
 			animator = GetComponentInChildren<Animator>();
@@ -53,7 +53,7 @@ namespace CMF
 		}
 		
 		//Update;
-		void Update () {
+		private void Update () {
 
 			//Get controller velocity;
 			Vector3 _velocity = controller.GetVelocity();
@@ -64,7 +64,7 @@ namespace CMF
 			FootStepUpdate(_horizontalVelocity.magnitude);
 		}
 
-		void FootStepUpdate(float _movementSpeed)
+		private void FootStepUpdate(float _movementSpeed)
 		{
 			float _speedThreshold = 0.05f;
 
@@ -97,19 +97,19 @@ namespace CMF
 			}
 		}
 
-		void PlayFootstepSound(float _movementSpeed)
+		private void PlayFootstepSound(float _movementSpeed)
 		{
 			int _footStepClipIndex = Random.Range(0, footStepClips.Length);
 			audioSource.PlayOneShot(footStepClips[_footStepClipIndex], audioClipVolume + audioClipVolume * Random.Range(-RelativeRandomizedVolumeRange, RelativeRandomizedVolumeRange));
 		}
 
-		void OnLand(Vector3 _v)
+		private void OnLand(Vector3 _v)
 		{
 			//Play land audio clip;
 			audioSource.PlayOneShot(landClip, audioClipVolume);
 		}
 
-		void OnJump(Vector3 _v)
+		private void OnJump(Vector3 _v)
 		{
 			//Play jump audio clip;
 			audioSource.PlayOneShot(jumpClip, audioClipVolume);

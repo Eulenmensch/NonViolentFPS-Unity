@@ -288,7 +288,7 @@ namespace Mtree
             }
         }
 
-        void ExtendLeafCandidates(Queue<LeafCandidate> candidates, int number)
+        private void ExtendLeafCandidates(Queue<LeafCandidate> candidates, int number)
         {
             LeafCandidate[] candidateArray = candidates.ToArray();
             int dupliNumber = 0;
@@ -314,7 +314,7 @@ namespace Mtree
         }
 
 
-        LeafCandidate[] Sample(LeafCandidate[] candidates, int number)
+        private LeafCandidate[] Sample(LeafCandidate[] candidates, int number)
         {
             number = Mathf.Min(candidates.Length, number);
             LeafCandidate[] result = new LeafCandidate[number];

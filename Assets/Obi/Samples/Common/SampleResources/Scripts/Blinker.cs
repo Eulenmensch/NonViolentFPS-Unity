@@ -7,7 +7,7 @@ public class Blinker : MonoBehaviour {
  	private Renderer rend;
 	private Color original;
 
-	void Awake(){
+	private void Awake(){
 		rend = GetComponent<Renderer>();
 		original = rend.material.color;
 	}
@@ -16,7 +16,7 @@ public class Blinker : MonoBehaviour {
 		rend.material.color = highlightColor;
 	}
 
-	void LateUpdate(){
+	private void LateUpdate(){
 		rend.material.color += (original - rend.material.color)*Time.deltaTime*5;
 	}
 

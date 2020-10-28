@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class QuadraticDrag : MonoBehaviour
 {
-    [SerializeField] float drag;                    //Quadratic force applied counter the board's velocity
+    [SerializeField] private float drag;                    //Quadratic force applied counter the board's velocity
     public float Drag
     {
         get { return drag; }

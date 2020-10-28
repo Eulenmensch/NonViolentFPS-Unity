@@ -7,7 +7,7 @@ namespace Mtree
 {
     public class Splines
     {
-        Stack<Queue<TreePoint>> splines;
+        private Stack<Queue<TreePoint>> splines;
         public Queue<Vector3> verts;
         public Queue<Vector3> normals;
         public Queue<int> triangles;
@@ -84,7 +84,7 @@ namespace Mtree
             RecalculateNormals(duplicatedVertexIndexes, trianglesWithBadNormals, projectedVertices);
         }
 
-        void BridgeLoops(Vector3[] loop, TreePoint point, int lastResolution, float uvHeight, int n, int fillingGapRate, int flaresNumber,
+        private void BridgeLoops(Vector3[] loop, TreePoint point, int lastResolution, float uvHeight, int n, int fillingGapRate, int flaresNumber,
                          float rootRadius, float rootInnerRadius, float rootHeight, float radiusMultiplier, AnimationCurve rootShape, SimplexNoiseGenerator noiseGenerator,
                          float displacementSize, float displacementStrength, Queue<int> trianglesWithBadNormals, float VColBarkModifier)
         {
@@ -151,7 +151,7 @@ namespace Mtree
 
         }
 
-        int getFillingGapRate(int lastResolution, int resolution)
+        private int getFillingGapRate(int lastResolution, int resolution)
         {
             int gaps = lastResolution - resolution; //difference between the two loops
             int fillingGapRate = int.MaxValue; //rate at which an additional triangle must be created
@@ -163,7 +163,7 @@ namespace Mtree
             return fillingGapRate;
         }
 
-        int getResolution(TreePoint point, int minResolution, float rootRadius, float rootHeight, float resolutionMultiplier)
+        private int getResolution(TreePoint point, int minResolution, float rootRadius, float rootHeight, float resolutionMultiplier)
         {
             int resolution = (int)((point.radius) * resolutionMultiplier * 7);
 

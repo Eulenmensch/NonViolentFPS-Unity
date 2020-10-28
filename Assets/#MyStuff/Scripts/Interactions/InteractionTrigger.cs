@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent( typeof( Collider ) )]
 public class InteractionTrigger : MonoBehaviour
 {
-    [SerializeField] StateMachine NPCStateMachine;
+    [FormerlySerializedAs("NPCStateMachine")] [SerializeField] private StateMachine npcStateMachine;
 
     private void OnTriggerEnter(Collider other)
     {
         if ( other.CompareTag( "Player" ) )
         {
-            NPCStateMachine.PlayerInTrigger = true;
+            npcStateMachine.PlayerInTrigger = true;
         }
     }
 
@@ -19,7 +20,7 @@ public class InteractionTrigger : MonoBehaviour
     {
         if ( other.CompareTag( "Player" ) )
         {
-            NPCStateMachine.PlayerInTrigger = false;
+            npcStateMachine.PlayerInTrigger = false;
         }
     }
 }

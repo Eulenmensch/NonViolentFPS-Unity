@@ -32,7 +32,7 @@ public class GrapplingHook : MonoBehaviour
 
     private RaycastHit hookAttachment;
 
-    void Awake()
+    private void Awake()
     {
 
         // Create both the rope and the solver:	
@@ -125,7 +125,7 @@ public class GrapplingHook : MonoBehaviour
     }
 
 
-    void Update()
+    private void Update()
     {
 
         if (Input.GetMouseButtonDown(0))

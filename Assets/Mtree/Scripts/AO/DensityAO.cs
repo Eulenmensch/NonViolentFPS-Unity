@@ -119,7 +119,7 @@ namespace Mtree
         private Coroutine coroutine;
         private bool begun;
         private bool waited;
-        bool ended;
+        private bool ended;
         private float time;
         
 

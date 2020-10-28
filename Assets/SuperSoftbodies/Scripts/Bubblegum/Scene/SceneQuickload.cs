@@ -33,7 +33,7 @@ namespace Bubblegum.SceneUtility
 		/// <summary>
 		/// Update this object
 		/// </summary>
-		void Update ()
+		private void Update ()
 		{
 			for (int i = 0; i < SceneManager.sceneCountInBuildSettings && i < numberKeys.Length; i++)
 				if (Input.GetKeyDown (numberKeys[i]))

@@ -48,7 +48,7 @@ namespace Bubblegum.FauxPhysics.Triggers
 		/// <summary>
 		/// Awaken this component
 		/// </summary>
-		void Awake ()
+		private void Awake ()
 		{
 			trigger = GetTrigger ();
 		}

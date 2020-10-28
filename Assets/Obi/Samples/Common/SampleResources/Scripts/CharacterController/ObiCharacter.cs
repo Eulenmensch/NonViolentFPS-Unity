@@ -9,29 +9,29 @@ namespace Obi{
 	[RequireComponent(typeof(Animator))]
 	public class ObiCharacter : MonoBehaviour {
 	
-		[SerializeField] float m_MovingTurnSpeed = 360;
-		[SerializeField] float m_StationaryTurnSpeed = 180;
-		[SerializeField] float m_JumpPower = 12f;
-		[Range(1f, 4f)][SerializeField] float m_GravityMultiplier = 2f;
-		[SerializeField] float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
-		[SerializeField] float m_MoveSpeedMultiplier = 1f;
-		[SerializeField] float m_AnimSpeedMultiplier = 1f;
-		[SerializeField] float m_GroundCheckDistance = 0.1f;
+		[SerializeField] private float m_MovingTurnSpeed = 360;
+		[SerializeField] private float m_StationaryTurnSpeed = 180;
+		[SerializeField] private float m_JumpPower = 12f;
+		[Range(1f, 4f)][SerializeField] private float m_GravityMultiplier = 2f;
+		[SerializeField] private float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
+		[SerializeField] private float m_MoveSpeedMultiplier = 1f;
+		[SerializeField] private float m_AnimSpeedMultiplier = 1f;
+		[SerializeField] private float m_GroundCheckDistance = 0.1f;
 
-		Rigidbody m_Rigidbody;
-		Animator m_Animator;
-		bool m_IsGrounded;
-		float m_OrigGroundCheckDistance;
-		const float k_Half = 0.5f;
-		float m_TurnAmount;
-		float m_ForwardAmount;
-		Vector3 m_GroundNormal;
-		float m_CapsuleHeight;
-		Vector3 m_CapsuleCenter;
-		CapsuleCollider m_Capsule;
-		bool m_Crouching;
+		private Rigidbody m_Rigidbody;
+		private Animator m_Animator;
+		private bool m_IsGrounded;
+		private float m_OrigGroundCheckDistance;
+		private const float k_Half = 0.5f;
+		private float m_TurnAmount;
+		private float m_ForwardAmount;
+		private Vector3 m_GroundNormal;
+		private float m_CapsuleHeight;
+		private Vector3 m_CapsuleCenter;
+		private CapsuleCollider m_Capsule;
+		private bool m_Crouching;
 
-		void Start()
+		private void Start()
 		{
 			Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Default"),LayerMask.NameToLayer("Ignore Raycast"),true);
 
@@ -79,7 +79,7 @@ namespace Obi{
 		}
 
 
-		void ScaleCapsuleForCrouching(bool crouch)
+		private void ScaleCapsuleForCrouching(bool crouch)
 		{
 			if (m_IsGrounded && crouch)
 			{
@@ -103,7 +103,7 @@ namespace Obi{
 			}
 		}
 
-		void PreventStandingInLowHeadroom()
+		private void PreventStandingInLowHeadroom()
 		{
 			// prevent standing up in crouch-only zones
 			if (!m_Crouching)
@@ -118,7 +118,7 @@ namespace Obi{
 		}
 
 
-		void UpdateAnimator(Vector3 move)
+		private void UpdateAnimator(Vector3 move)
 		{
 			// update the animator parameters
             m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
@@ -156,7 +156,7 @@ namespace Obi{
 		}
 
 
-		void HandleAirborneMovement()
+		private void HandleAirborneMovement()
 		{
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
@@ -166,7 +166,7 @@ namespace Obi{
 		}
 
 
-		void HandleGroundedMovement(bool crouch, bool jump)
+		private void HandleGroundedMovement(bool crouch, bool jump)
 		{
 			// check whether conditions are right to allow a jump:
 			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
@@ -179,7 +179,7 @@ namespace Obi{
 			}
 		}
 
-		void ApplyExtraTurnRotation()
+		private void ApplyExtraTurnRotation()
 		{
 			// help the character turn faster (this is in addition to root rotation in the animation)
 			float turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
@@ -202,7 +202,7 @@ namespace Obi{
 		}
 
 
-		void CheckGroundStatus()
+		private void CheckGroundStatus()
 		{
 			RaycastHit hitInfo;
 #if UNITY_EDITOR

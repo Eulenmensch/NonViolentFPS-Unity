@@ -147,7 +147,7 @@ namespace Bubblegum
 		/// <summary>
 		/// Validate inspector input
 		/// </summary>
-		void OnValidate ()
+		private void OnValidate ()
 		{
 			if (!spawnPoint)
 				spawnPoint = transform;
@@ -158,7 +158,7 @@ namespace Bubblegum
 		/// <summary>
 		/// Destroy this object
 		/// </summary>
-		void OnDestroy ()
+		private void OnDestroy ()
 		{
 			if (selfCleanup)
 				for (int i = 0; i < cleanupObjects.Count; i++)

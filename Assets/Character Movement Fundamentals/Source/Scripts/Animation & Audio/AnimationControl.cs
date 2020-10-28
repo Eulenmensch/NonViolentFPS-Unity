@@ -6,20 +6,19 @@ namespace CMF
 {
 	//This script controls the character's animation by passing velocity values and other information ('isGrounded') to an animator component;
 	public class AnimationControl : MonoBehaviour {
-
-		Controller controller;
-		Animator animator;
-		Transform animatorTransform;
-		Transform tr;
+		private Controller controller;
+		private Animator animator;
+		private Transform animatorTransform;
+		private Transform tr;
 
 		//Whether the character is using the strafing blend tree;
 		public bool useStrafeAnimations = false;
 
 		private float smoothingFactor = 0.8f;
-		Vector3 oldMovementVelocity = Vector3.zero;
+		private Vector3 oldMovementVelocity = Vector3.zero;
 
 		//Setup;
-		void Awake () {
+		private void Awake () {
 			controller = GetComponent<Controller>();
 			animator = GetComponentInChildren<Animator>();
 			animatorTransform = animator.transform;
@@ -28,7 +27,7 @@ namespace CMF
 		}
 
 		//OnEnable;
-		void OnEnable()
+		private void OnEnable()
 		{
 			//Connect events to controller events;
 			controller.OnLand += OnLand;
@@ -36,7 +35,7 @@ namespace CMF
 		}
 
 		//OnDisable;
-		void OnDisable()
+		private void OnDisable()
 		{
 			//Disconnect events to prevent calls to disabled gameobjects;
 			controller.OnLand -= OnLand;
@@ -44,7 +43,7 @@ namespace CMF
 		}
 		
 		//Update;
-		void Update () {
+		private void Update () {
 
 			//Get controller velocity;
 			Vector3 _velocity = controller.GetVelocity();
@@ -74,12 +73,12 @@ namespace CMF
 		}
 
 
-		void OnLand(Vector3 _v)
+		private void OnLand(Vector3 _v)
 		{
 			animator.SetTrigger("OnLand");
 		}
 
-		void OnJump(Vector3 _v)
+		private void OnJump(Vector3 _v)
 		{
 			
 		}

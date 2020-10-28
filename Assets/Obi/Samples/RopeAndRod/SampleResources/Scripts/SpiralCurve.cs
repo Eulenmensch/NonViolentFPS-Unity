@@ -14,7 +14,7 @@ public class SpiralCurve : MonoBehaviour {
     public float rotationalMass = 1;
     public float thickness = 1;
 
-    void Awake ()
+    private void Awake ()
     {
         Generate();
     }

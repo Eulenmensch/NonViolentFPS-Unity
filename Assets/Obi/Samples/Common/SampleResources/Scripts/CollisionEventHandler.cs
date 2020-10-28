@@ -5,29 +5,28 @@ using Obi;
 
 [RequireComponent(typeof(ObiSolver))]
 public class CollisionEventHandler : MonoBehaviour {
+	private ObiSolver solver;
 
- 	ObiSolver solver;
-	
-	Obi.ObiSolver.ObiCollisionEventArgs frame;
+	private Obi.ObiSolver.ObiCollisionEventArgs frame;
 
-	void Awake(){
+	private void Awake(){
 		solver = GetComponent<Obi.ObiSolver>();
 	}
 
-	void OnEnable () {
+	private void OnEnable () {
 		solver.OnCollision += Solver_OnCollision;
 	}
 
-	void OnDisable(){
+	private void OnDisable(){
 		solver.OnCollision -= Solver_OnCollision;
 	}
-	
-	void Solver_OnCollision (object sender, Obi.ObiSolver.ObiCollisionEventArgs e)
+
+	private void Solver_OnCollision (object sender, Obi.ObiSolver.ObiCollisionEventArgs e)
 	{
 		frame = e;
 	}
 
-	void OnDrawGizmos()
+	private void OnDrawGizmos()
 	{
 		if (solver == null || frame == null || frame.contacts == null) return;
 

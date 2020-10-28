@@ -121,7 +121,7 @@ namespace Bubblegum
 		/// <summary>
 		/// Update this object
 		/// </summary>
-		void Update ()
+		private void Update ()
 		{
 			if (Input.deviceOrientation != DeviceOrientation.FaceDown && 
 				Input.deviceOrientation != DeviceOrientation.FaceUp &&
@@ -136,7 +136,7 @@ namespace Bubblegum
 		/// Raises the application focus event.
 		/// </summary>
 		/// <param name="focusStatus">If set to <c>true</c> focus status.</param>
-		void OnApplicationFocus (bool focusStatus)
+		private void OnApplicationFocus (bool focusStatus)
 		{
 			if (focusStatus)
 			{
@@ -159,7 +159,7 @@ namespace Bubblegum
 		/// <summary>
 		/// When the app is exited
 		/// </summary>
-		void OnApplicationQuit ()
+		private void OnApplicationQuit ()
 		{
 			if (onQuit != null)
 				onQuit ();

@@ -65,7 +65,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// <summary>
 		/// Update this object
 		/// </summary>
-		void Update ()
+		private void Update ()
 		{
 			if (softbodyJobs.Count == 0)
 				return;

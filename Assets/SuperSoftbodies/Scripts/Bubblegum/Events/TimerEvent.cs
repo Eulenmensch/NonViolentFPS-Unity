@@ -38,7 +38,7 @@ namespace Bubblegum.Events
 		/// <summary>
 		/// Awaken this instance
 		/// </summary>
-		void OnEnable ()
+		private void OnEnable ()
 		{
 			if (startOnEnable)
 				InvokeAfter (delay);

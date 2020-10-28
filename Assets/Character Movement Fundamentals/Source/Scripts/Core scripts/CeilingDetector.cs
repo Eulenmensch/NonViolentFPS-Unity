@@ -7,8 +7,7 @@ using UnityEngine;
 //If a collision qualifies as the character "hitting a ceiling" (based on surface normal), the result will be stored;
 //The 'AdvancedWalkerController' then can use that information to react to ceiling hits; 
 public class CeilingDetector : MonoBehaviour {
-
-	bool ceilingWasHit = false;
+	private bool ceilingWasHit = false;
 
 	//Angle limit for ceiling hits;
 	public float ceilingAngleLimit = 10f;
@@ -29,21 +28,21 @@ public class CeilingDetector : MonoBehaviour {
 	//If enabled, draw debug information to show hit positions and hit normals;
 	public bool isInDebugMode = false;
 	//How long debug information is drawn on the screen;
-	float debugDrawDuration = 2.0f;
+	private float debugDrawDuration = 2.0f;
 
-	Transform tr;
+	private Transform tr;
 
-	void Awake()
+	private void Awake()
 	{
 		tr = transform;
 	}
 
-	void OnCollisionEnter(Collision _collision)
+	private void OnCollisionEnter(Collision _collision)
 	{
 		CheckCollisionAngles(_collision);	
 	}
 
-	void OnCollisionStay(Collision _collision)
+	private void OnCollisionStay(Collision _collision)
 	{
 		CheckCollisionAngles(_collision);	
 	}

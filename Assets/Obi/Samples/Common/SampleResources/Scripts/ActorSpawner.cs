@@ -16,7 +16,7 @@ public class ActorSpawner : MonoBehaviour {
 	private float timeFromLastSpawn = 0;
 	
 	// Update is called once per frame
-	void Update () {
+	private void Update () {
 
 		timeFromLastSpawn += Time.deltaTime;
 

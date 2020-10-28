@@ -106,7 +106,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// <summary>
 		/// Awaken this object
 		/// </summary>
-		void Awake ()
+		private void Awake ()
 		{
 			ReactToCollisions = true;
 			damper = GetComponent<SoftbodyDamper> ();
@@ -135,7 +135,7 @@ namespace Bubblegum.FauxPhysics.Damage
 		/// <summary>
 		/// Destroy this object
 		/// </summary>
-		void OnDestroy ()
+		private void OnDestroy ()
 		{
 			SoftbodyJobManager.DeregisterJob (this);
 		}
