@@ -6,8 +6,6 @@ position: 829,171
 Hey buddy, I forgot my chocolate cake up there but the ladder broke when I climbed down. Can you help me get to my cake?
 -> Sure thing, friendo!
     Thanks, buddy!
-    << wait 3>> 
 -> I'll get back to you in a minute.
     No worries, buddy! My cake can wait, it's super sturdy!
-    << wait 3>>
 ===
