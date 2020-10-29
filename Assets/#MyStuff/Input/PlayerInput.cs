@@ -33,6 +33,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""NormalizeVector2"",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Push/Pull"",
+                    ""type"": ""Value"",
+                    ""id"": ""f4699ebc-921d-4e9d-b2af-918a8e46e973"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -101,6 +109,39 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""ProjectileToggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""f3f96801-452c-415e-be8e-df006f439c0c"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Push/Pull"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""5ffcd836-d116-4dda-8a7f-6195cc27aa24"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Push/Pull"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""f69a77d7-a3b7-490c-b6ba-c15496e69efa"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Push/Pull"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -139,6 +180,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_ProjectileToggle = m_Player.FindAction("ProjectileToggle", throwIfNotFound: true);
+        m_Player_PushPull = m_Player.FindAction("Push/Pull", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -190,12 +232,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_ProjectileToggle;
+    private readonly InputAction m_Player_PushPull;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @ProjectileToggle => m_Wrapper.m_Player_ProjectileToggle;
+        public InputAction @PushPull => m_Wrapper.m_Player_PushPull;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -211,6 +255,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @ProjectileToggle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProjectileToggle;
                 @ProjectileToggle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProjectileToggle;
                 @ProjectileToggle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProjectileToggle;
+                @PushPull.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushPull;
+                @PushPull.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushPull;
+                @PushPull.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushPull;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -221,6 +268,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @ProjectileToggle.started += instance.OnProjectileToggle;
                 @ProjectileToggle.performed += instance.OnProjectileToggle;
                 @ProjectileToggle.canceled += instance.OnProjectileToggle;
+                @PushPull.started += instance.OnPushPull;
+                @PushPull.performed += instance.OnPushPull;
+                @PushPull.canceled += instance.OnPushPull;
             }
         }
     }
@@ -247,5 +297,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     {
         void OnShoot(InputAction.CallbackContext context);
         void OnProjectileToggle(InputAction.CallbackContext context);
+        void OnPushPull(InputAction.CallbackContext context);
     }
 }

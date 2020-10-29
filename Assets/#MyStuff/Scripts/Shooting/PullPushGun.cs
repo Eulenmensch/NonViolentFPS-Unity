@@ -12,23 +12,71 @@ public class PullPushGun : MonoBehaviour, IGun
     [SerializeField] private float castRadius;
     [SerializeField] private float castRange;
     [SerializeField] private float pushForce;
+    [SerializeField] private float rangeFallOffMultiplier;
+    [SerializeField] private GameObject pushParticles;
+    [SerializeField] private GameObject pullParticles;
     
     private RaycastHit hit;
     private bool active;
     private float pushPullAxis;
 
-    private void Update()
+    private void Start()
     {
-        Shoot();
+        pushParticles.SetActive(false);
+        pullParticles.SetActive(false);
     }
 
-    public void Shoot()
+    /*private void Update()
+    {
+        Shoot();
+    }*/
+
+    public void PrimaryMouseButtonEnter()
+    {
+        pushParticles.SetActive(true);
+    }
+
+    public void PrimaryMouseButtonExit()
+    {
+        pushParticles.SetActive(false);
+    }
+
+    public void PrimaryMouseButtonAction()
+    {
+        if (CheckForObject())
+        {
+            Push(hit.rigidbody);
+        }
+    }
+    
+    public void SecondaryMouseButtonEnter()
+    {
+        pullParticles.SetActive(true);
+    }
+
+    public void SecondaryMouseButtonExit()
+    {
+        pullParticles.SetActive(false);
+    }
+    
+    public void SecondaryMouseButtonAction()
+    {
+        if (CheckForObject())
+        {
+            Pull(hit.rigidbody);
+        }
+    }
+
+    public void ScrollWheelAction(Vector2 _direction)
+    {
+    }
+
+    /*public void Shoot()
     {
         if (active)
         {
             if (CheckForObject())
             {
-                print(hit.rigidbody.name);
                 if (pushPullAxis > 0)
                 {
                     Push(hit.rigidbody);
@@ -39,7 +87,7 @@ public class PullPushGun : MonoBehaviour, IGun
                 }
             }
         }
-    }
+    }*/
 
     private bool CheckForObject()
     {
@@ -53,25 +101,43 @@ public class PullPushGun : MonoBehaviour, IGun
     
     private void Push(Rigidbody _body)
     {
-        _body.AddForceAtPosition(Camera.main.transform.forward * pushForce, hit.point );
+        var force = CalculateForce();
+        _body.AddForceAtPosition(force, hit.point);
     }
 
     private void Pull(Rigidbody _body)
     {
-        _body.AddForceAtPosition(-Camera.main.transform.forward * pushForce, hit.point );
+        var force = CalculateForce();
+        _body.AddForceAtPosition(-force, hit.point );
     }
 
-    public void GetPushPullInput(InputAction.CallbackContext _context)
+    private Vector3 CalculateForce()
+    {
+        var force = Camera.main.transform.forward * (pushForce * (1 / (1 + hit.distance * rangeFallOffMultiplier)));
+        return force;
+    }
+
+    /*public void GetPushPullInput(InputAction.CallbackContext _context)
     {
         pushPullAxis = _context.ReadValue<float>();
         if (_context.started)
         {
             active = true;
+            if (pushPullAxis > 0)
+            {
+                pushParticles.SetActive(true);
+            }
+            else if (pushPullAxis < 0)
+            {
+                pullParticles.SetActive(true);
+            }
         }
 
         if (_context.canceled)
         {
             active = false;
+            pushParticles.SetActive(false);
+            pullParticles.SetActive(false);
         }
-    }
+    }*/
 }
