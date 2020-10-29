@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa17dc8a50b35144aa43b747f5e0639d, type: 3}
   m_Name: Interaction Pop Up Behaviour
   m_EditorClassIdentifier: 
-  inputActions: {fileID: 0}
+  inputActions: {fileID: -944628639613478452, guid: e4120e66871a3da49a87810a00b87220,
+    type: 3}
