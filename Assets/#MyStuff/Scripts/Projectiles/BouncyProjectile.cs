@@ -3,19 +3,16 @@ using DG.Tweening;
 
 public class BouncyProjectile : PhysicsProjectile
 {
-    [SerializeField] private Vector3 MaxSize;
-    [SerializeField] private float ActiveWeight;
-    [SerializeField] private float GrowthDuration;
+    [SerializeField] private Vector3 maxSize;
+    [SerializeField] private float activeWeight;
+    [SerializeField] private float growthDuration;
 
-    private Rigidbody RigidbodyRef;
-    private FixedJoint Joint;
-    private Collision Other;
-    private Rigidbody OtherRigidbody;
+    private Rigidbody rigidbodyRef;
 
     protected override void Start()
     {
         base.Start();
-        RigidbodyRef = GetComponent<Rigidbody>();
+        rigidbodyRef = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -24,17 +21,18 @@ public class BouncyProjectile : PhysicsProjectile
         {
             if ( OtherRigidbody != null )
             {
-                OtherRigidbody.AddForceAtPosition( Vector3.down * ActiveWeight, transform.position, ForceMode.Acceleration );
+                OtherRigidbody.AddForceAtPosition( Vector3.down * activeWeight, transform.position, ForceMode.Acceleration );
             }
         }
     }
 
-    protected override void ImpactAction(Collision other)
+    protected override void ImpactAction(Collision _other)
     {
-        RigidbodyRef.isKinematic = true;
-        Destroy( RigidbodyRef );
-        transform.parent = other.transform.root;
-        transform.DOScale( MaxSize, GrowthDuration ).SetEase( Ease.OutBounce );
-        OtherRigidbody = other.transform.root.gameObject.GetComponent<Rigidbody>();
+        rigidbodyRef.isKinematic = true;
+        Destroy( rigidbodyRef );
+
+        ChildToOtherRigidbody(_other);
+
+        transform.DOScale( maxSize, growthDuration ).SetEase( Ease.OutBounce );
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using Ludiq.PeekCore;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Composites;
 
 public class PullPushGun : MonoBehaviour, IGun
 {
@@ -15,21 +14,19 @@ public class PullPushGun : MonoBehaviour, IGun
     [SerializeField] private float rangeFallOffMultiplier;
     [SerializeField] private GameObject pushParticles;
     [SerializeField] private GameObject pullParticles;
-    
+    [SerializeField] private float projectileWiggleTime;
+    [SerializeField] private float projectileDeletionRadius;
+
     private RaycastHit hit;
-    private bool active;
-    private float pushPullAxis;
+    private float wiggleTimer;
+    private Shooter shooter;
 
     private void Start()
     {
+        shooter = GetComponent<Shooter>();
         pushParticles.SetActive(false);
         pullParticles.SetActive(false);
     }
-
-    /*private void Update()
-    {
-        Shoot();
-    }*/
 
     public void PrimaryMouseButtonEnter()
     {
@@ -48,7 +45,7 @@ public class PullPushGun : MonoBehaviour, IGun
             Push(hit.rigidbody);
         }
     }
-    
+
     public void SecondaryMouseButtonEnter()
     {
         pullParticles.SetActive(true);
@@ -57,37 +54,20 @@ public class PullPushGun : MonoBehaviour, IGun
     public void SecondaryMouseButtonExit()
     {
         pullParticles.SetActive(false);
+        wiggleTimer = 0;
     }
-    
+
     public void SecondaryMouseButtonAction()
     {
         if (CheckForObject())
         {
+            SuckUpProjectiles();
             Pull(hit.rigidbody);
         }
+        DeletePhysicsProjectiles();
     }
 
-    public void ScrollWheelAction(Vector2 _direction)
-    {
-    }
-
-    /*public void Shoot()
-    {
-        if (active)
-        {
-            if (CheckForObject())
-            {
-                if (pushPullAxis > 0)
-                {
-                    Push(hit.rigidbody);
-                }
-                else if (pushPullAxis < 0)
-                {
-                    Pull(hit.rigidbody);
-                }
-            }
-        }
-    }*/
+    public void ScrollWheelAction(InputAction.CallbackContext _context) { }
 
     private bool CheckForObject()
     {
@@ -98,7 +78,7 @@ public class PullPushGun : MonoBehaviour, IGun
 
         return false;
     }
-    
+
     private void Push(Rigidbody _body)
     {
         var force = CalculateForce();
@@ -108,6 +88,7 @@ public class PullPushGun : MonoBehaviour, IGun
     private void Pull(Rigidbody _body)
     {
         var force = CalculateForce();
+        if (_body == null) return;
         _body.AddForceAtPosition(-force, hit.point );
     }
 
@@ -117,27 +98,47 @@ public class PullPushGun : MonoBehaviour, IGun
         return force;
     }
 
-    /*public void GetPushPullInput(InputAction.CallbackContext _context)
+    private void SuckUpProjectiles()
     {
-        pushPullAxis = _context.ReadValue<float>();
-        if (_context.started)
+        if (hit.transform.GetComponent<PhysicsProjectile>() != null)
         {
-            active = true;
-            if (pushPullAxis > 0)
+            if (wiggleTimer <= projectileWiggleTime)
             {
-                pushParticles.SetActive(true);
+                wiggleTimer += Time.deltaTime;
+                return;
             }
-            else if (pushPullAxis < 0)
-            {
-                pullParticles.SetActive(true);
-            }
-        }
 
-        if (_context.canceled)
-        {
-            active = false;
-            pushParticles.SetActive(false);
-            pullParticles.SetActive(false);
+            var body = hit.rigidbody;
+            if (body == null)
+            {
+                body = hit.transform.AddComponent<Rigidbody>();
+            }
+
+            var wiggler = hit.transform.GetComponent<MMWiggle>();
+            if (wiggler != null)
+            {
+                wiggler.PositionActive = true;
+            }
         }
-    }*/
+    }
+
+    private void DeletePhysicsProjectiles()
+    {
+        var hitColliders = Physics.OverlapSphere(castOrigin.position, projectileDeletionRadius, interactibleMask);
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.GetComponent<PhysicsProjectile>() != null)
+            {
+                Destroy(hitCollider.gameObject);
+            }
+        }
+    }
+    private void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.GetComponent<PhysicsProjectile>())
+        {
+            Destroy(_other.gameObject);
+        }
+    }
 }

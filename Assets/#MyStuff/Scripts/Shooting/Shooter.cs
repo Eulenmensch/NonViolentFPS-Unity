@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
 
 public class Shooter : MonoBehaviour
 {
@@ -62,6 +61,42 @@ public class Shooter : MonoBehaviour
 
     public void GetMouseWheelInput(InputAction.CallbackContext _context)
     {
-        
+        activeGun.ScrollWheelAction(_context);
+    }
+
+    public void SelectGun(InputAction.CallbackContext _context)
+    {
+        var inputDirection = _context.ReadValue<Vector2>();
+
+        if (_context.started)
+        {
+            switch (inputDirection)
+            {
+                case Vector2 v when v.Equals(Vector2.up):
+                    if (guns[0] != null)
+                    {
+                        activeGun = guns[0] as IGun;
+                    }
+                    break;
+                case Vector2 v when v.Equals(Vector2.left):
+                    if (guns[1] != null)
+                    {
+                        activeGun = guns[1] as IGun;
+                    }
+                    break;
+                case Vector2 v when v.Equals(Vector2.right):
+                    if (guns[2] != null)
+                    {
+                        activeGun = guns[2] as IGun;
+                    }
+                    break;
+                case Vector2 v when v.Equals(Vector2.down):
+                    if (guns[3] != null)
+                    {
+                        activeGun = guns[3] as IGun;
+                    }
+                    break;
+            }
+        }
     }
 }

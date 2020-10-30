@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine.InputSystem;
 
 public interface IGun
 {
@@ -8,5 +8,5 @@ public interface IGun
     void SecondaryMouseButtonEnter();
     void SecondaryMouseButtonAction();
     void SecondaryMouseButtonExit();
-    void ScrollWheelAction(Vector2 _direction);
+    void ScrollWheelAction(InputAction.CallbackContext _context);
 }

@@ -50,22 +50,22 @@ public class BalloonProjectile : PhysicsProjectile
         Line.SetPosition(1, BalloonStringStart.transform.position);
     }
 
-    protected override void ImpactAction(Collision other)
+    protected override void ImpactAction(Collision _other)
     {
         transform.DOScale(MaxSize, GrowthDuration).SetEase(Ease.OutBounce);
 
-        Rigidbody body = other.gameObject.GetComponent<Rigidbody>();
+        Rigidbody body = _other.gameObject.GetComponent<Rigidbody>();
         RigidbodyRef.mass = ActiveWeight;
 
         Joint.spring = DefaultSpringForce;
         Joint.connectedBody = body;
-        Joint.connectedAnchor = transform.InverseTransformPoint(other.contacts[0].point);
+        Joint.connectedAnchor = transform.InverseTransformPoint(_other.contacts[0].point);
 
         BalloonStringStart = new GameObject("BalloonStringStart");
-        BalloonStringStart.transform.position = other.contacts[0].point;
-        BalloonStringStart.transform.parent = other.gameObject.transform;
-        Line.SetPosition(1, other.contacts[0].point);
-        if (other.gameObject.tag.Equals("Ground"))
+        BalloonStringStart.transform.position = _other.contacts[0].point;
+        BalloonStringStart.transform.parent = _other.gameObject.transform;
+        Line.SetPosition(1, _other.contacts[0].point);
+        if (_other.gameObject.tag.Equals("Ground"))
         {
             Ground = true;
         }

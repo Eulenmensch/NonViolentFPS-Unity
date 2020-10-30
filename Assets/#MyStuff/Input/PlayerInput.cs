@@ -41,6 +41,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Gun Select"",
+                    ""type"": ""Value"",
+                    ""id"": ""76d93347-49de-4f1e-9101-0a44bb9560bd"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -142,6 +150,116 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Push/Pull"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""NumRow"",
+                    ""id"": ""6c0aa7b8-62ac-4deb-bd60-d3b7fc57b650"",
+                    ""path"": ""2DVector(mode=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""386be629-3a85-4b4c-bb16-1629bd1cbdf6"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""548f72a4-cac4-4cf5-aa14-f8e22ea995cc"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b104255d-7a03-48bb-8a17-c1dd8a6b48fa"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""05d2217c-aa2a-4640-9422-966c9ab29d3b"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""DPad"",
+                    ""id"": ""8887c2e5-c5cd-487a-8acb-3b3e8c05edc6"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""1163c5c6-6ce3-47fa-8cb8-94e03145b0ad"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7b549c03-75ba-44f2-9c38-12af3c1d827f"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3fd558e4-e7ba-41b2-8946-f63d1ddbc2b0"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ee0acd4f-bebe-45b5-b52f-dfe659031b9a"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Gun Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -181,6 +299,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_ProjectileToggle = m_Player.FindAction("ProjectileToggle", throwIfNotFound: true);
         m_Player_PushPull = m_Player.FindAction("Push/Pull", throwIfNotFound: true);
+        m_Player_GunSelect = m_Player.FindAction("Gun Select", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -233,6 +352,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_ProjectileToggle;
     private readonly InputAction m_Player_PushPull;
+    private readonly InputAction m_Player_GunSelect;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -240,6 +360,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @ProjectileToggle => m_Wrapper.m_Player_ProjectileToggle;
         public InputAction @PushPull => m_Wrapper.m_Player_PushPull;
+        public InputAction @GunSelect => m_Wrapper.m_Player_GunSelect;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,6 +379,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @PushPull.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushPull;
                 @PushPull.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushPull;
                 @PushPull.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushPull;
+                @GunSelect.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGunSelect;
+                @GunSelect.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGunSelect;
+                @GunSelect.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGunSelect;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -271,6 +395,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @PushPull.started += instance.OnPushPull;
                 @PushPull.performed += instance.OnPushPull;
                 @PushPull.canceled += instance.OnPushPull;
+                @GunSelect.started += instance.OnGunSelect;
+                @GunSelect.performed += instance.OnGunSelect;
+                @GunSelect.canceled += instance.OnGunSelect;
             }
         }
     }
@@ -298,5 +425,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnProjectileToggle(InputAction.CallbackContext context);
         void OnPushPull(InputAction.CallbackContext context);
+        void OnGunSelect(InputAction.CallbackContext context);
     }
 }
