@@ -25,12 +25,14 @@ public class RigidbodyStateMachine : StateMachine
         RigidbodyRef = GetComponent<Rigidbody>();
     }
 
-    private void OnCollisionEnter(Collision other)
+    protected override void OnCollisionEnter(Collision _other)
     {
+        base.OnCollisionEnter(_other);
         Grounded = true;
     }
-    private void OnCollisionExit(Collision other)
+    protected override void OnCollisionExit(Collision _other)
     {
+        base.OnCollisionExit(_other);
         Grounded = false;
     }
 }

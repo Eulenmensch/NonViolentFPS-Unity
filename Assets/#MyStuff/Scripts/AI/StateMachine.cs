@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class StateMachine : MonoBehaviour
 {
@@ -51,6 +51,7 @@ public class StateMachine : MonoBehaviour
 
     public State CurrentState { get; private set; }
     public GameObject Player { get; private set; }
+    public List<Collision> ActiveCollisions { get; private set; }
 
 
     private void Awake()
@@ -60,6 +61,7 @@ public class StateMachine : MonoBehaviour
 
     protected virtual void Start()
     {
+        ActiveCollisions = new List<Collision>();
         Player = GameObject.Find( "FaceLookAtTarget" ); //TODO: This is terrible design, replace it with some actual code asap!
     }
 
@@ -76,5 +78,15 @@ public class StateMachine : MonoBehaviour
             CurrentState = _newState;
             CurrentState.Enter( this );
         }
+    }
+
+    protected virtual void OnCollisionEnter(Collision _other)
+    {
+        ActiveCollisions.Add(_other);
+    }
+
+    protected virtual void OnCollisionExit(Collision _other)
+    {
+        ActiveCollisions.Remove(_other);
     }
 }

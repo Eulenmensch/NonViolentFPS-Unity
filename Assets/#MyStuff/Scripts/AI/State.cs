@@ -5,6 +5,7 @@ public class State : ScriptableObject
 {
     [SerializeField] private Behaviour[] behaviours;
     [SerializeField] private EnterAction[] enterActions;
+
     public EnterAction[] EnterActions
     {
         get => enterActions;
