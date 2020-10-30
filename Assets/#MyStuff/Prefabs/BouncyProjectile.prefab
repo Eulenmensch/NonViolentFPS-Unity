@@ -129,9 +129,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeDrag: 5
   activeAngularDrag: 5
-  MaxSize: {x: 1, y: 1, z: 1}
-  ActiveWeight: 1
-  GrowthDuration: 0.3
+  maxSize: {x: 1, y: 1, z: 1}
+  activeWeight: 1
+  growthDuration: 0.5
 --- !u!114 &7939499293445083175
 MonoBehaviour:
   m_ObjectHideFlags: 0
