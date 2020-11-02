@@ -100,21 +100,20 @@ public class PullPushGun : MonoBehaviour, IGun
 
     private void SuckUpProjectiles()
     {
-        if (hit.transform.GetComponent<PhysicsProjectile>() != null)
+        if (hit.collider.GetComponent<PhysicsProjectile>() != null)
         {
             if (wiggleTimer <= projectileWiggleTime)
             {
                 wiggleTimer += Time.deltaTime;
                 return;
             }
-
-            var body = hit.rigidbody;
+            var body = hit.collider.GetComponent<Rigidbody>();
             if (body == null)
             {
-                body = hit.transform.AddComponent<Rigidbody>();
+                body = hit.collider.AddComponent<Rigidbody>();
             }
 
-            var wiggler = hit.transform.GetComponent<MMWiggle>();
+            var wiggler = hit.collider.GetComponent<MMWiggle>();
             if (wiggler != null)
             {
                 wiggler.PositionActive = true;
