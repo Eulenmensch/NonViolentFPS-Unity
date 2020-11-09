@@ -49,6 +49,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""a170c544-a517-493a-a73e-ebdb4da5ff95"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -260,6 +268,28 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Gun Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e18947a-f36e-460f-a3e4-20e06f5ea7ab"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6eb8d09d-fa68-423b-a655-369531b9849e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -300,6 +330,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_ProjectileToggle = m_Player.FindAction("ProjectileToggle", throwIfNotFound: true);
         m_Player_PushPull = m_Player.FindAction("Push/Pull", throwIfNotFound: true);
         m_Player_GunSelect = m_Player.FindAction("Gun Select", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -353,6 +384,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ProjectileToggle;
     private readonly InputAction m_Player_PushPull;
     private readonly InputAction m_Player_GunSelect;
+    private readonly InputAction m_Player_Interact;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -361,6 +393,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @ProjectileToggle => m_Wrapper.m_Player_ProjectileToggle;
         public InputAction @PushPull => m_Wrapper.m_Player_PushPull;
         public InputAction @GunSelect => m_Wrapper.m_Player_GunSelect;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -382,6 +415,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @GunSelect.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGunSelect;
                 @GunSelect.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGunSelect;
                 @GunSelect.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGunSelect;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -398,6 +434,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @GunSelect.started += instance.OnGunSelect;
                 @GunSelect.performed += instance.OnGunSelect;
                 @GunSelect.canceled += instance.OnGunSelect;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -426,5 +465,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnProjectileToggle(InputAction.CallbackContext context);
         void OnPushPull(InputAction.CallbackContext context);
         void OnGunSelect(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
