@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,24 +6,32 @@ public class Shooter : MonoBehaviour
 {
     [SerializeField] private MonoBehaviour[] guns;
 
-    private IGun activeGun;
+    public IGun ActiveGun { get; set; }
     private bool primaryActive;
     private bool secondaryActive;
 
+    private void OnValidate()
+    {
+        foreach (var gun in guns)
+        {
+            Debug.Assert(gun is IGun, "The component you assigned does not implement IGun.");
+        }
+    }
+
     private void Start()
     {
-        activeGun = guns[0] as IGun;
+        ActiveGun = guns[0] as IGun;
     }
 
     private void Update()
     {
         if (primaryActive)
         {
-            activeGun.PrimaryMouseButtonAction();
+            ActiveGun.PrimaryMouseButtonAction();
         }
         else if (secondaryActive)
         {
-            activeGun.SecondaryMouseButtonAction();
+            ActiveGun.SecondaryMouseButtonAction();
         }
     }
 
@@ -34,12 +43,12 @@ public class Shooter : MonoBehaviour
             if (mouseAxis > 0)
             {
                 primaryActive = true;
-                activeGun.PrimaryMouseButtonEnter();
+                ActiveGun.PrimaryMouseButtonEnter();
             }
             if (mouseAxis < 0)
             {
                 secondaryActive = true;
-                activeGun.SecondaryMouseButtonEnter();
+                ActiveGun.SecondaryMouseButtonEnter();
             }
         }
 
@@ -48,20 +57,20 @@ public class Shooter : MonoBehaviour
             if (primaryActive)
             {
                 primaryActive = false;
-                activeGun.PrimaryMouseButtonExit();
+                ActiveGun.PrimaryMouseButtonExit();
             }
 
             if (secondaryActive)
             {
                 secondaryActive = false;
-                activeGun.SecondaryMouseButtonExit();
+                ActiveGun.SecondaryMouseButtonExit();
             }
         }
     }
 
     public void GetMouseWheelInput(InputAction.CallbackContext _context)
     {
-        activeGun.ScrollWheelAction(_context);
+        ActiveGun.ScrollWheelAction(_context);
     }
 
     public void SelectGun(InputAction.CallbackContext _context)
@@ -75,25 +84,25 @@ public class Shooter : MonoBehaviour
                 case Vector2 v when v.Equals(Vector2.up):
                     if (guns[0] != null)
                     {
-                        activeGun = guns[0] as IGun;
+                        ActiveGun = guns[0] as IGun;
                     }
                     break;
                 case Vector2 v when v.Equals(Vector2.left):
                     if (guns[1] != null)
                     {
-                        activeGun = guns[1] as IGun;
+                        ActiveGun = guns[1] as IGun;
                     }
                     break;
                 case Vector2 v when v.Equals(Vector2.right):
                     if (guns[2] != null)
                     {
-                        activeGun = guns[2] as IGun;
+                        ActiveGun = guns[2] as IGun;
                     }
                     break;
                 case Vector2 v when v.Equals(Vector2.down):
                     if (guns[3] != null)
                     {
-                        activeGun = guns[3] as IGun;
+                        ActiveGun = guns[3] as IGun;
                     }
                     break;
             }
