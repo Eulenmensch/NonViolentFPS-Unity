@@ -1,9 +1,7 @@
-using System;
 using UnityEngine;
 
-public abstract class HitscanEffect : ScriptableObject
+public interface IHitscanEffect
 {
-
-
+	void Initialize();
 }
 
