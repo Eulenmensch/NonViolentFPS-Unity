@@ -53,6 +53,8 @@ public class StateMachine : MonoBehaviour
     public GameObject Player { get; private set; }
     public List<Collision> ActiveCollisions { get; private set; }
 
+    public bool interacted { get; set; }
+    public bool hit { get; set; }
 
     private void Awake()
     {
