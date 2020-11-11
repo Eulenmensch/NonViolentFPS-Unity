@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface IHitscanEffect
 {
-	void Initialize();
+	void Initialize(RaycastHit _hit);
 }
 

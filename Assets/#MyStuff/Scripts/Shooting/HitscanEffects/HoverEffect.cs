@@ -40,12 +40,12 @@ public class HoverEffect : MonoBehaviour,IHitscanEffect
     private Transform[] hoverPoints;    //The points from which ground distance is measured and where hover force is applied
     private PIDController[] piDs;       //References to the PIDController class that handles error correction and smoothens out the hovering
 
-    public void Initialize()
+    public void Initialize(RaycastHit _hit)
 	{
 
 	}
 
-    void Start()
+    private void Start()
     {
 	    var parent = transform.parent;
 	    rb = parent.GetComponent<Rigidbody>();

@@ -1,16 +1,18 @@
-using System;
 using UnityEngine;
+
+//TODO: this class currently sets the shooter's gun to the instance's assigned gun.
+//		it should later add the gun to the shooter's gun list instead.
 
 public class GunPickup : MonoBehaviour
 {
-	[SerializeField] private MonoBehaviour gun;
+	[SerializeField] private ScriptableObject gun;
 
 	private Shooter playerShooter;
 	private bool playerInTrigger;
 
 	private void OnValidate()
 	{
-		Debug.Assert(gun is IGun, "The component you assigned does not implement IGun.");
+		Debug.Assert(gun is IGun, "The object you assigned does not implement IGun.");
 	}
 
 	private void OnEnable()
