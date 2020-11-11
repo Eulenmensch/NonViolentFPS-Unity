@@ -1,10 +1,32 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Shooter : MonoBehaviour
 {
-    [SerializeField] private MonoBehaviour[] guns;
+    [SerializeField] private List<ScriptableObject> guns;
+    [SerializeField] private Transform shootingOrigin;
+    [SerializeField] private Transform projectileContainer;
+    [SerializeField] private Slider ammoSlider;
+
+    [SerializeField] private bool canScroll = true;    //Solely for the shooting range test scene
+
+    public Transform ShootingOrigin
+    {
+        get => shootingOrigin;
+        set => shootingOrigin = value;
+    }
+    public Transform ProjectileContainer
+    {
+        get => projectileContainer;
+        set => projectileContainer = value;
+    }
+    public Slider AmmoSlider
+    {
+        get => ammoSlider;
+        set => ammoSlider = value;
+    }
 
     public IGun ActiveGun { get; set; }
     private bool primaryActive;
@@ -14,12 +36,17 @@ public class Shooter : MonoBehaviour
     {
         foreach (var gun in guns)
         {
-            Debug.Assert(gun is IGun, "The component you assigned does not implement IGun.");
+            Debug.Assert(gun is IGun, "The object you assigned does not implement IGun.");
         }
     }
 
     private void Start()
     {
+        foreach (var gun in guns)
+        {
+            var iGun = gun as IGun;
+            iGun?.SetupGun(this);
+        }
         ActiveGun = guns[0] as IGun;
     }
 
@@ -70,6 +97,7 @@ public class Shooter : MonoBehaviour
 
     public void GetMouseWheelInput(InputAction.CallbackContext _context)
     {
+        if (!canScroll) { return; }
         ActiveGun.ScrollWheelAction(_context);
     }
 

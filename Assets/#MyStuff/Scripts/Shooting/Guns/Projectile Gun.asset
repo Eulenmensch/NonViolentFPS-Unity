@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d630582e0a83ded43b9911a46d874db9, type: 3}
+  m_Name: Projectile Gun
+  m_EditorClassIdentifier: 
+  fireRate: 0.3
+  fireForce: 25
+  projectileTypes:
+  - {fileID: 4178011348408908617, guid: 0b02c7c66984ad143ab5aa3c960e1c49, type: 3}
+  - {fileID: 4178011348408908617, guid: d133830de3ae69d4b9623d3d1a714451, type: 3}
+  - {fileID: 4178011348408908617, guid: 72b82b0bde20bc84192c0e405b8c1067, type: 3}
+  invertScrollDirection: 1

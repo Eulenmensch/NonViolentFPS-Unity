@@ -4,7 +4,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PullPushGun : MonoBehaviour, IGun
+public class PullPushGun : ScriptableObject, IGun
 {
     [SerializeField] private LayerMask interactibleMask;
     [SerializeField] private Transform castOrigin;
@@ -19,13 +19,15 @@ public class PullPushGun : MonoBehaviour, IGun
 
     private RaycastHit hit;
     private float wiggleTimer;
-    private Shooter shooter;
 
     private void Start()
     {
-        shooter = GetComponent<Shooter>();
         pushParticles.SetActive(false);
         pullParticles.SetActive(false);
+    }
+
+    public void SetupGun(Shooter _shooter)
+    {
     }
 
     public void PrimaryMouseButtonEnter()

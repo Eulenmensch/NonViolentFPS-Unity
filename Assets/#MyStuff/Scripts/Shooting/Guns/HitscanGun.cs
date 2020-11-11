@@ -4,16 +4,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class HitscanGun : MonoBehaviour, IGun
+[CreateAssetMenu(menuName = "Guns/HitscanGun")]
+public class HitscanGun : ScriptableObject, IGun
 {
 	[SerializeField] private GameObject[] effects;
 	[SerializeField] private float fireRate;
-	[SerializeField] private Transform sphereCastOrigin;
 	[SerializeField] private float sphereCastRadius;
 	[SerializeField] private LayerMask interactibleMask;
-	[SerializeField] private Slider effectSlider;
 	[SerializeField] private bool invertScrollDirection;
 
+	private Transform sphereCastOrigin;
+	private Slider effectSlider;
 	private float timer;
 	private int activeEffectIndex;
 
@@ -23,6 +24,12 @@ public class HitscanGun : MonoBehaviour, IGun
 		{
 			Debug.Assert(effect.GetComponent<IHitscanEffect>() != null,"The prefab you assigned has no component that implements IHitscanEffect." );
 		}
+	}
+
+	public void SetupGun(Shooter _shooter)
+	{
+		sphereCastOrigin = _shooter.ShootingOrigin;
+		effectSlider = _shooter.AmmoSlider;
 	}
 
 	public void PrimaryMouseButtonEnter()
@@ -94,7 +101,7 @@ public class HitscanGun : MonoBehaviour, IGun
 				return;
 			}
 			var effect = Instantiate(effects[activeEffectIndex], hitTransform.position, Quaternion.identity, hitTransform).GetComponent<IHitscanEffect>();
-			effect.Initialize();
+			effect.Initialize(hit);
 		}
 	}
 }

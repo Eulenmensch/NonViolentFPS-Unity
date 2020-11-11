@@ -2,6 +2,7 @@
 
 public interface IGun
 {
+    void SetupGun(Shooter _shooter);
     void PrimaryMouseButtonEnter();
     void PrimaryMouseButtonAction();
     void PrimaryMouseButtonExit();

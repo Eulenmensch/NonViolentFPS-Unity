@@ -3,23 +3,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-[Serializable]
-public class ProjectileGun : MonoBehaviour, IGun
+[CreateAssetMenu(menuName = "Guns/ProjectileGun")]
+public class ProjectileGun : ScriptableObject, IGun
 {
     [SerializeField] private float fireRate;
     [SerializeField] private float fireForce;
     [SerializeField] private GameObject[] projectileTypes;
-    [SerializeField] private Transform projectileSpawnPoint;
-    [SerializeField] private Transform projectileContainer;
-    [SerializeField] private Slider projectileSlider;
     [SerializeField] private bool invertScrollDirection;
 
+    private Transform projectileSpawnPoint;
+    private Transform projectileContainer;
+    private Slider projectileSlider;
     private float timer;
     private GameObject activeProjectile;
 
-    private void Start()
+    public void SetupGun(Shooter _shooter)
     {
         activeProjectile = projectileTypes[0];
+        projectileSpawnPoint = _shooter.ShootingOrigin;
+        projectileContainer = _shooter.ProjectileContainer;
+        projectileSlider = _shooter.AmmoSlider;
     }
 
     public void PrimaryMouseButtonEnter()
