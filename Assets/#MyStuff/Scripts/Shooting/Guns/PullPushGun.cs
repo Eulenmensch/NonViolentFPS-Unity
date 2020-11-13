@@ -4,6 +4,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[CreateAssetMenu(menuName = "Guns/PullPushGun")]
 public class PullPushGun : ScriptableObject, IGun
 {
     [SerializeField] private LayerMask interactibleMask;
@@ -12,32 +13,39 @@ public class PullPushGun : ScriptableObject, IGun
     [SerializeField] private float castRange;
     [SerializeField] private float pushForce;
     [SerializeField] private float rangeFallOffMultiplier;
-    [SerializeField] private GameObject pushParticles;
-    [SerializeField] private GameObject pullParticles;
+    [SerializeField] private ParticleSystem pushParticles;
+    [SerializeField] private ParticleSystem pullParticles;
     [SerializeField] private float projectileWiggleTime;
     [SerializeField] private float projectileDeletionRadius;
 
     private RaycastHit hit;
     private float wiggleTimer;
 
-    private void Start()
-    {
-        pushParticles.SetActive(false);
-        pullParticles.SetActive(false);
-    }
-
     public void SetupGun(Shooter _shooter)
     {
+        castOrigin = _shooter.PullOrigin;
+        pushParticles = _shooter.Particles[0];
+        pullParticles = _shooter.Particles[1];
+        pushParticles.gameObject.SetActive(true);
+        pullParticles.gameObject.SetActive(true);
+    }
+
+    public void CleanUpGun()
+    {
+
     }
 
     public void PrimaryMouseButtonEnter()
     {
-        pushParticles.SetActive(true);
+        pushParticles.gameObject.SetActive(true);
+        pushParticles.Play();
     }
 
     public void PrimaryMouseButtonExit()
     {
-        pushParticles.SetActive(false);
+        pushParticles.Clear();
+        pushParticles.Stop();
+        pushParticles.gameObject.SetActive(false);
     }
 
     public void PrimaryMouseButtonAction()
@@ -50,12 +58,16 @@ public class PullPushGun : ScriptableObject, IGun
 
     public void SecondaryMouseButtonEnter()
     {
-        pullParticles.SetActive(true);
+        pullParticles.gameObject.SetActive(true);
+        pullParticles.Play();
     }
 
     public void SecondaryMouseButtonExit()
     {
-        pullParticles.SetActive(false);
+        pullParticles.Clear();
+        pullParticles.Stop();
+        pullParticles.gameObject.SetActive(false);
+
         wiggleTimer = 0;
     }
 

@@ -1,5 +1,6 @@
 using System;
 using Ludiq.PeekCore;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -7,6 +8,10 @@ using UnityEngine.UI;
 [CreateAssetMenu(menuName = "Guns/HitscanGun")]
 public class HitscanGun : ScriptableObject, IGun
 {
+	[Header("Visuals")]
+    [SerializeField] private GameObject gun;
+
+    [Header("Gun Settings")]
 	[SerializeField] private GameObject[] effects;
 	[SerializeField] private float fireRate;
 	[SerializeField] private float sphereCastRadius;
@@ -17,6 +22,8 @@ public class HitscanGun : ScriptableObject, IGun
 	private Slider effectSlider;
 	private float timer;
 	private int activeEffectIndex;
+	private GameObject gunObject;
+
 
 	private void OnValidate()
 	{
@@ -30,6 +37,16 @@ public class HitscanGun : ScriptableObject, IGun
 	{
 		sphereCastOrigin = _shooter.ShootingOrigin;
 		effectSlider = _shooter.AmmoSlider;
+		activeEffectIndex = 0;
+
+		var attachmentPoint = _shooter.GunAttachmentPoint;
+		gunObject = Instantiate(gun, attachmentPoint.position, Quaternion.identity, attachmentPoint);
+		gunObject.transform.localRotation = Quaternion.identity;
+	}
+
+	public void CleanUpGun()
+	{
+		Destroy(gunObject);
 	}
 
 	public void PrimaryMouseButtonEnter()
@@ -42,6 +59,7 @@ public class HitscanGun : ScriptableObject, IGun
 		if (!(timer >= fireRate)) return;
 		timer = 0;
 		Shoot();
+		PlayFeedback();
 	}
 	public void PrimaryMouseButtonExit() { }
 
@@ -103,5 +121,11 @@ public class HitscanGun : ScriptableObject, IGun
 			var effect = Instantiate(effects[activeEffectIndex], hitTransform.position, Quaternion.identity, hitTransform).GetComponent<IHitscanEffect>();
 			effect.Initialize(hit);
 		}
+	}
+
+	private void PlayFeedback()
+	{
+		var feedbacks = gunObject.GetComponentInChildren<MMFeedbacks>();
+		feedbacks.PlayFeedbacks();
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -6,6 +7,10 @@ using UnityEngine.UI;
 [CreateAssetMenu(menuName = "Guns/ProjectileGun")]
 public class ProjectileGun : ScriptableObject, IGun
 {
+    [Header("Visuals")]
+    [SerializeField] private GameObject gun;
+
+    [Header("Gun Settings")]
     [SerializeField] private float fireRate;
     [SerializeField] private float fireForce;
     [SerializeField] private GameObject[] projectileTypes;
@@ -16,6 +21,12 @@ public class ProjectileGun : ScriptableObject, IGun
     private Slider projectileSlider;
     private float timer;
     private GameObject activeProjectile;
+    private GameObject gunObject;
+
+    private void OnValidate()
+    {
+        Debug.Assert(gun.GetComponentInChildren<MMFeedbacks>(), "The object you assigned has no MMFeedbacks component on any of its children.");
+    }
 
     public void SetupGun(Shooter _shooter)
     {
@@ -23,6 +34,15 @@ public class ProjectileGun : ScriptableObject, IGun
         projectileSpawnPoint = _shooter.ShootingOrigin;
         projectileContainer = _shooter.ProjectileContainer;
         projectileSlider = _shooter.AmmoSlider;
+
+        var attachmentPoint = _shooter.GunAttachmentPoint;
+        gunObject = Instantiate(gun, attachmentPoint.position, Quaternion.identity, attachmentPoint);
+        gunObject.transform.localRotation = Quaternion.identity;
+    }
+
+    public void CleanUpGun()
+    {
+        Destroy(gunObject);
     }
 
     public void PrimaryMouseButtonEnter()
@@ -36,6 +56,7 @@ public class ProjectileGun : ScriptableObject, IGun
         if (!(timer >= fireRate)) return;
         timer = 0;
         Shoot();
+        PlayFeedback();
     }
 
     public void SecondaryMouseButtonEnter() { }
@@ -44,9 +65,9 @@ public class ProjectileGun : ScriptableObject, IGun
 
     public void ScrollWheelAction(InputAction.CallbackContext _context)
     {
-        Vector2 input = _context.ReadValue<Vector2>();
-        int projectileCount = projectileTypes.Length - 1;
-        int currentIndex = Array.IndexOf(projectileTypes, activeProjectile);
+        var input = _context.ReadValue<Vector2>();
+        var projectileCount = projectileTypes.Length - 1;
+        var currentIndex = Array.IndexOf(projectileTypes, activeProjectile);
 
         if(_context.started)
         {
@@ -84,12 +105,18 @@ public class ProjectileGun : ScriptableObject, IGun
         projectileSlider.value = (float)currentIndex / (float)projectileCount;
     }
 
-    public void Shoot()
+    private void Shoot()
     {
-        GameObject projectileSpace = Instantiate(activeProjectile, projectileSpawnPoint.position, Quaternion.identity, projectileContainer);
-        PhysicsProjectile projectile = projectileSpace.GetComponentInChildren<PhysicsProjectile>();
-        Rigidbody rigidBody = projectile.GetComponent<Rigidbody>();
+        var projectileSpace = Instantiate(activeProjectile, projectileSpawnPoint.position, Quaternion.identity, projectileContainer);
+        var projectile = projectileSpace.GetComponentInChildren<PhysicsProjectile>();
+        var rigidBody = projectile.GetComponent<Rigidbody>();
 
         rigidBody.AddForce(Camera.main.transform.forward * fireForce, ForceMode.VelocityChange);
+    }
+
+    private void PlayFeedback()
+    {
+        var feedbacks = gunObject.GetComponentInChildren<MMFeedbacks>();
+        feedbacks.PlayFeedbacks();
     }
 }

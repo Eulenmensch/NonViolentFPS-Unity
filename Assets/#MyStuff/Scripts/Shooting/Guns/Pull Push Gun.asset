@@ -9,15 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efbb21761c604d1188a3fd246eda4152, type: 3}
-  m_Name: Hitscan Gun
+  m_Script: {fileID: 11500000, guid: eda5ae79fbfb42a4b940066c96ffad98, type: 3}
+  m_Name: Pull Push Gun
   m_EditorClassIdentifier: 
-  gun: {fileID: 7914272111490427818, guid: 5c2b91f42d357954294304efa10d2387, type: 3}
-  effects:
-  - {fileID: 6906741692797628740, guid: bbb8be60c6000774b97f308f05abdf94, type: 3}
-  fireRate: 0.3
-  sphereCastRadius: 0.1
   interactibleMask:
     serializedVersion: 2
     m_Bits: 2048
-  invertScrollDirection: 1
+  castOrigin: {fileID: 0}
+  castRadius: 0.4
+  castRange: 15
+  pushForce: 200
+  rangeFallOffMultiplier: 0.2
+  pushParticles: {fileID: 0}
+  pullParticles: {fileID: 0}
+  projectileWiggleTime: 0.4
+  projectileDeletionRadius: 0.3
