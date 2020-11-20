@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager :MonoBehaviour
+public class GameManager : MonoBehaviour
 {
 	#region Singleton
 	public static GameManager Instance { get; private set; }
@@ -24,5 +24,14 @@ public class GameManager :MonoBehaviour
 	{
 		get => player;
 		set => player = value;
+	}
+
+	//FIXME: Only for testing
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
 	}
 }
