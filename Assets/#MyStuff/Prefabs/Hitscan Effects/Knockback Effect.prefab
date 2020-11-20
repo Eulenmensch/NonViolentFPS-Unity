@@ -43,4 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6290254e5f14725aea40f9df04c933c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackForce: 20000
+  knockbackForce: 15000
+  upMultiplier: 0

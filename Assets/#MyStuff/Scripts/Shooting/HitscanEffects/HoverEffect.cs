@@ -41,8 +41,12 @@ public class HoverEffect : MonoBehaviour,IHitscanEffect
     private PIDController[] piDs;       //References to the PIDController class that handles error correction and smoothens out the hovering
 
     public void Initialize(RaycastHit _hit)
-	{
-
+    {
+	    var hoverEffect = _hit.transform.GetComponentInChildren<HoverEffect>();
+		if (hoverEffect != this)
+		{
+			Destroy(gameObject);
+		}
 	}
 
     private void Start()

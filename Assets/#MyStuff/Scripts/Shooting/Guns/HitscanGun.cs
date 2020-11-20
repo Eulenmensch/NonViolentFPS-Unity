@@ -113,11 +113,7 @@ public class HitscanGun : ScriptableObject, IGun
 		if (Physics.SphereCast(sphereCastOrigin.position, sphereCastRadius, Camera.main.transform.forward, out var hit,
 			Mathf.Infinity, interactibleMask, QueryTriggerInteraction.Ignore))
 		{
-			var hitTransform = hit.collider.transform;
-			if (hitTransform.GetComponentInChildren<IHitscanEffect>() != null)
-			{
-				return;
-			}
+			var hitTransform = hit.rigidbody.transform; // Because only one rigidbody per object hierarchy
 			var effect = Instantiate(effects[activeEffectIndex], hitTransform.position, Quaternion.identity, hitTransform).GetComponent<IHitscanEffect>();
 			effect.Initialize(hit);
 		}

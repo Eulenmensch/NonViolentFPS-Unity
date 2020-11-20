@@ -52,7 +52,7 @@ MonoBehaviour:
   maxStickAngle: 80
   groundMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   hoverPointPrefab: {fileID: 5366422921861148621, guid: d582abf63e2e1334e85841b0e80189e3,
     type: 3}
   hoverPointContainer: {fileID: 6273354862214552933}
