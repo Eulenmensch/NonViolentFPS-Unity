@@ -55962,13 +55962,11 @@ MonoBehaviour:
   TargetAudioSource: {fileID: 6934412223622341602}
   Mode: 0
   RandomSfx:
-  - {fileID: 8300000, guid: ce4df5abc350ffd4c946ded4685c1748, type: 3}
-  - {fileID: 8300000, guid: 1b9b9ba3cb3dfe74193c74f76601f8bb, type: 3}
-  - {fileID: 8300000, guid: 0bfe8c58e13dd6445a53a2ba77978443, type: 3}
-  MinVolume: 0.5
-  MaxVolume: 0.5
-  MinPitch: 1
-  MaxPitch: 1
+  - {fileID: 8300000, guid: da4e037a01cbf4b4f8e7419c2195836c, type: 3}
+  MinVolume: 0.8
+  MaxVolume: 0.9
+  MinPitch: 0.8
+  MaxPitch: 1.1
   SfxAudioMixerGroup: {fileID: 0}
 --- !u!114 &8948105864876148842
 MonoBehaviour:
