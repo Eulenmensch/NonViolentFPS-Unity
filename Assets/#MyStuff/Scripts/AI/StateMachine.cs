@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class StateMachine : MonoBehaviour
@@ -49,16 +51,25 @@ public class StateMachine : MonoBehaviour
         set => startNode = value;
     }
 
-    public State CurrentState { get; private set; }
+    [Header("Hit Feedback")] [SerializeField]
+    private MMFeedbacks mMFeedbacks;
+    public MMFeedbacks MMFeedbacks
+    {
+        get => mMFeedbacks;
+        set => mMFeedbacks = value;
+    }
+
+    [SerializeField] private State currentState;
     public GameObject Player { get; private set; }
     public List<Collision> ActiveCollisions { get; private set; }
 
     public bool interacted { get; set; }
     public bool hit { get; set; }
+    public bool Waiting { get; set; }
 
     private void Awake()
     {
-        CurrentState = StartState;
+        currentState = StartState;
     }
 
     protected virtual void Start()
@@ -69,16 +80,16 @@ public class StateMachine : MonoBehaviour
 
     private void Update()
     {
-        CurrentState.UpdateState( this );
+        currentState.UpdateState( this );
     }
 
     public void TransitionToState(State _newState)
     {
         if ( _newState.GetType() != typeof( RemainInState ) )
         {
-            CurrentState.Exit( this );
-            CurrentState = _newState;
-            CurrentState.Enter( this );
+            currentState.Exit( this );
+            currentState = _newState;
+            currentState.Enter( this );
         }
     }
 
@@ -90,5 +101,13 @@ public class StateMachine : MonoBehaviour
     protected virtual void OnCollisionExit(Collision _other)
     {
         ActiveCollisions.Remove(_other);
+    }
+
+    public IEnumerator WaitForSeconds(float _seconds)
+    {
+        Waiting = true;
+        yield return new WaitForSeconds(_seconds);
+        Waiting = false;
+        print("stopped waiting " + Waiting);
     }
 }
