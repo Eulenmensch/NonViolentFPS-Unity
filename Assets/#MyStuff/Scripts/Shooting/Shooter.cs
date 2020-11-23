@@ -85,7 +85,7 @@ public class Shooter : MonoBehaviour
         }
     }
 
-    private void ActivateGun(IGun _gun)
+    public void ActivateGun(IGun _gun)
     {
         ActiveGun?.CleanUpGun();
 

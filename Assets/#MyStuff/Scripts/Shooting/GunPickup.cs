@@ -6,6 +6,7 @@ using UnityEngine;
 public class GunPickup : MonoBehaviour
 {
 	[SerializeField] private ScriptableObject gun;
+	[SerializeField] private GameObject interactionPromptText;
 
 	private Shooter playerShooter;
 	private bool playerInTrigger;
@@ -24,7 +25,7 @@ public class GunPickup : MonoBehaviour
 		PlayerEvents.Instance.OnInteract -= PickUpGun;
 	}
 
-	private void Awake()
+	private void Start()
 	{
 		playerShooter = GameManager.Instance.Player.GetComponent<Shooter>();
 	}
@@ -33,7 +34,7 @@ public class GunPickup : MonoBehaviour
 	{
 		if (playerInTrigger)
 		{
-			playerShooter.ActiveGun = gun as IGun;
+			playerShooter.ActivateGun(gun as IGun);
 		}
 	}
 
@@ -42,6 +43,7 @@ public class GunPickup : MonoBehaviour
 		if (_other.gameObject == GameManager.Instance.Player)
 		{
 			playerInTrigger = true;
+			interactionPromptText.SetActive(true);
 		}
 	}
 
@@ -50,6 +52,7 @@ public class GunPickup : MonoBehaviour
 		if (_other.gameObject == GameManager.Instance.Player)
 		{
 			playerInTrigger = false;
+			interactionPromptText.SetActive(false);
 		}
 	}
 }
