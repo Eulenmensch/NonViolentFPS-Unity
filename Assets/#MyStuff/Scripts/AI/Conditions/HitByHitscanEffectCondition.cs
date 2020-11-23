@@ -8,7 +8,6 @@ public class HitByHitscanEffectCondition : Condition
 	{
 		if (_stateMachine.gameObject.GetComponentInChildren<IHitscanEffect>() != null)
 		{
-			Debug.Log("hit by hitscan effect");
 			return true;
 		}
 

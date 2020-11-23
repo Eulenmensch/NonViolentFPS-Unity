@@ -7,11 +7,9 @@ public class WaitForTimerCondition : Condition
 	{
 		if (_stateMachine.Waiting)
 		{
-			Debug.Log("waiting for coroutine");
 			return false;
 		}
 
-		Debug.Log("transition to next state");
 		return true;
 	}
 }
