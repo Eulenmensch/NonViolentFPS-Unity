@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
+  m_Name: LookAtTargetState NPC 03
+  m_EditorClassIdentifier: 
+  behaviours:
+  - {fileID: 11400000, guid: 26f75c6043b57db40a4460097d2dacca, type: 2}
+  enterActions: []
+  exitActions: []
+  transitions:
+  - condition: {fileID: 11400000, guid: c104c2d09743e5141a5daf1c76da4d7e, type: 2}
+    trueState: {fileID: 11400000, guid: 9c5f423c7d088c343b4839ec1ec4ffe5, type: 2}
+    falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
+  - condition: {fileID: 11400000, guid: 548e1198a2e96464eb96a49b9e35dd9e, type: 2}
+    trueState: {fileID: 11400000, guid: 9279a9ad7f01ffc4dbb3d31812edb5f3, type: 2}
+    falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}

@@ -15,5 +15,6 @@ MonoBehaviour:
   behaviours: []
   enterActions:
   - {fileID: 11400000, guid: 9cb8d6baede692a4c979498c90328973, type: 2}
+  - {fileID: 11400000, guid: e0d30e700aa53154d8629c29445d5eb9, type: 2}
   exitActions: []
   transitions: []
