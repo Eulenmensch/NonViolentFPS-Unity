@@ -6,6 +6,7 @@ using Obi;
 public class BalloonProjectile : PhysicsProjectile
 {
     [SerializeField] private float RiseForce;
+    [SerializeField] private float maxHeight;
     [SerializeField] private Vector3 MaxSize;
     [SerializeField] private float GrowthDuration;
     [SerializeField] private float ActiveWeight;
@@ -40,6 +41,7 @@ public class BalloonProjectile : PhysicsProjectile
 
     private void Rise()
     {
+        if (transform.position.y >= maxHeight) { return; }
         RigidbodyRef.AddForce(Vector3.up * RiseForce, ForceMode.Acceleration);
     }
 
