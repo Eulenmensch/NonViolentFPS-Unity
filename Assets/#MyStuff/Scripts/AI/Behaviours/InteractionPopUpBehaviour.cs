@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Linq;
 
 [CreateAssetMenu( menuName = "AI Kit/Behaviours/InteractionPopUpBehaviour" )]
 public class InteractionPopUpBehaviour : Behaviour
@@ -8,12 +7,7 @@ public class InteractionPopUpBehaviour : Behaviour
     {
         if ( Input.GetKeyDown( KeyCode.E ) )
         {
-            DialogueManager.Instance.YarnUI.dialogueContainer = _stateMachine.DialogueContainer;
-            if ( !DialogueManager.Instance.YarnRunner.yarnScripts.Contains( _stateMachine.YarnDialogue ) )
-            {
-                DialogueManager.Instance.YarnRunner.Add( _stateMachine.YarnDialogue );
-            }
-            DialogueManager.Instance.YarnRunner.StartDialogue( _stateMachine.StartNode );
+            _stateMachine.StartDialogue(_stateMachine.StartNode);
         }
     }
 }

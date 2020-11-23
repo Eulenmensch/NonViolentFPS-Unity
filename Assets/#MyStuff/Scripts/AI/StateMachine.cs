@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Ludiq.PeekCore;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
@@ -30,11 +32,11 @@ public class StateMachine : MonoBehaviour
         get => playerInTrigger;
         set => playerInTrigger = value;
     }
-    [SerializeField] private GameObject dialogueContainer;
-    public GameObject DialogueContainer
+    [SerializeField] private GameObject canvasAttachmentPoint;
+    public GameObject CanvasAttachmentPoint
     {
-        get => dialogueContainer;
-        private set => dialogueContainer = value;
+        get => canvasAttachmentPoint;
+        private set => canvasAttachmentPoint = value;
     }
 
     [Header( "Dialogue" )]
@@ -108,6 +110,19 @@ public class StateMachine : MonoBehaviour
         Waiting = true;
         yield return new WaitForSeconds(_seconds);
         Waiting = false;
-        print("stopped waiting " + Waiting);
+    }
+
+    public void StartDialogue(string _startNode)
+    {
+        DialogueManager.Instance.YarnRunner.Stop();
+        DialogueManager.Instance.YarnRunner.Clear();
+        // DialogueManager.Instance.CanvasTransform.position = canvasAttachmentPoint.transform.position;
+        DialogueManager.Instance.CanvasTransform.parent = canvasAttachmentPoint.transform;
+        DialogueManager.Instance.CanvasTransform.localPosition = Vector3.zero;
+        if ( !DialogueManager.Instance.YarnRunner.yarnScripts.Contains( yarnDialogue ) )
+        {
+            DialogueManager.Instance.YarnRunner.Add( yarnDialogue );
+        }
+        DialogueManager.Instance.YarnRunner.StartDialogue( _startNode );
     }
 }

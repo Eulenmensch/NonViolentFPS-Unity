@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Yarn.Unity;
 
 public class DialogueManager : MonoBehaviour
@@ -32,8 +33,16 @@ public class DialogueManager : MonoBehaviour
         private set => yarnUI = value;
     }
 
-    public void CheckForOptions()
+    [SerializeField] private Transform canvasTransform;
+
+    public Transform CanvasTransform
     {
-        
+        get => canvasTransform;
+        set => canvasTransform = value;
+    }
+
+    public void SetActiveDialogueContainer(GameObject _container)
+    {
+        yarnUI.dialogueContainer = _container;
     }
 }
