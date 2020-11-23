@@ -1,0 +1,39 @@
+title: Start
+tags: 
+colorID: 0
+position: 334,-80
+---
+I heard that you can shoot balloons out of your gun arm! 
+[[ please ]]
+===
+title: what
+tags: 
+colorID: 0
+position: 6,342
+---
+All I was told is that if you press the 2 key on the keyboard, you will be able to shoot balloons!
+[[ Oh I see! |please]]
+===
+title: yes
+tags: 
+colorID: 0
+position: 655,332
+---
+Cool! Thank you so much!
+===
+title: please
+tags: 
+colorID: 0
+position: 334,163
+---
+Can I have One?
+[[ I'm sorry but I don't know what you're talking about |what]]
+[[ Yeah, of course! Just gimme a sec. |yes]]
+===
+title: Whee
+tags: 
+colorID: 0
+position: 1081,192
+---
+WHEEEEEEE :)
+===
