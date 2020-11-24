@@ -25,10 +25,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _DepthDivisor: 4.01
-    - _DisplacementAmount: 0.28
+    - _DisplacementAmount: 0.45
     - _DisplacementScrollSpeed: 0.28
     - _MaxDepth: 1.58
-    - _Opacity: 0.92
+    - _Opacity: 0.65
     - _StippleNoiseAmount: 0.48
     - __dirty: 0
     m_Colors:

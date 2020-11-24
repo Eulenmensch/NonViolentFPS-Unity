@@ -16,7 +16,7 @@ MonoBehaviour:
   fireRate: 0.3
   fireForce: 25
   projectileTypes:
-  - {fileID: 4178011348408908617, guid: 0b02c7c66984ad143ab5aa3c960e1c49, type: 3}
+  - {fileID: 6484986793650034389, guid: 287048dd1848b23499bfb759ce4e8845, type: 3}
   - {fileID: 4178011348408908617, guid: d133830de3ae69d4b9623d3d1a714451, type: 3}
   - {fileID: 4178011348408908617, guid: 72b82b0bde20bc84192c0e405b8c1067, type: 3}
   invertScrollDirection: 1
