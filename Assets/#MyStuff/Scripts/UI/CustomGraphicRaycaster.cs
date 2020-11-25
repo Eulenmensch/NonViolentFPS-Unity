@@ -112,7 +112,7 @@ public class CustomGraphicRaycaster : BaseRaycaster
         public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
         {
             var displayCenter = new Vector2(Display.main.renderingWidth/2f, Display.main.renderingHeight/2f);
-            print(displayCenter);
+
             if (canvas == null)
                 return;
 

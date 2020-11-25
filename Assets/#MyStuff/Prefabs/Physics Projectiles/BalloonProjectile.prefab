@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeDrag: 0.5
   activeAngularDrag: 1
-  RiseForce: 12
+  RiseForce: 11
   maxHeight: 20
   MaxSize: {x: 1.5, y: 1.5, z: 1.5}
   GrowthDuration: 0.4
@@ -164,7 +164,7 @@ SpringJoint:
   serializedVersion: 2
   m_Spring: 300
   m_Damper: 2
-  m_MinDistance: 0.5
+  m_MinDistance: 1
   m_MaxDistance: 0
   m_Tolerance: 0.025
   m_BreakForce: Infinity

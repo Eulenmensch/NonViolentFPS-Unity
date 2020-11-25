@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa9168d1ea4b4c108db899e9d663bc3b, type: 3}
   m_Name: Get Knocked Back Enter Action
   m_EditorClassIdentifier: 
-  knockBackForce: 15000
-  upwardsModifier: 2
+  knockBackForce: 20000
+  upwardsModifier: 0.4
   knockBackOffset: 1
