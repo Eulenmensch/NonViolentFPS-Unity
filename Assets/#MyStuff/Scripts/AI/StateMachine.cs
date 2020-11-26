@@ -31,14 +31,16 @@ public class StateMachine : MonoBehaviour
         get => playerInTrigger;
         set => playerInTrigger = value;
     }
-    [SerializeField] private GameObject canvasAttachmentPoint;
-    public GameObject CanvasAttachmentPoint
+
+    [SerializeField] private GameObject interactionPrompt;
+    public GameObject InteractionPrompt
     {
-        get => canvasAttachmentPoint;
-        private set => canvasAttachmentPoint = value;
+        get => interactionPrompt;
+        set => interactionPrompt = value;
     }
 
     [Header( "Dialogue" )]
+    [SerializeField] private GameObject canvasAttachmentPoint;
     [SerializeField] private YarnProgram yarnDialogue;
     public YarnProgram YarnDialogue
     {
@@ -60,7 +62,7 @@ public class StateMachine : MonoBehaviour
         set => mMFeedbacks = value;
     }
 
-    [SerializeField] private State currentState;
+    private State currentState;
     public GameObject Player { get; private set; }
     public List<Collision> ActiveCollisions { get; private set; }
 
@@ -76,7 +78,11 @@ public class StateMachine : MonoBehaviour
     protected virtual void Start()
     {
         ActiveCollisions = new List<Collision>();
-        Player = GameObject.Find( "FaceLookAtTarget" ); //TODO: This is terrible design, replace it with some actual code asap!
+        Player = GameManager.Instance.Player;
+        if (interactionPrompt != null)
+        {
+            interactionPrompt.SetActive(false);
+        }
     }
 
     private void Update()
