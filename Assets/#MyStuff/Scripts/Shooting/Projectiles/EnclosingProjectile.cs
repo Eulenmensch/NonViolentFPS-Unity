@@ -30,15 +30,14 @@ public class EnclosingProjectile : PhysicsProjectile
 
 	protected override void ImpactAction(Collision _other)
 	{
+		if (_other.rigidbody == null) { return; }
 		var enclosingProjectile = _other.collider.GetComponentInChildren<EnclosingProjectile>();
-		if(enclosingProjectile != null) {return;}
+		if(enclosingProjectile != null) { return; }
 
 		rigidbodyRef.isKinematic = true;
 		Destroy( rigidbodyRef );
 
 		ChildToOtherRigidbody(_other);
 		transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.InOutCirc);
-
-		transform.DOScale( maxSize, growthDuration ).SetEase( Ease.InOutElastic );
 	}
 }

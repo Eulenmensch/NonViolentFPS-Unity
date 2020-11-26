@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(QuadraticDrag))]
@@ -14,6 +15,13 @@ public abstract class PhysicsProjectile : MonoBehaviour
     {
         get => activeAngularDrag;
         set => activeAngularDrag = value;
+    }
+
+    [SerializeField] private MMFeedbacks mMFeedbacks;
+    public MMFeedbacks MMFeedbacks
+    {
+        get => mMFeedbacks;
+        set => mMFeedbacks = value;
     }
 
     protected bool Activated { get; private set; }
@@ -42,6 +50,10 @@ public abstract class PhysicsProjectile : MonoBehaviour
         if (Activated) { return; }
         if (_other.gameObject.tag.Equals("Player")) { return; }
         ImpactAction(_other);
+        if (MMFeedbacks != null)
+        {
+            MMFeedbacks.PlayFeedbacks();
+        }
         Drag.Drag = ActiveDrag;
         Drag.AngularDrag = ActiveAngularDrag;
         Activated = true;
