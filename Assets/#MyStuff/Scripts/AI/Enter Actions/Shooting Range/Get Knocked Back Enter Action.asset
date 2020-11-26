@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Get Knocked Back Enter Action
   m_EditorClassIdentifier: 
   knockBackForce: 20000
-  upwardsModifier: 0.4
+  upwardsModifier: 0.2
   knockBackOffset: 1

@@ -8,6 +8,10 @@ public class InteractionPopUpBehaviour : Behaviour
         if ( Input.GetKeyDown( KeyCode.E ) )
         {
             _stateMachine.StartDialogue(_stateMachine.StartNode);
+            if (_stateMachine.InteractionPrompt != null)
+            {
+                _stateMachine.InteractionPrompt.SetActive(false);
+            }
         }
     }
 }

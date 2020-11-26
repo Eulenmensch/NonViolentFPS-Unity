@@ -6,7 +6,6 @@ public class LookAtPlayerBehaviour : Behaviour
 {
     public override void DoBehaviour(StateMachine _stateMachine)
     {
-        // machine.Head.LookAt( machine.Player.transform, Vector3.up );
-        _stateMachine.Head.DOLookAt( _stateMachine.Player.transform.position, 0.08f, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
+        _stateMachine.Head.DOLookAt( Camera.main.transform.position, 0.08f, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
     }
 }
