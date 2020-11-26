@@ -54,8 +54,8 @@ public class StateMachine : MonoBehaviour
         set => startNode = value;
     }
 
-    [Header("Hit Feedback")] [SerializeField]
-    private MMFeedbacks mMFeedbacks;
+    [Header("Hit Feedback")]
+    [SerializeField] private MMFeedbacks mMFeedbacks;
     public MMFeedbacks MMFeedbacks
     {
         get => mMFeedbacks;
