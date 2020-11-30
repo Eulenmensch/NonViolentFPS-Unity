@@ -63,3 +63,8 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# ProBuilder
+com.unity.probuilder/*
+ProjectSettings/BurstAotSettings_StandaloneWindows.json
+ProjectSettings/BurstAotSettings_WebGL.json
+debug.log
