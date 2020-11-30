@@ -27,13 +27,20 @@ Material:
     - _DepthDivisor: 4.01
     - _DisplacementAmount: 0.45
     - _DisplacementScrollSpeed: 0.28
+    - _FresnelBias: -0.338
+    - _FresnelLightDirInfluence: 0.265
+    - _FresnelPower: 1.27
+    - _FresnelScale: 1
     - _MaxDepth: 1.58
-    - _Opacity: 0.65
+    - _Opacity: 0.569
+    - _PosterizePower: 66.38
+    - _SpecularIntensity: 0
     - _StippleNoiseAmount: 0.48
     - __dirty: 0
     m_Colors:
-    - _LitColor: {r: 0.4138927, g: 0.6698113, b: 0.6175831, a: 0}
-    - _ShadowColor: {r: 0.25490183, g: 0.17254886, b: 0.34901947, a: 1}
+    - _LitColor: {r: 0.41389215, g: 0.6698113, b: 0.6175831, a: 0}
+    - _ShadowColor: {r: 0.2549013, g: 0.17254835, b: 0.34901893, a: 1}
     - _ShadowColor1: {r: 0.12195694, g: 0.216981, b: 0.05629223, a: 0}
-    - _UnlitColor: {r: 0.21573502, g: 0.45282996, b: 0.411419, a: 0}
+    - _SpecularColor: {r: 0.48876536, g: 0.57547164, b: 0.47051138, a: 1}
+    - _UnlitColor: {r: 0.21573448, g: 0.45282984, b: 0.41141847, a: 0}
   m_BuildTextureStacks: []
