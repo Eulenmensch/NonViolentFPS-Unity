@@ -68,3 +68,12 @@ com.unity.probuilder/*
 ProjectSettings/BurstAotSettings_StandaloneWindows.json
 ProjectSettings/BurstAotSettings_WebGL.json
 debug.log
+
+# Ignore the auto-generated AOT compatibility dll.
+/Assets/Plugins/Sirenix/Assemblies/AOT/*
+
+# Ignore all unpacked demos.
+/Assets/Plugins/Sirenix/Demos/*
+
+# But keep the demo packages themselves.
+!/Assets/Plugins/Sirenix/Demos/*.unitypackage
