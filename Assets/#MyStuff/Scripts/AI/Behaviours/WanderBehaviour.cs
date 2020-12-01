@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [CreateAssetMenu( menuName = "AI Kit/Behaviours/WanderBehaviour" )]
-public class WanderBehaviour : Behaviour
+public class WanderBehaviour : AIBehaviour
 {
     public override void DoBehaviour(StateMachine _stateMachine)
     {

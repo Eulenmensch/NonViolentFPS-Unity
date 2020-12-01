@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu( menuName = "AI Kit/Behaviours/InteractionPopUpBehaviour" )]
-public class InteractionPopUpBehaviour : Behaviour
+public class InteractionPopUpBehaviour : AIBehaviour
 {
     public override void DoBehaviour(StateMachine _stateMachine)
     {

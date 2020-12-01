@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu( menuName = "AI Kit/Behaviours/TurnBehaviour" )]
-public class TurnBehaviour : Behaviour
+public class TurnBehaviour : AIBehaviour
 {
     public override void DoBehaviour(StateMachine _stateMachine)
     {

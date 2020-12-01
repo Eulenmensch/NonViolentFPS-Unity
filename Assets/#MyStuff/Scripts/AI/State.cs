@@ -1,22 +1,13 @@
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [CreateAssetMenu( menuName = "AI Kit/State" )]
-public class State : ScriptableObject
+public class State : SerializedScriptableObject
 {
-    [SerializeField] private Behaviour[] behaviours;
+    [SerializeField] private List<AIBehaviour> behaviours;
     [SerializeField] private EnterAction[] enterActions;
-
-    public EnterAction[] EnterActions
-    {
-        get => enterActions;
-        private set => enterActions = value;
-    }
     [SerializeField] private ExitAction[] exitActions;
-    public ExitAction[] ExitActions
-    {
-        get => exitActions;
-        private set => exitActions = value;
-    }
     [SerializeField] private Transition[] transitions;
 
     public void UpdateState(StateMachine _stateMachine)
@@ -45,7 +36,7 @@ public class State : ScriptableObject
 
     public void Enter(StateMachine _stateMachine)
     {
-        foreach ( var enterAction in EnterActions )
+        foreach ( var enterAction in enterActions )
         {
             enterAction.Enter( _stateMachine );
         }
@@ -53,7 +44,7 @@ public class State : ScriptableObject
 
     public void Exit(StateMachine _stateMachine)
     {
-        foreach ( var exitAction in ExitActions )
+        foreach ( var exitAction in exitActions )
         {
             exitAction.Exit( _stateMachine );
         }

@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
   m_Name: LookAtPlayerState NPC 03
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   behaviours:
   - {fileID: 11400000, guid: e297d07dcc9a6ed48b63f072c7ca3aa0, type: 2}
   - {fileID: 11400000, guid: acf9356ca7698fe4692e9b21f9d988d2, type: 2}

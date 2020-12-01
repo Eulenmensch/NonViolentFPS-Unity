@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu( menuName = "AI Kit/Behaviours/JumpBehaviour" )]
-public class JumpBehaviour : Behaviour
+public class JumpBehaviour : AIBehaviour
 {
     public override void DoBehaviour(StateMachine _stateMachine)
     {

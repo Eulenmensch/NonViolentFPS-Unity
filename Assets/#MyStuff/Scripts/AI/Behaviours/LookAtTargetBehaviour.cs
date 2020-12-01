@@ -2,7 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 
 [CreateAssetMenu( menuName = "AI Kit/Behaviours/LookAtTargetBehaviour" )]
-public class LookAtTargetBehaviour : Behaviour
+public class LookAtTargetBehaviour : AIBehaviour
 {
     public override void DoBehaviour(StateMachine _stateMachine)
     {
