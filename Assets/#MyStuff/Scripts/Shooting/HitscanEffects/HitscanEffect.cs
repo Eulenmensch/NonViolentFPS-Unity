@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public interface IHitscanEffect
+namespace NonViolentFPS.Shooting
 {
-	void Initialize(RaycastHit _hit);
+	public interface IHitscanEffect
+	{
+		void Initialize(RaycastHit _hit);
+	}
 }
 

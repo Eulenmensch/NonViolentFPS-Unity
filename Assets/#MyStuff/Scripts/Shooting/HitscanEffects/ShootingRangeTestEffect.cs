@@ -1,12 +1,16 @@
+using NonViolentFPS.AI;
 using UnityEngine;
 
-public class ShootingRangeTestEffect : MonoBehaviour, IHitscanEffect
+namespace NonViolentFPS.Shooting
 {
-	public void Initialize(RaycastHit _hit) { }
-
-	private void Start()
+	public class ShootingRangeTestEffect : MonoBehaviour, IHitscanEffect
 	{
-		var machine = GetComponentInParent<StateMachine>();
-		machine.hit = true;
+		public void Initialize(RaycastHit _hit) { }
+
+		private void Start()
+		{
+			var machine = GetComponentInParent<StateMachine>();
+			machine.hit = true;
+		}
 	}
 }

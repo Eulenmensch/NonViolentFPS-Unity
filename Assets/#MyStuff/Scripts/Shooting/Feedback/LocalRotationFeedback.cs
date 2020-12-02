@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 
-public class LocalRotationFeedback : MonoBehaviour
+namespace NonViolentFPS.Shooting
 {
-    public float xLocalRotation;
-
-    private Vector3 defaultLocalRotation;
-
-    private void Start()
+    public class LocalRotationFeedback : MonoBehaviour
     {
-        defaultLocalRotation = transform.localRotation.eulerAngles;
-    }
+        public float xLocalRotation;
 
-    void Update()
-    {
-        transform.localRotation = Quaternion.Euler(xLocalRotation, defaultLocalRotation.y, defaultLocalRotation.z);
+        private Vector3 defaultLocalRotation;
+
+        private void Start()
+        {
+            defaultLocalRotation = transform.localRotation.eulerAngles;
+        }
+
+        void Update()
+        {
+            transform.localRotation = Quaternion.Euler(xLocalRotation, defaultLocalRotation.y, defaultLocalRotation.z);
+        }
     }
 }

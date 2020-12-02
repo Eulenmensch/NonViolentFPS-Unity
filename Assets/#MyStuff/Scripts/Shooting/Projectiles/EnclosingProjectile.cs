@@ -1,43 +1,46 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-public class EnclosingProjectile : PhysicsProjectile
+namespace NonViolentFPS.Shooting
 {
-	[SerializeField] private float maxSize;
-	[SerializeField] private float growthDuration;
-	[SerializeField] private float yOffset;
-	[SerializeField] private float riseForce;
-	[SerializeField] private float maxHeight;
-
-	private Rigidbody rigidbodyRef;
-
-	protected override void Start()
+	public class EnclosingProjectile : PhysicsProjectile
 	{
-		base.Start();
-		rigidbodyRef = GetComponent<Rigidbody>();
-	}
+		[SerializeField] private float maxSize;
+		[SerializeField] private float growthDuration;
+		[SerializeField] private float yOffset;
+		[SerializeField] private float riseForce;
+		[SerializeField] private float maxHeight;
 
-	private void FixedUpdate()
-	{
-		if (!Activated) return;
+		private Rigidbody rigidbodyRef;
 
-		if ( OtherRigidbody != null )
+		protected override void Start()
 		{
-			if(transform.position.y >= maxHeight) {return;}
-			OtherRigidbody.AddForceAtPosition( Vector3.up * riseForce, transform.position, ForceMode.Acceleration );
+			base.Start();
+			rigidbodyRef = GetComponent<Rigidbody>();
 		}
-	}
 
-	protected override void ImpactAction(Collision _other)
-	{
-		if (_other.rigidbody == null) { return; }
-		var enclosingProjectile = _other.collider.GetComponentInChildren<EnclosingProjectile>();
-		if(enclosingProjectile != null) { return; }
+		private void FixedUpdate()
+		{
+			if (!Activated) return;
 
-		rigidbodyRef.isKinematic = true;
-		Destroy( rigidbodyRef );
+			if ( OtherRigidbody != null )
+			{
+				if(transform.position.y >= maxHeight) {return;}
+				OtherRigidbody.AddForceAtPosition( Vector3.up * riseForce, transform.position, ForceMode.Acceleration );
+			}
+		}
 
-		ChildToOtherRigidbody(_other);
-		transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.InOutCirc);
+		protected override void ImpactAction(Collision _other)
+		{
+			if (_other.rigidbody == null) { return; }
+			var enclosingProjectile = _other.collider.GetComponentInChildren<EnclosingProjectile>();
+			if(enclosingProjectile != null) { return; }
+
+			rigidbodyRef.isKinematic = true;
+			Destroy( rigidbodyRef );
+
+			ChildToOtherRigidbody(_other);
+			transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.InOutCirc);
+		}
 	}
 }

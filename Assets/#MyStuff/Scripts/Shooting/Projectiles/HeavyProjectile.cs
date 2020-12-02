@@ -1,37 +1,40 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
-public class HeavyProjectile : PhysicsProjectile
+namespace NonViolentFPS.Shooting
 {
-    [SerializeField] private Vector3 maxSize;
-    [SerializeField] private float activeWeight;
-    [SerializeField] private float growthDuration;
-
-    private Rigidbody rigidbodyRef;
-
-    protected override void Start()
+    public class HeavyProjectile : PhysicsProjectile
     {
-        base.Start();
-        rigidbodyRef = GetComponent<Rigidbody>();
-    }
+        [SerializeField] private Vector3 maxSize;
+        [SerializeField] private float activeWeight;
+        [SerializeField] private float growthDuration;
 
-    private void FixedUpdate()
-    {
-        if (!Activated) return;
+        private Rigidbody rigidbodyRef;
 
-        if ( OtherRigidbody != null )
+        protected override void Start()
         {
-            OtherRigidbody.AddForceAtPosition( Vector3.down * activeWeight, transform.position, ForceMode.Acceleration );
+            base.Start();
+            rigidbodyRef = GetComponent<Rigidbody>();
         }
-    }
 
-    protected override void ImpactAction(Collision _other)
-    {
-        rigidbodyRef.isKinematic = true;
-        Destroy( rigidbodyRef );
+        private void FixedUpdate()
+        {
+            if (!Activated) return;
 
-        ChildToOtherRigidbody(_other);
+            if ( OtherRigidbody != null )
+            {
+                OtherRigidbody.AddForceAtPosition( Vector3.down * activeWeight, transform.position, ForceMode.Acceleration );
+            }
+        }
 
-        transform.DOScale( maxSize, growthDuration ).SetEase( Ease.OutBounce );
+        protected override void ImpactAction(Collision _other)
+        {
+            rigidbodyRef.isKinematic = true;
+            Destroy( rigidbodyRef );
+
+            ChildToOtherRigidbody(_other);
+
+            transform.DOScale( maxSize, growthDuration ).SetEase( Ease.OutBounce );
+        }
     }
 }
