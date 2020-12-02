@@ -1,12 +1,14 @@
 ﻿using System;
-using UnityEngine.UI;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class CustomGraphicRaycaster : BaseRaycaster
+namespace NonViolentFPS.UI
 {
-    protected const int kNoEventMaskSet = -1;
+    public class CustomGraphicRaycaster : BaseRaycaster
+    {
+        protected const int kNoEventMaskSet = -1;
 
         /// <summary>
         /// Type of raycasters to check against to check for canvas blocking elements.
@@ -333,5 +335,6 @@ public class CustomGraphicRaycaster : BaseRaycaster
 
             s_SortedGraphics.Clear();
         }
+    }
 }
 

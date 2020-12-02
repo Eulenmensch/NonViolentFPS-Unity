@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class RotateToFaceCamera : MonoBehaviour
+namespace NonViolentFPS.UI
 {
-    private Camera MainCamera;
-
-    private void Start()
+    public class RotateToFaceCamera : MonoBehaviour
     {
-        MainCamera = Camera.main;
-    }
+        private Camera MainCamera;
 
-    private void LateUpdate()
-    {
-        var look = 2 * transform.position - MainCamera.transform.position;
-        // transform.LookAt(transform.position + MainCamera.transform.rotation * Vector3.forward, MainCamera.transform.rotation * Vector3.up);
-        transform.LookAt( new Vector3( look.x, transform.position.y, look.z ), Vector3.up );
+        private void Start()
+        {
+            MainCamera = Camera.main;
+        }
+
+        private void LateUpdate()
+        {
+            var look = 2 * transform.position - MainCamera.transform.position;
+            // transform.LookAt(transform.position + MainCamera.transform.rotation * Vector3.forward, MainCamera.transform.rotation * Vector3.up);
+            transform.LookAt( new Vector3( look.x, transform.position.y, look.z ), Vector3.up );
+        }
     }
 }

@@ -1,42 +1,45 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+namespace NonViolentFPS.Manager
 {
-	#region Singleton
-	public static GameManager Instance { get; private set; }
-
-	private void Awake()
+	public class GameManager : MonoBehaviour
 	{
-		if ( Instance != null && Instance != this )
+		#region Singleton
+		public static GameManager Instance { get; private set; }
+
+		private void Awake()
 		{
-			Destroy( this );
+			if ( Instance != null && Instance != this )
+			{
+				Destroy( this );
+			}
+			else
+			{
+				Instance = this;
+			}
 		}
-		else
-		{
-			Instance = this;
-		}
-	}
-	#endregion
+		#endregion
 
-	[SerializeField] private GameObject player;
-	public GameObject Player
-	{
-		get => player;
-		set => player = value;
-	}
-
-	//FIXME: Only for testing
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.R))
+		[SerializeField] private GameObject player;
+		public GameObject Player
 		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			get => player;
+			set => player = value;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Escape))
+		//FIXME: Only for testing
+		private void Update()
 		{
-			Application.Quit();
+			if (Input.GetKeyDown(KeyCode.R))
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			}
+
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				Application.Quit();
+			}
 		}
 	}
 }

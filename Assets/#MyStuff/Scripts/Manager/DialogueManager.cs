@@ -1,48 +1,50 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Yarn.Unity;
 
-public class DialogueManager : MonoBehaviour
+namespace NonViolentFPS.Manager
 {
-    #region Singleton
-    public static DialogueManager Instance { get; private set; }
-
-    private void Awake()
+    public class DialogueManager : MonoBehaviour
     {
-        if ( Instance != null && Instance != this )
+        #region Singleton
+        public static DialogueManager Instance { get; private set; }
+
+        private void Awake()
         {
-            Destroy( this );
+            if ( Instance != null && Instance != this )
+            {
+                Destroy( this );
+            }
+            else
+            {
+                Instance = this;
+            }
         }
-        else
+        #endregion
+
+        [SerializeField] private DialogueRunner yarnRunner;
+        public DialogueRunner YarnRunner
         {
-            Instance = this;
+            get => yarnRunner;
+            private set => yarnRunner = value;
         }
-    }
-    #endregion
+        [SerializeField] private DialogueUI yarnUI;
+        public DialogueUI YarnUI
+        {
+            get => yarnUI;
+            private set => yarnUI = value;
+        }
 
-    [SerializeField] private DialogueRunner yarnRunner;
-    public DialogueRunner YarnRunner
-    {
-        get => yarnRunner;
-        private set => yarnRunner = value;
-    }
-    [SerializeField] private DialogueUI yarnUI;
-    public DialogueUI YarnUI
-    {
-        get => yarnUI;
-        private set => yarnUI = value;
-    }
+        [SerializeField] private Transform canvasTransform;
 
-    [SerializeField] private Transform canvasTransform;
+        public Transform CanvasTransform
+        {
+            get => canvasTransform;
+            set => canvasTransform = value;
+        }
 
-    public Transform CanvasTransform
-    {
-        get => canvasTransform;
-        set => canvasTransform = value;
-    }
-
-    public void SetActiveDialogueContainer(GameObject _container)
-    {
-        yarnUI.dialogueContainer = _container;
+        public void SetActiveDialogueContainer(GameObject _container)
+        {
+            yarnUI.dialogueContainer = _container;
+        }
     }
 }

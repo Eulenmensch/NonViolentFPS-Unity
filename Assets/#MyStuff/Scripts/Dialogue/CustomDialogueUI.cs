@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using Yarn;
 using Yarn.Unity;
 
-public class CustomDialogueUI : DialogueUI
+namespace NonViolentFPS.Dialogue
 {
+	public class CustomDialogueUI : DialogueUI
+	{
     
+	}
 }

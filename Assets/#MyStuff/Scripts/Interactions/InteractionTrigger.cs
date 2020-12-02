@@ -1,26 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using NonViolentFPS.AI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-[RequireComponent( typeof( Collider ) )]
-public class InteractionTrigger : MonoBehaviour
+namespace NonViolentFPS.Interactions
 {
-    [FormerlySerializedAs("NPCStateMachine")] [SerializeField] private StateMachine npcStateMachine;
-
-    private void OnTriggerEnter(Collider other)
+    [RequireComponent( typeof( Collider ) )]
+    public class InteractionTrigger : MonoBehaviour
     {
-        if ( other.CompareTag( "Player" ) )
+        [SerializeField] private StateMachine npcStateMachine;
+
+        private void OnTriggerEnter(Collider other)
         {
-            npcStateMachine.PlayerInTrigger = true;
+            if ( other.CompareTag( "Player" ) )
+            {
+                npcStateMachine.PlayerInTrigger = true;
+            }
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if ( other.CompareTag( "Player" ) )
+        private void OnTriggerExit(Collider other)
         {
-            npcStateMachine.PlayerInTrigger = false;
+            if ( other.CompareTag( "Player" ) )
+            {
+                npcStateMachine.PlayerInTrigger = false;
+            }
         }
     }
 }
