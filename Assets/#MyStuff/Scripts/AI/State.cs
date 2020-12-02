@@ -2,51 +2,54 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/State" )]
-public class State : SerializedScriptableObject
+namespace NonViolentFPS.AI
 {
-    [SerializeField] private List<AIBehaviour> behaviours;
-    [SerializeField] private EnterAction[] enterActions;
-    [SerializeField] private ExitAction[] exitActions;
-    [SerializeField] private Transition[] transitions;
-
-    public void UpdateState(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/State" )]
+    public class State : SerializedScriptableObject
     {
-        DoBehaviours( _stateMachine );
-        EvaluateConditions( _stateMachine );
-    }
+        [SerializeField] private List<AIBehaviour> behaviours;
+        [SerializeField] private EnterAction[] enterActions;
+        [SerializeField] private ExitAction[] exitActions;
+        [SerializeField] private Transition[] transitions;
 
-    private void DoBehaviours(StateMachine _stateMachine)
-    {
-        foreach ( var behaviour in behaviours )
+        public void UpdateState(StateMachine _stateMachine)
         {
-            behaviour.DoBehaviour( _stateMachine );
+            DoBehaviours( _stateMachine );
+            EvaluateConditions( _stateMachine );
         }
-    }
 
-    private void EvaluateConditions(StateMachine _stateMachine)
-    {
-        foreach ( var transition in transitions )
+        private void DoBehaviours(StateMachine _stateMachine)
         {
-            var conditionTrue = transition.condition.Evaluate( _stateMachine );
-
-            _stateMachine.TransitionToState( conditionTrue ? transition.trueState : transition.falseState );
+            foreach ( var behaviour in behaviours )
+            {
+                behaviour.DoBehaviour( _stateMachine );
+            }
         }
-    }
 
-    public void Enter(StateMachine _stateMachine)
-    {
-        foreach ( var enterAction in enterActions )
+        private void EvaluateConditions(StateMachine _stateMachine)
         {
-            enterAction.Enter( _stateMachine );
+            foreach ( var transition in transitions )
+            {
+                var conditionTrue = transition.condition.Evaluate( _stateMachine );
+
+                _stateMachine.TransitionToState( conditionTrue ? transition.trueState : transition.falseState );
+            }
         }
-    }
 
-    public void Exit(StateMachine _stateMachine)
-    {
-        foreach ( var exitAction in exitActions )
+        public void Enter(StateMachine _stateMachine)
         {
-            exitAction.Exit( _stateMachine );
+            foreach ( var enterAction in enterActions )
+            {
+                enterAction.Enter( _stateMachine );
+            }
+        }
+
+        public void Exit(StateMachine _stateMachine)
+        {
+            foreach ( var exitAction in exitActions )
+            {
+                exitAction.Exit( _stateMachine );
+            }
         }
     }
 }

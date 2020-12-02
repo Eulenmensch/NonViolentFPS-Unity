@@ -1,16 +1,19 @@
-
+using NonViolentFPS.Shooting;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI Kit/Conditions/HitByHitscanEffectCondition")]
-public class HitByHitscanEffectCondition : Condition
+namespace NonViolentFPS.AI
 {
-	public override bool Evaluate(StateMachine _stateMachine)
+	[CreateAssetMenu(menuName = "AI Kit/Conditions/HitByHitscanEffectCondition")]
+	public class HitByHitscanEffectCondition : Condition
 	{
-		if (_stateMachine.gameObject.GetComponentInChildren<IHitscanEffect>() != null)
+		public override bool Evaluate(StateMachine _stateMachine)
 		{
-			return true;
-		}
+			if (_stateMachine.gameObject.GetComponentInChildren<IHitscanEffect>() != null)
+			{
+				return true;
+			}
 
-		return false;
+			return false;
+		}
 	}
 }

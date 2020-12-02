@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public abstract class Condition : ScriptableObject
+namespace NonViolentFPS.AI
 {
-    public abstract bool Evaluate(StateMachine _stateMachine);
+    public abstract class Condition : ScriptableObject
+    {
+        public abstract bool Evaluate(StateMachine _stateMachine);
+    }
 }

@@ -1,18 +1,20 @@
 using UnityEngine;
-using UnityEditor;
 
-[CreateAssetMenu( menuName = "AI Kit/Conditions/PlayerInTriggerCondition" )]
-public class PlayerInTriggerCondition : Condition
+namespace NonViolentFPS.AI
 {
-    public override bool Evaluate(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Conditions/PlayerInTriggerCondition" )]
+    public class PlayerInTriggerCondition : Condition
     {
-        if ( _stateMachine.PlayerInTrigger )
+        public override bool Evaluate(StateMachine _stateMachine)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            if ( _stateMachine.PlayerInTrigger )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

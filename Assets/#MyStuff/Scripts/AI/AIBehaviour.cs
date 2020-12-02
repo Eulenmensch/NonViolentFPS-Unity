@@ -1,6 +1,9 @@
 ﻿using Sirenix.OdinInspector;
 
-public abstract class AIBehaviour : SerializedScriptableObject
+namespace NonViolentFPS.AI
 {
-    public abstract void DoBehaviour(StateMachine _stateMachine);
+    public abstract class AIBehaviour : SerializedScriptableObject
+    {
+        public abstract void DoBehaviour(StateMachine _stateMachine);
+    }
 }

@@ -1,15 +1,18 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI Kit/Conditions/WaitForTimerCondition")]
-public class WaitForTimerCondition : Condition
+namespace NonViolentFPS.AI
 {
-	public override bool Evaluate(StateMachine _stateMachine)
+	[CreateAssetMenu(menuName = "AI Kit/Conditions/WaitForTimerCondition")]
+	public class WaitForTimerCondition : Condition
 	{
-		if (_stateMachine.Waiting)
+		public override bool Evaluate(StateMachine _stateMachine)
 		{
-			return false;
-		}
+			if (_stateMachine.Waiting)
+			{
+				return false;
+			}
 
-		return true;
+			return true;
+		}
 	}
 }

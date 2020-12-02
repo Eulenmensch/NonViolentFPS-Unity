@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[CreateAssetMenu( menuName = "AI Kit/Enter Actions/StartNavigationEnterAction" )]
-public class StartNavigationEnterAction : EnterAction
+namespace NonViolentFPS.AI
 {
-    public override void Enter(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Enter Actions/StartNavigationEnterAction" )]
+    public class StartNavigationEnterAction : EnterAction
     {
-        NavMeshAgentStateMachine machine = _stateMachine as NavMeshAgentStateMachine;
+        public override void Enter(StateMachine _stateMachine)
+        {
+            NavMeshAgentStateMachine machine = _stateMachine as NavMeshAgentStateMachine;
 
-        NavMeshAgent agent = machine.Agent;
+            NavMeshAgent agent = machine.Agent;
 
-        agent.isStopped = false;
+            agent.isStopped = false;
+        }
     }
 }

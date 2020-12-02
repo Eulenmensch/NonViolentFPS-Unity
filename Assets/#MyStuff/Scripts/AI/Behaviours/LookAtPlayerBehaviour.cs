@@ -1,11 +1,14 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/Behaviours/LookAtPlayerBehaviour" )]
-public class LookAtPlayerBehaviour : AIBehaviour
+namespace NonViolentFPS.AI
 {
-    public override void DoBehaviour(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Behaviours/LookAtPlayerBehaviour" )]
+    public class LookAtPlayerBehaviour : AIBehaviour
     {
-        _stateMachine.Head.DOLookAt( Camera.main.transform.position, 0.08f, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
+        public override void DoBehaviour(StateMachine _stateMachine)
+        {
+            _stateMachine.Head.DOLookAt( Camera.main.transform.position, 0.08f, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
+        }
     }
 }

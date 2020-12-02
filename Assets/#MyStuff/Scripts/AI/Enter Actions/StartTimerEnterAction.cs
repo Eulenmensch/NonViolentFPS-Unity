@@ -1,11 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI Kit/Enter Actions/StartTimerEnterAction")]
-public class StartTimerEnterAction : EnterAction
+namespace NonViolentFPS.AI
 {
-	[SerializeField] private float seconds;
-	public override void Enter(StateMachine _stateMachine)
+	[CreateAssetMenu(menuName = "AI Kit/Enter Actions/StartTimerEnterAction")]
+	public class StartTimerEnterAction : EnterAction
 	{
-		_stateMachine.StartCoroutine(_stateMachine.WaitForSeconds(seconds));
+		[SerializeField] private float seconds;
+		public override void Enter(StateMachine _stateMachine)
+		{
+			_stateMachine.StartCoroutine(_stateMachine.WaitForSeconds(seconds));
+		}
 	}
 }

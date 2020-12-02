@@ -1,11 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/Behaviours/JumpBehaviour" )]
-public class JumpBehaviour : AIBehaviour
+namespace NonViolentFPS.AI
 {
-    public override void DoBehaviour(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Behaviours/JumpBehaviour" )]
+    public class JumpBehaviour : AIBehaviour
     {
-        // RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
-        // machine.RigidbodyRef.AddForce( Vector3.up * machine.JumpForce, ForceMode.VelocityChange );
+        public override void DoBehaviour(StateMachine _stateMachine)
+        {
+            // RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
+            // machine.RigidbodyRef.AddForce( Vector3.up * machine.JumpForce, ForceMode.VelocityChange );
+        }
     }
 }

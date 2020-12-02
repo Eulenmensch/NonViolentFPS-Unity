@@ -1,19 +1,22 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI Kit/Enter Actions/GetKnockedBackEnterAction")]
-public class GetKnockedBackEnterAction : EnterAction
+namespace NonViolentFPS.AI
 {
-	[SerializeField] private float knockBackForce;
-	[SerializeField] private float upwardsModifier;
-	[SerializeField] private float knockBackOffset;
-
-	public override void Enter(StateMachine _stateMachine)
+	[CreateAssetMenu(menuName = "AI Kit/Enter Actions/GetKnockedBackEnterAction")]
+	public class GetKnockedBackEnterAction : EnterAction
 	{
-		var machine = _stateMachine as RigidbodyStateMachine;
+		[SerializeField] private float knockBackForce;
+		[SerializeField] private float upwardsModifier;
+		[SerializeField] private float knockBackOffset;
 
-		var playerPosition = machine.Player.transform.position;
-		var playerDirection = playerPosition - machine.transform.position;
-		var nearbyPositionInPlayerDirection = machine.transform.position + playerDirection.normalized * knockBackOffset;
-		machine.RigidbodyRef.AddExplosionForce(knockBackForce, nearbyPositionInPlayerDirection, knockBackOffset+1f, upwardsModifier);
+		public override void Enter(StateMachine _stateMachine)
+		{
+			var machine = _stateMachine as RigidbodyStateMachine;
+
+			var playerPosition = machine.Player.transform.position;
+			var playerDirection = playerPosition - machine.transform.position;
+			var nearbyPositionInPlayerDirection = machine.transform.position + playerDirection.normalized * knockBackOffset;
+			machine.RigidbodyRef.AddExplosionForce(knockBackForce, nearbyPositionInPlayerDirection, knockBackOffset+1f, upwardsModifier);
+		}
 	}
 }

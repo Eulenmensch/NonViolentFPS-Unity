@@ -1,18 +1,21 @@
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/Conditions/Physics/GroundedCondition" )]
-public class GroundedCondition : Condition
+namespace NonViolentFPS.AI
 {
-    public override bool Evaluate(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Conditions/Physics/GroundedCondition" )]
+    public class GroundedCondition : Condition
     {
-        RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
-        if ( machine.Grounded )
+        public override bool Evaluate(StateMachine _stateMachine)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
+            if ( machine.Grounded )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public abstract class ExitAction : ScriptableObject
+namespace NonViolentFPS.AI
 {
-    public abstract void Exit(StateMachine _stateMachine);
+    public abstract class ExitAction : ScriptableObject
+    {
+        public abstract void Exit(StateMachine _stateMachine);
+    }
 }

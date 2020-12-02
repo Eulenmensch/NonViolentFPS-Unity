@@ -1,7 +1,10 @@
-[System.Serializable]
-public class Transition
+namespace NonViolentFPS.AI
 {
-    public Condition condition;
-    public State trueState;
-    public State falseState;
+    [System.Serializable]
+    public class Transition
+    {
+        public Condition condition;
+        public State trueState;
+        public State falseState;
+    }
 }

@@ -1,16 +1,19 @@
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/Behaviours/InteractionPopUpBehaviour" )]
-public class InteractionPopUpBehaviour : AIBehaviour
+namespace NonViolentFPS.AI
 {
-    public override void DoBehaviour(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Behaviours/InteractionPopUpBehaviour" )]
+    public class InteractionPopUpBehaviour : AIBehaviour
     {
-        if ( Input.GetKeyDown( KeyCode.E ) )
+        public override void DoBehaviour(StateMachine _stateMachine)
         {
-            _stateMachine.StartDialogue(_stateMachine.StartNode);
-            if (_stateMachine.InteractionPrompt != null)
+            if ( Input.GetKeyDown( KeyCode.E ) )
             {
-                _stateMachine.InteractionPrompt.SetActive(false);
+                _stateMachine.StartDialogue(_stateMachine.StartNode);
+                if (_stateMachine.InteractionPrompt != null)
+                {
+                    _stateMachine.InteractionPrompt.SetActive(false);
+                }
             }
         }
     }

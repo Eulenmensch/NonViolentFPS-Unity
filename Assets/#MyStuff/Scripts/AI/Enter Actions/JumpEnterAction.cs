@@ -1,14 +1,17 @@
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/Enter Actions/JumpEnterAction" )]
-public class JumpEnterAction : EnterAction
+namespace NonViolentFPS.AI
 {
-    public override void Enter(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Enter Actions/JumpEnterAction" )]
+    public class JumpEnterAction : EnterAction
     {
-        RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
+        public override void Enter(StateMachine _stateMachine)
+        {
+            RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
 
-        machine.Grounded = false;
+            machine.Grounded = false;
 
-        machine.RigidbodyRef.AddForce( Vector3.up * machine.JumpForce, ForceMode.VelocityChange );
+            machine.RigidbodyRef.AddForce( Vector3.up * machine.JumpForce, ForceMode.VelocityChange );
+        }
     }
 }

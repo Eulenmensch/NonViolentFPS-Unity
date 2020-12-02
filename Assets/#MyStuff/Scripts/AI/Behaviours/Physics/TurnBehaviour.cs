@@ -1,11 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/Behaviours/TurnBehaviour" )]
-public class TurnBehaviour : AIBehaviour
+namespace NonViolentFPS.AI
 {
-    public override void DoBehaviour(StateMachine _stateMachine)
+    [CreateAssetMenu( menuName = "AI Kit/Behaviours/TurnBehaviour" )]
+    public class TurnBehaviour : AIBehaviour
     {
-        RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
-        machine.RigidbodyRef.AddTorque( machine.transform.up * machine.TurnTorque, ForceMode.Acceleration );
+        public override void DoBehaviour(StateMachine _stateMachine)
+        {
+            RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
+            machine.RigidbodyRef.AddTorque( machine.transform.up * machine.TurnTorque, ForceMode.Acceleration );
+        }
     }
 }

@@ -1,17 +1,21 @@
+using NonViolentFPS.Shooting;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI Kit/Conditions/Physics/HitByPhysicsProjectileCondition")]
-public class HitByPhysicsProjectileCondition : Condition
+namespace NonViolentFPS.AI
 {
-    public override bool Evaluate(StateMachine _stateMachine)
+    [CreateAssetMenu(menuName = "AI Kit/Conditions/Physics/HitByPhysicsProjectileCondition")]
+    public class HitByPhysicsProjectileCondition : Condition
     {
-        foreach (var collision in _stateMachine.ActiveCollisions)
+        public override bool Evaluate(StateMachine _stateMachine)
         {
-            if (collision.gameObject.GetComponent<PhysicsProjectile>() != null)
+            foreach (var collision in _stateMachine.ActiveCollisions)
             {
-                return true;
+                if (collision.gameObject.GetComponent<PhysicsProjectile>() != null)
+                {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     }
 }

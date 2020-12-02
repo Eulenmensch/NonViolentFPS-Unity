@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public abstract class EnterAction : ScriptableObject
+namespace NonViolentFPS.AI
 {
-    public abstract void Enter(StateMachine _stateMachine);
+    public abstract class EnterAction : ScriptableObject
+    {
+        public abstract void Enter(StateMachine _stateMachine);
+    }
 }

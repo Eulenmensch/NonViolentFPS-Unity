@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu( menuName = "AI Kit/RemainInState" )]
-public class RemainInState : State
+namespace NonViolentFPS.AI
 {
+	[CreateAssetMenu( menuName = "AI Kit/RemainInState" )]
+	public class RemainInState : State
+	{
 
+	}
 }
