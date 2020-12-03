@@ -9,7 +9,7 @@ namespace NonViolentFPS.AI
 {
     public class StateMachine : MonoBehaviour
     {
-        [SerializeField] private State StartState;
+        [SerializeField] private State startState;
         [SerializeField] private float range;
         public float Range
         {
@@ -75,7 +75,7 @@ namespace NonViolentFPS.AI
 
         private void Awake()
         {
-            currentState = StartState;
+            currentState = startState;
         }
 
         protected virtual void Start()
@@ -124,7 +124,6 @@ namespace NonViolentFPS.AI
         {
             DialogueManager.Instance.YarnRunner.Stop();
             DialogueManager.Instance.YarnRunner.Clear();
-            // DialogueManager.Instance.CanvasTransform.position = canvasAttachmentPoint.transform.position;
             DialogueManager.Instance.CanvasTransform.parent = canvasAttachmentPoint.transform;
             DialogueManager.Instance.CanvasTransform.localPosition = Vector3.zero;
             if ( !DialogueManager.Instance.YarnRunner.yarnScripts.Contains( yarnDialogue ) )
