@@ -4,18 +4,21 @@ namespace NonViolentFPS.UI
 {
     public class RotateToFaceCamera : MonoBehaviour
     {
-        private Camera MainCamera;
+        private Transform mainCameraTransform;
 
         private void Start()
         {
-            MainCamera = Camera.main;
+            mainCameraTransform = Camera.main.transform;
         }
 
         private void LateUpdate()
         {
-            var look = 2 * transform.position - MainCamera.transform.position;
-            // transform.LookAt(transform.position + MainCamera.transform.rotation * Vector3.forward, MainCamera.transform.rotation * Vector3.up);
-            transform.LookAt( new Vector3( look.x, transform.position.y, look.z ), Vector3.up );
+            var position = transform.position;
+            if(mainCameraTransform != null)
+            {
+                var look = 2 * transform.position - mainCameraTransform.position;
+                transform.LookAt(new Vector3(look.x, position.y, look.z), Vector3.up);
+            }
         }
     }
 }
