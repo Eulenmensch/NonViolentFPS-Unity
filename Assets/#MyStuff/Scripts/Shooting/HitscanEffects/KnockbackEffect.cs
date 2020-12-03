@@ -13,6 +13,11 @@ namespace NonViolentFPS.Shooting
 			StartCoroutine(DestroyAfterSeconds(0.1f));
 		}
 
+		public void Destroy()
+		{
+			Destroy(gameObject);
+		}
+
 		private void KnockBack(RaycastHit _hit)
 		{
 			var body = GetComponentInParent<Rigidbody>();

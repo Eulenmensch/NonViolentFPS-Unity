@@ -52,6 +52,11 @@ namespace NonViolentFPS.Shooting
 			}
 		}
 
+		public void Destroy()
+		{
+			Destroy(gameObject);
+		}
+
 		private void Start()
 		{
 			var parent = transform.parent;

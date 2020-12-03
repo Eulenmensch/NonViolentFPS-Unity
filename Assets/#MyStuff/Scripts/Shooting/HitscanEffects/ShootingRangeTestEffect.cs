@@ -12,5 +12,10 @@ namespace NonViolentFPS.Shooting
 			var machine = GetComponentInParent<StateMachine>();
 			machine.hit = true;
 		}
+
+		public void Destroy()
+		{
+			Destroy(gameObject);
+		}
 	}
 }
