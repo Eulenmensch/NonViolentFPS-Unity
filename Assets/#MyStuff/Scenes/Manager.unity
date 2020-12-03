@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1205745495}
-  - component: {fileID: 1205745494}
   - component: {fileID: 1205745492}
+  - component: {fileID: 1205745494}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -165,6 +165,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3a5a69695446f99426d42313ab1c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   player: {fileID: 0}
 --- !u!4 &1205745495
 Transform:
