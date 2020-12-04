@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad80cc6ad2940ddbac5ed2b31b1a797, type: 3}
+  m_Name: Soap Wand Gun
+  m_EditorClassIdentifier: 
+  gunPrefab: {fileID: 7914272111490427818, guid: ce45b0937d7ebe94fbb832c923ea294f,
+    type: 3}
+  adsPosition: {x: -0.0475, y: -0.11, z: 0.16}
+  adsRotation: {x: 83.6, y: 7.5, z: 191.046}
+  adsDuration: 0.3
+  bubblePrefab: {fileID: 6484986793650034389, guid: 287048dd1848b23499bfb759ce4e8845,
+    type: 3}
+  fullChargeTime: 1.8
+  fireForceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 7.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
