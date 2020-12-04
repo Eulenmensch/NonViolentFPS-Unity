@@ -6,9 +6,17 @@
             "id": "61a0dd4f-57f7-479c-be35-b711e3032ea6",
             "actions": [
                 {
-                    "name": "Shoot",
+                    "name": "Primary Fire",
                     "type": "Button",
                     "id": "174feb66-d485-49ab-9f15-1f92e7c84b41",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Secondary Fire",
+                    "type": "Button",
+                    "id": "95f1f187-c672-4f46-8b65-0c3cd7a672f9",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -54,7 +62,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse & Keyboard",
-                    "action": "Shoot",
+                    "action": "Primary Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -65,7 +73,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Shoot",
+                    "action": "Primary Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -275,6 +283,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "801d7d85-ab26-4356-95f0-b4a6e72e3b1b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse & Keyboard",
+                    "action": "Secondary Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21b9e1fa-824f-4d9c-9f75-1cdc691ed9ed",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Secondary Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -19,9 +19,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
             ""id"": ""61a0dd4f-57f7-479c-be35-b711e3032ea6"",
             ""actions"": [
                 {
-                    ""name"": ""Shoot"",
+                    ""name"": ""Primary Fire"",
                     ""type"": ""Button"",
                     ""id"": ""174feb66-d485-49ab-9f15-1f92e7c84b41"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Secondary Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""95f1f187-c672-4f46-8b65-0c3cd7a672f9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -67,7 +75,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mouse & Keyboard"",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Primary Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -78,7 +86,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Shoot"",
+                    ""action"": ""Primary Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -290,6 +298,28 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""801d7d85-ab26-4356-95f0-b4a6e72e3b1b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Secondary Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""21b9e1fa-824f-4d9c-9f75-1cdc691ed9ed"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Secondary Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -326,7 +356,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_PrimaryFire = m_Player.FindAction("Primary Fire", throwIfNotFound: true);
+        m_Player_SecondaryFire = m_Player.FindAction("Secondary Fire", throwIfNotFound: true);
         m_Player_ProjectileToggle = m_Player.FindAction("ProjectileToggle", throwIfNotFound: true);
         m_Player_PushPull = m_Player.FindAction("Push/Pull", throwIfNotFound: true);
         m_Player_GunSelect = m_Player.FindAction("Gun Select", throwIfNotFound: true);
@@ -380,7 +411,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_PrimaryFire;
+    private readonly InputAction m_Player_SecondaryFire;
     private readonly InputAction m_Player_ProjectileToggle;
     private readonly InputAction m_Player_PushPull;
     private readonly InputAction m_Player_GunSelect;
@@ -389,7 +421,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        public InputAction @PrimaryFire => m_Wrapper.m_Player_PrimaryFire;
+        public InputAction @SecondaryFire => m_Wrapper.m_Player_SecondaryFire;
         public InputAction @ProjectileToggle => m_Wrapper.m_Player_ProjectileToggle;
         public InputAction @PushPull => m_Wrapper.m_Player_PushPull;
         public InputAction @GunSelect => m_Wrapper.m_Player_GunSelect;
@@ -403,9 +436,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
             {
-                @Shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                @Shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                @Shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @PrimaryFire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryFire;
+                @PrimaryFire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryFire;
+                @PrimaryFire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPrimaryFire;
+                @SecondaryFire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondaryFire;
+                @SecondaryFire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondaryFire;
+                @SecondaryFire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondaryFire;
                 @ProjectileToggle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProjectileToggle;
                 @ProjectileToggle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProjectileToggle;
                 @ProjectileToggle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProjectileToggle;
@@ -422,9 +458,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Shoot.started += instance.OnShoot;
-                @Shoot.performed += instance.OnShoot;
-                @Shoot.canceled += instance.OnShoot;
+                @PrimaryFire.started += instance.OnPrimaryFire;
+                @PrimaryFire.performed += instance.OnPrimaryFire;
+                @PrimaryFire.canceled += instance.OnPrimaryFire;
+                @SecondaryFire.started += instance.OnSecondaryFire;
+                @SecondaryFire.performed += instance.OnSecondaryFire;
+                @SecondaryFire.canceled += instance.OnSecondaryFire;
                 @ProjectileToggle.started += instance.OnProjectileToggle;
                 @ProjectileToggle.performed += instance.OnProjectileToggle;
                 @ProjectileToggle.canceled += instance.OnProjectileToggle;
@@ -461,7 +500,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnShoot(InputAction.CallbackContext context);
+        void OnPrimaryFire(InputAction.CallbackContext context);
+        void OnSecondaryFire(InputAction.CallbackContext context);
         void OnProjectileToggle(InputAction.CallbackContext context);
         void OnPushPull(InputAction.CallbackContext context);
         void OnGunSelect(InputAction.CallbackContext context);

@@ -83,6 +83,36 @@ namespace NonViolentFPS.Shooting
             }
         }
 
+        public void GetPrimaryFireInput(InputAction.CallbackContext _context)
+        {
+            if (_context.started)
+            {
+                ActiveGun.PrimaryMouseButtonEnter();
+                primaryActive = true;
+            }
+
+            if (_context.canceled)
+            {
+                ActiveGun.PrimaryMouseButtonExit();
+                primaryActive = false;
+            }
+        }
+
+        public void GetSecondaryFireInput(InputAction.CallbackContext _context)
+        {
+            if (_context.started)
+            {
+                ActiveGun.SecondaryMouseButtonEnter();
+                secondaryActive = true;
+            }
+
+            if (_context.canceled)
+            {
+                ActiveGun.SecondaryMouseButtonExit();
+                secondaryActive = false;
+            }
+        }
+
         public void ActivateGun(IGun _gun)
         {
             ActiveGun?.CleanUpGun();
