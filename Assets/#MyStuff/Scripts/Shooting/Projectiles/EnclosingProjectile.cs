@@ -1,15 +1,19 @@
-﻿using DG.Tweening;
+﻿using System.Threading.Tasks;
+using DG.Tweening;
+using NonViolentFPS.Physics;
 using UnityEngine;
 
 namespace NonViolentFPS.Shooting
 {
 	public class EnclosingProjectile : PhysicsProjectile
 	{
-		[SerializeField] private float maxSize;
 		[SerializeField] private float growthDuration;
+		[SerializeField] private float collisionGraceTime;
 		[SerializeField] private float yOffset;
 		[SerializeField] private float riseForce;
 		[SerializeField] private float maxHeight;
+		[SerializeField] private float travelGrowthDuration;
+		[SerializeField] private float maxTravelScale;
 
 		private Rigidbody rigidbodyRef;
 
@@ -17,6 +21,10 @@ namespace NonViolentFPS.Shooting
 		{
 			base.Start();
 			rigidbodyRef = GetComponent<Rigidbody>();
+			var collider = GetComponent<SphereCollider>();
+			collider.enabled = false;
+			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.InOutCirc);
+			EnableCollisionAfterSeconds(collider, collisionGraceTime);
 		}
 
 		private void FixedUpdate()
@@ -32,15 +40,29 @@ namespace NonViolentFPS.Shooting
 
 		protected override void ImpactAction(Collision _other)
 		{
+			DOTween.Kill(transform);
 			if (_other.rigidbody == null) { return; }
 			var enclosingProjectile = _other.collider.GetComponentInChildren<EnclosingProjectile>();
 			if(enclosingProjectile != null) { return; }
 
 			rigidbodyRef.isKinematic = true;
+			Destroy(GetComponent<CustomGravity>());
 			Destroy( rigidbodyRef );
 
 			ChildToOtherRigidbody(_other);
-			transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.InOutCirc);
+			transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.OutCirc);
+		}
+
+		private async void EnableCollisionAfterSeconds(SphereCollider _collider, float _seconds)
+		{
+			var timer = 0f;
+			while (timer <= _seconds)
+			{
+				timer += Time.deltaTime;
+				await Task.Yield();
+			}
+
+			_collider.enabled = true;
 		}
 	}
 }

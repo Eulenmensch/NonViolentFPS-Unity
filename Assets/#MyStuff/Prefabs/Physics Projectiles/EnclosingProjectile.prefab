@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8997202219762852826}
   - component: {fileID: -2284264754132178773}
   - component: {fileID: 8776480883087899984}
+  - component: {fileID: -8385647941085237502}
   m_Layer: 11
   m_Name: EnclosingProjectile
   m_TagString: Untagged
@@ -129,11 +130,13 @@ MonoBehaviour:
   activeDrag: 5
   activeAngularDrag: 5
   mMFeedbacks: {fileID: -2284264754132178773}
-  maxSize: 1.9
   growthDuration: 0.5
+  collisionGraceTime: 0.3
   yOffset: 0.3
   riseForce: 10
   maxHeight: 3
+  travelGrowthDuration: 3
+  maxTravelScale: 1.7
 --- !u!54 &8997202219762852826
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -359,3 +362,17 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   DestinationScale: {x: 0.5, y: 0.5, z: 0.5}
+--- !u!114 &-8385647941085237502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484986793650034389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b86e39f0630acd044915463d251c7fdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroundGravity: 1
+  AirGravity: 0
