@@ -1,6 +1,4 @@
-﻿using System;
-using MoreMountains.Feedbacks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NonViolentFPS.Shooting
 {
@@ -25,7 +23,7 @@ namespace NonViolentFPS.Shooting
 			{
 				parentTransform.localScale += Vector3.one * _changeAmount;
 			}
-			else if(parentTransform.localScale.magnitude <)
+			// else if(parentTransform.localScale.magnitude <)
 		}
 	}
 }
