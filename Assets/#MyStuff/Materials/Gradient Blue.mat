@@ -68,9 +68,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelBias: 0.07
+    - _FresnelBias: 0.18
     - _FresnelPower: 5.81
-    - _FresnelScale: 0.68
+    - _FresnelScale: 0.18
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
