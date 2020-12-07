@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace NonViolentFPS.Shooting
 {
 	[CreateAssetMenu(menuName = "Guns/SoapWandGun")]
-	public class SoapWandGun : ScriptableObject, IGun
+	public class BubbleWandGun : ScriptableObject, IGun
 	{
 		[Header("Visuals")]
 		[SerializeField] private GameObject gunPrefab;
