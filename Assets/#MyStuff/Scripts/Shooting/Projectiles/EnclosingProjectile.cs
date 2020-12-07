@@ -21,10 +21,10 @@ namespace NonViolentFPS.Shooting
 		{
 			base.Start();
 			rigidbodyRef = GetComponent<Rigidbody>();
-			var collider = GetComponent<SphereCollider>();
-			collider.enabled = false;
+			var sphereCollider = GetComponent<SphereCollider>();
+			sphereCollider.enabled = false;
 			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.InOutCirc);
-			EnableCollisionAfterSeconds(collider, collisionGraceTime);
+			EnableCollisionAfterSeconds(sphereCollider, collisionGraceTime);
 		}
 
 		private void FixedUpdate()
