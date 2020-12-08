@@ -134,7 +134,7 @@ PrefabInstance:
     - target: {fileID: 2567950507137976480, guid: 1196d34d41454a443836aad51dafd443,
         type: 3}
       propertyPath: guns.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2567950507137976480, guid: 1196d34d41454a443836aad51dafd443,
         type: 3}
@@ -144,9 +144,30 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 2567950507137976480, guid: 1196d34d41454a443836aad51dafd443,
         type: 3}
+      propertyPath: guns.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: c8c0557648c6a0e499dfb56a9c7d07fe,
+        type: 2}
+    - target: {fileID: 2567950507137976480, guid: 1196d34d41454a443836aad51dafd443,
+        type: 3}
       propertyPath: projectileContainer
       value: 
       objectReference: {fileID: 540147532}
+    - target: {fileID: 2567950507137976480, guid: 1196d34d41454a443836aad51dafd443,
+        type: 3}
+      propertyPath: particles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2567950507137976480, guid: 1196d34d41454a443836aad51dafd443,
+        type: 3}
+      propertyPath: particles.Array.data[0]
+      value: 
+      objectReference: {fileID: 248770205}
+    - target: {fileID: 2567950507137976480, guid: 1196d34d41454a443836aad51dafd443,
+        type: 3}
+      propertyPath: particles.Array.data[1]
+      value: 
+      objectReference: {fileID: 1447693246}
     - target: {fileID: 2567950507137976482, guid: 1196d34d41454a443836aad51dafd443,
         type: 3}
       propertyPath: m_ActionEvents.Array.size
@@ -294,6 +315,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1196d34d41454a443836aad51dafd443, type: 3}
+--- !u!198 &248770205 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2568682266186285341, guid: 1196d34d41454a443836aad51dafd443,
+    type: 3}
+  m_PrefabInstance: {fileID: 13319045}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &540147531
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,3 +363,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94266866544143c99c39afff5e4b550b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!198 &1447693246 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2568682264653821194, guid: 1196d34d41454a443836aad51dafd443,
+    type: 3}
+  m_PrefabInstance: {fileID: 13319045}
+  m_PrefabAsset: {fileID: 0}
