@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DG.Tweening;
+using MoreMountains.Feedbacks;
 using NonViolentFPS.Physics;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace NonViolentFPS.Shooting
 {
 	public class EnclosingProjectile : PhysicsProjectile
 	{
+		[SerializeField] private MMFeedbacks burstFeedbacks;
 		[SerializeField] private float growthDuration;
 		[SerializeField] private float collisionGraceTime;
 		[SerializeField] private float yOffset;
@@ -41,9 +43,17 @@ namespace NonViolentFPS.Shooting
 		protected override void ImpactAction(Collision _other)
 		{
 			DOTween.Kill(transform);
-			if (_other.rigidbody == null) { return; }
+			if (_other.rigidbody == null)
+			{
+				Burst();
+				return;
+			}
 			var enclosingProjectile = _other.collider.GetComponentInChildren<EnclosingProjectile>();
-			if(enclosingProjectile != null) { return; }
+			if (enclosingProjectile != null)
+			{
+				Burst();
+				return;
+			}
 
 			rigidbodyRef.isKinematic = true;
 			Destroy(GetComponent<CustomGravity>());
@@ -63,6 +73,11 @@ namespace NonViolentFPS.Shooting
 			}
 
 			_collider.enabled = true;
+		}
+
+		private void Burst()
+		{
+			burstFeedbacks.PlayFeedbacks();
 		}
 	}
 }
