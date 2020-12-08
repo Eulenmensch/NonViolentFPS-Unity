@@ -22,6 +22,7 @@ namespace NonViolentFPS.AI
         {
             foreach ( var behaviour in behaviours )
             {
+                if (behaviour == null) return;
                 behaviour.DoBehaviour( _stateMachine );
             }
         }

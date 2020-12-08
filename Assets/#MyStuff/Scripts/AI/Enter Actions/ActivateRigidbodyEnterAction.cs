@@ -9,8 +9,23 @@ namespace NonViolentFPS.AI
 		public override void Enter(StateMachine _stateMachine)
 		{
 			var machine = _stateMachine as RigidbodyStateMachine;
-			machine.RigidbodyRef.isKinematic = false;
-			machine.GetComponent<NavMeshAgent>().enabled = false;
+			if (EnableRigidbody(machine)) return;
+
+			DisableNavMeshAgent(_stateMachine);
+		}
+
+		private static bool EnableRigidbody(RigidbodyStateMachine _machine)
+		{
+			if (_machine == null) return true;
+			_machine.RigidbodyRef.isKinematic = false;
+			return false;
+		}
+
+		private static void DisableNavMeshAgent(StateMachine _machine)
+		{
+			var navMeshAgent = _machine.GetComponent<NavMeshAgent>();
+			if (navMeshAgent == null) return;
+			navMeshAgent.enabled = false;
 		}
 	}
 }
