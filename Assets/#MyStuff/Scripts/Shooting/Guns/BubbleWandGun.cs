@@ -1,5 +1,5 @@
 ﻿using DG.Tweening;
-using Ludiq.PeekCore;
+using MoreMountains.Feedbacks;
 using NonViolentFPS.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,13 +21,15 @@ namespace NonViolentFPS.Shooting
 		[SerializeField] private AnimationCurve fireForceCurve;
 
 		private Transform projectileSpawnPoint;
+		private Shooter shooter;
+		private GunVisuals visuals;
 		private Transform projectileContainer;
-		private float timer;
 		private GameObject gunInstance;
 		private GameObject bubbleInstance;
+		private float timer;
 		private float fireForce;
 
-		private Shooter shooter;
+
 		private Vector3 attachmentPointDefaultPosition;
 		private Vector3 attachmentPointDefaultRotation;
 
@@ -42,7 +44,7 @@ namespace NonViolentFPS.Shooting
 			attachmentPointDefaultPosition = attachmentPoint.localPosition;
 			attachmentPointDefaultRotation = attachmentPoint.localRotation.eulerAngles;
 
-			var visuals = gunInstance.GetComponent<GunVisuals>();
+			visuals = gunInstance.GetComponent<GunVisuals>();
 			projectileSpawnPoint = visuals.ShootingOrigin;
 
 			PlayerEvents.Instance.UpdateGunStats(1);
@@ -57,6 +59,7 @@ namespace NonViolentFPS.Shooting
 		{
 			timer = 0;
 			fireForce = 0;
+			PlayFeedback(visuals.ChargeFeedback);
 		}
 
 		public void PrimaryMouseButtonAction()
@@ -67,14 +70,17 @@ namespace NonViolentFPS.Shooting
 				var normalizedTimer = timer / fullChargeTime;
 				fireForce = fireForceCurve.Evaluate(normalizedTimer);
 			}
+			else
+			{
+				StopFeedback(visuals.ChargeFeedback);
+			}
 		}
 
 		public void PrimaryMouseButtonExit()
 		{
-			bubbleInstance = Instantiate(bubblePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileContainer);
-			var bubbleRigidbody = bubbleInstance.GetComponent<Rigidbody>();
-			var force = Camera.main.transform.forward * fireForce;
-			bubbleRigidbody.AddForce(force, ForceMode.VelocityChange);
+			ShootBubble();
+			StopFeedback(visuals.ChargeFeedback);
+			PlayFeedback(visuals.FireFeedback);
 		}
 
 		public void SecondaryMouseButtonEnter()
@@ -91,10 +97,40 @@ namespace NonViolentFPS.Shooting
 		}
 		public void ScrollWheelAction(InputAction.CallbackContext _context){}
 
+		private void ShootBubble()
+		{
+			bubbleInstance = Instantiate(bubblePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileContainer);
+			var bubbleRigidbody = bubbleInstance.GetComponent<Rigidbody>();
+			var force = Camera.main.transform.forward * fireForce + GetPlayerForwardVelocity();
+			bubbleRigidbody.AddForce(force, ForceMode.VelocityChange);
+		}
+
+		private void PlayFeedback(MMFeedbacks _feedbacks)
+		{
+			if (_feedbacks == null) return;
+			_feedbacks.PlayFeedbacks();
+		}
+
+		private void StopFeedback(MMFeedbacks _feedbacks)
+		{
+			if(_feedbacks == null) return;
+			_feedbacks.StopFeedbacks();
+		}
+
 		private void AnimateAttachmentPoint(Vector3 _targetPosition, Vector3 _targetRotation, float _animationDuration)
 		{
 			shooter.GunAttachmentPoint.DOLocalMove(_targetPosition, _animationDuration).SetEase(Ease.InOutCirc);
 			shooter.GunAttachmentPoint.DOLocalRotate(_targetRotation, _animationDuration).SetEase(Ease.InOutCirc);
 		}
+
+		private static Vector3 GetPlayerForwardVelocity()
+        {
+         	var playerRigidbody = Manager.GameManager.Instance.Player.GetComponent<Rigidbody>();
+            if (Vector3.Dot(playerRigidbody.velocity, Camera.main.transform.forward) <= 0)
+            {
+	            return Vector3.zero;
+            }
+            return Vector3.Project(playerRigidbody.velocity, Camera.main.transform.forward);
+        }
 	}
 }

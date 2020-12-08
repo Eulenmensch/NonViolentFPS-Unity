@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ad80cc6ad2940ddbac5ed2b31b1a797, type: 3}
-  m_Name: Soap Wand Gun
+  m_Name: Bubble Wand Gun
   m_EditorClassIdentifier: 
   gunPrefab: {fileID: 7914272111490427818, guid: ce45b0937d7ebe94fbb832c923ea294f,
     type: 3}
