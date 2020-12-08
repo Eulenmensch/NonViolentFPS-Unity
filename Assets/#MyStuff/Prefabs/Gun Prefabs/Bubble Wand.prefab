@@ -41955,6 +41955,7 @@ GameObject:
   - component: {fileID: 966564606595006115}
   - component: {fileID: 7359205655732580263}
   - component: {fileID: 7935404251987878120}
+  - component: {fileID: 1372639426900772711}
   m_Layer: 0
   m_Name: ChargeFeedback
   m_TagString: Untagged
@@ -41990,6 +41991,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Feedbacks:
   - {fileID: 7935404251987878120}
+  - {fileID: 1372639426900772711}
   InitializationMode: 2
   SafeMode: 3
   AutoPlayOnStart: 0
@@ -42024,6 +42026,42 @@ MonoBehaviour:
   BoundParticleSystem: {fileID: 1677539361327433019}
   MoveToPosition: 0
   RandomParticleSystems: []
+--- !u!114 &1372639426900772711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4917382051784620218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbeb74f1ccfa52540b6fd5784df42533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Active: 1
+  Label: AudioSource
+  Chance: 100
+  Timing:
+    TimescaleMode: 0
+    InitialDelay: 0
+    CooldownDuration: 0
+    NumberOfRepeats: 0
+    RepeatForever: 0
+    DelayBetweenRepeats: 1
+    Sequence: {fileID: 0}
+    TrackID: 0
+    Quantized: 0
+    TargetBPM: 120
+  DebugActive: 0
+  TargetAudioSource: {fileID: 6934412223622341602}
+  Mode: 0
+  RandomSfx:
+  - {fileID: 8300000, guid: 1a3959f5d0d5edc498585eb9805c6720, type: 3}
+  MinVolume: 1
+  MaxVolume: 1
+  MinPitch: 1
+  MaxPitch: 1.3
+  SfxAudioMixerGroup: {fileID: 0}
 --- !u!1 &6080817322049393664
 GameObject:
   m_ObjectHideFlags: 0
@@ -57516,7 +57554,7 @@ MonoBehaviour:
   TargetAudioSource: {fileID: 6934412223622341602}
   Mode: 0
   RandomSfx:
-  - {fileID: 8300000, guid: da4e037a01cbf4b4f8e7419c2195836c, type: 3}
+  - {fileID: 8300000, guid: 3754868b0b4c17f4cb31c9b65516023e, type: 3}
   MinVolume: 0.8
   MaxVolume: 0.9
   MinPitch: 0.8
