@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda5ae79fbfb42a4b940066c96ffad98, type: 3}
   m_Name: Pull Push Gun
   m_EditorClassIdentifier: 
+  gunPrefab: {fileID: 7914272111490427818, guid: a301d632fa8f58c47922490115618c27,
+    type: 3}
   interactibleMask:
     serializedVersion: 2
     m_Bits: 2048

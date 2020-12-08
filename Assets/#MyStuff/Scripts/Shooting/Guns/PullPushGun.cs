@@ -8,6 +8,7 @@ namespace NonViolentFPS.Shooting
     [CreateAssetMenu(menuName = "Guns/PullPushGun")]
     public class PullPushGun : ScriptableObject, IGun
     {
+        [SerializeField] private GameObject gunPrefab;
         [SerializeField] private LayerMask interactibleMask;
         [SerializeField] private Transform castOrigin;
         [SerializeField] private float castRadius;
@@ -21,19 +22,26 @@ namespace NonViolentFPS.Shooting
 
         private RaycastHit hit;
         private float wiggleTimer;
+        private GameObject gunInstance;
 
         public void SetupGun(Shooter _shooter)
         {
+            var attachmentPoint = _shooter.GunAttachmentPoint;
+            gunInstance = Instantiate(gunPrefab, attachmentPoint.position, Quaternion.identity, attachmentPoint);
+            gunInstance.transform.localRotation = Quaternion.identity;
+
+            Events.PlayerEvents.Instance.UpdateGunStats(1);
+
             castOrigin = _shooter.PullOrigin;
             pushParticles = _shooter.Particles[0];
             pullParticles = _shooter.Particles[1];
-            pushParticles.gameObject.SetActive(true);
-            pullParticles.gameObject.SetActive(true);
+            pushParticles.gameObject.SetActive(false);
+            pullParticles.gameObject.SetActive(false);
         }
 
         public void CleanUpGun()
         {
-
+            Destroy(gunInstance);
         }
 
         public void PrimaryMouseButtonEnter()
