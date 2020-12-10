@@ -100,7 +100,7 @@ namespace AmplifyShaderEditor
 			string datapath = AssetDatabase.GUIDToAssetPath( guid );
 			string shaderBody = string.Empty;
 			shaderBody = IOUtils.LoadTextFileFromDisk( datapath );
-			shaderBody = shaderBody.Replace( "\r\n", "\n" );
+			shaderBody = UIUtils.ForceLFLineEnding( shaderBody );
 
 			// Insert Before Tag
 			MatchCollection col = Regex.Matches( shaderBody, TemplateHelperFunctions.BeforePragmaPattern, RegexOptions.Singleline );

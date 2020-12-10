@@ -1890,7 +1890,7 @@ namespace AmplifyShaderEditor
 
 			int lastActivePass = m_passSelector.LastActivePass;
 			int count = list.Count;
-
+			bool filledSubshaderData = false;
 			for( int i = 0; i < count; i++ )
 			{
 				bool removePass = !m_passSelector.IsVisible( i );
@@ -1926,9 +1926,16 @@ namespace AmplifyShaderEditor
 				}
 
 				if( list[ i ].IsMainOutputNode )
+				{
+					filledSubshaderData = true;
 					list[ i ].FillSubShaderData();
+				}
 			}
 
+			if( !filledSubshaderData )
+			{
+				FillSubShaderData();
+			}
 			outDataCollector.TemplateDataCollectorInstance.BuildCBuffer( -1 );
 
 			//Fill uniforms is set on last since we need to collect all srp batcher data ( if needed )
@@ -3352,5 +3359,6 @@ namespace AmplifyShaderEditor
 			ShaderName = name;
 		}
 		public bool IsLODMainFirstPass { get { return m_passIdx == 0 && m_lodIndex == -1; } }
+		public override AvailableShaderTypes CurrentMasterNodeCategory { get { return AvailableShaderTypes.Template; } }
 	}
 }

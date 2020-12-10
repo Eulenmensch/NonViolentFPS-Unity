@@ -28,6 +28,10 @@ namespace AmplifyShaderEditor
 		public static readonly string PrefDefineSymbol = "ASEDefineSymbol" + Application.productName;
 		public static bool GlobalDefineSymbol = true;
 
+		private static readonly GUIContent ClearLog = new GUIContent( "Clear Log on Update", "Clears the previously generated log each time the Update button is pressed" );
+		public static readonly string PrefClearLog = "ASEClearLog" + Application.productName;
+		public static bool GlobalClearLog = true;
+
 		private static bool PrefsLoaded = false;
 
 #if UNITY_2019_1_OR_NEWER
@@ -84,6 +88,14 @@ namespace AmplifyShaderEditor
 					IOUtils.RemoveAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
 			}
 
+			EditorGUI.BeginChangeCheck();
+			GlobalClearLog = EditorGUILayout.Toggle( ClearLog, GlobalClearLog );
+			if( EditorGUI.EndChangeCheck() )
+			{
+				EditorPrefs.SetBool( PrefClearLog, GlobalClearLog );
+			}
+
+
 			EditorGUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
 			if( GUILayout.Button( "Reset and Forget All" ) )
@@ -97,6 +109,9 @@ namespace AmplifyShaderEditor
 				EditorPrefs.DeleteKey( PrefDefineSymbol );
 				GlobalDefineSymbol = true;
 				IOUtils.SetAmplifyDefineSymbolOnBuildTargetGroup( EditorUserBuildSettings.selectedBuildTargetGroup );
+
+				EditorPrefs.DeleteKey( PrefClearLog );
+				GlobalClearLog = true;
 			}
 			EditorGUILayout.EndHorizontal();
 			EditorGUIUtility.labelWidth = cache;
@@ -107,6 +122,7 @@ namespace AmplifyShaderEditor
 			GlobalStartUp = (ShowOption)EditorPrefs.GetInt( PrefStartUp, 0 );
 			GlobalAutoSRP = EditorPrefs.GetBool( PrefAutoSRP, true );
 			GlobalDefineSymbol = EditorPrefs.GetBool( PrefDefineSymbol, true );
+			GlobalClearLog = EditorPrefs.GetBool( PrefClearLog, true );
 		}
 	}
 }

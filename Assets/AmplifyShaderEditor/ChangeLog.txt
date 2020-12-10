@@ -1,4 +1,117 @@
 Release Notes:
+v1.8.7 rev 12:
+* Fixes:
+    * Fixed issue with removing Header attributes
+
+v1.8.7 rev 11:
+* New Sample:
+    * Transparent Cutout for both URP and HDRP
+
+v1.8.7 rev 10:
+* Fixes:
+    * Fixed issue on user not being able to use the dot/period character on Header attributes
+    * Fixed issue on Header attributes not being correctly shown on 'Color' node
+
+v1.8.7 rev 09:
+* Improvements:
+    * User can now specify multiple headers for each property
+
+v1.8.7 rev 08:
+* Improvements:
+    * Added new No Interpolation option into 'Vertex To Fragment' node
+    * Added new Header attribute for property type nodes
+    * Added new No Keyword Toggle attribute for 'Float' node
+    * Added new Remap Slider custom drawer for 'Vector4' node
+        * User must specify min limit and max limit on Z and W coordinate respectively
+
+v1.8.7 rev 07:
+* Fixes:
+    * Fixed issue on 'Texture Sampler' node incorrectly generating sampler states when its R,G,B,A ports were being used
+
+v1.8.7 rev 06:
+* Fixes:
+    * Fixed compilation error on Built-in RP with 'Grab Screen Color' node when Auto-Register is turned on over Unity 5.6 and above
+
+v1.8.7 rev 05:
+* Fixes:
+    * Fixed issue on 'Indirect Diffuse Light' node not showing correct results over Builtin templates on Unity 2019
+    * Fixed issue on SubShader body not being correctly filled if main master node's pass is disabled
+    * Fixed issue on incorrect clip over holes usage on URP Terrain sample
+
+v1.8.7 rev 04:
+* New Shader Function:
+    * Normal From Texture
+
+Fixes:
+    * Fixed issues on Normal From Height shader function
+    * Fixed issue on ASE window attempting to import templates when entering in Play mode
+    * Fixed issue on 'Function Switch' node not updating correctly when on Reference mode
+
+* Improvements:
+    * Empty textfield value on 'Function Subtitle' node now removes the sub-title over its shader function node
+    * Added new Clear Log on Update option into ASE preferences (on by default)
+        * Clears an ASE log window each time the user hits the Update button
+
+v1.8.7 rev 03:
+* Shader Functions:
+    * Removed High Quality option from Normal From Height shader function
+        * This will be later added on a separate shader function
+
+* Fixes:
+    * Inline code from set by 'Custom Expression' node now placed under their own scope { (...) } to prevent duplication errors
+    * Fixed issue on Procedural Texture type not having a texture to wire correspondence over 'Texture Sampler' node
+
+v1.8.7 rev 02:
+* IMPORTANT - Node renamed:
+    * 'Break To Components' node renamed to 'Split' to decrease its canvas size
+
+* New Shader Functions:
+    * Bicubic Precompute
+    * Bicubic Sample
+
+* Fixes:
+    * Fixed issue on 'Break To Components' node disabling connections on loading it from disk
+    * Fixed issue on duplicate error thrown when multiple Normal From Height shader functions are used
+
+v1.8.7 rev 01:
+* Shader Function Removed:
+    * Procedural Sample 2D Array was removed
+        * Procedural Sample 2D now renamed to Procedural Sample and has internal options that allow usage with 2D Array and more
+
+* Improvements:
+    * Added Fast and High Quality options to Normal From Height shader function
+    * Improved error messages thrown by 'Custom Expression' node
+    * Renamed Procedural Sample 2D to Procedural Sample and added Sample Mode option
+        * Planar 2D
+        * Planar 2D Array
+        * Triplanar 2D
+        * Triplanar 2D Array
+
+* Fixes:
+    * Fixed issue on only converting CRLF to LF and not CR to LF when reading templates or using pasted code on 'Custom Expression' nodes
+        * This lead to inconsistent line ending warnings being thrown
+    * Fixed issue on some warnings from 'Custom Expression' node no being clickable on log to select which node they were thrown from
+
+v1.8.7 rev 00:
+* New Shader Function:
+    * Procedural Sample 2D Array
+
+* Improvements:
+    * Improved Procedural Sample 2D shader function
+
+v1.8.6 rev 02:
+* Fixes:
+    * Fixed division by zero warning on 'Gradient Sample' node
+    * Fixed issue on 'Static Switch ' node incorrectly adding suffixes into fetched custom keywords
+    * Fixed issue with attempting to register duplicate property names when reading 'Static Switch' node meta from old ASE versions
+
+v1.8.6 rev 01:
+* New Shader Function:
+    * Procedural Sample 2D
+
+* Fixes:
+    * Fixed issue with duplicate generated code over 'World Reflection' node
+
 v1.8.6 rev 00:
 * Improvements:
     * Improved Plane Clip sample

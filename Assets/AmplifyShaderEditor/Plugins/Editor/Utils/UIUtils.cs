@@ -1997,6 +1997,15 @@ namespace AmplifyShaderEditor
 			return originalString;
 		}
 
+		public static string RemoveHeaderAttrCharacters( string originalString )
+		{
+			for( int i = 0; i < Constants.AttrInvalidChars.Length; i++ )
+			{
+				originalString = originalString.Replace( Constants.HeaderInvalidChars[ i ], string.Empty );
+			}
+			return originalString;
+		}
+
 		public static string RemoveInvalidCharacters( string originalString )
 		{
 			for( int i = 0; i < Constants.OverallInvalidChars.Length; i++ )
@@ -2989,6 +2998,12 @@ namespace AmplifyShaderEditor
 			}
 
 			return 0;
+		}
+		public static string ForceLFLineEnding( string body )
+		{
+			body = body.Replace( "\r\n", "\n" );
+			body = body.Replace( "\r", "\n" );
+			return body;
 		}
 	}
 }

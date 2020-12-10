@@ -1101,16 +1101,22 @@ namespace AmplifyShaderEditor
 		{
 			if( string.IsNullOrEmpty( m_code ) )
 			{
-				UIUtils.ShowMessage( UniqueId, "Custom Expression need to have code associated", MessageSeverity.Warning );
+				UIUtils.ShowMessage( UniqueId, string.Format( "Custom Expression \"{0}\" need to have code associated", m_customExpressionName ), MessageSeverity.Warning );
 				return "0";
 			}
 
-			m_code = m_code.Replace( "\r\n", "\n" );
+			m_code = UIUtils.ForceLFLineEnding( m_code );
 
 			bool codeContainsReturn = m_code.Contains( ReturnHelper );
-			if( !codeContainsReturn && outputId != 0 && m_mode == CustomExpressionMode.Create && !m_voidMode )
+
+
+			if( !codeContainsReturn && m_mode == CustomExpressionMode.Create && !m_voidMode )
 			{
-				UIUtils.ShowMessage( "Attempting to get value from inexisting inout/out variable", MessageSeverity.Warning );
+				UIUtils.ShowMessage( UniqueId, string.Format( "Custom Expression \"{0}\" has a non-void return type but no return instruction was detected", m_customExpressionName ), MessageSeverity.Error );
+
+				if( outputId != 0)
+					UIUtils.ShowMessage( UniqueId, string.Format( "Attempting to get value on Custom Expression \"{0}\" from inexisting \"{1}\" inout/out variable", m_customExpressionName , m_outputPorts[ outputId ].Name ), MessageSeverity.Error );
+
 				return "0";
 			}
 
@@ -1266,6 +1272,7 @@ namespace AmplifyShaderEditor
 								//localCode = localCode.Replace( m_inputPorts[ i ].Name, result );
 							}
 						}
+						localCode = string.Format( Constants.InlineCodeWrapper,localCode  );
 						string[] codeLines = localCode.Split( '\n' );
 						for( int codeIdx = 0; codeIdx < codeLines.Length; codeIdx++ )
 						{
@@ -1489,7 +1496,7 @@ namespace AmplifyShaderEditor
 		{
 			base.WriteToString( ref nodeInfo, ref connectionsInfo );
 
-			m_code = m_code.Replace( "\r\n", "\n" );
+			m_code = UIUtils.ForceLFLineEnding( m_code );
 
 			string parsedCode = m_code.Replace( '\n', LineFeedSeparator );
 			parsedCode = parsedCode.Replace( ';', Constants.SemiColonSeparator );

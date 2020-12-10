@@ -106,7 +106,7 @@ namespace AmplifyShaderEditor
 
 		protected bool m_isEditingPicker;
 
-		private bool m_forceSamplingMacrosGen = false;
+		protected bool m_forceSamplingMacrosGen = false;
 
 		public TexturePropertyNode() : base() { }
 		public TexturePropertyNode( int uniqueId, float x, float y, float width, float height ) : base( uniqueId, x, y, width, height ) { }
@@ -754,9 +754,14 @@ namespace AmplifyShaderEditor
 				}
 			}
 		}
-		public string BaseGenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalVar )
+
+		public string GenerateSamplerState( ref MasterNodeDataCollector dataCollector )
 		{
-			base.GenerateShaderForOutput( outputId, ref dataCollector, ignoreLocalVar );
+			return GeneratorUtils.GenerateSamplerState( ref dataCollector, UniqueId, PropertyName );
+		}
+
+		public virtual string GenerateSamplerPropertyName( int outputId, ref MasterNodeDataCollector dataCollector )
+		{
 			string generatedSamplerState = string.Empty;
 
 			if( outputId > 0 || m_forceSamplingMacrosGen )
@@ -768,6 +773,12 @@ namespace AmplifyShaderEditor
 				return generatedSamplerState;
 			else
 				return PropertyName;
+		}
+
+		public string BaseGenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalVar )
+		{
+			base.GenerateShaderForOutput( outputId, ref dataCollector, ignoreLocalVar );
+			return GenerateSamplerPropertyName( outputId , ref dataCollector );
 		}
 
 		public override string GenerateShaderForOutput( int outputId, ref MasterNodeDataCollector dataCollector, bool ignoreLocalVar )

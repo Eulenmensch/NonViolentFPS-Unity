@@ -232,7 +232,7 @@ namespace AmplifyShaderEditor
 			try
 			{
 				body = IOUtils.LoadTextFileFromDisk( datapath );
-				body = body.Replace( "\r\n", "\n" );
+				body = UIUtils.ForceLFLineEnding( body );
 			}
 			catch( Exception e )
 			{
@@ -250,7 +250,7 @@ namespace AmplifyShaderEditor
 		void LoadTemplateBody( string body )
 		{
 
-			m_templateBody = body.Replace( "\r\n", "\n" ); ;
+			m_templateBody = UIUtils.ForceLFLineEnding( body ) ;
 
 			if( m_templateBody.IndexOf( TemplatesManager.TemplateShaderNameBeginTag ) < 0 )
 			{

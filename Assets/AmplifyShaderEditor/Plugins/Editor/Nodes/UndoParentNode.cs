@@ -51,6 +51,16 @@ namespace AmplifyShaderEditor
 			return newValue;
 		}
 
+		public string EditorGUILayoutTextField( string text, params GUILayoutOption[] options )
+		{
+			string newValue = EditorGUILayout.TextField( text, options );
+			if( !text.Equals( newValue ) )
+			{
+				UndoRecordObject( string.Format( MessageFormat, "EditorGUILayoutTextField", ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
+			}
+			return newValue;
+		}
+
 		public string EditorGUILayoutTextField( string label, string text, params GUILayoutOption[] options )
 		{
 			string newValue = EditorGUILayout.TextField( label, text, options );
