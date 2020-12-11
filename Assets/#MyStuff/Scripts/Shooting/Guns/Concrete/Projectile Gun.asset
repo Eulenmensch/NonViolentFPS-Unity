@@ -9,14 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d630582e0a83ded43b9911a46d874db9, type: 3}
+  m_Script: {fileID: 11500000, guid: e500749d45534ac4a2158e6ba34cd0af, type: 3}
   m_Name: Projectile Gun
   m_EditorClassIdentifier: 
-  gun: {fileID: 7914272111490427818, guid: a301d632fa8f58c47922490115618c27, type: 3}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  gunPrefab: {fileID: 7914272111490427818, guid: a301d632fa8f58c47922490115618c27,
+    type: 3}
   fireRate: 0.3
   fireForce: 25
   projectileTypes:
   - {fileID: 4178011348408908617, guid: 0b02c7c66984ad143ab5aa3c960e1c49, type: 3}
   - {fileID: 6484986793650034389, guid: 287048dd1848b23499bfb759ce4e8845, type: 3}
   - {fileID: 4178011348408908617, guid: 72b82b0bde20bc84192c0e405b8c1067, type: 3}
-  invertScrollDirection: 1

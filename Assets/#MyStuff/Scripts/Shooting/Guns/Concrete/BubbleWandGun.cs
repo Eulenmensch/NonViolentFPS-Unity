@@ -1,68 +1,66 @@
 ﻿using DG.Tweening;
-using MoreMountains.Feedbacks;
-using NonViolentFPS.Events;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace NonViolentFPS.Shooting
 {
-	[CreateAssetMenu(menuName = "Guns/SoapWandGun")]
-	public class BubbleWandGun : ScriptableObject, IGun
+	[CreateAssetMenu(menuName = "Guns/BubbleWandGun")]
+	public class BubbleWandGun : Gun, IPrimaryFireable, ISecondaryFireable
 	{
-		[Header("Visuals")]
-		[SerializeField] private GameObject gunPrefab;
+		[BoxGroup("Visuals")]
 		[SerializeField] private Vector3 adsPosition;
+		[BoxGroup("Visuals")]
 		[SerializeField] private Vector3 adsRotation;
+		[BoxGroup("Visuals")]
 		[SerializeField] private float adsDuration;
 
-		[Header("Gun Settings")]
+		[BoxGroup("Settings")]
 		[SerializeField] private GameObject bubblePrefab;
+		[BoxGroup("Settings")]
 		[SerializeField] private float fullChargeTime;
+		[BoxGroup("Settings")]
 		[SerializeField] private AnimationCurve fireForceCurve;
 
-		private Transform projectileSpawnPoint;
-		private Shooter shooter;
-		private GunVisuals visuals;
 		private Transform projectileContainer;
-		private GameObject gunInstance;
 		private GameObject bubbleInstance;
 		private float timer;
 		private float fireForce;
 
-
 		private Vector3 attachmentPointDefaultPosition;
 		private Vector3 attachmentPointDefaultRotation;
 
-		public void SetupGun(Shooter _shooter)
+		public override void SetUpGun(ShooterCopy _shooter)
 		{
-			shooter = _shooter;
+			base.SetUpGun(_shooter);
 			projectileContainer = _shooter.ProjectileContainer;
 
-			var attachmentPoint = _shooter.GunAttachmentPoint;
-			gunInstance = Instantiate(gunPrefab, attachmentPoint.position, Quaternion.identity, attachmentPoint);
-			gunInstance.transform.localRotation = Quaternion.identity;
-			attachmentPointDefaultPosition = attachmentPoint.localPosition;
-			attachmentPointDefaultRotation = attachmentPoint.localRotation.eulerAngles;
+			CacheDefaultAttachmentPointPosition();
 
-			visuals = gunInstance.GetComponent<GunVisuals>();
-			projectileSpawnPoint = visuals.ShootingOriginOverride;
+			UpdateUIAmmoCount(1);
 
-			PlayerEvents.Instance.UpdateGunStats(1);
+			//this gun needs a non-default shooting origin
+			if(Visuals == null)
+			{
+				Debug.LogError("There is no GunVisuals Component attached to the gun instance");
+				return;
+			}
+			ShootingOrigin = Visuals.ShootingOriginOverride;
 		}
 
-		public void CleanUpGun()
+		private void CacheDefaultAttachmentPointPosition()
 		{
-			Destroy(gunInstance);
+			attachmentPointDefaultPosition = AttachmentPoint.localPosition;
+			attachmentPointDefaultRotation = AttachmentPoint.localRotation.eulerAngles;
 		}
 
-		public void PrimaryMouseButtonEnter()
+		public void PrimaryFireEnter()
 		{
 			timer = 0;
 			fireForce = 0;
-			PlayFeedback(visuals.ChargeFeedback);
+			PlayFeedbacks(Visuals.ChargeFeedback);
 		}
 
-		public void PrimaryMouseButtonAction()
+		public void PrimaryFireAction()
 		{
 			timer += Time.deltaTime;
 			if (timer <= fullChargeTime)
@@ -72,58 +70,45 @@ namespace NonViolentFPS.Shooting
 			}
 			else
 			{
-				StopFeedback(visuals.ChargeFeedback);
+				StopFeedbacks(Visuals.ChargeFeedback);
 			}
 		}
 
-		public void PrimaryMouseButtonExit()
+		public void PrimaryFireExit()
 		{
 			ShootBubble();
-			StopFeedback(visuals.ChargeFeedback);
-			PlayFeedback(visuals.FireFeedback);
+			StopFeedbacks(Visuals.ChargeFeedback);
+			PlayFeedbacks(Visuals.FireFeedback);
 		}
 
-		public void SecondaryMouseButtonEnter()
+		public void SecondaryFireEnter()
 		{
 			AnimateAttachmentPoint(adsPosition, adsRotation, adsDuration);
 		}
-		public void SecondaryMouseButtonAction(){}
+		public void SecondaryFireAction(){}
 
-		public void SecondaryMouseButtonExit()
+		public void SecondaryFireExit()
 		{
 			var targetPosition = attachmentPointDefaultPosition;
 			var targetRotation = attachmentPointDefaultRotation;
 			AnimateAttachmentPoint(targetPosition, targetRotation, adsDuration);
 		}
-		public void ScrollWheelAction(InputAction.CallbackContext _context){}
 
 		private void ShootBubble()
 		{
-			bubbleInstance = Instantiate(bubblePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileContainer);
+			bubbleInstance = Instantiate(bubblePrefab, ShootingOrigin.position, Quaternion.identity, projectileContainer);
 			var bubbleRigidbody = bubbleInstance.GetComponent<Rigidbody>();
 			var force = Camera.main.transform.forward * fireForce + GetPlayerForwardVelocity();
 			bubbleRigidbody.AddForce(force, ForceMode.VelocityChange);
 		}
 
-		private void PlayFeedback(MMFeedbacks _feedbacks)
-		{
-			if (_feedbacks == null) return;
-			_feedbacks.PlayFeedbacks();
-		}
-
-		private void StopFeedback(MMFeedbacks _feedbacks)
-		{
-			if(_feedbacks == null) return;
-			_feedbacks.StopFeedbacks();
-		}
-
 		private void AnimateAttachmentPoint(Vector3 _targetPosition, Vector3 _targetRotation, float _animationDuration)
 		{
-			shooter.GunAttachmentPoint.DOLocalMove(_targetPosition, _animationDuration).SetEase(Ease.InOutCirc);
-			shooter.GunAttachmentPoint.DOLocalRotate(_targetRotation, _animationDuration).SetEase(Ease.InOutCirc);
+			Shooter.GunAttachmentPoint.DOLocalMove(_targetPosition, _animationDuration).SetEase(Ease.InOutCirc);
+			Shooter.GunAttachmentPoint.DOLocalRotate(_targetRotation, _animationDuration).SetEase(Ease.InOutCirc);
 		}
 
-		private static Vector3 GetPlayerForwardVelocity()
+		private Vector3 GetPlayerForwardVelocity()
         {
          	var playerRigidbody = Manager.GameManager.Instance.Player.GetComponent<Rigidbody>();
             if (Vector3.Dot(playerRigidbody.velocity, Camera.main.transform.forward) <= 0)

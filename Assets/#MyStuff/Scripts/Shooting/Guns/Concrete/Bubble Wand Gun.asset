@@ -9,9 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ad80cc6ad2940ddbac5ed2b31b1a797, type: 3}
+  m_Script: {fileID: 11500000, guid: 180b8fa3d50c4d5082f24c81939bfef3, type: 3}
   m_Name: Bubble Wand Gun
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp:NonViolentFPS.Shooting:BubbleWandGunCopy
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   gunPrefab: {fileID: 7914272111490427818, guid: ce45b0937d7ebe94fbb832c923ea294f,
     type: 3}
   adsPosition: {x: -0.0475, y: -0.11, z: 0.16}

@@ -298,9 +298,9 @@ GameObject:
   - component: {fileID: 2464554092091172998}
   - component: {fileID: 2464352611043743650}
   - component: {fileID: 2467309664605783314}
-  - component: {fileID: 2567950507137976480}
   - component: {fileID: 3474540640236713459}
   - component: {fileID: 3019848970979484422}
+  - component: {fileID: 7857490242233458454}
   m_Layer: 10
   m_Name: Player 01
   m_TagString: Player
@@ -398,7 +398,7 @@ MonoBehaviour:
     m_ActionName: Player/Shoot[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2567950507137976480}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Shooter, Assembly-CSharp
         m_MethodName: GetMouseWheelInput
         m_Mode: 0
@@ -414,7 +414,7 @@ MonoBehaviour:
     m_ActionName: Player/ProjectileToggle[/Mouse/scroll]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2567950507137976480}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Shooter, Assembly-CSharp
         m_MethodName: GetMouseButtonInput
         m_Mode: 0
@@ -430,7 +430,7 @@ MonoBehaviour:
     m_ActionName: Player/Push/Pull[/Mouse/leftButton,/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2567950507137976480}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Shooter, Assembly-CSharp
         m_MethodName: SelectGun
         m_Mode: 0
@@ -533,27 +533,6 @@ MonoBehaviour:
   verticalInputAxis: Vertical
   jumpKey: 32
   useRawInput: 1
---- !u!114 &2567950507137976480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2567950507137976484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94266866544143c99c39afff5e4b550b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  guns:
-  - {fileID: 11400000, guid: 2a9f97458a7b0994d9100443f665d97b, type: 2}
-  - {fileID: 11400000, guid: 7ab7b600c0092de488587bce091cbbda, type: 2}
-  shootingOrigin: {fileID: 2568682266090306691}
-  gunAttachmentPoint: {fileID: 2568682266515749593}
-  projectileContainer: {fileID: 0}
-  particles: []
-  canWeaponSwap: 1
-  pullOrigin: {fileID: 2568682264976741438}
 --- !u!114 &3474540640236713459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,6 +557,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0950437ad0f4428b9a250515bc3a20bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7857490242233458454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2567950507137976484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1faeb93a9cf94f3a91894c1858e562a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  guns:
+  - {fileID: 11400000, guid: 5adbdf19d1bd0ea4e8d7893cb813458f, type: 2}
+  - {fileID: 11400000, guid: d5d60d5ebf56ef241b736f350932a59b, type: 2}
+  - {fileID: 11400000, guid: ad4253d2624ffa5449a4485f639f6b5a, type: 2}
+  - {fileID: 11400000, guid: cc598f10eb83ab74f844165c95db755f, type: 2}
+  shootingOrigin: {fileID: 2568682266090306691}
+  gunAttachmentPoint: {fileID: 2568682266515749593}
+  projectileContainer: {fileID: 0}
+  invertScrollDirection: 1
 --- !u!1 &2568682264653821196
 GameObject:
   m_ObjectHideFlags: 0

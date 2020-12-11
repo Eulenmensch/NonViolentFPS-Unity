@@ -1,73 +1,57 @@
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Events;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace NonViolentFPS.Shooting
 {
 	[CreateAssetMenu(menuName = "Guns/HitscanGun")]
-	public class HitscanGun : ScriptableObject, IGun
+	public class HitscanGun : Gun, IPrimaryFireable, IScrollwheelActionable
 	{
-		[Header("Visuals")]
-		[SerializeField] private GameObject gun;
-
-		[Header("Gun Settings")]
+		[BoxGroup("Settings")]
 		[SerializeField] private GameObject[] effects;
+		[BoxGroup("Settings")]
 		[SerializeField] private float fireRate;
+		[BoxGroup("Settings")]
 		[SerializeField] private float sphereCastRadius;
+		[BoxGroup("Settings")]
 		[SerializeField] private LayerMask interactibleMask;
-		[SerializeField] private bool invertScrollDirection;
 
-		private Transform sphereCastOrigin;
 		private float timer;
 		private int activeEffectIndex;
-		private GameObject gunObject;
 
-
-		private void OnValidate()
+		protected override void OnValidate()
 		{
+			base.OnValidate();
 			foreach (var effect in effects)
 			{
 				Debug.Assert(effect.GetComponent<IHitscanEffect>() != null,"The prefab you assigned has no component that implements IHitscanEffect." );
 			}
 		}
 
-		public void SetupGun(Shooter _shooter)
+		public override void SetUpGun(ShooterCopy _shooter)
 		{
-			sphereCastOrigin = _shooter.ShootingOrigin;
+			base.SetUpGun(_shooter);
 			activeEffectIndex = 0;
-
-			var attachmentPoint = _shooter.GunAttachmentPoint;
-			gunObject = Instantiate(gun, attachmentPoint.position, Quaternion.identity, attachmentPoint);
-			gunObject.transform.localRotation = Quaternion.identity;
-
-			PlayerEvents.Instance.UpdateGunStats(effects.Length);
+			UpdateUIAmmoCount(effects.Length);
 		}
 
-		public void CleanUpGun()
-		{
-			Destroy(gunObject);
-		}
-
-		public void PrimaryMouseButtonEnter()
+		public void PrimaryFireEnter()
 		{
 			timer = fireRate;
 		}
-		public void PrimaryMouseButtonAction()
+		public void PrimaryFireAction()
 		{
 			timer += Time.deltaTime;
 			if (!(timer >= fireRate)) return;
 			timer = 0;
 			Shoot();
-			PlayFeedback();
+			PlayFeedbacks(Visuals.FireFeedback);
 		}
-		public void PrimaryMouseButtonExit() { }
+		public void PrimaryFireExit() { }
 
-		public void SecondaryMouseButtonEnter() { }
-		public void SecondaryMouseButtonAction() { }
-		public void SecondaryMouseButtonExit() { }
-
-		public void ScrollWheelAction(InputAction.CallbackContext _context)
+		public void ScrollWheelAction(InputAction.CallbackContext _context, bool _invertScrollDirection)
 		{
 			Vector2 input = _context.ReadValue<Vector2>();
 			int projectileCount = effects.Length - 1;
@@ -75,7 +59,7 @@ namespace NonViolentFPS.Shooting
 			if(_context.started)
 			{
 				int direction = Mathf.RoundToInt(input.y);
-				direction = invertScrollDirection ? -direction : direction;
+				direction = _invertScrollDirection ? -direction : direction;
 
 				if (activeEffectIndex < projectileCount && activeEffectIndex > 0)
 				{
@@ -110,7 +94,7 @@ namespace NonViolentFPS.Shooting
 
 		private void Shoot()
 		{
-			if (UnityEngine.Physics.SphereCast(sphereCastOrigin.position, sphereCastRadius, Camera.main.transform.forward, out var hit,
+			if (UnityEngine.Physics.SphereCast(ShootingOrigin.position, sphereCastRadius, Camera.main.transform.forward, out var hit,
 				Mathf.Infinity, interactibleMask, QueryTriggerInteraction.Ignore))
 			{
 				var hitTransform = hit.rigidbody.transform; // Because only one rigidbody per object hierarchy
@@ -121,7 +105,7 @@ namespace NonViolentFPS.Shooting
 
 		private void PlayFeedback()
 		{
-			var feedbacks = gunObject.GetComponentInChildren<MMFeedbacks>();
+			var feedbacks = GunInstance.GetComponentInChildren<MMFeedbacks>();
 			feedbacks.PlayFeedbacks();
 		}
 	}

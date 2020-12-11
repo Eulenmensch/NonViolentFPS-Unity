@@ -1,58 +1,50 @@
 ﻿using System;
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Events;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace NonViolentFPS.Shooting
 {
     [CreateAssetMenu(menuName = "Guns/ProjectileGun")]
-    public class ProjectileGun : ScriptableObject, IGun
+    public class ProjectileGun : Gun, IPrimaryFireable, IScrollwheelActionable
     {
-        [Header("Visuals")]
-        [SerializeField] private GameObject gun;
-
-        [Header("Gun Settings")]
+        [BoxGroup("Settings")]
         [SerializeField] private float fireRate;
+        [BoxGroup("Settings")]
         [SerializeField] private float fireForce;
+        [BoxGroup("Settings")]
         [SerializeField] private GameObject[] projectileTypes;
-        [SerializeField] private bool invertScrollDirection;
 
-        private Transform projectileSpawnPoint;
         private Transform projectileContainer;
         private float timer;
         private GameObject activeProjectile;
-        private GameObject gunObject;
 
-        private void OnValidate()
+        protected override void OnValidate()
         {
-            Debug.Assert(gun.GetComponentInChildren<MMFeedbacks>(), "The object you assigned has no MMFeedbacks component on any of its children.");
+            base.OnValidate();
+            foreach (var type in projectileTypes)
+            {
+                Debug.Assert(type.GetComponent<PhysicsProjectile>() != null,"The prefab you assigned has no PhysicsProjectile component." );
+            }
         }
 
-        public void SetupGun(Shooter _shooter)
+        public override void SetUpGun(ShooterCopy _shooter)
         {
+            base.SetUpGun(_shooter);
             activeProjectile = projectileTypes[0];
-            projectileSpawnPoint = _shooter.ShootingOrigin;
             projectileContainer = _shooter.ProjectileContainer;
 
-            var attachmentPoint = _shooter.GunAttachmentPoint;
-            gunObject = Instantiate(gun, attachmentPoint.position, Quaternion.identity, attachmentPoint);
-            gunObject.transform.localRotation = Quaternion.identity;
-
-            PlayerEvents.Instance.UpdateGunStats(projectileTypes.Length);
+            UpdateUIAmmoCount(projectileTypes.Length);
         }
 
-        public void CleanUpGun()
-        {
-            Destroy(gunObject);
-        }
-
-        public void PrimaryMouseButtonEnter()
+        public void PrimaryFireEnter()
         {
             timer = fireRate;
         }
-        public void PrimaryMouseButtonExit() { }
-        public void PrimaryMouseButtonAction()
+        public void PrimaryFireExit() { }
+        public void PrimaryFireAction()
         {
             timer += Time.deltaTime;
             if (!(timer >= fireRate)) return;
@@ -61,11 +53,7 @@ namespace NonViolentFPS.Shooting
             PlayFeedback();
         }
 
-        public void SecondaryMouseButtonEnter() { }
-        public void SecondaryMouseButtonExit() { }
-        public void SecondaryMouseButtonAction() { }
-
-        public void ScrollWheelAction(InputAction.CallbackContext _context)
+        public void ScrollWheelAction(InputAction.CallbackContext _context, bool _invertScrollDirection)
         {
             var input = _context.ReadValue<Vector2>();
             var projectileCount = projectileTypes.Length - 1;
@@ -74,7 +62,7 @@ namespace NonViolentFPS.Shooting
             if(_context.started)
             {
                 int direction = Mathf.RoundToInt(input.y);
-                direction = invertScrollDirection ? -direction : direction;
+                direction = _invertScrollDirection ? -direction : direction;
 
                 if (currentIndex < projectileCount && currentIndex > 0)
                 {
@@ -109,7 +97,7 @@ namespace NonViolentFPS.Shooting
 
         private void Shoot()
         {
-            var projectileSpace = Instantiate(activeProjectile, projectileSpawnPoint.position, Quaternion.identity, projectileContainer);
+            var projectileSpace = Instantiate(activeProjectile, ShootingOrigin.position, Quaternion.identity, projectileContainer);
             var projectile = projectileSpace.GetComponentInChildren<PhysicsProjectile>();
             var rigidBody = projectile.GetComponent<Rigidbody>();
 
@@ -118,7 +106,7 @@ namespace NonViolentFPS.Shooting
 
         private void PlayFeedback()
         {
-            var feedbacks = gunObject.GetComponentInChildren<MMFeedbacks>();
+            var feedbacks = GunInstance.GetComponentInChildren<MMFeedbacks>();
             feedbacks.PlayFeedbacks();
         }
     }

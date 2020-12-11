@@ -57207,7 +57207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1edc39ffd94d04bcdc42bd23dc1bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ShootingOrigin>k__BackingField: {fileID: 1859089219742500954}
+  <ShootingOriginOverride>k__BackingField: {fileID: 1859089219742500954}
   <FireFeedback>k__BackingField: {fileID: 7914272111740984703}
   <ChargeFeedback>k__BackingField: {fileID: 7359205655732580263}
 --- !u!1 &7914272111740984698

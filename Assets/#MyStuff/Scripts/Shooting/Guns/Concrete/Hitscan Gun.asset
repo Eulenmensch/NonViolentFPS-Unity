@@ -9,17 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efbb21761c604d1188a3fd246eda4152, type: 3}
+  m_Script: {fileID: 11500000, guid: 4496af4838174c1eb170f7b67045aba0, type: 3}
   m_Name: Hitscan Gun
   m_EditorClassIdentifier: 
-  gun: {fileID: 7914272111490427818, guid: 5c2b91f42d357954294304efa10d2387, type: 3}
-  effects:
-  - {fileID: 6906741692797628740, guid: bbb8be60c6000774b97f308f05abdf94, type: 3}
-  - {fileID: 4452639903003925564, guid: 87fddcf978c8bdb4c8ab4e0b246e1bbd, type: 3}
-  - {fileID: 5518525559370485490, guid: 42311b042ba963b419c3e557ebc44cf5, type: 3}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  gunPrefab: {fileID: 7914272111490427818, guid: 5c2b91f42d357954294304efa10d2387,
+    type: 3}
+  effects: []
   fireRate: 0.3
   sphereCastRadius: 0.1
   interactibleMask:
     serializedVersion: 2
     m_Bits: 2048
-  invertScrollDirection: 1

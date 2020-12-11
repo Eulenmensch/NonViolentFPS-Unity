@@ -21,3 +21,20 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  setup:
+  - m_Path: Assets/#MyStuff/Scenes/Default/Manager.unity
+    m_IsLoaded: 1
+    m_IsActive: 0
+    m_IsSubScene: 0
+  - m_Path: Assets/#MyStuff/Scenes/Default/Player.unity
+    m_IsLoaded: 1
+    m_IsActive: 1
+    m_IsSubScene: 0
+  - m_Path: Assets/#MyStuff/Scenes/Default/Dialogue.unity
+    m_IsLoaded: 1
+    m_IsActive: 0
+    m_IsSubScene: 0
+  - m_Path: Assets/#MyStuff/Scenes/Default/HUD.unity
+    m_IsLoaded: 1
+    m_IsActive: 0
+    m_IsSubScene: 0
