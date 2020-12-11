@@ -7,7 +7,7 @@ namespace NonViolentFPS.SceneManagement
 	[CreateAssetMenu(fileName = "SceneLoader", menuName = "SceneManagement/Loader", order = 0)]
 	public class SceneSetupLoader : SerializedScriptableObject
 	{
-		private SceneSetup[] setup;
+		[SerializeField]private SceneSetup[] setup;
 
 		[Button("Save Scene Setup", ButtonSizes.Large)]
 		private void SaveConfig()
