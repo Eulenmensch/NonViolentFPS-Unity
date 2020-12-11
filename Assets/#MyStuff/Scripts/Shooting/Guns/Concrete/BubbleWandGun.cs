@@ -45,7 +45,7 @@ namespace NonViolentFPS.Shooting
 			attachmentPointDefaultRotation = attachmentPoint.localRotation.eulerAngles;
 
 			visuals = gunInstance.GetComponent<GunVisuals>();
-			projectileSpawnPoint = visuals.ShootingOrigin;
+			projectileSpawnPoint = visuals.ShootingOriginOverride;
 
 			PlayerEvents.Instance.UpdateGunStats(1);
 		}
