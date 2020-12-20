@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -5,13 +6,29 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Enter Actions/JumpEnterAction" )]
     public class JumpEnterAction : EnterAction
     {
-        public override void Enter(StateMachine _stateMachine)
+        public override void Enter(NPC _npc)
         {
-            RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
+            var groundCheckComponent = _npc as IGroundCheckComponent;
+            if (groundCheckComponent == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(IGroundCheckComponent));
+                return;
+            }
+            var rigidbodyComponent = _npc as IRigidbodyComponent;
+            if (rigidbodyComponent == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(IRigidbodyComponent));
+                return;
+            }
+            var jumpComponent = _npc as IJumpComponent;
+            if (jumpComponent == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(IJumpComponent));
+                return;
+            }
 
-            machine.Grounded = false;
-
-            machine.RigidbodyRef.AddForce( Vector3.up * machine.JumpForce, ForceMode.VelocityChange );
+            groundCheckComponent.Grounded = false;
+            rigidbodyComponent.RigidbodyRef.AddForce( Vector3.up * jumpComponent.JumpForce, ForceMode.VelocityChange );
         }
     }
 }

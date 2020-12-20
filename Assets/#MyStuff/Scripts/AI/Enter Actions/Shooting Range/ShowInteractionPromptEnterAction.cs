@@ -1,13 +1,21 @@
-﻿using UnityEngine;
+﻿using NonViolentFPS.Scripts.NPCs;
+using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
 	[CreateAssetMenu(menuName = "AI Kit/Enter Actions/ShowInteractionPromptEnterAction")]
 	public class ShowInteractionPromptEnterAction : EnterAction
 	{
-		public override void Enter(StateMachine _stateMachine)
+		public override void Enter(NPC _npc)
 		{
-			_stateMachine.InteractionPrompt.SetActive(true);
+			var interactionComponent = _npc as IInteractionComponent;
+			if (interactionComponent == null)
+			{
+				NPC.ThrowComponentMissingError(typeof(IInteractionComponent));
+				return;
+			}
+
+			interactionComponent.InteractionPrompt.SetActive(true);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -6,9 +7,9 @@ namespace NonViolentFPS.AI
 	public class StartTimerEnterAction : EnterAction
 	{
 		[SerializeField] private float seconds;
-		public override void Enter(StateMachine _stateMachine)
+		public override void Enter(NPC _npc)
 		{
-			_stateMachine.StartCoroutine(_stateMachine.WaitForSeconds(seconds));
+			// _npc.StartCoroutine(_npc.WaitForSeconds(seconds)); FIXME: probably redundant, see fixme in waitfortimercondition
 		}
 	}
 }

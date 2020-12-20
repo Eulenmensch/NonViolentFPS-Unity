@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,24 +7,32 @@ namespace NonViolentFPS.AI
 	[CreateAssetMenu(menuName = "AI Kit/Enter Actions/ActivateRigidbodyEnterAction")]
 	public class ActivateRigidbodyEnterAction : EnterAction
 	{
-		public override void Enter(StateMachine _stateMachine)
+		public override void Enter(NPC _npc)
 		{
-			var machine = _stateMachine as RigidbodyStateMachine;
-			if (EnableRigidbody(machine)) return;
+			var rigidbodyComponent = _npc as IRigidbodyComponent;
+			if (rigidbodyComponent == null)
+			{
+				NPC.ThrowComponentMissingError(typeof(IRigidbodyComponent));
+				return;
+			}
 
-			DisableNavMeshAgent(_stateMachine);
+			var navmeshMoveComponent = _npc as INavMeshMoveComponent;
+
+			if (EnableRigidbody(rigidbodyComponent)) return;
+
+			DisableNavMeshAgent(navmeshMoveComponent);
 		}
 
-		private static bool EnableRigidbody(RigidbodyStateMachine _machine)
+		private static bool EnableRigidbody(IRigidbodyComponent _rigidbodyComponent)
 		{
-			if (_machine == null) return true;
-			_machine.RigidbodyRef.isKinematic = false;
+			if (_rigidbodyComponent == null) return true;
+			_rigidbodyComponent.RigidbodyRef.isKinematic = false;
 			return false;
 		}
 
-		private static void DisableNavMeshAgent(StateMachine _machine)
+		private static void DisableNavMeshAgent(INavMeshMoveComponent _navMeshMoveComponent)
 		{
-			var navMeshAgent = _machine.GetComponent<NavMeshAgent>();
+			var navMeshAgent = _navMeshMoveComponent.Agent;
 			if (navMeshAgent == null) return;
 			navMeshAgent.enabled = false;
 		}

@@ -1,17 +1,21 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace NonViolentFPS.AI
 {
     [CreateAssetMenu( menuName = "AI Kit/Enter Actions/StartNavigationEnterAction" )]
     public class StartNavigationEnterAction : EnterAction
     {
-        public override void Enter(StateMachine _stateMachine)
+        public override void Enter(NPC _npc)
         {
-            NavMeshAgentStateMachine machine = _stateMachine as NavMeshAgentStateMachine;
+            var navMeshMoveComponent = _npc as INavMeshMoveComponent;
+            if (navMeshMoveComponent == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(INavMeshMoveComponent));
+                return;
+            }
 
-            NavMeshAgent agent = machine.Agent;
-
+            var agent = navMeshMoveComponent.Agent;
             agent.isStopped = false;
         }
     }

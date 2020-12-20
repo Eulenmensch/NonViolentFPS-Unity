@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -9,14 +10,20 @@ namespace NonViolentFPS.AI
 		[SerializeField] private float upwardsModifier;
 		[SerializeField] private float knockBackOffset;
 
-		public override void Enter(StateMachine _stateMachine)
+		public override void Enter(NPC _npc)
 		{
-			var machine = _stateMachine as RigidbodyStateMachine;
+			var rigidbodyComponent = _npc as IRigidbodyComponent;
+			if (rigidbodyComponent == null)
+			{
+				NPC.ThrowComponentMissingError(typeof(IRigidbodyComponent));
+				return;
+			}
 
-			var playerPosition = machine.Player.transform.position;
-			var playerDirection = playerPosition - machine.transform.position;
-			var nearbyPositionInPlayerDirection = machine.transform.position + playerDirection.normalized * knockBackOffset;
-			machine.RigidbodyRef.AddExplosionForce(knockBackForce, nearbyPositionInPlayerDirection, knockBackOffset+1f, upwardsModifier);
+			var playerPosition = _npc.Player.transform.position;
+			var position = _npc.transform.position;
+			var playerDirection = playerPosition - position;
+			var nearbyPositionInPlayerDirection = position + playerDirection.normalized * knockBackOffset;
+			rigidbodyComponent.RigidbodyRef.AddExplosionForce(knockBackForce, nearbyPositionInPlayerDirection, knockBackOffset+1f, upwardsModifier);
 		}
 	}
 }
