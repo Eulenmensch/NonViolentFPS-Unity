@@ -1,4 +1,5 @@
 using DG.Tweening;
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -6,11 +7,17 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Exit Actions/ResetHeadRotationExitAction" )]
     public class ResetHeadRotationExitAction : ExitAction
     {
-        public override void Exit(StateMachine _stateMachine)
+        public override void Exit(NPC _npc)
         {
-            _stateMachine.Head.DOKill();
-            // _stateMachine.Head.localRotation = Quaternion.identity;
-            _stateMachine.Head.DOLocalRotate( Vector3.zero, 0.05f, RotateMode.Fast );
+            var headComponent = _npc as IHeadComponent;
+            if (headComponent == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(IHeadComponent));
+                return;
+            }
+
+            headComponent.Head.DOKill();
+            headComponent.Head.DOLocalRotate( Vector3.zero, 0.05f, RotateMode.Fast );
         }
     }
 }
