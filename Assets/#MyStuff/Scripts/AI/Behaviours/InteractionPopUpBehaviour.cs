@@ -1,3 +1,5 @@
+using NonViolentFPS.Manager;
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -5,14 +7,28 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/InteractionPopUpBehaviour" )]
     public class InteractionPopUpBehaviour : AIBehaviour
     {
-        public override void DoBehaviour(StateMachine _stateMachine)
+        public override void DoBehaviour(NPC _npc)
         {
             if ( Input.GetKeyDown( KeyCode.E ) )
             {
-                _stateMachine.StartDialogue(_stateMachine.StartNode);
-                if (_stateMachine.InteractionPrompt != null)
+                var dialogueComponent = _npc as IDialogueComponent;
+                if (dialogueComponent == null)
                 {
-                    _stateMachine.InteractionPrompt.SetActive(false);
+                    NPC.ThrowComponentMissingError(typeof(IDialogueComponent));
+                    return;
+                }
+                var interactionComponent = _npc as IInteractionComponent;
+                if (interactionComponent == null)
+                {
+                    NPC.ThrowComponentMissingError(typeof(IInteractionComponent));
+                    return;
+                }
+
+                DialogueManager.Instance.StartDialogue(dialogueComponent.YarnDialogue ,dialogueComponent.StartNode, dialogueComponent.CanvasAttachmentPoint);
+
+                if (interactionComponent.InteractionPrompt != null)
+                {
+                    interactionComponent.InteractionPrompt.SetActive(false);
                 }
             }
         }

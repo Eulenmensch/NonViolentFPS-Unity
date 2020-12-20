@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -5,10 +6,17 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/TurnBehaviour" )]
     public class TurnBehaviour : AIBehaviour
     {
-        public override void DoBehaviour(StateMachine _stateMachine)
+        [SerializeField] private float turnTorque;
+        public override void DoBehaviour(NPC _npc)
         {
-            RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
-            machine.RigidbodyRef.AddTorque( machine.transform.up * machine.TurnTorque, ForceMode.Acceleration );
+            var rigidbodyComponent = _npc as IRigidbodyComponent;
+            if (rigidbodyComponent == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(IRigidbodyComponent));
+                return;
+            }
+
+            rigidbodyComponent.RigidbodyRef.AddTorque( _npc.transform.up * turnTorque, ForceMode.Acceleration );
         }
     }
 }

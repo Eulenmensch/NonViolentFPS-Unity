@@ -1,4 +1,5 @@
 using DG.Tweening;
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -6,9 +7,16 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/LookAtPlayerBehaviour" )]
     public class LookAtPlayerBehaviour : AIBehaviour
     {
-        public override void DoBehaviour(StateMachine _stateMachine)
+        public override void DoBehaviour(NPC _npc)
         {
-            _stateMachine.Head.DOLookAt( Camera.main.transform.position, 0.08f, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
+            var headComponent = _npc as IHeadComponent;
+            if (headComponent == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(IHeadComponent));
+                return;
+            }
+
+            headComponent.Head.DOLookAt( Camera.main.transform.position, 0.08f, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
         }
     }
 }
