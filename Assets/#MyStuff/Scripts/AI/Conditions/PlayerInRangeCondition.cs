@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -5,19 +6,19 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Conditions/PlayerInRangeCondition" )]
     public class PlayerInRangeCondition : Condition
     {
-        public override bool Evaluate(StateMachine _stateMachine)
+        public override bool Evaluate(NPC _npc)
         {
-            Vector3 playerPosition = _stateMachine.Player.transform.position;
-            Vector3 selfPosition = _stateMachine.transform.position;
-
-            if ( Vector3.Distance( playerPosition, selfPosition ) <= _stateMachine.Range )
+            var rangeComponent = _npc as IRangeComponent;
+            if (rangeComponent == null)
             {
-                return true;
-            }
-            else
-            {
+                NPC.ThrowComponentMissingError(typeof(IRangeComponent));
                 return false;
             }
+
+            var playerPosition = _npc.Player.transform.position;
+            var selfPosition = _npc.transform.position;
+
+            return Vector3.Distance(playerPosition, selfPosition) <= rangeComponent.Range;
         }
     }
 }

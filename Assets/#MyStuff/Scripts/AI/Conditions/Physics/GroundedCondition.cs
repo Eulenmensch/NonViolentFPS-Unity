@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
@@ -5,17 +6,16 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Conditions/Physics/GroundedCondition" )]
     public class GroundedCondition : Condition
     {
-        public override bool Evaluate(StateMachine _stateMachine)
+        public override bool Evaluate(NPC _npc)
         {
-            RigidbodyStateMachine machine = _stateMachine as RigidbodyStateMachine;
-            if ( machine.Grounded )
+            var groundCheckComponent = _npc as IGroundCheckComponent;
+            if (groundCheckComponent == null) return false;
+            if ( groundCheckComponent.Grounded )
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 }

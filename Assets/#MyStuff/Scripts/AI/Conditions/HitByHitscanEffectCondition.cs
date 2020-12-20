@@ -1,3 +1,4 @@
+using NonViolentFPS.Scripts.NPCs;
 using NonViolentFPS.Shooting;
 using UnityEngine;
 
@@ -6,9 +7,9 @@ namespace NonViolentFPS.AI
 	[CreateAssetMenu(menuName = "AI Kit/Conditions/HitByHitscanEffectCondition")]
 	public class HitByHitscanEffectCondition : Condition
 	{
-		public override bool Evaluate(StateMachine _stateMachine)
+		public override bool Evaluate(NPC _npc)
 		{
-			if (_stateMachine.gameObject.GetComponentInChildren<IHitscanEffect>() != null)
+			if (_npc.gameObject.GetComponentInChildren<IHitscanEffect>() != null)
 			{
 				return true;
 			}

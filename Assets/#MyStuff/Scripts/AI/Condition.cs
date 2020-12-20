@@ -1,9 +1,10 @@
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
     public abstract class Condition : ScriptableObject
     {
-        public abstract bool Evaluate(StateMachine _stateMachine);
+        public abstract bool Evaluate(NPC _npc);
     }
 }
