@@ -1,4 +1,5 @@
 ﻿using NonViolentFPS.AI;
+using NonViolentFPS.Scripts.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.Interactions
@@ -6,13 +7,14 @@ namespace NonViolentFPS.Interactions
     [RequireComponent( typeof( Collider ) )]
     public class InteractionTrigger : MonoBehaviour
     {
-        [SerializeField] private StateMachine npcStateMachine;
+        [SerializeField] private NPC npc;
 
         private void OnTriggerEnter(Collider other)
         {
             if ( other.CompareTag( "Player" ) )
             {
-                npcStateMachine.PlayerInTrigger = true;
+                var triggerComponent = npc as ITriggerComponent;
+                triggerComponent.Triggered = true;                      //FIXME: ok so this obviously can be nulled
             }
         }
 
@@ -20,7 +22,8 @@ namespace NonViolentFPS.Interactions
         {
             if ( other.CompareTag( "Player" ) )
             {
-                npcStateMachine.PlayerInTrigger = false;
+                var triggerComponent = npc as ITriggerComponent;
+                triggerComponent.Triggered = false;
             }
         }
     }

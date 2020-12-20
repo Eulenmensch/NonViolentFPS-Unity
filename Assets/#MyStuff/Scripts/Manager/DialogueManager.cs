@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using Yarn.Unity;
 
 namespace NonViolentFPS.Manager
@@ -22,29 +23,25 @@ namespace NonViolentFPS.Manager
         #endregion
 
         [SerializeField] private DialogueRunner yarnRunner;
-        public DialogueRunner YarnRunner
-        {
-            get => yarnRunner;
-            private set => yarnRunner = value;
-        }
         [SerializeField] private DialogueUI yarnUI;
-        public DialogueUI YarnUI
-        {
-            get => yarnUI;
-            private set => yarnUI = value;
-        }
-
         [SerializeField] private Transform canvasTransform;
-
-        public Transform CanvasTransform
-        {
-            get => canvasTransform;
-            set => canvasTransform = value;
-        }
 
         public void SetActiveDialogueContainer(GameObject _container)
         {
             yarnUI.dialogueContainer = _container;
+        }
+
+        public void StartDialogue(YarnProgram _yarnProgram ,string _startNode, Transform _attachmentPoint)
+        {
+            yarnRunner.Stop();
+            yarnRunner.Clear();
+            canvasTransform.parent = _attachmentPoint.transform;
+            canvasTransform.localPosition = Vector3.zero;
+            if ( !yarnRunner.yarnScripts.Contains( _yarnProgram ))
+            {
+                yarnRunner.Add( _yarnProgram );
+            }
+            yarnRunner.StartDialogue( _startNode );
         }
     }
 }
