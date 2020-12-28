@@ -1,7 +1,7 @@
-using NonViolentFPS.Scripts.NPCs;
+using NonViolentFPS.NPCs;
 using UnityEngine;
 
-namespace NonViolentFPS.AI
+namespace NonViolentFPS.AI.Physics
 {
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/JumpBehaviour" )]
     public class JumpBehaviour : AIBehaviour

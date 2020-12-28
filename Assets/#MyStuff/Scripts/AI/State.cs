@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NonViolentFPS.Scripts.NPCs;
+using NonViolentFPS.NPCs;
 using Sirenix.OdinInspector;
 using UnityEngine;
 

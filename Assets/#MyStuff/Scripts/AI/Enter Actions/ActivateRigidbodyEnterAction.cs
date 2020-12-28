@@ -1,6 +1,5 @@
-using NonViolentFPS.Scripts.NPCs;
+using NonViolentFPS.NPCs;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace NonViolentFPS.AI
 {

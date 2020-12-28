@@ -5,7 +5,7 @@ using NonViolentFPS.Manager;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace NonViolentFPS.Scripts.NPCs
+namespace NonViolentFPS.NPCs
 {
 	public abstract class NPC : SerializedMonoBehaviour
 	{

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NonViolentFPS.Scripts.NPCs
+namespace NonViolentFPS.NPCs
 {
 	public interface IDialogueComponent
 	{

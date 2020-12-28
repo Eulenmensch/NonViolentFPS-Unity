@@ -1,6 +1,6 @@
 using MoreMountains.Feedbacks;
 
-namespace NonViolentFPS.Scripts.NPCs
+namespace NonViolentFPS.NPCs
 {
 	public interface IFeedbacksComponent
 	{

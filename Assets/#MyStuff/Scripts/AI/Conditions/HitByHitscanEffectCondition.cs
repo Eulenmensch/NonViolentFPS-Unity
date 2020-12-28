@@ -1,4 +1,4 @@
-using NonViolentFPS.Scripts.NPCs;
+using NonViolentFPS.NPCs;
 using NonViolentFPS.Shooting;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-namespace NonViolentFPS.Scripts.NPCs
+namespace NonViolentFPS.NPCs
 {
 	public interface IJumpComponent
 	{

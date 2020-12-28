@@ -1,6 +1,6 @@
 using UnityEngine.AI;
 
-namespace NonViolentFPS.Scripts.NPCs
+namespace NonViolentFPS.NPCs
 {
 	public interface INavMeshMoveComponent
 	{
