@@ -6,7 +6,7 @@ namespace NonViolentFPS.AI
     {
         public bool hit { get; set; }
 
-        private State currentState;
+        public State CurrentState { get; set; }
         public readonly NPC npc;
 
         public StateMachine(NPC _npc)
@@ -16,16 +16,16 @@ namespace NonViolentFPS.AI
 
         public void Update()
         {
-            currentState.UpdateState( this );
+            CurrentState.UpdateState( this );
         }
 
         public void TransitionToState(State _newState)
         {
-            if ( _newState.GetType() != typeof( RemainInState ) )
+            if ( _newState.GetType() != typeof( RemainInState ))
             {
-                currentState.Exit( npc );
-                currentState = _newState;
-                currentState.Enter( npc );
+                CurrentState.Exit( npc );
+                CurrentState = _newState;
+                CurrentState.Enter( npc );
             }
         }
     }

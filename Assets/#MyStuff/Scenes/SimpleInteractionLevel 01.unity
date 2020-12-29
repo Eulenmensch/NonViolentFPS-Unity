@@ -3965,7 +3965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f814602a5d017194f97a30967788d164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcStateMachine: {fileID: 466547276}
+  npc: {fileID: 466547281}
 --- !u!1 &325647144
 GameObject:
   m_ObjectHideFlags: 0
@@ -4092,9 +4092,9 @@ GameObject:
   - component: {fileID: 466547279}
   - component: {fileID: 466547283}
   - component: {fileID: 466547280}
-  - component: {fileID: 466547276}
   - component: {fileID: 466547278}
   - component: {fileID: 466547277}
+  - component: {fileID: 466547281}
   m_Layer: 11
   m_Name: NPC 01
   m_TagString: Untagged
@@ -4123,31 +4123,6 @@ Transform:
   m_Father: {fileID: 1268816223}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -119.164, z: 0}
---- !u!114 &466547276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466547274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd6aac684e8651644aae1028a73228ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startState: {fileID: 11400000, guid: 259c8edc8fe142e469bd470d3db0783e, type: 2}
-  range: 5
-  lookAtTarget: {fileID: 1220569464}
-  head: {fileID: 886251574}
-  playerInTrigger: 0
-  interactionPrompt: {fileID: 637943107}
-  canvasAttachmentPoint: {fileID: 788811062}
-  yarnDialogue: {fileID: 2480198943629176163, guid: 1935f6847f4a774479d6a9da1984e0df,
-    type: 3}
-  startNode: Start
-  mMFeedbacks: {fileID: 1626193001}
-  jumpForce: 0
-  turnTorque: 0
 --- !u!114 &466547277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15747,6 +15722,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &466547281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466547274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8042db034d4a3b9cdc1c40bdf7b62a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  startState: {fileID: 11400000, guid: 23970f294f21388479710da1f0a363ab, type: 2}
+  <RigidbodyRef>k__BackingField: {fileID: 466547280}
+  <CanvasAttachmentPoint>k__BackingField: {fileID: 788811063}
+  <YarnDialogue>k__BackingField: {fileID: 2480198943629176163, guid: 54e4e1bb470237842b19e6a0ca0bf12b,
+    type: 3}
+  <StartNode>k__BackingField: Start
+  <MMFeedbacks>k__BackingField: {fileID: 1626193001}
+  <Range>k__BackingField: 3
+  <LookAtTarget>k__BackingField: {fileID: 1220569464}
+  <Head>k__BackingField: {fileID: 886251574}
+  <InteractionPrompt>k__BackingField: {fileID: 637943107}
 --- !u!135 &466547283
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -16177,7 +16184,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh38166
+  m_Name: pb_Mesh26404
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16513,7 +16520,7 @@ MonoBehaviour:
   PlayEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 466547276}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StateMachine, Assembly-CSharp
         m_MethodName: StartDialogue
         m_Mode: 5

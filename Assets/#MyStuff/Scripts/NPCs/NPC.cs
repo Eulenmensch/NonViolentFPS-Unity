@@ -20,6 +20,7 @@ namespace NonViolentFPS.NPCs
 		protected virtual void Awake()
 		{
 			stateMachine = new StateMachine(this);
+			stateMachine.CurrentState = startState;
 			stateMachine.TransitionToState(startState);
 		}
 
