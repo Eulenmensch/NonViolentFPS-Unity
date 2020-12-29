@@ -17,7 +17,7 @@ namespace NonViolentFPS.NPCs
 		public List<Collision> ActiveCollisions { get; private set; }
 		public GameObject Player { get; private set; }
 
-		private void Awake()
+		protected virtual void Awake()
 		{
 			stateMachine = new StateMachine(this);
 			stateMachine.TransitionToState(startState);
