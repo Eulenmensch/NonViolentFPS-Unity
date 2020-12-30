@@ -9,23 +9,24 @@ namespace NonViolentFPS.NPCs
 
 	public class MoodNPC : NPC, INavMeshMoveComponent ,IRangeComponent, ILookAtComponent, IHeadComponent, IOtherNPCsComponent
 	{
-		public Mood Mood { get; private set; }
+		[field: SerializeField] public float Mood { get; set; }
 		public float MoodWorseningTimer { get; set; }
-		[ShowInInspector] public float MoodWorseningTime { get; private set; }
+		[field: SerializeField] public float MoodWorseningTime { get; private set; }
 
 		public HashSet<NPC> OtherNPCs { get; set; }
-		[ShowInInspector] public float Range { get; set; }
-		[ShowInInspector] public float WanderRadius { get; set; }
-		[ShowInInspector] public float PauseTime { get; set; }
-		[ShowInInspector] public NavMeshAgent Agent { get; set; }
-		[ShowInInspector] public Transform LookAtTarget { get; set; }
-		[ShowInInspector] public Transform Head { get; set; }
+		[field: SerializeField] public float Range { get; set; }
+		[field: SerializeField] public float WanderRadius { get; set; }
+		[field: SerializeField] public float PauseTime { get; set; }
+		[field: SerializeField] public NavMeshAgent Agent { get; set; }
+		[field: SerializeField] public Transform LookAtTarget { get; set; }
+		[field: SerializeField] public Transform Head { get; set; }
 
 		protected override void Awake()
 		{
 			base.Awake();
-			Mood = Mood.Good;
+			// Mood = Mood.Good;
 			OtherNPCs = new HashSet<NPC>();
+			Mood = 100;
 		}
 	}
 }
