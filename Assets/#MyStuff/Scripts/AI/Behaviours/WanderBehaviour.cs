@@ -17,10 +17,10 @@ namespace NonViolentFPS.AI
                 return;
             }
 
-            var agent = navMeshMoveComponent?.Agent;
+            var agent = navMeshMoveComponent.Agent;
             agent.SetDestination( agent.RandomPosition( navMeshMoveComponent.WanderRadius ) );
             var timer = 0f;
-            while (timer <= navMeshMoveComponent?.PauseTime)
+            while (timer <= navMeshMoveComponent.PauseTime)
             {
                 timer += Time.deltaTime;
                 await Task.Yield();
