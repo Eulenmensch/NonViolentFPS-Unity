@@ -1,7 +1,9 @@
 using NonViolentFPS.NPCs;
+using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
+	[CreateAssetMenu(menuName = "AI Kit/Conditions/Mood/BothBadMoodCondition")]
 	public class BothBadMoodCondition : Condition
 	{
 		public override bool Evaluate(NPC _npc)
@@ -15,8 +17,7 @@ namespace NonViolentFPS.AI
 
 			foreach (var npc in otherNPCsComponent.OtherNPCs)
 			{
-				var moodNPC = npc as MoodNPC;
-				if (moodNPC.Mood == Mood.Bad)
+				if (npc.StateMachine.CurrentState == _npc.StateMachine.CurrentState)
 				{
 					return true;
 				}
