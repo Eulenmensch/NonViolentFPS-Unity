@@ -15,12 +15,6 @@ namespace NonViolentFPS.AI
 				return;
 			}
 
-			// moodNPC.MoodWorseningTimer += Time.deltaTime;
-			// if (moodNPC.MoodWorseningTimer >= moodNPC.MoodWorseningTime && moodNPC.Mood != Mood.Bad)
-			// {
-			// 	moodNPC.Mood.Next();
-			// }
-
 			//decreases the mood by one every [MoodWorseningTime] seconds
 			if(moodNPC.Mood >= 0)
 			{

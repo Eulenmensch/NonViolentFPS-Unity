@@ -5,12 +5,10 @@ using UnityEngine.AI;
 
 namespace NonViolentFPS.NPCs
 {
-	public enum Mood{Good, Neutral, Bad}
-
 	public class MoodNPC : NPC, INavMeshMoveComponent ,IRangeComponent, ILookAtComponent, IHeadComponent, IOtherNPCsComponent
 	{
+		[SerializeField] private float startMood;
 		[field: SerializeField] public float Mood { get; set; }
-		public float MoodWorseningTimer { get; set; }
 		[field: SerializeField] public float MoodWorseningTime { get; private set; }
 
 		public HashSet<NPC> OtherNPCs { get; set; }
@@ -24,9 +22,8 @@ namespace NonViolentFPS.NPCs
 		protected override void Awake()
 		{
 			base.Awake();
-			// Mood = Mood.Good;
 			OtherNPCs = new HashSet<NPC>();
-			Mood = 100;
+			Mood = startMood;
 		}
 	}
 }
