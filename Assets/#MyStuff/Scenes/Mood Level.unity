@@ -365,8 +365,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   startState: {fileID: 11400000, guid: 59e02277f149f7144a2bb7bbde60f3e7, type: 2}
-  startMood: 0
-  <Mood>k__BackingField: 0
+  startMood: 100
+  <Mood>k__BackingField: 100
   <MoodWorseningTime>k__BackingField: 0.2
   <Range>k__BackingField: 3
   <WanderRadius>k__BackingField: 5
@@ -29791,7 +29791,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2477686
+  m_Name: pb_Mesh25868
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
