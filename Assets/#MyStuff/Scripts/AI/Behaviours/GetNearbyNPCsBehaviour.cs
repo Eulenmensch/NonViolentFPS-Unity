@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
+	[CreateAssetMenu(menuName = "AI Kit/Behaviours/GetNearbyNPCsBehaviour")]
 	public class GetNearbyNPCsBehaviour : AIBehaviour
 	{
 		public override void DoBehaviour(NPC _npc)

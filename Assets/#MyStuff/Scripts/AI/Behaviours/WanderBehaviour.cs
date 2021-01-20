@@ -2,12 +2,15 @@ using System.Threading.Tasks;
 using NonViolentFPS.Extension_Classes;
 using NonViolentFPS.NPCs;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace NonViolentFPS.AI
 {
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/WanderBehaviour" )]
     public class WanderBehaviour : AIBehaviour
     {
+        private System.Threading.Timer timer;
+
         public override async void DoBehaviour(NPC _npc)
         {
             var navMeshMoveComponent = _npc as INavMeshMoveComponent;
@@ -17,14 +20,14 @@ namespace NonViolentFPS.AI
                 return;
             }
 
-            var agent = navMeshMoveComponent.Agent;
-            agent.SetDestination( agent.RandomPosition( navMeshMoveComponent.WanderRadius ) );
-            var timer = 0f;
-            while (timer <= navMeshMoveComponent.PauseTime)
-            {
-                timer += Time.deltaTime;
-                await Task.Yield();
-            }
+
+            // var timer = 0f;
+            // while (timer <= navMeshMoveComponent.PauseTime)
+            // {
+            //     timer += Time.deltaTime;
+            //     await Task.Yield();
+            // }
+            // timer = 0;
         }
     }
 }

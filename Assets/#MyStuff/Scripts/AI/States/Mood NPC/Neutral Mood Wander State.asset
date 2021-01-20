@@ -24,8 +24,10 @@ MonoBehaviour:
   behaviours:
   - {fileID: 11400000, guid: 30ee8fe3bd0fb2947a82e59c411330fd, type: 2}
   - {fileID: 11400000, guid: 6cde11b1b38a2a0418e33290468c18ef, type: 2}
-  enterActions: []
-  exitActions: []
+  enterActions:
+  - {fileID: 11400000, guid: af93b46f8c7efb74bb11d31ba62d12de, type: 2}
+  exitActions:
+  - {fileID: 11400000, guid: 4bce0b87fd7c968489c9eb3b4a1a4ac9, type: 2}
   transitions:
   - condition: {fileID: 11400000, guid: 0c269ad17db1b3343b16370989ec2327, type: 2}
     trueState: {fileID: 11400000, guid: 6bd1b55978380b64eac69d8466361185, type: 2}

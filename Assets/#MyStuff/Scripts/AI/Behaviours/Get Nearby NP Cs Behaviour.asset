@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
-  m_Name: Fighting State
+  m_Script: {fileID: 11500000, guid: aedb8e82c3b847efb30cf6bb610a7751, type: 3}
+  m_Name: Get Nearby NP Cs Behaviour
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,10 +21,3 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  behaviours: []
-  enterActions: []
-  exitActions: []
-  transitions:
-  - condition: {fileID: 11400000, guid: befb040fe7954314d9d9285712ea5ccb, type: 2}
-    trueState: {fileID: 11400000, guid: 59e02277f149f7144a2bb7bbde60f3e7, type: 2}
-    falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
