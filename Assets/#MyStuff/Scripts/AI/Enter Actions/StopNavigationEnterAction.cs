@@ -15,8 +15,17 @@ namespace NonViolentFPS.AI
                 return;
             }
 
+            var moodNPC = _npc as MoodNPC;
+            if (moodNPC == null)
+            {
+                NPC.ThrowComponentMissingError(typeof(MoodNPC));
+                return;
+            }
+
             var agent = navMeshAgentMoveComponent.Agent;
             agent.isStopped = true;
+
+            moodNPC.StopCoroutine(moodNPC.SetDestinationRoutine);
         }
     }
 }

@@ -1,5 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
+using NonViolentFPS.Extension_Classes;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,11 +20,22 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public Transform LookAtTarget { get; set; }
 		[field: SerializeField] public Transform Head { get; set; }
 
+		public Coroutine SetDestinationRoutine { get; set; }
+
 		protected override void Awake()
 		{
 			base.Awake();
 			OtherNPCs = new HashSet<NPC>();
 			Mood = startMood;
+		}
+
+		public IEnumerator SetDestinationRepeated()
+		{
+			while (true)
+			{
+				Agent.SetDestination(Agent.RandomPosition(WanderRadius));
+				yield return new WaitForSeconds(PauseTime);
+			}
 		}
 	}
 }
