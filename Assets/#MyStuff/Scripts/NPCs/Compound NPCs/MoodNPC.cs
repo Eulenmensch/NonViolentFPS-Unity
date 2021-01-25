@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace NonViolentFPS.NPCs
 {
-	public class MoodNPC : NPC, INavMeshMoveComponent ,IRangeComponent, ILookAtComponent, IHeadComponent, IOtherNPCsComponent
+	public class MoodNPC : NPC, INavMeshMoveComponent ,IRangeComponent, ILookAtComponent, IHeadComponent, IOtherNPCsComponent, IMeshRendererComponent
 	{
 		[SerializeField] private float startMood;
 		[field: SerializeField] public float Mood { get; set; }
@@ -19,6 +19,8 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public NavMeshAgent Agent { get; set; }
 		[field: SerializeField] public Transform LookAtTarget { get; set; }
 		[field: SerializeField] public Transform Head { get; set; }
+		[field: SerializeField] public MeshRenderer[] MeshRenderers { get; set; }
+
 
 		public Coroutine SetDestinationRoutine { get; set; }
 
