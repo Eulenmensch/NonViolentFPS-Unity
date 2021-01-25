@@ -27,6 +27,10 @@ namespace NonViolentFPS.AI
 			foreach (var overlap in overlaps)
 			{
 				var moodNPC = overlap.GetComponent<MoodNPC>();
+				if (moodNPC == _npc.GetComponent<MoodNPC>())
+				{
+					continue;
+				}
 				if (moodNPC != null)
 				{
 					otherNPCsComponent.OtherNPCs.Add(moodNPC);
