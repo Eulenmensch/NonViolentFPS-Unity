@@ -102,11 +102,5 @@ namespace NonViolentFPS.Shooting
 				effect.Initialize(hit);
 			}
 		}
-
-		private void PlayFeedback()
-		{
-			var feedbacks = GunInstance.GetComponentInChildren<MMFeedbacks>();
-			feedbacks.PlayFeedbacks();
-		}
 	}
 }
