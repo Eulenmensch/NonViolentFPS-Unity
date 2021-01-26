@@ -10,7 +10,7 @@ namespace NonViolentFPS.Shooting
 
 		public void Initialize(RaycastHit _hit)
 		{
-			var moodNPC = _hit.collider.GetComponent<MoodNPC>();
+			var moodNPC = GetComponentInParent<MoodNPC>(); //Because only the main body collider object has a MoodNPC component attached
 			if (moodNPC == null)
 			{
 				NPC.ThrowComponentMissingError(typeof(MoodNPC));
@@ -18,6 +18,8 @@ namespace NonViolentFPS.Shooting
 			}
 
 			moodNPC.Mood += moodIncrease;
+
+			Destroy();
 		}
 
 		public void Destroy()
