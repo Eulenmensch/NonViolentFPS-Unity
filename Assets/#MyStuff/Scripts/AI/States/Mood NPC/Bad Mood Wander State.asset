@@ -37,3 +37,6 @@ MonoBehaviour:
   - condition: {fileID: 11400000, guid: a167ac579abf60a4abea6a6b6674243b, type: 2}
     trueState: {fileID: 11400000, guid: 1bfe74867f8ab944c86917119b4dec70, type: 2}
     falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
+  - condition: {fileID: 11400000, guid: b9d665d63e736754fad6144570e54e5e, type: 2}
+    trueState: {fileID: 11400000, guid: a610137007819504b8ea5290c35223a3, type: 2}
+    falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
