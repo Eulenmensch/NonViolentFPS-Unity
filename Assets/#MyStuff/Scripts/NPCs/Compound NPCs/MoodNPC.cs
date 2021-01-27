@@ -6,10 +6,23 @@ using UnityEngine.AI;
 
 namespace NonViolentFPS.NPCs
 {
-	public class MoodNPC : NPC, INavMeshMoveComponent ,IRangeComponent, ILookAtComponent, IHeadComponent, IOtherNPCsComponent, IMeshRendererComponent
+	public class MoodNPC : NPC,
+		INavMeshMoveComponent ,IRangeComponent, ILookAtComponent, IHeadComponent, IOtherNPCsComponent, IMeshRendererComponent, IParticleSpawnComponent
 	{
 		[SerializeField] private float startMood;
-		[field: SerializeField] public float Mood { get; set; }
+		[SerializeField] private float mood;
+		public float Mood
+		{
+			get => mood;
+			set
+			{
+				mood = value;
+				if (mood >= 100)
+				{
+					mood = 100;
+				}
+			}
+		 }
 		[field: SerializeField] public float MoodWorseningTime { get; private set; }
 
 		public HashSet<NPC> OtherNPCs { get; set; }
@@ -20,6 +33,8 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public Transform LookAtTarget { get; set; }
 		[field: SerializeField] public Transform Head { get; set; }
 		[field: SerializeField] public MeshRenderer[] MeshRenderers { get; set; }
+		[field: SerializeField] public Transform SpawnPoint { get; set; }
+		public HashSet<GameObject> Particles { get; set; } = new HashSet<GameObject>();
 
 
 		public Coroutine SetDestinationRoutine { get; set; }
