@@ -11938,6 +11938,7 @@ MonoBehaviour:
   <MeshRenderers>k__BackingField:
   - {fileID: 2394187234302058393}
   - {fileID: 2394187233124446229}
+  <SpawnPoint>k__BackingField: {fileID: 1307622068715352541}
 --- !u!54 &2394187234302058386
 Rigidbody:
   m_ObjectHideFlags: 0
