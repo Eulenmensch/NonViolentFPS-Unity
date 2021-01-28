@@ -59,5 +59,15 @@ namespace NonViolentFPS.Manager
 			}
 
 		}
+
+		public void SetGameLost()
+		{
+			Debug.Log("Game Lost.");
+		}
+
+		public void SetGameWon()
+		{
+			Debug.Log("Game Won!");
+		}
 	}
 }
