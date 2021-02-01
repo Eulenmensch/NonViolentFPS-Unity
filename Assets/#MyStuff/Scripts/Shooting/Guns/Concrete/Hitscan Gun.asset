@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  gunPrefab: {fileID: 7914272111490427818, guid: 5c2b91f42d357954294304efa10d2387,
+  gunPrefab: {fileID: 7914272111490427818, guid: a301d632fa8f58c47922490115618c27,
     type: 3}
   effects:
   - {fileID: 8678302043082606218, guid: 984ca05ed97355140972ac90c734a7a2, type: 3}
