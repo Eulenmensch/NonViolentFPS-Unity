@@ -1,6 +1,8 @@
-﻿using NonViolentFPS.Manager;
+﻿using System;
+using NonViolentFPS.Manager;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using TMPro;
 
 namespace NonViolentFPS.GameModes
 {
@@ -24,33 +26,47 @@ namespace NonViolentFPS.GameModes
 
 		[SerializeField] private int maxUnitsInFights;
 		[SerializeField] private float gameDuration;
+		[SerializeField] private TMP_Text maxUnitsInFightsText;
+		[SerializeField] private TMP_Text activeUnitsInFightsText;
+		[SerializeField] private TMP_Text timeText;
 
 		private float time;
 		private int activeUnitsInFights;
 		private bool won;
 
+		private void Start()
+		{
+			maxUnitsInFightsText.text = maxUnitsInFights.ToString();
+			time = gameDuration;
+			timeText.text = Mathf.Round(time).ToString();
+		}
+
 		private void Update()
 		{
-			time += Time.deltaTime;
+			time -= Time.deltaTime;
 			if (time >= gameDuration && !won)
 			{
 				GameManager.Instance.SetGameWon();
 				won = true;
 			}
+			timeText.text = Mathf.Round(time).ToString();
 		}
 
 		public void AddUnitInFight()
 		{
 			activeUnitsInFights++;
+			print(activeUnitsInFights);
 			if (activeUnitsInFights >= maxUnitsInFights)
 			{
 				GameManager.Instance.SetGameLost();
 			}
+			activeUnitsInFightsText.text = activeUnitsInFights.ToString();
 		}
 
 		public void RemoveUnitInFight()
 		{
 			activeUnitsInFights--;
+			activeUnitsInFightsText.text = activeUnitsInFights.ToString();
 		}
 	}
 }
