@@ -3,6 +3,7 @@ using NonViolentFPS.Manager;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 namespace NonViolentFPS.GameModes
 {
@@ -59,6 +60,7 @@ namespace NonViolentFPS.GameModes
 			if (activeUnitsInFights >= maxUnitsInFights)
 			{
 				GameManager.Instance.SetGameLost();
+				won = false;
 			}
 			activeUnitsInFightsText.text = activeUnitsInFights.ToString();
 		}

@@ -461,7 +461,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  maxUnitsInFights: 5
+  maxUnitsInFights: 2
   gameDuration: 180
   maxUnitsInFightsText: {fileID: 1401371770}
   activeUnitsInFightsText: {fileID: 25333723}

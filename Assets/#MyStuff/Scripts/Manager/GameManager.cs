@@ -9,6 +9,9 @@ namespace NonViolentFPS.Manager
 	{
 		#region Singleton
 		public static GameManager Instance { get; private set; }
+		[SerializeField] private string WonScreen;
+		[SerializeField] private string LostScreen;
+
 
 		private void Awake()
 		{
@@ -57,17 +60,16 @@ namespace NonViolentFPS.Manager
 				var loading = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 				while(!loading.isDone){ await Task.Yield(); }
 			}
-
 		}
 
 		public void SetGameLost()
 		{
-			Debug.Log("Game Lost.");
+			SceneManager.LoadSceneAsync(LostScreen, LoadSceneMode.Additive);
 		}
 
 		public void SetGameWon()
 		{
-			Debug.Log("Game Won!");
+			SceneManager.LoadSceneAsync(WonScreen, LoadSceneMode.Additive);
 		}
 	}
 }
