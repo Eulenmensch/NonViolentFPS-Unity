@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NonViolentFPS.Events;
+using NonViolentFPS.GameModes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,9 +12,6 @@ namespace NonViolentFPS.Manager
 	{
 		#region Singleton
 		public static GameManager Instance { get; private set; }
-		[SerializeField] private string WonScreen;
-		[SerializeField] private string LostScreen;
-
 
 		private void Awake()
 		{
@@ -28,9 +28,39 @@ namespace NonViolentFPS.Manager
 
 		public GameObject Player { get; set; }
 
+		[SerializeField] private GameMode startGameMode;
+		[SerializeField] private SceneReference winScreen;
+		[SerializeField] private SceneReference looseScreen;
+
+		private GameMode currentGameMode;
+
+		private void OnEnable()
+		{
+			GameEvents.Instance.OnGameWon += SetGameWon;
+			GameEvents.Instance.OnGameLost += SetGameLost;
+			GameEvents.Instance.OnGameRestarted += RestartCurrentGamemode;
+			GameEvents.Instance.OnScoreChanged += ChangeCurrentGamemodeScore;
+		}
+
+		private void OnDisable()
+		{
+			GameEvents.Instance.OnGameWon -= SetGameWon;
+			GameEvents.Instance.OnGameLost -= SetGameLost;
+			GameEvents.Instance.OnGameRestarted -= RestartCurrentGamemode;
+			GameEvents.Instance.OnScoreChanged -= ChangeCurrentGamemodeScore;
+		}
+
+		private void Start()
+		{
+			currentGameMode = startGameMode;
+			currentGameMode.Load();
+		}
+
 		//FIXME: Only for testing
 		private void Update()
 		{
+			currentGameMode.Evaluate();
+
 			if (Input.GetKeyDown(KeyCode.R))
 			{
 				ReloadAllScenes();
@@ -62,14 +92,33 @@ namespace NonViolentFPS.Manager
 			}
 		}
 
+		public void RestartCurrentGamemode()
+		{
+			currentGameMode.Unload();
+			currentGameMode.Load();
+		}
+
+		private void ChangeCurrentGamemodeScore(int _scoreChange)
+		{
+			currentGameMode.ChangeScore(_scoreChange);
+		}
+
+		public void LoadNewGameMode(GameMode _gameMode)
+		{
+			currentGameMode.Unload();
+			_gameMode.Load();
+		}
+
 		public void SetGameLost()
 		{
-			SceneManager.LoadSceneAsync(LostScreen, LoadSceneMode.Additive);
+			Time.timeScale = 0;
+			SceneManager.LoadSceneAsync(looseScreen, LoadSceneMode.Additive);
 		}
 
 		public void SetGameWon()
 		{
-			SceneManager.LoadSceneAsync(WonScreen, LoadSceneMode.Additive);
+			Time.timeScale = 0;
+			SceneManager.LoadSceneAsync(winScreen, LoadSceneMode.Additive);
 		}
 	}
 }
