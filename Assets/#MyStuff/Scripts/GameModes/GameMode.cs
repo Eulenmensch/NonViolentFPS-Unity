@@ -1,4 +1,7 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using System.Collections.Generic;
+using NonViolentFPS.Events;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,19 +11,30 @@ namespace NonViolentFPS.GameModes
 	{
 		[SerializeField] private SceneReference[] scenes;
 
-		public int Score { get; private set; }
+		[ShowInInspector] protected int Score { get; private set; }
 
-		protected virtual void Initialize()
+		private HashSet<SceneReference> loadedScenes = new HashSet<SceneReference>();
+
+		public virtual void Load()
 		{
 			foreach (var scene in scenes)
 			{
 				SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+				loadedScenes.Add(scene);
 			}
 		}
 
-		protected abstract void Evaluate();
+		public void Unload()
+		{
+			foreach (var scene in loadedScenes)
+			{
+				SceneManager.UnloadSceneAsync(scene);
+			}
+		}
 
-		protected virtual void ChangeScore(int _scoreChange)
+		public abstract void Evaluate();
+
+		public virtual void ChangeScore(int _scoreChange)
 		{
 			Score += _scoreChange;
 		}
