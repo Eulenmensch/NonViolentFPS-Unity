@@ -27,6 +27,9 @@ namespace NonViolentFPS.Events
 		public event Action OnGameLost;
 		public void GameLost(){OnGameLost?.Invoke();}
 
+		public event Action OnGameRestarted;
+		public void RestartGame(){OnGameRestarted?.Invoke();}
+
 		public event Action<int> OnScoreChanged;
 		public void ChangeScore(int _scoreChange){OnScoreChanged?.Invoke(_scoreChange);}
 	}
