@@ -1,74 +1,56 @@
 ﻿using System;
-using NonViolentFPS.Manager;
-using Sirenix.OdinInspector;
+using System.Globalization;
+using NonViolentFPS.Events;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 namespace NonViolentFPS.GameModes
 {
-	public class MoodyNPCMode : SerializedMonoBehaviour
+	[CreateAssetMenu(fileName = "MoodGameMode", menuName = "GameModes/Mood")]
+	public class MoodyNPCMode : GameMode
 	{
-		#region Singleton
-		public static MoodyNPCMode Instance { get; private set; }
-
-		private void Awake()
-		{
-			if ( Instance != null && Instance != this )
-			{
-				Destroy( this );
-			}
-			else
-			{
-				Instance = this;
-			}
-		}
-		#endregion
-
 		[SerializeField] private int maxUnitsInFights;
 		[SerializeField] private float gameDuration;
 		[SerializeField] private TMP_Text maxUnitsInFightsText;
-		[SerializeField] private TMP_Text activeUnitsInFightsText;
 		[SerializeField] private TMP_Text timeText;
 
 		private float time;
-		private int activeUnitsInFights;
+		// private int activeUnitsInFights;
 		private bool won;
 
-		private void Start()
+		public override void Load()
 		{
+			base.Load();
 			maxUnitsInFightsText.text = maxUnitsInFights.ToString();
 			time = gameDuration;
-			timeText.text = Mathf.Round(time).ToString();
+			timeText.text = Mathf.Round(time).ToString(CultureInfo.CurrentCulture);
 		}
 
-		private void Update()
+		public override void Evaluate()
+		{
+			//This order is important, so that the player doesn't lose at 0.001 seconds remaining
+			EvaluateTimer();
+			EvaluateScore();
+		}
+
+		private void EvaluateTimer()
 		{
 			time -= Time.deltaTime;
 			if (time >= gameDuration && !won)
 			{
-				GameManager.Instance.SetGameWon();
+				GameEvents.Instance.GameWon();
 				won = true;
 			}
-			timeText.text = Mathf.Round(time).ToString();
+
+			timeText.text = Mathf.Round(time).ToString(CultureInfo.CurrentCulture);
 		}
 
-		public void AddUnitInFight()
+		private void EvaluateScore()
 		{
-			activeUnitsInFights++;
-			print(activeUnitsInFights);
-			if (activeUnitsInFights >= maxUnitsInFights)
+			if (Score >= maxUnitsInFights)
 			{
-				GameManager.Instance.SetGameLost();
-				won = false;
+				GameEvents.Instance.GameLost();
 			}
-			activeUnitsInFightsText.text = activeUnitsInFights.ToString();
-		}
-
-		public void RemoveUnitInFight()
-		{
-			activeUnitsInFights--;
-			activeUnitsInFightsText.text = activeUnitsInFights.ToString();
 		}
 	}
 }
