@@ -1,4 +1,4 @@
-﻿using NonViolentFPS.GameModes;
+﻿using NonViolentFPS.Events;
 using NonViolentFPS.NPCs;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace NonViolentFPS.AI
 	{
 		public override void Exit(NPC _npc)
 		{
-			MoodyNPCMode.Instance.RemoveUnitInFight();
+			GameEvents.Instance.ChangeScore(-1);
 		}
 	}
 }

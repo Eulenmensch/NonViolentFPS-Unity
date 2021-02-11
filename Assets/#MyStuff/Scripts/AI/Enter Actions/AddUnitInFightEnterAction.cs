@@ -1,4 +1,4 @@
-﻿using NonViolentFPS.GameModes;
+﻿using NonViolentFPS.Events;
 using NonViolentFPS.NPCs;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace NonViolentFPS.AI
 	{
 		public override void Enter(NPC _npc)
 		{
-			MoodyNPCMode.Instance.AddUnitInFight();
+			GameEvents.Instance.ChangeScore(1);
 		}
 	}
 }

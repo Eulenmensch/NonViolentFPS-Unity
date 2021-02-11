@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/#MyStuff/Scenes/Shooting Range.unity
     guid: f4ab579630e6dbd4fb6060dc0d1a9eb3
+  - enabled: 1
+    path: Assets/#MyStuff/Scenes/Frontend Screens/Win Screen.unity
+    guid: c654a2b4e19d56f46af820170880a87c
+  - enabled: 1
+    path: Assets/#MyStuff/Scenes/Frontend Screens/Lose Screen.unity
+    guid: de87d2d5adc372543a9dbca993d8764c
   m_configObjects: {}
