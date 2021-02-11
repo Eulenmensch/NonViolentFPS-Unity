@@ -19,7 +19,7 @@ namespace NonViolentFPS.Shooting
 
 		protected virtual void OnValidate()
 		{
-			Debug.Assert(gunPrefab.GetComponent<GunVisuals>(), "The object you assigned has no GunVisuals component on any of its children.");
+			Debug.Assert(gunPrefab.GetComponentInChildren<GunVisuals>(), "The object you assigned has no GunVisuals component on any of its children.");
 		}
 
 		public virtual void SetUpGun(ShooterCopy _shooter)
@@ -28,7 +28,7 @@ namespace NonViolentFPS.Shooting
 			ShootingOrigin = Shooter.ShootingOrigin;
 
 			SpawnGun(_shooter);
-			Visuals = GunInstance.GetComponent<GunVisuals>();
+			Visuals = GunInstance.GetComponentInChildren<GunVisuals>();
 			UpdateAmmoUI();
 		}
 
