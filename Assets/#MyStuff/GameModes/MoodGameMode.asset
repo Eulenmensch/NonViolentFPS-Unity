@@ -21,8 +21,14 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  scenes: []
-  maxUnitsInFights: 0
-  gameDuration: 0
-  maxUnitsInFightsText: {fileID: 0}
-  timeText: {fileID: 0}
+  scenes:
+  - sceneAsset: {fileID: 102900000, guid: 98a08c75198172c42bf547aa37243374, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/Player.unity
+  - sceneAsset: {fileID: 102900000, guid: 05c50d6aff84574488001d4cb8638331, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/HUD.unity
+  - sceneAsset: {fileID: 102900000, guid: 89efb2ba951b76545a3eea2ea92966a5, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Mood UI.unity
+  - sceneAsset: {fileID: 102900000, guid: 3100a90ef7464634ebd6a96d3b87af80, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Mood Level.unity
+  maxUnitsInFights: 200
+  gameDuration: 60

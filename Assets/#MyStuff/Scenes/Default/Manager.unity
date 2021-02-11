@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 1205745492}
   - component: {fileID: 1205745494}
   - component: {fileID: 1205745493}
+  - component: {fileID: 1205745496}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -186,6 +187,7 @@ MonoBehaviour:
   looseScreen:
     sceneAsset: {fileID: 102900000, guid: de87d2d5adc372543a9dbca993d8764c, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Frontend Screens/Lose Screen.unity
+  MetaState: 0
 --- !u!4 &1205745495
 Transform:
   m_ObjectHideFlags: 0
@@ -200,3 +202,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1205745496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205745491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555124462fc6460ba55938f2dd4604a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

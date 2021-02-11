@@ -26,13 +26,13 @@ namespace NonViolentFPS.Manager
 		}
 		#endregion
 
-		public GameObject Player { get; set; }
-
 		[SerializeField] private GameMode startGameMode;
 		[SerializeField] private SceneReference winScreen;
 		[SerializeField] private SceneReference looseScreen;
 
-		private GameMode currentGameMode;
+		public GameMetaState MetaState;
+		public GameObject Player { get; set; }
+		public GameMode CurrentGameMode { get; private set; }
 
 		private void OnEnable()
 		{
@@ -52,19 +52,21 @@ namespace NonViolentFPS.Manager
 
 		private void Start()
 		{
-			currentGameMode = startGameMode;
-			currentGameMode.Load();
+			MetaState = GameMetaState.Playing;
+			CurrentGameMode = startGameMode;
+			CurrentGameMode.Load();
 		}
 
-		//FIXME: Only for testing
 		private void Update()
 		{
-			currentGameMode.Evaluate();
+			CurrentGameMode.Evaluate();
 
+			#if UNITY_EDITOR
 			if (Input.GetKeyDown(KeyCode.R))
 			{
 				ReloadAllScenes();
 			}
+			#endif
 
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
@@ -94,29 +96,33 @@ namespace NonViolentFPS.Manager
 
 		public void RestartCurrentGamemode()
 		{
-			currentGameMode.Unload();
-			currentGameMode.Load();
+			CurrentGameMode.Unload();
+			CurrentGameMode.Load();
+			MetaState = GameMetaState.Playing;
 		}
 
 		private void ChangeCurrentGamemodeScore(int _scoreChange)
 		{
-			currentGameMode.ChangeScore(_scoreChange);
+			CurrentGameMode.ChangeScore(_scoreChange);
 		}
 
 		public void LoadNewGameMode(GameMode _gameMode)
 		{
-			currentGameMode.Unload();
+			CurrentGameMode.Unload();
 			_gameMode.Load();
+			MetaState = GameMetaState.Playing;
 		}
 
 		public void SetGameLost()
 		{
+			MetaState = GameMetaState.Lost;
 			Time.timeScale = 0;
 			SceneManager.LoadSceneAsync(looseScreen, LoadSceneMode.Additive);
 		}
 
 		public void SetGameWon()
 		{
+			MetaState = GameMetaState.Won;
 			Time.timeScale = 0;
 			SceneManager.LoadSceneAsync(winScreen, LoadSceneMode.Additive);
 		}

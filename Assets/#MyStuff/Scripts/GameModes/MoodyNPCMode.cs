@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using NonViolentFPS.Events;
+using NonViolentFPS.Manager;
 using UnityEngine;
 using TMPro;
 
@@ -11,19 +12,15 @@ namespace NonViolentFPS.GameModes
 	{
 		[SerializeField] private int maxUnitsInFights;
 		[SerializeField] private float gameDuration;
-		[SerializeField] private TMP_Text maxUnitsInFightsText;
-		[SerializeField] private TMP_Text timeText;
 
 		private float time;
-		// private int activeUnitsInFights;
-		private bool won;
 
 		public override void Load()
 		{
 			base.Load();
-			maxUnitsInFightsText.text = maxUnitsInFights.ToString();
+			UIEvents.Instance.SetMaxScoreText(maxUnitsInFights.ToString());
 			time = gameDuration;
-			timeText.text = Mathf.Round(time).ToString(CultureInfo.CurrentCulture);
+			UIEvents.Instance.UpdateTimerText(Mathf.Round(time).ToString(CultureInfo.CurrentCulture));
 		}
 
 		public override void Evaluate()
@@ -36,18 +33,17 @@ namespace NonViolentFPS.GameModes
 		private void EvaluateTimer()
 		{
 			time -= Time.deltaTime;
-			if (time >= gameDuration && !won)
+			if (time >= gameDuration && GameManager.Instance.MetaState != GameMetaState.Won)
 			{
 				GameEvents.Instance.GameWon();
-				won = true;
 			}
 
-			timeText.text = Mathf.Round(time).ToString(CultureInfo.CurrentCulture);
+			UIEvents.Instance.UpdateTimerText(Mathf.Round(time).ToString(CultureInfo.CurrentCulture));
 		}
 
 		private void EvaluateScore()
 		{
-			if (Score >= maxUnitsInFights)
+			if (Score >= maxUnitsInFights && GameManager.Instance.MetaState != GameMetaState.Lost)
 			{
 				GameEvents.Instance.GameLost();
 			}

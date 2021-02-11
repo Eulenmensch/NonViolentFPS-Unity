@@ -9,14 +9,15 @@ namespace NonViolentFPS.GameModes
 {
 	public abstract class GameMode : SerializedScriptableObject
 	{
-		[SerializeField] private SceneReference[] scenes;
+		[SerializeField] private List<SceneReference> scenes = new List<SceneReference>();
 
-		[ShowInInspector] protected int Score { get; private set; }
+		[ShowInInspector] public int Score { get; private set; }
 
 		private HashSet<SceneReference> loadedScenes = new HashSet<SceneReference>();
 
 		public virtual void Load()
 		{
+			Score = 0;
 			foreach (var scene in scenes)
 			{
 				SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
