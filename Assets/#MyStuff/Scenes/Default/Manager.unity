@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3a5a69695446f99426d42313ab1c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGameMode: {fileID: 11400000, guid: b5a3b097d5286ec469220305bf9fcdc2, type: 2}
+  startGameMode: {fileID: 11400000, guid: fdc6e45059b128a4d8f51e0d426cae28, type: 2}
   winScreen:
     sceneAsset: {fileID: 102900000, guid: c654a2b4e19d56f46af820170880a87c, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Frontend Screens/Win Screen.unity
