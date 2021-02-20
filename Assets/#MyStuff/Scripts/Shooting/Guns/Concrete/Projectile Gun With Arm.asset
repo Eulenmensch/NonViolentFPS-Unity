@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4496af4838174c1eb170f7b67045aba0, type: 3}
-  m_Name: Hitscan Gun With Arm
+  m_Script: {fileID: 11500000, guid: e500749d45534ac4a2158e6ba34cd0af, type: 3}
+  m_Name: Projectile Gun With Arm
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,12 +21,11 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  gunPrefab: {fileID: 730634706166900505, guid: 28221b337b075b54ba319f3ded3ec072,
+  gunPrefab: {fileID: 730634706166900505, guid: 1a2b666c43b526b46b80f2bad9d9850e,
     type: 3}
-  effects:
-  - {fileID: 8678302043082606218, guid: 984ca05ed97355140972ac90c734a7a2, type: 3}
   fireRate: 0.3
-  sphereCastRadius: 0.1
-  interactibleMask:
-    serializedVersion: 2
-    m_Bits: 2048
+  fireForce: 25
+  projectileTypes:
+  - {fileID: 4178011348408908617, guid: 0b02c7c66984ad143ab5aa3c960e1c49, type: 3}
+  - {fileID: 6484986793650034389, guid: 287048dd1848b23499bfb759ce4e8845, type: 3}
+  - {fileID: 4178011348408908617, guid: 72b82b0bde20bc84192c0e405b8c1067, type: 3}

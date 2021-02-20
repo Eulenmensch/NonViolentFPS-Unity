@@ -28,7 +28,7 @@ MonoBehaviour:
   adsDuration: 0.3
   bubblePrefab: {fileID: 6484986793650034389, guid: 287048dd1848b23499bfb759ce4e8845,
     type: 3}
-  fullChargeTime: 1.8
+  fullChargeTime: 1
   fireForceCurve:
     serializedVersion: 2
     m_Curve:
@@ -42,8 +42,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 7.5
+      time: 0.99645996
+      value: 9.045029
       inSlope: 0
       outSlope: 0
       tangentMode: 0

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4496af4838174c1eb170f7b67045aba0, type: 3}
-  m_Name: Hitscan Gun With Arm
+  m_Name: Hitscan Gun Mood
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  gunPrefab: {fileID: 730634706166900505, guid: 28221b337b075b54ba319f3ded3ec072,
+  gunPrefab: {fileID: 7914272111490427818, guid: a301d632fa8f58c47922490115618c27,
     type: 3}
   effects:
   - {fileID: 8678302043082606218, guid: 984ca05ed97355140972ac90c734a7a2, type: 3}
