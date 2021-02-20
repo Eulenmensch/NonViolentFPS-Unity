@@ -28,9 +28,9 @@ namespace NonViolentFPS.Manager
 
 		[SerializeField] private GameMode startGameMode;
 		[SerializeField] private SceneReference winScreen;
-		[SerializeField] private SceneReference looseScreen;
+		[SerializeField] private SceneReference loseScreen;
 
-		public GameMetaState MetaState;
+		public GameMetaState MetaState { get; private set; }
 		public GameObject Player { get; set; }
 		public GameMode CurrentGameMode { get; private set; }
 
@@ -54,12 +54,18 @@ namespace NonViolentFPS.Manager
 		{
 			MetaState = GameMetaState.Playing;
 			CurrentGameMode = startGameMode;
-			CurrentGameMode.Load();
+			if(CurrentGameMode != null)
+			{
+				CurrentGameMode.Load();
+			}
 		}
 
 		private void Update()
 		{
-			CurrentGameMode.Evaluate();
+			if(CurrentGameMode != null)
+			{
+				CurrentGameMode.Evaluate();
+			}
 
 			#if UNITY_EDITOR
 			if (Input.GetKeyDown(KeyCode.R))
@@ -94,7 +100,7 @@ namespace NonViolentFPS.Manager
 			}
 		}
 
-		public void RestartCurrentGamemode()
+		private void RestartCurrentGamemode()
 		{
 			CurrentGameMode.Unload();
 			CurrentGameMode.Load();
@@ -113,14 +119,14 @@ namespace NonViolentFPS.Manager
 			MetaState = GameMetaState.Playing;
 		}
 
-		public void SetGameLost()
+		private void SetGameLost()
 		{
 			MetaState = GameMetaState.Lost;
 			Time.timeScale = 0;
-			SceneManager.LoadSceneAsync(looseScreen, LoadSceneMode.Additive);
+			SceneManager.LoadSceneAsync(loseScreen, LoadSceneMode.Additive);
 		}
 
-		public void SetGameWon()
+		private void SetGameWon()
 		{
 			MetaState = GameMetaState.Won;
 			Time.timeScale = 0;
