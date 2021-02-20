@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc8d3561e7146e3aded1224273cad38, type: 3}
+  m_Name: RescueGameMode
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  scenes:
+  - sceneAsset: {fileID: 102900000, guid: 7136422e527b6e442923400bc2c30388, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/Post Processing.unity
+  - sceneAsset: {fileID: 102900000, guid: 98a08c75198172c42bf547aa37243374, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/Player.unity
+  - sceneAsset: {fileID: 102900000, guid: 3c42afe3d6f84c74085d6ee211ff2d3d, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Rescue UI.unity
+  - sceneAsset: {fileID: 102900000, guid: 903937500b8e6414f9f69a1a8520362f, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/RescueLevel 01.unity
