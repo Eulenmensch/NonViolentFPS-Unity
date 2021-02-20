@@ -318,7 +318,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 52ae5ad768fac6e4aa83195164dd1bde, type: 2}
+  - {fileID: 2100000, guid: c9228d39af497514f88d1e6b1e09eccd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -387,7 +387,7 @@ MonoBehaviour:
   collisionGraceTime: 0.3
   yOffset: 0.3
   riseForce: 10
-  maxHeight: 3
+  maxHeight: 20
   travelGrowthDuration: 3
   maxTravelScale: 1.7
 --- !u!54 &8997202219762852826
@@ -456,7 +456,7 @@ MonoBehaviour:
   AnimateScaleTarget: {fileID: 6484986793650034377}
   AnimateScaleDuration: 1
   RemapCurveZero: 0.2
-  RemapCurveOne: 2
+  RemapCurveOne: 2.3
   Offset: 0
   AnimateX: 1
   AnimateScaleX:
@@ -5453,7 +5453,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7e7e64ce3490f8240a118c86fd36f485, type: 2}
+  - {fileID: 2100000, guid: cbba0b6ea061ce64e8bac7c5e98cabac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
