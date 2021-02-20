@@ -130,7 +130,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18376
+  m_Name: pb_Mesh-8794
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -330,7 +330,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18458
+  m_Name: pb_Mesh-8790
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -494,7 +494,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18440
+  m_Name: pb_Mesh-8788
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -658,7 +658,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18378
+  m_Name: pb_Mesh-8792
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -822,7 +822,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18454
+  m_Name: pb_Mesh-8786
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1061,10 +1061,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 7
-  airControl: 0.4
+  airControl: 0.741
   jumpSpeed: 10
   jumpDuration: 0.2
-  airFriction: 0.5
+  airFriction: 0.3
   groundFriction: 100
   gravity: 30
   slideGravity: 5
@@ -1087,19 +1087,21 @@ MonoBehaviour:
   colliderHeight: 2
   colliderThickness: 1
   colliderOffset: {x: 0, y: 0.5, z: 0}
-  sensorType: 0
+  sensorType: 1
   isInDebugMode: 0
   sensorArrayRows: 1
-  sensorArrayRayCount: 5
+  sensorArrayRayCount: 8
   sensorArrayRowsAreOffset: 0
   raycastArrayPreviewPositions:
   - {x: 0, y: 0, z: 0}
   - {x: 1, y: 0, z: 0}
-  - {x: 0.49999997, y: 0, z: 0.86602545}
-  - {x: -0.50000006, y: 0, z: 0.8660254}
+  - {x: 0.70710677, y: 0, z: 0.70710677}
+  - {x: -0.00000004371139, y: 0, z: 1}
+  - {x: -0.70710677, y: 0, z: 0.70710677}
   - {x: -1, y: 0, z: -0.00000008742278}
-  - {x: -0.4999999, y: 0, z: -0.86602545}
-  - {x: 0.4999999, y: 0, z: -0.86602545}
+  - {x: -0.7071068, y: 0, z: -0.7071067}
+  - {x: 0.000000011924881, y: 0, z: -1}
+  - {x: 0.70710665, y: 0, z: -0.7071069}
 --- !u!114 &2467309664601931415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7395,7 +7397,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 2572965527562116693}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15927
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 2
@@ -12404,7 +12406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2568682266512261468
 Transform:
   m_ObjectHideFlags: 0
@@ -12511,7 +12513,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.4452207, g: 0.50160295, b: 0.6509434, a: 0}
+  m_BackGroundColor: {r: 0.8490566, g: 0.68485224, b: 0.75577205, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -12805,10 +12807,11 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   guns:
-  - {fileID: 11400000, guid: 3b69c3cb4e65275469e8c3287380a548, type: 2}
-  - {fileID: 11400000, guid: d5d60d5ebf56ef241b736f350932a59b, type: 2}
   - {fileID: 11400000, guid: ad4253d2624ffa5449a4485f639f6b5a, type: 2}
+  - {fileID: 11400000, guid: 3b69c3cb4e65275469e8c3287380a548, type: 2}
+  - {fileID: 11400000, guid: d43b5ae005adb014cb2f18b96c4a4839, type: 2}
   - {fileID: 11400000, guid: cc598f10eb83ab74f844165c95db755f, type: 2}
+  - {fileID: 11400000, guid: 28eb5f5fe6103fb4ab3ce104ddcaf9c8, type: 2}
   shootingOrigin: {fileID: 2568682266102548230}
   gunAttachmentPoint: {fileID: 2568682266512261468}
   projectileContainer: {fileID: 540147532}
