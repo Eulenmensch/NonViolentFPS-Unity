@@ -336,7 +336,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -389,7 +389,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -8637,7 +8637,7 @@ MonoBehaviour:
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
-  m_SelectedVertices: 29000000
+  m_SelectedVertices: 
 --- !u!33 &7914272111231168877
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -8706,7 +8706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1edc39ffd94d04bcdc42bd23dc1bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ShootingOriginOverride>k__BackingField: {fileID: 0}
+  <ShootingOriginOverride>k__BackingField: {fileID: 4671824453228284363}
   <FireFeedback>k__BackingField: {fileID: 7914272111740984703}
   <ChargeFeedback>k__BackingField: {fileID: 0}
 --- !u!1 &7914272111740984698

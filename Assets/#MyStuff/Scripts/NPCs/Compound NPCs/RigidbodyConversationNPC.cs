@@ -1,4 +1,5 @@
 using MoreMountains.Feedbacks;
+using NonViolentFPS.Manager;
 using UnityEngine;
 
 namespace NonViolentFPS.NPCs
@@ -23,5 +24,10 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public Transform LookAtTarget { get; set; }
 		[field: SerializeField] public Transform Head { get; set; }
 		[field: SerializeField] public GameObject InteractionPrompt { get; set; }
+
+		public void StartDialogue()
+		{
+			DialogueManager.Instance.StartDialogue(YarnDialogue, StartNode, CanvasAttachmentPoint);
+		}
 	}
 }

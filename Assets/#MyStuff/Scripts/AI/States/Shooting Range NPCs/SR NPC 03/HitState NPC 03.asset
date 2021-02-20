@@ -12,12 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
   m_Name: HitState NPC 03
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   behaviours: []
   enterActions:
   - {fileID: 11400000, guid: e0d30e700aa53154d8629c29445d5eb9, type: 2}
-  - {fileID: 11400000, guid: 01a74bb9bb3525d4093cdd709b65cc4b, type: 2}
   exitActions: []
   transitions:
-  - condition: {fileID: 11400000, guid: f9ae9deb045fa9840a06602af6066d2d, type: 2}
+  - condition: {fileID: 11400000, guid: c104c2d09743e5141a5daf1c76da4d7e, type: 2}
     trueState: {fileID: 11400000, guid: f61910d9fa99bab4e900ea8438f60ff8, type: 2}
     falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}

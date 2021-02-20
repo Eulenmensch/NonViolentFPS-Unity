@@ -9,8 +9,8 @@ namespace NonViolentFPS.Shooting
 
 		private void Start()
 		{
-			var machine = GetComponentInParent<StateMachine>();
-			machine.hit = true;
+			// var machine = GetComponentInParent<StateMachine>();
+			// machine.hit = true;
 		}
 
 		public void Destroy()

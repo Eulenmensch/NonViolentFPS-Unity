@@ -75,7 +75,7 @@ namespace NonViolentFPS.Shooting
             }
         }
 
-        private void ActivateGun(Gun _gun)
+        public void ActivateGun(Gun _gun)
         {
             if(activeGun != null)
             {

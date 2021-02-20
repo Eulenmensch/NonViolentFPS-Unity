@@ -15,25 +15,12 @@ namespace NonViolentFPS.AI
 				return;
 			}
 
-			var navmeshMoveComponent = _npc as INavMeshMoveComponent;
-
-			if (EnableRigidbody(rigidbodyComponent)) return;
-
-			DisableNavMeshAgent(navmeshMoveComponent);
+			EnableRigidbody(rigidbodyComponent);
 		}
 
-		private static bool EnableRigidbody(IRigidbodyComponent _rigidbodyComponent)
+		private void EnableRigidbody(IRigidbodyComponent _rigidbodyComponent)
 		{
-			if (_rigidbodyComponent == null) return true;
 			_rigidbodyComponent.RigidbodyRef.isKinematic = false;
-			return false;
-		}
-
-		private static void DisableNavMeshAgent(INavMeshMoveComponent _navMeshMoveComponent)
-		{
-			var navMeshAgent = _navMeshMoveComponent.Agent;
-			if (navMeshAgent == null) return;
-			navMeshAgent.enabled = false;
 		}
 	}
 }

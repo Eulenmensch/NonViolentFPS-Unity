@@ -9,15 +9,15 @@ namespace NonViolentFPS.Shooting
 {
 	public class GunPickup : MonoBehaviour
 	{
-		[SerializeField] private ScriptableObject gun;
+		[SerializeField] private Gun gun;
 		[SerializeField] private GameObject interactionPromptText;
 
-		private Shooter playerShooter;
+		private ShooterCopy playerShooter;
 		private bool playerInTrigger;
 
 		private void OnValidate()
 		{
-			Debug.Assert(gun is IGun, "The object you assigned does not implement IGun.");
+			Debug.Assert(gun is Gun, "The object you assigned does not implement IGun.");
 		}
 
 		private void OnEnable()
@@ -31,14 +31,14 @@ namespace NonViolentFPS.Shooting
 
 		private void Start()
 		{
-			playerShooter = GameManager.Instance.Player.GetComponent<Shooter>();
+			playerShooter = GameManager.Instance.Player.GetComponent<ShooterCopy>();
 		}
 
 		private void PickUpGun()
 		{
 			if (playerInTrigger)
 			{
-				playerShooter.ActivateGun(gun as IGun);
+				playerShooter.ActivateGun(gun);
 			}
 		}
 
