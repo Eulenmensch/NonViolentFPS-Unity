@@ -27,7 +27,10 @@ namespace NonViolentFPS.Shooting
             set => mMFeedbacks = value;
         }
 
-        protected bool Activated { get; private set; }
+        [SerializeField] protected bool doesImpactWithPlayer;
+
+
+        protected bool Activated { get; set; }
 
         private QuadraticDrag Drag { get; set; }
         protected Rigidbody OtherRigidbody { get; set; }
@@ -48,18 +51,28 @@ namespace NonViolentFPS.Shooting
             }
         }
 
-        private void OnCollisionEnter(Collision _other)
+        protected void Activate()
         {
-            if (Activated) { return; }
-            if (_other.gameObject.tag.Equals("Player")) { return; }
-            ImpactAction(_other);
+            Drag.Drag = ActiveDrag;
+            Drag.AngularDrag = ActiveAngularDrag;
+            Activated = true;
+        }
+
+        protected void PlayMMFeedbacks()
+        {
             if (MMFeedbacks != null)
             {
                 MMFeedbacks.PlayFeedbacks();
             }
-            Drag.Drag = ActiveDrag;
-            Drag.AngularDrag = ActiveAngularDrag;
-            Activated = true;
+        }
+
+        private void OnCollisionEnter(Collision _other)
+        {
+            if (Activated) { return; }
+            if (!doesImpactWithPlayer && _other.gameObject.tag.Equals("Player")) { return; }
+            ImpactAction(_other);
+            PlayMMFeedbacks();
+            Activate();
         }
     }
 }

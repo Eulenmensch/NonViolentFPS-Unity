@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Physics;
@@ -16,17 +17,22 @@ namespace NonViolentFPS.Shooting
 		[SerializeField] private float maxHeight;
 		[SerializeField] private float travelGrowthDuration;
 		[SerializeField] private float maxTravelScale;
+		[SerializeField] private Material frozenMaterial;
 
+		private Material defaultMaterial;
+		private Renderer renderer;
 		private Rigidbody rigidbodyRef;
 
 		protected override void Start()
 		{
 			base.Start();
 			rigidbodyRef = GetComponent<Rigidbody>();
+			renderer = GetComponent<Renderer>();
+			defaultMaterial = renderer.material;
 			var sphereCollider = GetComponent<SphereCollider>();
 			sphereCollider.enabled = false;
-			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.InOutCirc);
 			EnableCollisionAfterSeconds(sphereCollider, collisionGraceTime);
+			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.InOutCirc);
 		}
 
 		private void FixedUpdate()
@@ -78,6 +84,28 @@ namespace NonViolentFPS.Shooting
 		private void Burst()
 		{
 			burstFeedbacks.PlayFeedbacks();
+		}
+
+		public void Freeze()
+		{
+			PlayMMFeedbacks();
+			Activate();
+			doesImpactWithPlayer = false;
+			renderer.material = frozenMaterial;
+		}
+
+		public async void Unfreeze(float _unfreezeTime)
+		{
+			var timer = 0f;
+			while (timer <= _unfreezeTime)
+			{
+				timer += Time.deltaTime;
+				await Task.Yield();
+			}
+
+			doesImpactWithPlayer = true;
+			//TODO: Material Flicker
+			renderer.material = defaultMaterial;
 		}
 	}
 }
