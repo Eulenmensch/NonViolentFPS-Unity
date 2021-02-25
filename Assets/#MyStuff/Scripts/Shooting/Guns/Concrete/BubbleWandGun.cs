@@ -20,6 +20,8 @@ namespace NonViolentFPS.Shooting
 		[SerializeField] private float fullChargeTime;
 		[BoxGroup("Settings")]
 		[SerializeField] private AnimationCurve fireForceCurve;
+		[BoxGroup("Settings")]
+		[SerializeField] private float fireForceMultiplier;
 
 		private Transform projectileContainer;
 		private GameObject bubbleInstance;
@@ -66,7 +68,7 @@ namespace NonViolentFPS.Shooting
 			if (timer <= fullChargeTime)
 			{
 				var normalizedTimer = timer / fullChargeTime;
-				fireForce = fireForceCurve.Evaluate(normalizedTimer);
+				fireForce = fireForceMultiplier * fireForceCurve.Evaluate(normalizedTimer);
 			}
 			else
 			{
