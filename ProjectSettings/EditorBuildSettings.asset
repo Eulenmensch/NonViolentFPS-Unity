@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/#MyStuff/Scenes/Rescue UI.unity
     guid: 3c42afe3d6f84c74085d6ee211ff2d3d
   - enabled: 1
-    path: Assets/#MyStuff/Scenes/RescueLevel 01.unity
+    path: Assets/#MyStuff/Scenes/Rescue Levels/RescueLevel 01.unity
     guid: 903937500b8e6414f9f69a1a8520362f
   - enabled: 1
     path: Assets/#MyStuff/Scenes/Default/Post Processing.unity
