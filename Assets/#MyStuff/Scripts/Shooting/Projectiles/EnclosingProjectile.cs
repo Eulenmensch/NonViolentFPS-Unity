@@ -88,8 +88,12 @@ namespace NonViolentFPS.Shooting
 
 		public void Freeze()
 		{
-			PlayMMFeedbacks();
-			Activate();
+			if(!Activated)
+			{
+				DOTween.Kill(transform);
+				PlayMMFeedbacks();
+				Activate();
+			}
 			doesImpactWithPlayer = false;
 			renderer.material = frozenMaterial;
 		}
@@ -105,7 +109,10 @@ namespace NonViolentFPS.Shooting
 
 			doesImpactWithPlayer = true;
 			//TODO: Material Flicker
-			renderer.material = defaultMaterial;
+			if(renderer != null)
+			{
+				renderer.material = defaultMaterial;
+			}
 		}
 	}
 }
