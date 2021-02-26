@@ -32,7 +32,7 @@ Material:
     - _FresnelPower: 2.01
     - _FresnelScale: 0.97
     - _MaxDepth: 1.58
-    - _Opacity: 0.737
+    - _Opacity: 1
     - _PosterizePower: 66.38
     - _SpecularIntensity: 0.05
     - _StippleNoiseAmount: 0.48
@@ -41,6 +41,6 @@ Material:
     - _LitColor: {r: 0.57254905, g: 1, b: 0.6483017, a: 0}
     - _ShadowColor: {r: 0.2549013, g: 0.17254835, b: 0.34901893, a: 1}
     - _ShadowColor1: {r: 0.12195694, g: 0.216981, b: 0.05629223, a: 0}
-    - _SpecularColor: {r: 0.48876536, g: 0.57547164, b: 0.47051138, a: 1}
+    - _SpecularColor: {r: 0.7152901, g: 0.8867924, b: 0.8698815, a: 1}
     - _UnlitColor: {r: 0.003921588, g: 0.90588236, b: 0.8111519, a: 0}
   m_BuildTextureStacks: []
