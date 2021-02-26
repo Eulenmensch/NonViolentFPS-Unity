@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upperVerticalLimit: 80
-  lowerVerticalLimit: 85
+  lowerVerticalLimit: 89
   cameraSpeed: 250
   smoothCameraRotation: 1
   cameraSmoothingFactor: 25
