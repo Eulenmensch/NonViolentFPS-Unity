@@ -34,6 +34,6 @@ public class LagBehindTarget : MonoBehaviour
 		//
 		// transform.rotation = Quaternion.Euler(eulerRotation);
 
-		transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, xSnappyness );
+		transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, xSnappyness * Time.deltaTime );
 	}
 }
