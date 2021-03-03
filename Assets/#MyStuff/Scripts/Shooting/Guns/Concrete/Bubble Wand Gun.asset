@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  gunPrefab: {fileID: 7914272111490427818, guid: ce45b0937d7ebe94fbb832c923ea294f,
+  gunPrefab: {fileID: 7914272111490427818, guid: e2288e5ad15f60a46bf099fa3fbd0fdb,
     type: 3}
   adsPosition: {x: -0.0475, y: -0.11, z: 0.16}
   adsRotation: {x: 83.6, y: 7.5, z: 191.046}
