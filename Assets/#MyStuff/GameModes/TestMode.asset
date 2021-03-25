@@ -28,3 +28,5 @@ MonoBehaviour:
     scenePath: Assets/#MyStuff/Scenes/Default/Player.unity
   - sceneAsset: {fileID: 102900000, guid: 348c8a9ae31236343be37ffbb20365c8, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Default/Dialogue.unity
+  - sceneAsset: {fileID: 102900000, guid: 7136422e527b6e442923400bc2c30388, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/Post Processing.unity
