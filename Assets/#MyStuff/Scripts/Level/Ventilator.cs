@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ventilator : MonoBehaviour
 {
     [SerializeField] private float pushForce;
     [SerializeField, Range(0.1f,10f)] private float forceDistanceFalloff;
+    [SerializeField] private List<Transform> bladeTransforms;
+    [SerializeField] private float rotationSpeedMultiplier;
+
+
 
     private HashSet<Rigidbody> pushableRigidbodies;
 
@@ -23,6 +28,14 @@ public class Ventilator : MonoBehaviour
             var resultingForce = transform.up * (pushForce/distanceFalloff);
             //This force should depend on the mass of the pushed body
             pushableRigidbody.AddForce(resultingForce, ForceMode.Force);
+        }
+    }
+
+    private void Update()
+    {
+        foreach (var bladeTransform in bladeTransforms)
+        {
+            bladeTransform.Rotate(0,pushForce * rotationSpeedMultiplier * Time.deltaTime,0);
         }
     }
 
