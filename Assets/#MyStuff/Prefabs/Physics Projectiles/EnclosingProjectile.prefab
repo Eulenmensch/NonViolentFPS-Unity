@@ -382,7 +382,7 @@ MonoBehaviour:
   activeDrag: 5
   activeAngularDrag: 5
   mMFeedbacks: {fileID: -2284264754132178773}
-  doesImpactWithPlayer: 1
+  doesImpactWithPlayer: 0
   burstFeedbacks: {fileID: 296257584172371004}
   growthDuration: 0.5
   collisionGraceTime: 0.3
