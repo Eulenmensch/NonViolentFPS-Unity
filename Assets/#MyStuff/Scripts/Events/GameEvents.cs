@@ -32,5 +32,8 @@ namespace NonViolentFPS.Events
 
 		public event Action<int> OnScoreChanged;
 		public void ChangeScore(int _scoreChange){OnScoreChanged?.Invoke(_scoreChange);}
+
+		public event Action<Transform> OnPlayerLoaded;
+		public void PlayerLoaded(Transform _playerTransform){OnPlayerLoaded?.Invoke(_playerTransform);}
 	}
 }

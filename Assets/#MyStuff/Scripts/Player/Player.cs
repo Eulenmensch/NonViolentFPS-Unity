@@ -1,4 +1,5 @@
-﻿using NonViolentFPS.Manager;
+﻿using NonViolentFPS.Events;
+using NonViolentFPS.Manager;
 using UnityEngine;
 
 namespace NonViolentFPS.Player
@@ -8,6 +9,7 @@ namespace NonViolentFPS.Player
 		private void Start()
 		{
 			GameManager.Instance.Player = gameObject;
+			GameEvents.Instance.PlayerLoaded(transform);
 		}
 	}
 }
