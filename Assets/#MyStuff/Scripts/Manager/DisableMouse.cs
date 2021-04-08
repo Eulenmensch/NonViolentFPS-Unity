@@ -1,4 +1,3 @@
-using System;
 using NonViolentFPS.Events;
 using UnityEngine;
 

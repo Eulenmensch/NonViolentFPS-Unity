@@ -1,9 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using NonViolentFPS.Events;
 using NonViolentFPS.Manager;
 using UnityEngine;
-using TMPro;
 
 namespace NonViolentFPS.GameModes
 {
