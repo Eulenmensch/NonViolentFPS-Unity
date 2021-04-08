@@ -1,21 +1,24 @@
 ﻿using NonViolentFPS.Shooting;
 using UnityEngine;
 
-public class BubbleFreezer : MonoBehaviour
+namespace NonViolentFPS.Level
 {
-	[SerializeField] private float unfreezeTime;
-
-	private void OnTriggerEnter(Collider other)
+	public class BubbleFreezer : MonoBehaviour
 	{
-		var enclosingProjectile = other.GetComponent<EnclosingProjectile>();
-		if (enclosingProjectile == null) {return;}
-		enclosingProjectile.Freeze();
-	}
+		[SerializeField] private float unfreezeTime;
 
-	private void OnTriggerExit(Collider other)
-	{
-		var enclosingProjectile = other.GetComponent<EnclosingProjectile>();
-		if (enclosingProjectile == null) {return;}
-		enclosingProjectile.Unfreeze(unfreezeTime);
+		private void OnTriggerEnter(Collider other)
+		{
+			var enclosingProjectile = other.GetComponent<EnclosingProjectile>();
+			if (enclosingProjectile == null) {return;}
+			enclosingProjectile.Freeze();
+		}
+
+		private void OnTriggerExit(Collider other)
+		{
+			var enclosingProjectile = other.GetComponent<EnclosingProjectile>();
+			if (enclosingProjectile == null) {return;}
+			enclosingProjectile.Unfreeze(unfreezeTime);
+		}
 	}
 }

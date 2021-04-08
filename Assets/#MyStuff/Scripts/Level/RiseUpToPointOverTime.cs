@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NonViolentFPS.Scripts.Level
+namespace NonViolentFPS.Level
 {
 	public class RiseUpToPointOverTime : MonoBehaviour
 	{

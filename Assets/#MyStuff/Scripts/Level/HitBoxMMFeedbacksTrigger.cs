@@ -1,8 +1,7 @@
-using System;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
-namespace NonViolentFPS.Scripts.Level
+namespace NonViolentFPS.Level
 {
 	public class HitBoxMMFeedbacksTrigger : MonoBehaviour
 	{

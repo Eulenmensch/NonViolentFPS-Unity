@@ -1,7 +1,7 @@
 using NonViolentFPS.Events;
 using UnityEngine;
 
-namespace NonViolentFPS.Scripts.Level
+namespace NonViolentFPS.Level
 {
 	public class HitBoxSetWon : MonoBehaviour
 	{
