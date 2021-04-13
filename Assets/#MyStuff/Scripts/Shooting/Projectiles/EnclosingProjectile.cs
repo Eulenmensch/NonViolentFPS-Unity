@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using NonViolentFPS.Manager;
 using NonViolentFPS.Physics;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ namespace NonViolentFPS.Shooting
 		private Material defaultMaterial;
 		private Renderer renderer;
 		private Rigidbody rigidbodyRef;
+		private SphereCollider sphereCollider;
 
 		protected override void Start()
 		{
@@ -29,7 +31,7 @@ namespace NonViolentFPS.Shooting
 			rigidbodyRef = GetComponent<Rigidbody>();
 			renderer = GetComponent<Renderer>();
 			defaultMaterial = renderer.material;
-			var sphereCollider = GetComponent<SphereCollider>();
+			sphereCollider = GetComponent<SphereCollider>();
 			sphereCollider.enabled = false;
 			EnableCollisionAfterSeconds(sphereCollider, collisionGraceTime);
 			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.InOutCirc);
@@ -60,6 +62,11 @@ namespace NonViolentFPS.Shooting
 				Burst();
 				return;
 			}
+			if (_other.gameObject == GameManager.Instance.Player)
+			{
+				Burst();
+				return;
+			}
 
 			rigidbodyRef.isKinematic = true;
 			Destroy(GetComponent<CustomGravity>());
@@ -83,6 +90,7 @@ namespace NonViolentFPS.Shooting
 
 		private void Burst()
 		{
+			sphereCollider.enabled = false;
 			burstFeedbacks.PlayFeedbacks();
 		}
 
