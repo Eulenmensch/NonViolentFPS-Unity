@@ -1,39 +1,77 @@
-﻿using UnityEngine;
+﻿using CMF;
+using NonViolentFPS.Manager;
+using UnityEngine;
 
 public class LagBehindTarget : MonoBehaviour
 {
-	[SerializeField] private float xSnappyness;
-	[SerializeField] private float ySnappyness;
-	[SerializeField] private float rollAmount;
-
+	[SerializeField] private float rotationSnappyness;
+	[SerializeField] private float positionSnappyness;
 
 	[SerializeField] private Transform target;
 
-	private float defaultZRotation;
+	[SerializeField] private float xOffsetMax;
+	[SerializeField] private float yOffsetMax;
+	[SerializeField] private float zOffsetMax;
+	[SerializeField, Min(0.01f)] private float xVelocityMax;
+	[SerializeField, Min(0.01f)] private float yVelocityMax;
+	[SerializeField, Min(0.01f)] private float zVelocityMax;
+
+	private GameObject player;
+	private AdvancedWalkerController controller;
+	private Vector3 defaultLocalPosition;
+	private float xRotationOffset;
+	private float yRotationOffset;
+	private float zPositionOffset;
+	private Camera mainCamera;
 
 	private void Start()
 	{
+		mainCamera = Camera.main;
 		transform.parent = null;
-		defaultZRotation = transform.rotation.eulerAngles.z;
+
+		player = GameManager.Instance.Player;
+		controller = player.GetComponent<AdvancedWalkerController>();
+		defaultLocalPosition = transform.localPosition;
 	}
 
 	private void Update()
 	{
-		transform.position = target.position;
-		// transform.position = Vector3.Lerp(transform.position, target.position, xSnappyness);
+		CalculateOffsets();
+		SetZPositionOffset();
+		SetRotationOffset();
+	}
 
-		// var rotation = transform.rotation;
-		// var eulerRotation = rotation.eulerAngles;
-		// var targetRotation = target.rotation;
-		// var eulerTargetRotation = targetRotation.eulerAngles;
-		//
-		// eulerRotation.x = Mathf.Lerp(eulerRotation.x, eulerTargetRotation.x, xSnappyness );	//pitch
-		// eulerRotation.z = Mathf.Lerp(eulerRotation.z, eulerTargetRotation.z, ySnappyness );	//yaw
-		// //this is to make the weapon roll slightly when moving horizontally
-		// eulerRotation.y = (1 - (eulerTargetRotation.z - eulerRotation.z)) * defaultZRotation * rollAmount; //roll
-		//
-		// transform.rotation = Quaternion.Euler(eulerRotation);
+	private void SetRotationOffset()
+	{
+		var targetRotation = target.rotation;
+		targetRotation *= Quaternion.Euler(xRotationOffset, 0, -yRotationOffset);
 
-		transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, xSnappyness * Time.deltaTime );
+		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSnappyness * Time.deltaTime);
+	}
+
+	private void SetZPositionOffset()
+	{
+		var positionOffset = new Vector3(0, 0, -zPositionOffset);
+		var targetPosition = target.position;
+		targetPosition = mainCamera.transform.InverseTransformPoint(targetPosition);
+		targetPosition += positionOffset;
+		targetPosition = mainCamera.transform.TransformPoint(targetPosition);
+
+		transform.position = targetPosition;
+	}
+
+	private void CalculateOffsets()
+	{
+		var velocity = controller.GetVelocity();
+		velocity = mainCamera.transform.InverseTransformDirection(velocity);
+
+		//calculate t value of lerp so that at 0 velocity, t is 0.5,
+		//at >=max velocity t is 1 and at <= -max velocity t is 0
+		var xVelocityScaled = 0.5f + velocity.x / (xVelocityMax * 2);
+		xRotationOffset = Mathf.Lerp(-xOffsetMax, xOffsetMax, xVelocityScaled);
+		var yVelocityScaled = 0.5f + velocity.y / (yVelocityMax * 2);
+		yRotationOffset = Mathf.Lerp(-yOffsetMax, yOffsetMax, yVelocityScaled);
+		var zVelocityScaled = velocity.z / zVelocityMax;
+		zPositionOffset = Mathf.Lerp(0, zOffsetMax, zVelocityScaled);
 	}
 }
