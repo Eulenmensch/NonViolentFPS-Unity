@@ -71,6 +71,7 @@ namespace NonViolentFPS.Manager
 			}
 			#endif
 
+			//TODO: Only for test builds
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				Application.Quit();
