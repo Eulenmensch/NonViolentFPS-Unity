@@ -24,6 +24,8 @@ public class LagBehindTarget : MonoBehaviour
 	private float zPositionOffset;
 	private Camera mainCamera;
 
+	private Vector3 positionOffsetDynamic;
+
 	private void Start()
 	{
 		mainCamera = Camera.main;
@@ -52,9 +54,10 @@ public class LagBehindTarget : MonoBehaviour
 	private void SetZPositionOffset()
 	{
 		var positionOffset = new Vector3(0, 0, -zPositionOffset);
+		positionOffsetDynamic = Vector3.Lerp(positionOffsetDynamic, positionOffset, positionSnappyness * Time.deltaTime);
 		var targetPosition = target.position;
 		targetPosition = mainCamera.transform.InverseTransformPoint(targetPosition);
-		targetPosition += positionOffset;
+		targetPosition += positionOffsetDynamic;
 		targetPosition = mainCamera.transform.TransformPoint(targetPosition);
 
 		transform.position = targetPosition;
