@@ -234,9 +234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5e44db14072ea4c964da3b192181c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 7
+  movementSpeed: 5.5
   airControl: 0.741
-  jumpSpeed: 10
+  jumpSpeed: 7
   jumpDuration: 0.2
   airFriction: 0.3
   groundFriction: 100
@@ -244,6 +244,7 @@ MonoBehaviour:
   slideGravity: 5
   slopeLimit: 80
   useLocalMomentum: 1
+  coyoteTime: 3
   cameraTransform: {fileID: 2569942780080362813}
 --- !u!114 &2464554092079305475
 MonoBehaviour:
@@ -261,7 +262,7 @@ MonoBehaviour:
   colliderHeight: 2
   colliderThickness: 1
   colliderOffset: {x: 0, y: 0.5, z: 0}
-  sensorType: 1
+  sensorType: 0
   isInDebugMode: 0
   sensorArrayRows: 1
   sensorArrayRayCount: 8
