@@ -18,12 +18,10 @@ public class LagBehindTarget : MonoBehaviour
 
 	private GameObject player;
 	private AdvancedWalkerController controller;
-	private Vector3 defaultLocalPosition;
 	private float xRotationOffset;
 	private float yRotationOffset;
 	private float zPositionOffset;
 	private Camera mainCamera;
-
 	private Vector3 positionOffsetDynamic;
 
 	private void Start()
@@ -33,7 +31,6 @@ public class LagBehindTarget : MonoBehaviour
 
 		player = GameManager.Instance.Player;
 		controller = player.GetComponent<AdvancedWalkerController>();
-		defaultLocalPosition = transform.localPosition;
 	}
 
 	private void Update()
@@ -53,8 +50,12 @@ public class LagBehindTarget : MonoBehaviour
 
 	private void SetZPositionOffset()
 	{
+		//Calculate the zOffset and then lerp it to create easing
 		var positionOffset = new Vector3(0, 0, -zPositionOffset);
 		positionOffsetDynamic = Vector3.Lerp(positionOffsetDynamic, positionOffset, positionSnappyness * Time.deltaTime);
+
+		//Transform the target position into camera coordinates,
+		//add the offset to it, then transform it back into world space
 		var targetPosition = target.position;
 		targetPosition = mainCamera.transform.InverseTransformPoint(targetPosition);
 		targetPosition += positionOffsetDynamic;
