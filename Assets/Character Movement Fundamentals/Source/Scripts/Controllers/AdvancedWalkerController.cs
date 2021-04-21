@@ -60,7 +60,11 @@ namespace CMF
 		[Tooltip("Whether to calculate and apply momentum relative to the controller's transform.")]
 		public bool useLocalMomentum = false;
 
-		//Enum describing basic controller states; 
+		//Coyote Time;
+		public float coyoteTime;
+		private bool isInCoyoteTime;
+
+		//Enum describing basic controller states;
 		public enum ControllerState
 		{
 			Grounded,
@@ -69,12 +73,12 @@ namespace CMF
 			Rising,
 			Jumping
 		}
-		
+
 		protected ControllerState currentControllerState = ControllerState.Falling;
 
 		[Tooltip("Optional camera transform used for calculating movement direction. If assigned, character movement will take camera view into account.")]
 		public Transform cameraTransform;
-		
+
 		//Get references to all necessary components;
 		private void Awake () {
 			mover = GetComponent<Mover>();
@@ -97,6 +101,7 @@ namespace CMF
 		private void Update()
 		{
 			HandleJumpKeyInput();
+			HandleCoyoteTime();
 		}
 
         //Handle jump booleans for later use in FixedUpdate;
@@ -114,6 +119,18 @@ namespace CMF
             }
 
             jumpKeyIsPressed = _newJumpKeyPressedState;
+        }
+
+        private void HandleCoyoteTime()
+        {
+	        if (isInCoyoteTime)
+	        {
+		        var timeElapsed = Time.time - currentJumpStartTime;
+		        if (timeElapsed >= coyoteTime)
+		        {
+			        isInCoyoteTime = false;
+		        }
+	        }
         }
 
         private void FixedUpdate()
@@ -147,12 +164,12 @@ namespace CMF
 
 			//Add current momentum to velocity;
 			_velocity += _worldMomentum;
-			
+
 			//If player is grounded or sliding on a slope, extend mover's sensor range;
 			//This enables the player to walk up/down stairs and slopes without losing ground contact;
 			mover.SetExtendSensorRange(IsGrounded());
 
-			//Set mover velocity;		
+			//Set mover velocity;
 			mover.SetVelocity(_velocity);
 
 			//Store velocity for next frame;
@@ -236,7 +253,7 @@ namespace CMF
 			bool _isRising = IsRisingOrFalling() && (VectorMath.GetDotProduct(GetMomentum(), tr.up) > 0f);
 			//Check if controller is sliding;
 			bool _isSliding = mover.IsGrounded() && IsGroundTooSteep();
-			
+
 			//Grounded;
 			if(currentControllerState == ControllerState.Grounded)
 			{
@@ -270,10 +287,10 @@ namespace CMF
 				}
 				return ControllerState.Falling;
 			}
-			
+
 			//Sliding;
 			if(currentControllerState == ControllerState.Sliding)
-			{	
+			{
 				if(_isRising){
 					OnGroundContactLost();
 					return ControllerState.Rising;
@@ -338,14 +355,14 @@ namespace CMF
 				}
 				return ControllerState.Jumping;
 			}
-			
+
 			return ControllerState.Falling;
 		}
 
         //Check if player has initiated a jump;
         private void HandleJumping()
         {
-            if (currentControllerState == ControllerState.Grounded)
+            if (currentControllerState == ControllerState.Grounded || isInCoyoteTime)
             {
                 if ((jumpKeyIsPressed == true || jumpKeyWasPressed) && !jumpInputIsLocked)
                 {
@@ -387,7 +404,7 @@ namespace CMF
 			if(currentControllerState == ControllerState.Grounded)
 				_horizontalMomentum = VectorMath.IncrementVectorTowardTargetVector(_horizontalMomentum, groundFriction, Time.deltaTime, Vector3.zero);
 			else
-				_horizontalMomentum = VectorMath.IncrementVectorTowardTargetVector(_horizontalMomentum, airFriction, Time.deltaTime, Vector3.zero); 
+				_horizontalMomentum = VectorMath.IncrementVectorTowardTargetVector(_horizontalMomentum, airFriction, Time.deltaTime, Vector3.zero);
 
 			//Add horizontal and vertical momentum back together;
 			momentum = _horizontalMomentum + _verticalMomentum;
@@ -440,6 +457,8 @@ namespace CMF
 
 			if(useLocalMomentum)
 				momentum = tr.worldToLocalMatrix * momentum;
+
+			isInCoyoteTime = false;
 		}
 
 		//This function is called when the controller has lost ground contact, i.e. is either falling or rising, or generally in the air;
@@ -453,7 +472,7 @@ namespace CMF
 
 			//Calculate length and direction from '_currentVelocity';
 			float _length = _currentVelocity.magnitude;
-			
+
 			//Calculate velocity direction;
 			Vector3 _velocityDirection = Vector3.zero;
 			if(_length != 0f)
@@ -473,6 +492,11 @@ namespace CMF
 
 			if(useLocalMomentum)
 				momentum = tr.worldToLocalMatrix * momentum;
+
+			if(currentControllerState != ControllerState.Jumping)
+			{
+				isInCoyoteTime = true;
+			}
 		}
 
 		//This function is called when the controller has landed on a surface after being in the air;
@@ -481,6 +505,7 @@ namespace CMF
 			//Call 'OnLand' event;
 			if(OnLand != null)
 				OnLand(_collisionVelocity);
+			isInCoyoteTime = false;
 		}
 
 		//This function is called when the controller has collided with a ceiling while jumping or moving upwards;
@@ -564,7 +589,7 @@ namespace CMF
 			if(useLocalMomentum)
 				momentum = tr.localToWorldMatrix * momentum;
 
-			momentum += _momentum;	
+			momentum += _momentum;
 
 			if(useLocalMomentum)
 				momentum = tr.worldToLocalMatrix * momentum;
