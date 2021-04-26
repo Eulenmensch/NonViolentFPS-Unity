@@ -1,5 +1,6 @@
 ﻿using CMF;
 using NonViolentFPS.Manager;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class LagBehindTarget : MonoBehaviour
@@ -11,10 +12,13 @@ public class LagBehindTarget : MonoBehaviour
 
 	[SerializeField] private float xOffsetMax;
 	[SerializeField] private float yOffsetMax;
+	[SerializeField] private float zOffssetMin;
 	[SerializeField] private float zOffsetMax;
 	[SerializeField, Min(0.01f)] private float xVelocityMax;
 	[SerializeField, Min(0.01f)] private float yVelocityMax;
 	[SerializeField, Min(0.01f)] private float zVelocityMax;
+
+	[SerializeField] private bool flipZY;
 
 	private GameObject player;
 	private AdvancedWalkerController controller;
@@ -43,7 +47,15 @@ public class LagBehindTarget : MonoBehaviour
 	private void SetRotationOffset()
 	{
 		var targetRotation = target.rotation;
-		targetRotation *= Quaternion.Euler(xRotationOffset, 0, -yRotationOffset);
+		switch (flipZY)
+		{
+			case true:
+				targetRotation *= Quaternion.Euler(xRotationOffset, 0, -yRotationOffset);
+				break;
+			case false:
+				targetRotation *= Quaternion.Euler(xRotationOffset, yRotationOffset, 0);
+				break;
+		}
 
 		transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSnappyness * Time.deltaTime);
 	}
@@ -75,7 +87,8 @@ public class LagBehindTarget : MonoBehaviour
 		xRotationOffset = Mathf.Lerp(-xOffsetMax, xOffsetMax, xVelocityScaled);
 		var yVelocityScaled = 0.5f + velocity.y / (yVelocityMax * 2);
 		yRotationOffset = Mathf.Lerp(-yOffsetMax, yOffsetMax, yVelocityScaled);
-		var zVelocityScaled = velocity.z / zVelocityMax;
-		zPositionOffset = Mathf.Lerp(0, zOffsetMax, zVelocityScaled);
+		// var zVelocityScaled = velocity.z / zVelocityMax;
+		var zVelocityScaled = 0.5f + velocity.z / (zVelocityMax * 2);
+		zPositionOffset = Mathf.Lerp(zOffssetMin, zOffsetMax, zVelocityScaled);
 	}
 }
