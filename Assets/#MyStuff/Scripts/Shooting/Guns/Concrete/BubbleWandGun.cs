@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using NonViolentFPS.Events;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace NonViolentFPS.Shooting
 			base.SetUpGun(_shooter);
 			projectileContainer = _shooter.ProjectileContainer;
 
-			CacheDefaultAttachmentPointPosition();
+			CacheDefaultAttachmentPointTransform();
 
 			UpdateUIAmmoCount(1);
 
@@ -49,7 +50,7 @@ namespace NonViolentFPS.Shooting
 			ShootingOrigin = Visuals.ShootingOriginOverride;
 		}
 
-		private void CacheDefaultAttachmentPointPosition()
+		private void CacheDefaultAttachmentPointTransform()
 		{
 			attachmentPointDefaultPosition = AttachmentPoint.localPosition;
 			attachmentPointDefaultRotation = AttachmentPoint.localRotation.eulerAngles;
@@ -86,6 +87,7 @@ namespace NonViolentFPS.Shooting
 		public void SecondaryFireEnter()
 		{
 			AnimateAttachmentPoint(adsPosition, adsRotation, adsDuration);
+			PlayerEvents.Instance.AimDownSights(true);
 		}
 		public void SecondaryFireAction(){}
 
@@ -94,6 +96,7 @@ namespace NonViolentFPS.Shooting
 			var targetPosition = attachmentPointDefaultPosition;
 			var targetRotation = attachmentPointDefaultRotation;
 			AnimateAttachmentPoint(targetPosition, targetRotation, adsDuration);
+			PlayerEvents.Instance.AimDownSights(false);
 		}
 
 		private void ShootBubble()
