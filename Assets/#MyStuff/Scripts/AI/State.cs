@@ -19,11 +19,28 @@ namespace NonViolentFPS.AI
             EvaluateConditions( _stateMachine.npc, _stateMachine );
         }
 
+        public void UpdatePhysicsState(StateMachine _stateMachine)
+        {
+            DoPhysicsBehaviours( _stateMachine.npc );
+            EvaluatePhysicsConditions(_stateMachine.npc, _stateMachine);
+        }
+
         private void DoBehaviours(NPC _npc)
         {
             foreach ( var behaviour in behaviours )
             {
                 if (behaviour == null) return;
+                if (behaviour.type != UpdateType.Regular) return;
+                behaviour.DoBehaviour( _npc );
+            }
+        }
+
+        private void DoPhysicsBehaviours(NPC _npc)
+        {
+            foreach (var behaviour in behaviours)
+            {
+                if ( behaviour == null ) return;
+                if ( behaviour.type != UpdateType.Physics ) return;
                 behaviour.DoBehaviour( _npc );
             }
         }
@@ -32,9 +49,21 @@ namespace NonViolentFPS.AI
         {
             foreach ( var transition in transitions )
             {
+                if (transition.condition.type != UpdateType.Regular) return;
                 var conditionTrue = transition.condition.Evaluate( _npc );
 
                 _stateMachine.TransitionToState( conditionTrue ? transition.trueState : transition.falseState );
+            }
+        }
+
+        private void EvaluatePhysicsConditions(NPC _npc, StateMachine _stateMachine)
+        {
+            foreach (var transition in transitions)
+            {
+                if (transition.condition.type != UpdateType.Physics) return;
+
+                var conditionTrue = transition.condition.Evaluate(_npc);
+                _stateMachine.TransitionToState( conditionTrue ? transition.trueState : transition.falseState);
             }
         }
 

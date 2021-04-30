@@ -19,6 +19,11 @@ namespace NonViolentFPS.AI
             CurrentState.UpdateState( this );
         }
 
+        public void FixedUpdate()
+        {
+            CurrentState.UpdatePhysicsState(this);
+        }
+
         public void TransitionToState(State _newState)
         {
             if ( _newState.GetType() != typeof( RemainInState ))
