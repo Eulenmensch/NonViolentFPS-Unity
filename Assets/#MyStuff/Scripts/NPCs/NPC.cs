@@ -11,7 +11,7 @@ namespace NonViolentFPS.NPCs
 	{
 		[SerializeField] private State startState;
 
-		public StateMachine StateMachine { get; set; }
+		public StateMachine StateMachine { get; private set; }
 
 		//Used by most NPCs and would not make sense to encapsulate in an interface
 		public List<Collision> ActiveCollisions { get; private set; }
@@ -19,8 +19,7 @@ namespace NonViolentFPS.NPCs
 
 		protected virtual void Awake()
 		{
-			StateMachine = new StateMachine(this);
-			StateMachine.CurrentState = startState;
+			StateMachine = new StateMachine(this) {CurrentState = startState};
 			StateMachine.TransitionToState(startState);
 		}
 
