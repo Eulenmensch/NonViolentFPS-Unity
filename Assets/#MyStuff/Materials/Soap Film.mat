@@ -24,8 +24,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _BigPatternEmissive: 1.34
+    - _BorderPatternEmissive: 1
     - _Cutoff: 0.5
-    - _Emissive: 2.17
+    - _Emissive: 0.58
     - _FresnelBias: -0.037
     - _FresnelBias1: 0
     - _FresnelLightDirInfluence: 0.201
@@ -40,8 +42,10 @@ Material:
     - _SpecularIntensity1: 0.01
     - __dirty: 0
     m_Colors:
+    - _BorderSmoothstepMinMax: {r: 0.58, g: 0.61, b: 0, a: 0}
     - _CenterOffset: {r: 0.04, g: 0.022, b: 0, a: 0}
     - _Color: {r: 0.5333304, g: 0.8018868, b: 0.6416331, a: 0}
     - _SpecularColor: {r: 0.48876536, g: 0.5754716, b: 0.47051138, a: 1}
     - _SpecularColor1: {r: 0.48876536, g: 0.5754716, b: 0.47051138, a: 1}
+    - _StipplesSmoothstepMinMax: {r: 0.39, g: 0.58, b: 0, a: 0}
   m_BuildTextureStacks: []
