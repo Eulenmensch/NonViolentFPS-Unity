@@ -6,6 +6,8 @@ namespace NonViolentFPS.AI
 	[CreateAssetMenu(menuName = "AI Kit/Behaviours/GetNearbyNPCsBehaviour")]
 	public class GetNearbyNPCsBehaviour : AIBehaviour
 	{
+		public override UpdateType type => UpdateType.Physics;
+
 		public override void DoBehaviour(NPC _npc)
 		{
 			var otherNPCsComponent = _npc as IOtherNPCsComponent;

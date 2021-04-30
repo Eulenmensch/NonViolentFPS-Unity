@@ -6,6 +6,8 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu(menuName = "AI Kit/Conditions/PlayerInTriggerCondition")]
     public class PlayerInTriggerCondition : Condition
     {
+        public override UpdateType type => UpdateType.Physics;
+
         public override bool Evaluate(NPC _npc)
         {
             var triggerComponent = _npc as ITriggerComponent;

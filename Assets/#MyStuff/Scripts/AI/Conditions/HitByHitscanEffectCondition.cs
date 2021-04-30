@@ -7,6 +7,8 @@ namespace NonViolentFPS.AI
 	[CreateAssetMenu(menuName = "AI Kit/Conditions/HitByHitscanEffectCondition")]
 	public class HitByHitscanEffectCondition : Condition
 	{
+		public override UpdateType type => UpdateType.Regular;
+
 		public override bool Evaluate(NPC _npc)
 		{
 			if (_npc.gameObject.GetComponentInChildren<IHitscanEffect>() != null)

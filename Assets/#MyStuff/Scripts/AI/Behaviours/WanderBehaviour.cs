@@ -11,6 +11,8 @@ namespace NonViolentFPS.AI
     {
         private System.Threading.Timer timer;
 
+        public override UpdateType type => UpdateType.Regular;
+
         public override async void DoBehaviour(NPC _npc)
         {
             var navMeshMoveComponent = _npc as INavMeshMoveComponent;

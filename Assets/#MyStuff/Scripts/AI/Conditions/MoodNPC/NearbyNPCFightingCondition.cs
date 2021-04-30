@@ -6,6 +6,8 @@ namespace NonViolentFPS.AI
 	[CreateAssetMenu(fileName = "NearbyNPCFightingCondition", menuName = "AI Kit/Conditions/Mood/NearbyNPCFightingCondition")]
 	public class NearbyNPCFightingCondition : Condition
 	{
+		public override UpdateType type => UpdateType.Regular;
+
 		[SerializeField] private State fightingState;
 
 		public override bool Evaluate(NPC _npc)

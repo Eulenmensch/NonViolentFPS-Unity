@@ -6,6 +6,8 @@ namespace NonViolentFPS.AI
 	[CreateAssetMenu(menuName = "AI Kit/Conditions/Mood/BothBadMoodCondition")]
 	public class BothBadMoodCondition : Condition
 	{
+		public override UpdateType type => UpdateType.Regular;
+
 		public override bool Evaluate(NPC _npc)
 		{
 			var otherNPCsComponent = _npc as IOtherNPCsComponent;

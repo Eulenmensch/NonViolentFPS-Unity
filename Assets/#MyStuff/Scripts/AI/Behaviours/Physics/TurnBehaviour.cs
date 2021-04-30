@@ -7,6 +7,8 @@ namespace NonViolentFPS.AI.Physics
     public class TurnBehaviour : AIBehaviour
     {
         [SerializeField] private float turnTorque;
+        public override UpdateType type => UpdateType.Physics;
+
         public override void DoBehaviour(NPC _npc)
         {
             var rigidbodyComponent = _npc as IRigidbodyComponent;

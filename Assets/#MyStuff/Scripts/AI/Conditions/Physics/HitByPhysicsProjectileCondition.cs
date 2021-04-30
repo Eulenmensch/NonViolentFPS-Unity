@@ -7,6 +7,8 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu(menuName = "AI Kit/Conditions/Physics/HitByPhysicsProjectileCondition")]
     public class HitByPhysicsProjectileCondition : Condition
     {
+        public override UpdateType type => UpdateType.Physics;
+
         public override bool Evaluate(NPC _npc)
         {
             foreach (var collision in _npc.ActiveCollisions)

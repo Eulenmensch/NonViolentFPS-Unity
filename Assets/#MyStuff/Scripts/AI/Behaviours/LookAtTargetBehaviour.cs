@@ -7,6 +7,8 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/LookAtTargetBehaviour" )]
     public class LookAtTargetBehaviour : AIBehaviour
     {
+        public override UpdateType type => UpdateType.Regular;
+
         public override void DoBehaviour(NPC _npc)
         {
             var lookAtComponent = _npc as ILookAtComponent;

@@ -6,6 +6,8 @@ namespace NonViolentFPS.AI.Physics
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/JumpBehaviour" )]
     public class JumpBehaviour : AIBehaviour
     {
+        public override UpdateType type => UpdateType.Physics;
+
         public override void DoBehaviour(NPC _npc)
         {
             var jumpComponent = _npc as IJumpComponent;

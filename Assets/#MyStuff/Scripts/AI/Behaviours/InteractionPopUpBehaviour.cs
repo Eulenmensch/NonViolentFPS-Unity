@@ -7,6 +7,8 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/InteractionPopUpBehaviour" )]
     public class InteractionPopUpBehaviour : AIBehaviour
     {
+        public override UpdateType type => UpdateType.Regular;
+
         public override void DoBehaviour(NPC _npc)
         {
             if ( Input.GetKeyDown( KeyCode.E ) )

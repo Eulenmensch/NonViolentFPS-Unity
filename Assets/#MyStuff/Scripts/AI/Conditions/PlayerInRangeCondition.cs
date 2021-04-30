@@ -6,6 +6,8 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Conditions/PlayerInRangeCondition" )]
     public class PlayerInRangeCondition : Condition
     {
+        public override UpdateType type => UpdateType.Regular;
+
         public override bool Evaluate(NPC _npc)
         {
             var rangeComponent = _npc as IRangeComponent;

@@ -6,6 +6,8 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Conditions/Physics/GroundedCondition" )]
     public class GroundedCondition : Condition
     {
+        public override UpdateType type => UpdateType.Physics;
+
         public override bool Evaluate(NPC _npc)
         {
             var groundCheckComponent = _npc as IGroundCheckComponent;
