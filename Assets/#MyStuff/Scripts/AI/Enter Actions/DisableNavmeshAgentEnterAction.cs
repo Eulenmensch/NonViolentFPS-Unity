@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NonViolentFPS.AI
 {
 	[CreateAssetMenu(menuName = "AI Kit/Enter Actions/DisableNavmeshAgentEnterAction")]
-	public class DisabeNavmeshAgentEnterAction : EnterAction
+	public class DisableNavmeshAgentEnterAction : EnterAction
 	{
 		public override void Enter(NPC _npc)
 		{
