@@ -2,7 +2,7 @@
 
 namespace NonViolentFPS.AI
 {
-	public class TrackPlayerLocationBehaviour : AIBehaviour
+	public class CachePlayerLocationBehaviour : AIBehaviour
 	{
 		public override UpdateType type => UpdateType.Regular;
 

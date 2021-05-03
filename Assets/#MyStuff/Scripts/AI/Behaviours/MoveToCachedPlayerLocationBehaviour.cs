@@ -2,7 +2,7 @@
 
 namespace NonViolentFPS.AI
 {
-	public class MoveToLastKnownPlayerLocationBehaviour : AIBehaviour
+	public class MoveToCachedPlayerLocationBehaviour : AIBehaviour
 	{
 		public override UpdateType type => UpdateType.Regular;
 
