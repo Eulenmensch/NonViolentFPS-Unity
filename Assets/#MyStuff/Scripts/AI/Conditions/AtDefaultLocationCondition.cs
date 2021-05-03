@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
+	[CreateAssetMenu(menuName = "AI Kit/Conditions/AtDefaultLocationCondition")]
 	public class AtDefaultLocationCondition : Condition
 	{
 		public override UpdateType type => UpdateType.Regular;

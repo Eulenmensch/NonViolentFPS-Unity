@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
+	[CreateAssetMenu(menuName = "AI Kit/Conditions/PlayerInDetectionConeCondition")]
 	public class PlayerInDetectionConeCondition : Condition
 	{
 		public override UpdateType type => UpdateType.Regular;

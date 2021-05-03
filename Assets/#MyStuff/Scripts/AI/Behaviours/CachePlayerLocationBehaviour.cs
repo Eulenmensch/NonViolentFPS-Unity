@@ -1,7 +1,9 @@
 ﻿using NonViolentFPS.NPCs;
+using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
+	[CreateAssetMenu(menuName = "AI Kit/Behaviours/CachePlayerLocationBehaviour")]
 	public class CachePlayerLocationBehaviour : AIBehaviour
 	{
 		public override UpdateType type => UpdateType.Regular;

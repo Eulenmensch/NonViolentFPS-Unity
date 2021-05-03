@@ -1,8 +1,10 @@
 ﻿using NonViolentFPS.NPCs;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace NonViolentFPS.AI
 {
+	[CreateAssetMenu(menuName = "AI Kit/Conditions/LocationReachedCondition")]
 	public class LocationReachedCondition : Condition
 	{
 		public override UpdateType type => UpdateType.Regular;
