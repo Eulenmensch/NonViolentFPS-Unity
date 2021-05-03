@@ -23,7 +23,7 @@ namespace NonViolentFPS.AI.Physics
                 return;
             }
 
-            var force = Vector3.up * jumpComponent.JumpForce;
+            var force = jumpComponent.JumpDirection * jumpComponent.JumpForce;
             rigidBodyComponent.RigidbodyRef.AddForce( force, ForceMode.VelocityChange );
         }
     }

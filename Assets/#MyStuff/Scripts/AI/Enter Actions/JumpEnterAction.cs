@@ -28,7 +28,7 @@ namespace NonViolentFPS.AI
             }
 
             groundCheckComponent.Grounded = false;
-            rigidbodyComponent.RigidbodyRef.AddForce( Vector3.up * jumpComponent.JumpForce, ForceMode.VelocityChange );
+            rigidbodyComponent.RigidbodyRef.AddForce( jumpComponent.JumpDirection * jumpComponent.JumpForce, ForceMode.VelocityChange );
         }
     }
 }
