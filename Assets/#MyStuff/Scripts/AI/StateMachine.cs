@@ -1,4 +1,5 @@
 ﻿using NonViolentFPS.NPCs;
+using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
@@ -19,7 +20,7 @@ namespace NonViolentFPS.AI
             CurrentState.UpdateState( this );
         }
 
-        public void FixedUpdate()
+        public void UpdatePhysics()
         {
             CurrentState.UpdatePhysicsState(this);
         }
@@ -30,6 +31,7 @@ namespace NonViolentFPS.AI
             {
                 CurrentState.Exit( npc );
                 CurrentState = _newState;
+                Debug.Log(_newState.name);
                 CurrentState.Enter( npc );
             }
         }

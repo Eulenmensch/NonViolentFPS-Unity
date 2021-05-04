@@ -23,7 +23,7 @@ namespace NonViolentFPS.NPCs
 			StateMachine.TransitionToState(startState);
 		}
 
-		private void Start()
+		protected virtual void Start()
 		{
 			Player = GameManager.Instance.Player;
 			ActiveCollisions = new List<Collision>();
@@ -32,6 +32,11 @@ namespace NonViolentFPS.NPCs
 		private void Update()
 		{
 			StateMachine.Update();
+		}
+
+		private void FixedUpdate()
+		{
+			StateMachine.UpdatePhysics();
 		}
 
 		private void OnCollisionEnter(Collision _other)
