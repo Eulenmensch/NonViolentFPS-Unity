@@ -29,8 +29,8 @@ namespace NonViolentFPS.AI
         {
             foreach ( var behaviour in behaviours )
             {
-                if (behaviour == null) return;
-                if (behaviour.type != UpdateType.Regular) return;
+                if (behaviour == null) continue;
+                if (behaviour.type != UpdateType.Regular) continue;
                 behaviour.DoBehaviour( _npc );
             }
         }
@@ -39,8 +39,8 @@ namespace NonViolentFPS.AI
         {
             foreach (var behaviour in behaviours)
             {
-                if ( behaviour == null ) return;
-                if ( behaviour.type != UpdateType.Physics ) return;
+                if ( behaviour == null ) continue;
+                if ( behaviour.type != UpdateType.Physics ) continue;
                 behaviour.DoBehaviour( _npc );
             }
         }
@@ -49,7 +49,7 @@ namespace NonViolentFPS.AI
         {
             foreach ( var transition in transitions )
             {
-                if (transition.condition.type != UpdateType.Regular) return;
+                if (transition.condition.type != UpdateType.Regular) continue;
                 var conditionTrue = transition.condition.Evaluate( _npc );
 
                 _stateMachine.TransitionToState( conditionTrue ? transition.trueState : transition.falseState );
@@ -60,7 +60,7 @@ namespace NonViolentFPS.AI
         {
             foreach (var transition in transitions)
             {
-                if (transition.condition.type != UpdateType.Physics) return;
+                if (transition.condition.type != UpdateType.Physics) continue;
 
                 var conditionTrue = transition.condition.Evaluate(_npc);
                 _stateMachine.TransitionToState( conditionTrue ? transition.trueState : transition.falseState);
