@@ -1,4 +1,6 @@
-﻿using NonViolentFPS.Events;
+﻿using System;
+using NonViolentFPS.Events;
+using NonViolentFPS.Manager;
 using NonViolentFPS.Utility;
 using Unity.Mathematics;
 using UnityEngine;
@@ -13,7 +15,7 @@ namespace NonViolentFPS.Level
 		[SerializeField] private Vector3 arrowRotation;
 		[SerializeField] private float arrowSize;
 
-		private void Start()
+		private void OnEnable()
 		{
 			GameEvents.Instance.OnPlayerLoaded += SetPlayerLocation;
 		}
@@ -23,9 +25,15 @@ namespace NonViolentFPS.Level
 			GameEvents.Instance.OnPlayerLoaded -= SetPlayerLocation;
 		}
 
+		private void Start()
+		{
+			SetPlayerLocation(GameManager.Instance.Player.transform);
+		}
+
 		private void SetPlayerLocation(Transform _playerTransform)
 		{
 			_playerTransform.position = transform.position;
+			_playerTransform.rotation = transform.rotation;
 		}
 
 		#if UNITY_EDITOR
