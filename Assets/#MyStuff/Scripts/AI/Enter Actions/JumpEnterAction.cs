@@ -28,7 +28,10 @@ namespace NonViolentFPS.AI
             }
 
             groundCheckComponent.Grounded = false;
-            rigidbodyComponent.RigidbodyRef.AddForce( jumpComponent.JumpDirection * jumpComponent.JumpForce, ForceMode.VelocityChange );
+            var playerDirection = _npc.Player.transform.position - _npc.transform.position;
+            var lookAtPlayerRotation = Quaternion.LookRotation(playerDirection, Vector3.up);
+            var jumpDirection = lookAtPlayerRotation * jumpComponent.JumpDirection;
+            rigidbodyComponent.RigidbodyRef.AddForce( jumpDirection * jumpComponent.JumpForce, ForceMode.VelocityChange );
         }
     }
 }
