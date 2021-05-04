@@ -12,8 +12,16 @@ namespace NonViolentFPS.AI
 
 		public override bool Evaluate(NPC _npc)
 		{
+			var rangeComponent = _npc as IRangeComponent;
+			if (rangeComponent == null)
+			{
+				NPC.ThrowComponentMissingError(typeof(IRangeComponent));
+				return false;
+			}
+
 			var angle = GetAngleToPlayer(_npc);
-			if (angle <= coneAngle)
+			var distanceToPlayer = Vector3.Distance(_npc.Player.transform.position, _npc.transform.position);
+			if (angle <= coneAngle && distanceToPlayer <= rangeComponent.Range)
 			{
 				return true;
 			}
@@ -36,7 +44,6 @@ namespace NonViolentFPS.AI
 			var selfForward = npcTransform.forward;
 			var dot = Vector3.Dot(playerDirection, selfForward);
 			var angleToPlayer = CosToEuler(dot);
-
 			return angleToPlayer;
 		}
 	}
