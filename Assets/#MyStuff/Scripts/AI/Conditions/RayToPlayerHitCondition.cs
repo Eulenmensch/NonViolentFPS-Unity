@@ -21,9 +21,12 @@ namespace NonViolentFPS.AI
 			}
 
 			var selfPosition = _npc.transform.position;
-			var playerPosition = _npc.Player.transform.position;
-			var rayToPlayer = new Ray(selfPosition, playerPosition);
 
+			var playerHalfHeight = _npc.Player.GetComponent<CapsuleCollider>().height / 2;
+			var playerPosition = _npc.Player.transform.position + Vector3.up * playerHalfHeight;
+			var playerDirection = (playerPosition - selfPosition).normalized;
+			var rayToPlayer = new Ray(selfPosition, playerDirection);
+			Debug.DrawRay(selfPosition, playerDirection, Color.green);
 			// var rayArray = new Ray[9];
 			// foreach (var ray in rayArray)
 			// {
@@ -33,6 +36,7 @@ namespace NonViolentFPS.AI
 
 			if (UnityEngine.Physics.Raycast(rayToPlayer, out var hit ,rangeComponent.Range))
 			{
+				Debug.Log(hit.collider.name);
 				if (hit.collider.gameObject == _npc.Player)
 				{
 					return true;
