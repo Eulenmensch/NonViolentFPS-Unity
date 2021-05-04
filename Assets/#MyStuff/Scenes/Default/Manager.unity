@@ -109,7 +109,7 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
-    agentHeight: 2
+    agentHeight: 1
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
@@ -124,7 +124,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 8c05bdaee1d76e4408cea1d0ca7dbb38, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: b2d67581945871447befc86c43d16c53, type: 2}
 --- !u!1 &1205745491
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3a5a69695446f99426d42313ab1c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGameMode: {fileID: 11400000, guid: fdc6e45059b128a4d8f51e0d426cae28, type: 2}
+  startGameMode: {fileID: 11400000, guid: 2bb849dfc24efdb408d9547f462b215c, type: 2}
   winScreen:
     sceneAsset: {fileID: 102900000, guid: c654a2b4e19d56f46af820170880a87c, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Frontend Screens/Win Screen.unity
