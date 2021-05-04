@@ -21,10 +21,11 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  behaviours: []
+  behaviours:
+  - {fileID: 11400000, guid: e297d07dcc9a6ed48b63f072c7ca3aa0, type: 2}
   enterActions:
   - {fileID: 11400000, guid: 26b2b6e2d9584b54d9a8e7dc154f80e0, type: 2}
-  - {fileID: 11400000, guid: c60031ef2a50a9a469488468fb78a72c, type: 2}
   - {fileID: 11400000, guid: 9cb8d6baede692a4c979498c90328973, type: 2}
+  - {fileID: 11400000, guid: c60031ef2a50a9a469488468fb78a72c, type: 2}
   exitActions: []
   transitions: []
