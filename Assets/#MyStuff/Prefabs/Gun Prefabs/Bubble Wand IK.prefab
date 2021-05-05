@@ -177,10 +177,12 @@ MonoBehaviour:
   target: {fileID: 8612053501573176338}
   xOffsetMax: 10
   yOffsetMax: 10
+  zOffssetMin: 0
   zOffsetMax: 0.04
   xVelocityMax: 5
   yVelocityMax: 5
   zVelocityMax: 5
+  flipZY: 0
 --- !u!1 &922212777889582061
 GameObject:
   m_ObjectHideFlags: 0
@@ -8127,7 +8129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796b75e345bd64d47a31edd757bd2670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_Root: {fileID: 7822713579105138492}
     m_Tip: {fileID: 8389375202974256612}
@@ -8152,7 +8154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 0
+  m_Weight: 1
   m_Data:
     m_Root: {fileID: 3557918641324683015}
     m_Mid: {fileID: 8633950501259971634}
@@ -18453,10 +18455,12 @@ MonoBehaviour:
   target: {fileID: 8612053501573176338}
   xOffsetMax: 0
   yOffsetMax: 0
+  zOffssetMin: 0
   zOffsetMax: 0
   xVelocityMax: 0
   yVelocityMax: 0
   zVelocityMax: 0
+  flipZY: 0
 --- !u!1773428102 &2266433999803054310
 ParentConstraint:
   m_ObjectHideFlags: 0
