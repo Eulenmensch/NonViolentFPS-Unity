@@ -3,25 +3,23 @@ using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
-	[CreateAssetMenu(menuName = "AI Kit/Conditions/PlayerInDetectionConeCondition")]
+	[CreateAssetMenu(menuName = "AI Kit/Conditions/PlayerInAlertConeCondition")]
 	public class PlayerInDetectionConeCondition : Condition
 	{
 		public override UpdateType type => UpdateType.Regular;
 
-		[SerializeField] private float coneAngle;
-
 		public override bool Evaluate(NPC _npc)
 		{
-			var rangeComponent = _npc as IRangeComponent;
-			if (rangeComponent == null)
+			var alertConeComponent = _npc as IAlertConeComponent;
+			if (alertConeComponent == null)
 			{
-				NPC.ThrowComponentMissingError(typeof(IRangeComponent));
+				NPC.ThrowComponentMissingError(typeof(IAlertConeComponent));
 				return false;
 			}
 
 			var angle = GetAngleToPlayer(_npc);
 			var distanceToPlayer = Vector3.Distance(_npc.Player.transform.position, _npc.transform.position);
-			if (angle <= coneAngle && distanceToPlayer <= rangeComponent.Range)
+			if (angle <= alertConeComponent.AlertAngle && distanceToPlayer <= alertConeComponent.AlertRange)
 			{
 				return true;
 			}

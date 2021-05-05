@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace NonViolentFPS.AI
 {
-	[CreateAssetMenu( menuName = "AI Kit/Conditions/RayToPlayerHitCondition" )]
-	public class RayToPlayerHitCondition : Condition
+	[CreateAssetMenu( menuName = "AI Kit/Conditions/PlayerInViewCondition" )]
+	public class PlayerInViewCondition : Condition
 	{
 		public override UpdateType type => UpdateType.Physics;
 
@@ -13,10 +13,10 @@ namespace NonViolentFPS.AI
 
 		public override bool Evaluate(NPC _npc)
 		{
-			var rangeComponent = _npc as IRangeComponent;
-			if (rangeComponent == null)
+			var viewComponent = _npc as IViewConeComponent;
+			if (viewComponent == null)
 			{
-				NPC.ThrowComponentMissingError(typeof(IRangeComponent));
+				NPC.ThrowComponentMissingError(typeof(IViewConeComponent));
 				return false;
 			}
 
@@ -34,9 +34,8 @@ namespace NonViolentFPS.AI
 			// }
 
 
-			if (UnityEngine.Physics.Raycast(rayToPlayer, out var hit ,rangeComponent.Range))
+			if (UnityEngine.Physics.Raycast(rayToPlayer, out var hit ,viewComponent.ViewRange))
 			{
-				Debug.Log(hit.collider.name);
 				if (hit.collider.gameObject == _npc.Player)
 				{
 					return true;
