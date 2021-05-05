@@ -22,12 +22,14 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   behaviours: []
-  enterActions: []
-  exitActions: []
+  enterActions:
+  - {fileID: 11400000, guid: 5da5f131161055042b0115980d36b595, type: 2}
+  exitActions:
+  - {fileID: 11400000, guid: ff4b316722cd4ac40af5e285a8e7377b, type: 2}
   transitions:
-  - condition: {fileID: 11400000, guid: ef313d422a02079469056547c0d567b5, type: 2}
+  - condition: {fileID: 11400000, guid: 1c782e4b19313514a98f414868d3746e, type: 2}
     trueState: {fileID: 11400000, guid: b8cbb07984a1eee4b9cbaf77255a529d, type: 2}
     falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
-  - condition: {fileID: 11400000, guid: 38a2d429571f3cc4eb2e1e410af2f3ff, type: 2}
+  - condition: {fileID: 11400000, guid: d101b84744dad374291e4b142db6a1e6, type: 2}
     trueState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
-    falseState: {fileID: 11400000, guid: 02b0da3d8aa1f804292fc49835de7948, type: 2}
+    falseState: {fileID: 11400000, guid: d8f941f9cc15f2b4a8e7ed59408f374c, type: 2}
