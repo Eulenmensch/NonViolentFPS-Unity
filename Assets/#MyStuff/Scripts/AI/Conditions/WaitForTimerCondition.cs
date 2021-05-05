@@ -10,8 +10,24 @@ namespace NonViolentFPS.AI
 
 		public override bool Evaluate(NPC _npc)
 		{
-			return true; //FIXME: not sure if this is still necessary now that I know how to use async methods
-			// return !_npc.Waiting;
+			var timerComponent = _npc as ITimerComponent;
+			if (timerComponent == null)
+			{
+				NPC.ThrowComponentMissingError(typeof(ITimerComponent));
+				return false;
+			}
+
+			var time = Random.Range(timerComponent.MinTime, timerComponent.MaxTime);
+
+			timerComponent.Timer += Time.deltaTime;
+
+			if (timerComponent.Timer >= time)
+			{
+				timerComponent.Timer = 0;
+				return true;
+			}
+
+			return false;
 		}
 	}
 }
