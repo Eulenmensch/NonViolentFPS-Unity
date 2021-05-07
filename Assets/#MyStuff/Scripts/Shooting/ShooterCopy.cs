@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -75,6 +74,15 @@ namespace NonViolentFPS.Shooting
             }
         }
 
+        public void GetReloadInput(InputAction.CallbackContext _context)
+        {
+            if (_context.started)
+            {
+                var reloadable = activeGun as IReloadable;
+                reloadable?.Reload();
+            }
+        }
+
         public void ActivateGun(Gun _gun)
         {
             if(activeGun != null)
@@ -85,14 +93,12 @@ namespace NonViolentFPS.Shooting
             _gun.SetUpGun(this);
         }
 
-        [PublicAPI]
         public void GetMouseWheelInput(InputAction.CallbackContext _context)
         {
             var scrollWheelAction = activeGun as IScrollwheelActionable;
             scrollWheelAction?.ScrollWheelAction(_context, invertScrollDirection);
         }
 
-        [PublicAPI]
         public void SelectGun(InputAction.CallbackContext _context)
         {
             var inputDirection = _context.ReadValue<Vector2>();
