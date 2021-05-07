@@ -521,6 +521,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 95f1f187-c672-4f46-8b65-0c3cd7a672f9
     m_ActionName: Player/Secondary Fire[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7857490242237326483}
+        m_TargetAssemblyTypeName: NonViolentFPS.Shooting.ShooterCopy, Assembly-CSharp
+        m_MethodName: GetReloadInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fa36e62b-23db-45e8-b2ec-13724169195f
+    m_ActionName: Player/Reload[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
