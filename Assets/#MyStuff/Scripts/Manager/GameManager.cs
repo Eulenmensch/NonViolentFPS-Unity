@@ -65,7 +65,7 @@ namespace NonViolentFPS.Manager
 			}
 
 			#if UNITY_EDITOR
-			if (Input.GetKeyDown(KeyCode.R))
+			if (Input.GetKeyDown(KeyCode.L))
 			{
 				RestartCurrentGamemode();
 			}
