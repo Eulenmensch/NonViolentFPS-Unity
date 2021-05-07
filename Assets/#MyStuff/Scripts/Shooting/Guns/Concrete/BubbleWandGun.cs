@@ -1,12 +1,15 @@
-﻿using DG.Tweening;
+﻿using System.Collections;
+using DG.Tweening;
 using NonViolentFPS.Events;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using NonViolentFPS.Extension_Classes;
+using UnityEngine.InputSystem;
 
 namespace NonViolentFPS.Shooting
 {
 	[CreateAssetMenu(menuName = "Guns/BubbleWandGun")]
-	public class BubbleWandGun : Gun, IPrimaryFireable, ISecondaryFireable
+	public class BubbleWandGun : Gun, IPrimaryFireable, ISecondaryFireable, IReloadable
 	{
 		[BoxGroup("Visuals")]
 		[SerializeField] private Vector3 adsPosition;
@@ -15,14 +18,22 @@ namespace NonViolentFPS.Shooting
 		[BoxGroup("Visuals")]
 		[SerializeField] private float adsDuration;
 
-		[BoxGroup("Settings")]
+		[BoxGroup("Shooting")]
 		[SerializeField] private GameObject bubblePrefab;
-		[BoxGroup("Settings")]
+		[BoxGroup("Shooting")]
 		[SerializeField] private float fullChargeTime;
-		[BoxGroup("Settings")]
+		[BoxGroup("Shooting")]
 		[SerializeField] private AnimationCurve fireForceCurve;
-		[BoxGroup("Settings")]
+		[BoxGroup("Shooting")]
 		[SerializeField] private float fireForceMultiplier;
+
+		[BoxGroup("Reloading")]
+		[SerializeField] private float reloadTime;
+
+		// [SerializeField] private PlayerInput input;
+		[SerializeField] private InputActionAsset inputAsset;
+
+
 
 		private Transform projectileContainer;
 		private GameObject bubbleInstance;
@@ -99,6 +110,24 @@ namespace NonViolentFPS.Shooting
 			PlayerEvents.Instance.AimDownSights(false);
 		}
 
+		public void Reload()
+		{
+			PlayerEvents.Instance.Reload(reloadTime);
+			Shooter.StartCoroutine(ReloadTimer(reloadTime));
+			inputAsset.Disable();
+		}
+
+		private IEnumerator ReloadTimer(float _reloadTime)
+		{
+			var startTime = Time.time;
+			while (Time.time - startTime <= _reloadTime)
+			{
+				yield return null;
+			}
+			PlayerEvents.Instance.ReloadCompleted();
+			inputAsset.Enable();
+		}
+
 		private void ShootBubble()
 		{
 			bubbleInstance = Instantiate(bubblePrefab, ShootingOrigin.position, Quaternion.identity, projectileContainer);
@@ -113,7 +142,7 @@ namespace NonViolentFPS.Shooting
 			Shooter.GunAttachmentPoint.DOLocalRotate(_targetRotation, _animationDuration).SetEase(Ease.InOutCirc);
 		}
 
-		private Vector3 GetPlayerForwardVelocity()
+		private static Vector3 GetPlayerForwardVelocity()
         {
          	var playerRigidbody = Manager.GameManager.Instance.Player.GetComponent<Rigidbody>();
             if (Vector3.Dot(playerRigidbody.velocity, Camera.main.transform.forward) <= 0)
