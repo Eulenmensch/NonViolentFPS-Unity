@@ -40,5 +40,11 @@ namespace NonViolentFPS.Events
 
 		public event Action<bool> OnAimDownSights;
 		public void AimDownSights(bool _isAimingDownSights){OnAimDownSights?.Invoke(_isAimingDownSights);}
+
+		public event Action<float> OnReload;
+		public void Reload(float _reloadTime){OnReload?.Invoke(_reloadTime);}
+
+		public event Action OnReloadCompleted;
+		public void ReloadCompleted(){OnReloadCompleted?.Invoke();}
 	}
 }

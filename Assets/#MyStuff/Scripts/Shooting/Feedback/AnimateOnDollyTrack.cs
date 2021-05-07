@@ -22,7 +22,12 @@ namespace NonViolentFPS.Shooting
 
 		private void OnEnable()
 		{
-			PlayerEvents.Instance.OnInteract += StartAnimation;
+			PlayerEvents.Instance.OnReload += StartAnimation;
+		}
+
+		private void OnDisable()
+		{
+			PlayerEvents.Instance.OnReload -= StartAnimation;
 		}
 
 		private void Start()
@@ -30,41 +35,44 @@ namespace NonViolentFPS.Shooting
 			defaultRotation = transform.localRotation;
 		}
 
-		private void StartAnimation()
+		private void StartAnimation(float _animationTime)
 		{
-			StartCoroutine(AnimatePosition());
-			StartCoroutine(AnimateRotation());
+			StartCoroutine(Animate(_animationTime));
 		}
 
-		private IEnumerator AnimatePosition()
+		private IEnumerator Animate(float _animationTime)
 		{
 			var startTime = Time.time;
-			while (Time.time - startTime <= animationTime)
+			while (Time.time - startTime <= _animationTime)
 			{
-				dollyCart.m_Position = positionCurve.Evaluate((Time.time - startTime) / animationTime);
+				var timerProgress = (Time.time - startTime) / _animationTime;
+				AnimateRotation(timerProgress);
+				AnimatePosition(timerProgress);
 				yield return null;
 			}
+			ResetAnimatedProperties();
+		}
 
+		private void AnimateRotation(float _timerProgress)
+		{
+			var defaultEulerRotation = defaultRotation.eulerAngles;
+			var eulerRotation = new Vector3();
+
+			eulerRotation.x = defaultEulerRotation.x + xRotationMax * xRotation.Evaluate(_timerProgress);
+			eulerRotation.y = defaultEulerRotation.y + yRotationMax * yRotation.Evaluate(_timerProgress);
+			eulerRotation.z = defaultEulerRotation.z + zRotationMax * zRotation.Evaluate(_timerProgress);
+
+			transform.localRotation = Quaternion.Euler(eulerRotation);
+		}
+
+		private void AnimatePosition(float _timerProgress)
+		{
+			dollyCart.m_Position = positionCurve.Evaluate(_timerProgress);
+		}
+
+		private void ResetAnimatedProperties()
+		{
 			dollyCart.m_Position = 0;
-		}
-
-		private IEnumerator AnimateRotation()
-		{
-			var startTime = Time.time;
-			while (Time.time - startTime <= animationTime)
-			{
-				var defaultEulerRotation = defaultRotation.eulerAngles;
-
-				var eulerRotation = new Vector3();
-				var timeProgress = (Time.time - startTime) / animationTime;
-				eulerRotation.x = defaultEulerRotation.x + xRotationMax * xRotation.Evaluate(timeProgress);
-				eulerRotation.y = defaultEulerRotation.y + yRotationMax * yRotation.Evaluate(timeProgress);
-				eulerRotation.z = defaultEulerRotation.z + zRotationMax * zRotation.Evaluate(timeProgress);
-
-				transform.localRotation = Quaternion.Euler(eulerRotation);
-				yield return null;
-			}
-
 			transform.localRotation = defaultRotation;
 		}
 	}
