@@ -15,14 +15,14 @@ namespace NonViolentFPS.AI
 
         public void UpdateState(StateMachine _stateMachine)
         {
-            DoBehaviours( _stateMachine.npc );
-            EvaluateConditions( _stateMachine.npc, _stateMachine );
+            DoBehaviours( _stateMachine.OwnerNPC );
+            EvaluateConditions( _stateMachine.OwnerNPC, _stateMachine );
         }
 
         public void UpdatePhysicsState(StateMachine _stateMachine)
         {
-            DoPhysicsBehaviours( _stateMachine.npc );
-            EvaluatePhysicsConditions(_stateMachine.npc, _stateMachine);
+            DoPhysicsBehaviours( _stateMachine.OwnerNPC );
+            EvaluatePhysicsConditions(_stateMachine.OwnerNPC, _stateMachine);
         }
 
         private void DoBehaviours(NPC _npc)

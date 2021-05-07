@@ -10,6 +10,7 @@ namespace NonViolentFPS.NPCs
 	public abstract class NPC : SerializedMonoBehaviour
 	{
 		[SerializeField] private State startState;
+		[SerializeField] private State anyState;
 
 		public StateMachine StateMachine { get; private set; }
 
@@ -19,7 +20,7 @@ namespace NonViolentFPS.NPCs
 
 		protected virtual void Awake()
 		{
-			StateMachine = new StateMachine(this) {CurrentState = startState};
+			StateMachine = new StateMachine(this, anyState) {CurrentState = startState};
 			StateMachine.TransitionToState(startState);
 		}
 
