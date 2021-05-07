@@ -26,6 +26,8 @@ MonoBehaviour:
     scenePath: Assets/#MyStuff/Scenes/Default/Post Processing.unity
   - sceneAsset: {fileID: 102900000, guid: 98a08c75198172c42bf547aa37243374, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Default/Player.unity
+  - sceneAsset: {fileID: 102900000, guid: 05c50d6aff84574488001d4cb8638331, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/HUD.unity
   - sceneAsset: {fileID: 102900000, guid: 3c42afe3d6f84c74085d6ee211ff2d3d, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Rescue UI.unity
   - sceneAsset: {fileID: 102900000, guid: 46d6db8d05acacc4daa50caa60dbae22, type: 3}
