@@ -36,6 +36,7 @@ Material:
     - _FresnelPower1: 0
     - _FresnelScale: 1.45
     - _FresnelScale1: 0
+    - _Opacity: 1.6
     - _PosterizePower: 33.67
     - _PosterizePower1: 0
     - _SpecularIntensity: 0.04
@@ -44,7 +45,7 @@ Material:
     m_Colors:
     - _BorderSmoothstepMinMax: {r: 0.58, g: 0.61, b: 0, a: 0}
     - _CenterOffset: {r: 0.04, g: 0.022, b: 0, a: 0}
-    - _Color: {r: 0.5333304, g: 0.8018868, b: 0.6416331, a: 0}
+    - _Color: {r: 0.33368918, g: 0.6981132, b: 0.4837461, a: 0}
     - _SpecularColor: {r: 0.48876536, g: 0.5754716, b: 0.47051138, a: 1}
     - _SpecularColor1: {r: 0.48876536, g: 0.5754716, b: 0.47051138, a: 1}
     - _StipplesSmoothstepMinMax: {r: 0.39, g: 0.58, b: 0, a: 0}
