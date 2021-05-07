@@ -34,7 +34,7 @@ namespace NonViolentFPS.Shooting
 			sphereCollider = GetComponent<SphereCollider>();
 			sphereCollider.enabled = false;
 			EnableCollisionAfterSeconds(sphereCollider, collisionGraceTime);
-			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.InOutCirc);
+			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.OutExpo);
 		}
 
 		private void FixedUpdate()
