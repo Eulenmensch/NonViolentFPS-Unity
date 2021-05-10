@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using DG.Tweening;
-using Google.Protobuf.WellKnownTypes;
 using NonViolentFPS.Events;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using NonViolentFPS.Extension_Classes;
 using UnityEngine.InputSystem;
 
 namespace NonViolentFPS.Shooting
@@ -103,8 +101,10 @@ namespace NonViolentFPS.Shooting
 
 		public void PrimaryFireExit()
 		{
-			ShootBubble();
 			StopFeedbacks(Visuals.ChargeFeedback);
+			if (AmmoInClip <= 0) return;
+			ShootBubble();
+			UpdateAmmoInClipCount();
 			PlayFeedbacks(Visuals.FireFeedback);
 		}
 
@@ -139,6 +139,7 @@ namespace NonViolentFPS.Shooting
 			}
 			PlayerEvents.Instance.ReloadCompleted();
 			inputAsset.Enable();
+			AmmoInClip = ClipSize;
 		}
 
 		private void ShootBubble()
@@ -147,6 +148,12 @@ namespace NonViolentFPS.Shooting
 			var bubbleRigidbody = bubbleInstance.GetComponent<Rigidbody>();
 			var force = Camera.main.transform.forward * fireForce + GetPlayerForwardVelocity();
 			bubbleRigidbody.AddForce(force, ForceMode.VelocityChange);
+		}
+
+		private void UpdateAmmoInClipCount()
+		{
+			AmmoInClip--;
+			UIEvents.Instance.UpdateAmmoText(AmmoInClip.ToString());
 		}
 
 		private void AnimateAttachmentPoint(Vector3 _targetPosition, Vector3 _targetRotation, float _animationDuration)
