@@ -8,28 +8,28 @@ namespace NonViolentFPS.UI
 	{
 		[SerializeField] private Slider ammoSlider;
 
-		private int currentGunAmmoCount;
+		private int currentGunAmmoTypeCount;
 
 		private void OnEnable()
 		{
 			PlayerEvents.Instance.OnAmmoChanged += UpdateAmmoSliderPosition;
-			PlayerEvents.Instance.OnGunChanged += UpdateCurrentGunAmmoCount;
+			PlayerEvents.Instance.OnGunChanged += UpdateCurrentGunAmmoTypeCount;
 		}
 
 		private void OnDisable()
 		{
 			PlayerEvents.Instance.OnAmmoChanged -= UpdateAmmoSliderPosition;
-			PlayerEvents.Instance.OnGunChanged -= UpdateCurrentGunAmmoCount;
+			PlayerEvents.Instance.OnGunChanged -= UpdateCurrentGunAmmoTypeCount;
 		}
 
 		private void UpdateAmmoSliderPosition(int _currentAmmo)
 		{
-			ammoSlider.value = (float)_currentAmmo / currentGunAmmoCount;
+			ammoSlider.value = (float)_currentAmmo / currentGunAmmoTypeCount;
 		}
 
-		private void UpdateCurrentGunAmmoCount(int _newGunAmmoCount)
+		private void UpdateCurrentGunAmmoTypeCount(int _newGunAmmoCount)
 		{
-			currentGunAmmoCount = _newGunAmmoCount - 1;
+			currentGunAmmoTypeCount = _newGunAmmoCount - 1;
 		}
 	}
 }
