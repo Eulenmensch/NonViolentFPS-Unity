@@ -24,5 +24,8 @@ namespace NonViolentFPS.Events
 
 		public event Action<string> OnTimerTextUpdate;
 		public void UpdateTimerText(string _timerText){OnTimerTextUpdate?.Invoke(_timerText);}
+
+		public event Action<string> OnAmmoTextUpdate;
+		public void UpdateAmmoText(string _ammoText){OnAmmoTextUpdate?.Invoke(_ammoText);}
 	}
 }
