@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using DG.Tweening;
+using Google.Protobuf.WellKnownTypes;
 using NonViolentFPS.Events;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.InputSystem;
 namespace NonViolentFPS.Shooting
 {
 	[CreateAssetMenu(menuName = "Guns/BubbleWandGun")]
-	public class BubbleWandGun : Gun, IPrimaryFireable, ISecondaryFireable, IReloadable
+	public class BubbleWandGun : Gun, IPrimaryFireable, ISecondaryFireable, IReloadable, IAmmoClipComponent
 	{
 		[BoxGroup("Visuals")]
 		[SerializeField] private Vector3 adsPosition;
@@ -29,11 +30,23 @@ namespace NonViolentFPS.Shooting
 
 		[BoxGroup("Reloading")]
 		[SerializeField] private float reloadTime;
+		[BoxGroup("Reloading")]
+		[field: SerializeField] public int ClipSize { get; set; }
 
 		// [SerializeField] private PlayerInput input;
 		[SerializeField] private InputActionAsset inputAsset;
 
-
+		private int ammoInClip;
+		public int AmmoInClip
+		{
+			get => ammoInClip;
+			set
+			{
+				ammoInClip = value;
+				if (value > ClipSize)
+					ammoInClip = ClipSize;
+			}
+		}
 
 		private Transform projectileContainer;
 		private GameObject bubbleInstance;
