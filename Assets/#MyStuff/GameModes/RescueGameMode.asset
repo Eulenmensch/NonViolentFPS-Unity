@@ -30,5 +30,7 @@ MonoBehaviour:
     scenePath: Assets/#MyStuff/Scenes/Default/HUD.unity
   - sceneAsset: {fileID: 102900000, guid: 3c42afe3d6f84c74085d6ee211ff2d3d, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Rescue UI.unity
+  - sceneAsset: {fileID: 102900000, guid: dc4248ca5da43ea429d7c997e3f328fd, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Rescue Levels/BubbleWand HUD.unity
   - sceneAsset: {fileID: 102900000, guid: 46d6db8d05acacc4daa50caa60dbae22, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Rescue Levels/Gym.unity

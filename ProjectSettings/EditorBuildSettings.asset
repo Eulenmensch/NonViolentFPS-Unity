@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/#MyStuff/Scenes/Rescue Levels/Gym.unity
     guid: 46d6db8d05acacc4daa50caa60dbae22
+  - enabled: 1
+    path: Assets/#MyStuff/Scenes/Rescue Levels/BubbleWand HUD.unity
+    guid: dc4248ca5da43ea429d7c997e3f328fd
   m_configObjects: {}
