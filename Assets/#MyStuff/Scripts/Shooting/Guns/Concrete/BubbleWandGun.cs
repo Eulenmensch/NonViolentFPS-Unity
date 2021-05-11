@@ -28,10 +28,11 @@ namespace NonViolentFPS.Shooting
 
 		[BoxGroup("Reloading")]
 		[SerializeField] private float reloadTime;
-		[BoxGroup("Reloading")]
-		[field: SerializeField] public int ClipSize { get; set; }
+		[SerializeField] private float reloadTimeBuffer;
 
-		// [SerializeField] private PlayerInput input;
+		[BoxGroup("Reloading")] [field: SerializeField] public int ClipSize { get; set; }
+
+		[BoxGroup("Input")]
 		[SerializeField] private InputActionAsset inputAsset;
 
 		private int ammoInClip;
@@ -127,7 +128,7 @@ namespace NonViolentFPS.Shooting
 		public void Reload()
 		{
 			PlayerEvents.Instance.Reload(reloadTime);
-			Shooter.StartCoroutine(ReloadTimer(reloadTime));
+			Shooter.StartCoroutine(ReloadTimer(reloadTime - reloadTimeBuffer));
 			inputAsset.Disable();
 		}
 

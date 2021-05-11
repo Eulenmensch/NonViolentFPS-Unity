@@ -55,5 +55,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   fireForceMultiplier: 2
   reloadTime: 1.6
+  reloadTimeBuffer: 0.15
+  <ClipSize>k__BackingField: 3
   inputAsset: {fileID: -944628639613478452, guid: e4120e66871a3da49a87810a00b87220,
     type: 3}
