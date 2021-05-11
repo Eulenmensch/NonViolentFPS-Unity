@@ -60,8 +60,9 @@ namespace NonViolentFPS.Shooting
 			projectileContainer = _shooter.ProjectileContainer;
 
 			CacheDefaultAttachmentPointTransform();
+			UpdateUIAmmoTypeCount(1);
 
-			UpdateUIAmmoCount(1);
+			AmmoInClip = ClipSize;
 
 			//this gun needs a non-default shooting origin
 			if(Visuals == null)
@@ -140,6 +141,7 @@ namespace NonViolentFPS.Shooting
 			PlayerEvents.Instance.ReloadCompleted();
 			inputAsset.Enable();
 			AmmoInClip = ClipSize;
+			UIEvents.Instance.UpdateAmmoText(AmmoInClip);
 		}
 
 		private void ShootBubble()
@@ -153,7 +155,7 @@ namespace NonViolentFPS.Shooting
 		private void UpdateAmmoInClipCount()
 		{
 			AmmoInClip--;
-			UIEvents.Instance.UpdateAmmoText(AmmoInClip.ToString());
+			UIEvents.Instance.UpdateAmmoText(AmmoInClip);
 		}
 
 		private void AnimateAttachmentPoint(Vector3 _targetPosition, Vector3 _targetRotation, float _animationDuration)
