@@ -56,7 +56,7 @@ namespace NonViolentFPS.Shooting
 			_feedbacks.StopFeedbacks();
 		}
 
-		protected void UpdateUIAmmoCount(int _ammoCount)
+		protected void UpdateUIAmmoTypeCount(int _ammoCount)
 		{
 			PlayerEvents.Instance.UpdateGunStats(_ammoCount);
 		}
