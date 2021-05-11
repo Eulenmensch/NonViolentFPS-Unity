@@ -370,7 +370,7 @@ MonoBehaviour:
   <Head>k__BackingField: {fileID: 3240651724950316547}
   <MinTime>k__BackingField: 2
   <MaxTime>k__BackingField: 4
-  <SpawnPoint>k__BackingField: {fileID: 0}
+  <SpawnPoint>k__BackingField: {fileID: 1911645888711751082}
 --- !u!195 &3240651724485733904
 NavMeshAgent:
   m_ObjectHideFlags: 0
