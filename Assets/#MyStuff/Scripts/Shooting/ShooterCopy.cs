@@ -17,7 +17,7 @@ namespace NonViolentFPS.Shooting
         public Transform GunAttachmentPoint => gunAttachmentPoint;
         public Transform ProjectileContainer => projectileContainer;
 
-        private Gun activeGun;
+        public Gun ActiveGun { get; private set; }
         private bool primaryActive;
         private bool secondaryActive;
 
@@ -30,12 +30,12 @@ namespace NonViolentFPS.Shooting
         {
             if (primaryActive)
             {
-                var primaryFireable = activeGun as IPrimaryFireable;
+                var primaryFireable = ActiveGun as IPrimaryFireable;
                 primaryFireable?.PrimaryFireAction();
             }
             else if (secondaryActive)
             {
-                var secondaryFireable = activeGun as ISecondaryFireable;
+                var secondaryFireable = ActiveGun as ISecondaryFireable;
                 secondaryFireable?.SecondaryFireAction();
             }
         }
@@ -44,14 +44,14 @@ namespace NonViolentFPS.Shooting
         {
             if (_context.started)
             {
-                var primaryFireable = activeGun as IPrimaryFireable;
+                var primaryFireable = ActiveGun as IPrimaryFireable;
                 primaryFireable?.PrimaryFireEnter();
                 primaryActive = true;
             }
 
             if (_context.canceled)
             {
-                var primaryFireable = activeGun as IPrimaryFireable;
+                var primaryFireable = ActiveGun as IPrimaryFireable;
                 primaryFireable?.PrimaryFireExit();
                 primaryActive = false;
             }
@@ -61,14 +61,14 @@ namespace NonViolentFPS.Shooting
         {
             if (_context.started)
             {
-                var secondaryFireable = activeGun as ISecondaryFireable;
+                var secondaryFireable = ActiveGun as ISecondaryFireable;
                 secondaryFireable?.SecondaryFireEnter();
                 secondaryActive = true;
             }
 
             if (_context.canceled)
             {
-                var secondaryFireable = activeGun as ISecondaryFireable;
+                var secondaryFireable = ActiveGun as ISecondaryFireable;
                 secondaryFireable?.SecondaryFireExit();
                 secondaryActive = false;
             }
@@ -78,24 +78,24 @@ namespace NonViolentFPS.Shooting
         {
             if (_context.started)
             {
-                var reloadable = activeGun as IReloadable;
+                var reloadable = ActiveGun as IReloadable;
                 reloadable?.Reload();
             }
         }
 
         public void ActivateGun(Gun _gun)
         {
-            if(activeGun != null)
+            if(ActiveGun != null)
             {
-                activeGun.CleanUpGun();
+                ActiveGun.CleanUpGun();
             }
-            activeGun = _gun;
+            ActiveGun = _gun;
             _gun.SetUpGun(this);
         }
 
         public void GetMouseWheelInput(InputAction.CallbackContext _context)
         {
-            var scrollWheelAction = activeGun as IScrollwheelActionable;
+            var scrollWheelAction = ActiveGun as IScrollwheelActionable;
             scrollWheelAction?.ScrollWheelAction(_context, invertScrollDirection);
         }
 
