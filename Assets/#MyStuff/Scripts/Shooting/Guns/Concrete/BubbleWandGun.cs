@@ -28,7 +28,10 @@ namespace NonViolentFPS.Shooting
 
 		[BoxGroup("Reloading")]
 		[SerializeField] private float reloadTime;
+		[BoxGroup("Reloading")]
 		[SerializeField] private float reloadTimeBuffer;
+		[BoxGroup("Reloading")]
+		[SerializeField] private float dunkTiming;
 
 		[BoxGroup("Reloading")] [field: SerializeField] public int ClipSize { get; set; }
 
@@ -137,12 +140,15 @@ namespace NonViolentFPS.Shooting
 			var startTime = Time.time;
 			while (Time.time - startTime <= _reloadTime)
 			{
+				if (Time.time - startTime >= dunkTiming)
+				{
+					AmmoInClip = ClipSize;
+					UIEvents.Instance.UpdateAmmoText(AmmoInClip);
+				}
 				yield return null;
 			}
 			PlayerEvents.Instance.ReloadCompleted();
 			inputAsset.Enable();
-			AmmoInClip = ClipSize;
-			UIEvents.Instance.UpdateAmmoText(AmmoInClip);
 		}
 
 		private void ShootBubble()
