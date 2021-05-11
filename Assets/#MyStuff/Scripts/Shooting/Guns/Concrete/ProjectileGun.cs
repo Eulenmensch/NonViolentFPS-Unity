@@ -36,7 +36,7 @@ namespace NonViolentFPS.Shooting
             activeProjectile = projectileTypes[0];
             projectileContainer = _shooter.ProjectileContainer;
 
-            UpdateUIAmmoCount(projectileTypes.Length);
+            UpdateUIAmmoTypeCount(projectileTypes.Length);
         }
 
         public void PrimaryFireEnter()

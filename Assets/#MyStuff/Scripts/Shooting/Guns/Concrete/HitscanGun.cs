@@ -34,7 +34,7 @@ namespace NonViolentFPS.Shooting
 		{
 			base.SetUpGun(_shooter);
 			activeEffectIndex = 0;
-			UpdateUIAmmoCount(effects.Length);
+			UpdateUIAmmoTypeCount(effects.Length);
 		}
 
 		public void PrimaryFireEnter()

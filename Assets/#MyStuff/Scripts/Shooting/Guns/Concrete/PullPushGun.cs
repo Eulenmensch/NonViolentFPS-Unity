@@ -21,7 +21,7 @@ namespace NonViolentFPS.Shooting
         public override void SetUpGun(ShooterCopy _shooter)
         {
             base.SetUpGun(_shooter);
-            UpdateUIAmmoCount(1);
+            UpdateUIAmmoTypeCount(1);
 
             //this gun needs a custom shooting origin
             ShootingOrigin = Visuals.ShootingOriginOverride;
