@@ -42,11 +42,13 @@ namespace NonViolentFPS.NPCs
 
 		private void OnCollisionEnter(Collision _other)
 		{
+			if (ActiveCollisions.Contains(_other)) return;
 			ActiveCollisions.Add(_other);
 		}
 
 		private void OnCollisionExit(Collision _other)
 		{
+			if (!ActiveCollisions.Contains(_other)) return;
 			ActiveCollisions.Remove(_other);
 		}
 
