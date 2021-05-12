@@ -137,7 +137,7 @@ MonoBehaviour:
     Key: Plugins
     Ordinal: 10
     Priority: 0
-    IconType: 2100
+    IconType: 2180
     SmallIcon: {fileID: 0}
     LargeIcon: {fileID: 0}
     IsIconRecursive: 0
@@ -330,6 +330,66 @@ MonoBehaviour:
     Ordinal: 26
     Priority: 0
     IconType: 3030
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 1
+    Key: Assets/#MyStuff/Models
+    Ordinal: 27
+    Priority: 0
+    IconType: 2080
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 1
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 1
+    Key: Assets/#MyStuff/Guns
+    Ordinal: 28
+    Priority: 0
+    IconType: 1240
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 1
+    Key: Assets/#MyStuff/AI Kit
+    Ordinal: 29
+    Priority: 0
+    IconType: 2100
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 1
+    Key: Assets/#MyStuff/AI Kit/States
+    Ordinal: 30
+    Priority: 0
+    IconType: 40
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 1
+    Key: Assets/#MyStuff/AI Kit/States/Enemies
+    Ordinal: 31
+    Priority: 0
+    IconType: 10
     SmallIcon: {fileID: 0}
     LargeIcon: {fileID: 0}
     IsIconRecursive: 0
