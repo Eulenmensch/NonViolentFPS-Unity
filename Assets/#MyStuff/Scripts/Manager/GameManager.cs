@@ -26,6 +26,7 @@ namespace NonViolentFPS.Manager
 		[SerializeField] private GameMode startGameMode;
 		[SerializeField] private SceneReference winScreen;
 		[SerializeField] private SceneReference loseScreen;
+		[SerializeField] private float timescale;
 
 		public GameMetaState MetaState { get; private set; }
 		public GameObject Player { get; set; }
@@ -69,6 +70,8 @@ namespace NonViolentFPS.Manager
 			{
 				RestartCurrentGamemode();
 			}
+
+			Time.timeScale = timescale;
 			#endif
 
 			//TODO: Only for test builds
