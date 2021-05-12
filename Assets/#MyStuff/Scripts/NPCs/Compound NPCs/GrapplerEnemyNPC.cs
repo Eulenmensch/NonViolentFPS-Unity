@@ -6,7 +6,8 @@ using UnityEngine.AI;
 namespace NonViolentFPS.NPCs
 {
 	public class GrapplerEnemyNPC : NPC,
-		IChaseComponent,IDefaultLocationComponent,IRangeComponent,INavMeshMoveComponent,IRigidbodyComponent,IJumpComponent,IGroundCheckComponent,IHeadComponent,ITimerComponent,IParticleSpawnComponent
+		IChaseComponent,IDefaultLocationComponent,IRangeComponent,INavMeshMoveComponent,IRigidbodyComponent,IJumpComponent,
+		IGroundCheckComponent,IHeadComponent,ITimerComponent,IParticleSpawnComponent,IAttachToPlayerComponent,IGroundRayComponent
 	{
 		public Vector3 LastKnownPlayerLocation { get; set; }
 		public Vector3 DefaultLocation { get; set; }
@@ -26,6 +27,8 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public float MaxTime { get; set; }
 		[field: SerializeField] public Transform SpawnPoint { get; set; }
 		public HashSet<GameObject> Particles { get; set; } = new HashSet<GameObject>();
+		[field: SerializeField] public GameObject prefabToAttach { get; set; }
+		[field: SerializeField] public float GroundRayLength { get; set; }
 
 		protected override void Start()
 		{
