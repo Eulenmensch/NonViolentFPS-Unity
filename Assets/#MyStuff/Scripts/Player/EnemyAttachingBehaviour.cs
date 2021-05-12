@@ -46,9 +46,9 @@ namespace NonViolentFPS.Player
 			{
 				if (attachmentPoint.childCount > 0) continue;
 				Instantiate(attachToPlayerComponent.prefabToAttach, attachmentPoint);
-				Destroy(_npc.gameObject);
 				attachedEnemyCount++;
 				SetPlayerSpeed();
+				Destroy(_npc.gameObject);
 				break;
 			}
 		}
@@ -61,16 +61,17 @@ namespace NonViolentFPS.Player
 					controller.movementSpeed = defaultSpeed;
 					break;
 				case 1:
-					controller.movementSpeed = defaultSpeed * slowDownCurve.Evaluate(0.667f);
+					controller.movementSpeed = defaultSpeed * slowDownCurve.Evaluate(0.333f);
 					break;
 				case 2:
-					controller.movementSpeed = defaultSpeed * slowDownCurve.Evaluate(0.333f);
+					controller.movementSpeed = defaultSpeed * slowDownCurve.Evaluate(0.667f);
 					break;
 				case 3:
 					controller.movementSpeed = 0;
 					GameEvents.Instance.GameLost();
 					break;
 			}
+			Debug.Log("Movespeed = " + controller.movementSpeed);
 		}
 	}
 }
