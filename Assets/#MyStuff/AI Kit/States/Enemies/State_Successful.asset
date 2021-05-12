@@ -22,6 +22,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   behaviours: []
-  enterActions: []
+  enterActions:
+  - {fileID: 11400000, guid: fe65e3e33374ae84ea972655c549055d, type: 2}
   exitActions: []
   transitions: []
