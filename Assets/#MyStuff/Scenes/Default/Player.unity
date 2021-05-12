@@ -691,10 +691,52 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  <AttachmentPoints>k__BackingField:
+  <attachmentPoints>k__BackingField:
   - {fileID: 709188132}
   - {fileID: 1310863465}
   - {fileID: 968662093}
+  slowDownCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.040644772
+      outSlope: -0.040644772
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.14592847
+    - serializedVersion: 3
+      time: 0.333
+      value: 0.8
+      inSlope: -0.8554856
+      outSlope: -0.8554856
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.17505744
+      outWeight: 0.09896947
+    - serializedVersion: 3
+      time: 0.6785402
+      value: 0.29189187
+      inSlope: -2.067693
+      outSlope: -2.067693
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.072487764
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.47361583
+      outSlope: -0.47361583
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13425592
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2567950507133203239
 MonoBehaviour:
   m_ObjectHideFlags: 0
