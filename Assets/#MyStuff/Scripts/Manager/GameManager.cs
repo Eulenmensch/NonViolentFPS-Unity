@@ -84,6 +84,7 @@ namespace NonViolentFPS.Manager
 		private void RestartCurrentGamemode()
 		{
 			CurrentGameMode.Unload();
+			UnloadWinLoseScreens();
 			CurrentGameMode.Load();
 			MetaState = GameMetaState.Playing;
 		}
@@ -96,6 +97,7 @@ namespace NonViolentFPS.Manager
 		public void LoadNewGameMode(GameMode _gameMode)
 		{
 			CurrentGameMode.Unload();
+			UnloadWinLoseScreens();
 			_gameMode.Load();
 			MetaState = GameMetaState.Playing;
 		}
@@ -112,6 +114,18 @@ namespace NonViolentFPS.Manager
 			MetaState = GameMetaState.Won;
 			Time.timeScale = 0;
 			SceneManager.LoadSceneAsync(winScreen, LoadSceneMode.Additive);
+		}
+
+		private void UnloadWinLoseScreens()
+		{
+			if(SceneManager.GetSceneByPath(loseScreen.ScenePath).isLoaded)
+			{
+				SceneManager.UnloadSceneAsync(loseScreen);
+			}
+			if(SceneManager.GetSceneByPath(winScreen.ScenePath).isLoaded)
+			{
+				SceneManager.UnloadSceneAsync(winScreen);
+			}
 		}
 	}
 }
