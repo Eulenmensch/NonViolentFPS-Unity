@@ -662,6 +662,7 @@ GameObject:
   - component: {fileID: 3474540640224448118}
   - component: {fileID: 3019848970974566531}
   - component: {fileID: 7857490242237326483}
+  - component: {fileID: 2567950507133203234}
   m_Layer: 10
   m_Name: Player 01
   m_TagString: Player
@@ -669,6 +670,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2567950507133203234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2567950507133203233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 668355491fa942e48d166c07690367c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  <AttachmentPoints>k__BackingField:
+  - {fileID: 709188132}
+  - {fileID: 1310863465}
+  - {fileID: 968662093}
 --- !u!114 &2567950507133203239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11934,6 +11960,7 @@ Transform:
   - {fileID: 2568682264649158286}
   - {fileID: 2568682266102548230}
   - {fileID: 2568682264963837883}
+  - {fileID: 1844761761}
   m_Father: {fileID: 2569936381698357783}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12020,6 +12047,7 @@ Transform:
   - {fileID: 2572965527562116693}
   - {fileID: 2568682264650433419}
   - {fileID: 4462128203588048096}
+  - {fileID: 904029143}
   m_Father: {fileID: 2569942780080362813}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
