@@ -188,6 +188,7 @@ MonoBehaviour:
   loseScreen:
     sceneAsset: {fileID: 102900000, guid: de87d2d5adc372543a9dbca993d8764c, type: 3}
     scenePath: Assets/#MyStuff/Scenes/Frontend Screens/Lose Screen.unity
+  timescale: 1
 --- !u!4 &1205745495
 Transform:
   m_ObjectHideFlags: 0
