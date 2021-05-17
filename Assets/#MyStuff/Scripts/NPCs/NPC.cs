@@ -30,7 +30,7 @@ namespace NonViolentFPS.NPCs
 			ActiveCollisions = new List<Collision>();
 		}
 
-		private void Update()
+		protected virtual void Update()
 		{
 			StateMachine.Update();
 		}

@@ -2,12 +2,14 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.PlayerLoop;
 
 namespace NonViolentFPS.NPCs
 {
 	public class GrapplerEnemyNPC : NPC,
 		IChaseComponent,IDefaultLocationComponent,IRangeComponent,INavMeshMoveComponent,IRigidbodyComponent,IJumpComponent,
-		IGroundCheckComponent,IHeadComponent,ITimerComponent,IParticleSpawnComponent,IAttachToPlayerComponent,IGroundRayComponent
+		IGroundCheckComponent,IHeadComponent,ITimerComponent,IParticleSpawnComponent,IAttachToPlayerComponent,IGroundRayComponent,
+		IAnimatorComponent
 	{
 		public Vector3 LastKnownPlayerLocation { get; set; }
 		public Vector3 DefaultLocation { get; set; }
@@ -29,11 +31,18 @@ namespace NonViolentFPS.NPCs
 		public HashSet<GameObject> Particles { get; set; } = new HashSet<GameObject>();
 		[field: SerializeField] public GameObject prefabToAttach { get; set; }
 		[field: SerializeField] public float GroundRayLength { get; set; }
+		[field: SerializeField] public Animator Animator { get; set; }
 
 		protected override void Start()
 		{
 			base.Start();
 			DefaultLocation = transform.position;
+		}
+
+		protected override void Update()
+		{
+			base.Update();
+			Animator.SetFloat("Velocity", Agent.velocity.magnitude);
 		}
 
 		private void OnDrawGizmos()
