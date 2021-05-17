@@ -70,8 +70,8 @@ namespace NonViolentFPS.Shooting
         {
             if (Activated) { return; }
             if (!doesImpactWithPlayer && _other.gameObject.tag.Equals("Player")) { return; }
-            ImpactAction(_other);
             PlayMMFeedbacks();
+            ImpactAction(_other);
             Activate();
         }
     }
