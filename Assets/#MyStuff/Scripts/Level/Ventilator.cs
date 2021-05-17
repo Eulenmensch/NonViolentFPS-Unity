@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using CMF;
+using NonViolentFPS.Manager;
 using UnityEngine;
 
 namespace NonViolentFPS.Level
@@ -6,13 +8,13 @@ namespace NonViolentFPS.Level
     public class Ventilator : MonoBehaviour
     {
         [SerializeField] private float pushForce;
+        [SerializeField] private float playerMultiplier;
         [SerializeField, Range(0.1f,10f)] private float forceDistanceFalloff;
         [SerializeField] private List<Transform> bladeTransforms;
         [SerializeField] private float rotationSpeedMultiplier;
 
-
-
         private HashSet<Rigidbody> pushableRigidbodies;
+        private AdvancedWalkerController playerController;
 
         private void Start()
         {
@@ -30,6 +32,14 @@ namespace NonViolentFPS.Level
                 //This force should depend on the mass of the pushed body
                 pushableRigidbody.AddForce(resultingForce, ForceMode.Force);
             }
+
+            if (playerController != null)
+            {
+                var distance = Vector3.Distance(playerController.transform.position, transform.position);
+                var distanceFalloff = 1 + forceDistanceFalloff * distance;
+                var resultingForce = transform.up * (pushForce * playerMultiplier / distanceFalloff);
+                playerController.AddMomentum(resultingForce);
+            }
         }
 
         private void Update()
@@ -42,6 +52,10 @@ namespace NonViolentFPS.Level
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.gameObject.Equals(GameManager.Instance.Player))
+            {
+                playerController = other.GetComponent<AdvancedWalkerController>();
+            }
             var otherRigidbody = other.attachedRigidbody;
             if (otherRigidbody == null || otherRigidbody.isKinematic) {return;}
 
@@ -50,6 +64,10 @@ namespace NonViolentFPS.Level
 
         private void OnTriggerExit(Collider other)
         {
+            if (other.gameObject.Equals(GameManager.Instance.Player))
+            {
+                playerController = null;
+            }
             var otherRigidbody = other.attachedRigidbody;
             if (otherRigidbody == null || otherRigidbody.isKinematic) {return;}
 
