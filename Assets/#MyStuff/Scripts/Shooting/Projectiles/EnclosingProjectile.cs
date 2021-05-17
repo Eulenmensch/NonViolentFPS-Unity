@@ -21,7 +21,7 @@ namespace NonViolentFPS.Shooting
 		[SerializeField] private Material frozenMaterial;
 
 		private Material defaultMaterial;
-		private Renderer renderer;
+		private Renderer rendererRef;
 		private Rigidbody rigidbodyRef;
 		private SphereCollider sphereCollider;
 
@@ -29,8 +29,8 @@ namespace NonViolentFPS.Shooting
 		{
 			base.Start();
 			rigidbodyRef = GetComponent<Rigidbody>();
-			renderer = GetComponent<Renderer>();
-			defaultMaterial = renderer.material;
+			rendererRef = GetComponent<Renderer>();
+			defaultMaterial = rendererRef.material;
 			sphereCollider = GetComponent<SphereCollider>();
 			sphereCollider.enabled = false;
 			EnableCollisionAfterSeconds(sphereCollider, collisionGraceTime);
@@ -103,7 +103,7 @@ namespace NonViolentFPS.Shooting
 				Activate();
 			}
 			doesImpactWithPlayer = false;
-			renderer.material = frozenMaterial;
+			rendererRef.material = frozenMaterial;
 		}
 
 		public async void Unfreeze(float _unfreezeTime)
@@ -117,9 +117,9 @@ namespace NonViolentFPS.Shooting
 
 			doesImpactWithPlayer = true;
 			//TODO: Material Flicker
-			if(renderer != null)
+			if(rendererRef != null)
 			{
-				renderer.material = defaultMaterial;
+				rendererRef.material = defaultMaterial;
 			}
 		}
 	}
