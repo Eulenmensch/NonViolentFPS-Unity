@@ -27,7 +27,7 @@ namespace NonViolentFPS.Shooting
 
 		private void Start()
 		{
-			defaultOpacity = soapFilmMaterial.GetFloat("_Opacity");
+			defaultOpacity = 1.6f;
 		}
 
 		private void UpdateSoapFilmFeedback(int _ammoCount)
