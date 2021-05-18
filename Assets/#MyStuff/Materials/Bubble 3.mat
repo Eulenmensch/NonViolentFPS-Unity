@@ -10,7 +10,7 @@ Material:
   m_Name: Bubble 3
   m_Shader: {fileID: 4800000, guid: 12a89afedb1bbd14b8e4bcc8bbe666ec, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -31,16 +31,18 @@ Material:
     - _FresnelLightDirInfluence: 0.367
     - _FresnelPower: 2.01
     - _FresnelScale: 0.97
+    - _Ice: 1
     - _MaxDepth: 1.58
-    - _Opacity: 0.737
+    - _Opacity: 0.98963755
     - _PosterizePower: 66.38
     - _SpecularIntensity: 0.05
     - _StippleNoiseAmount: 0.48
     - __dirty: 0
     m_Colors:
-    - _LitColor: {r: 0.9811321, g: 0.7280171, b: 0.61552155, a: 0}
+    - _IceColor: {r: 0.8160377, g: 1, b: 0.98186046, a: 0}
+    - _LitColor: {r: 0.3056247, g: 0.90584177, b: 0.9622642, a: 0}
     - _ShadowColor: {r: 0.2549013, g: 0.17254835, b: 0.34901893, a: 1}
     - _ShadowColor1: {r: 0.12195694, g: 0.216981, b: 0.05629223, a: 0}
     - _SpecularColor: {r: 0.8301887, g: 0.7679786, b: 0.7244571, a: 1}
-    - _UnlitColor: {r: 1, g: 0.15566039, b: 0.2402215, a: 0}
+    - _UnlitColor: {r: 0.52358484, g: 0.863175, b: 1, a: 0}
   m_BuildTextureStacks: []
