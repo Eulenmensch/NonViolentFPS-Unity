@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8401199169966620976}
   - component: {fileID: 8347039137400397793}
   - component: {fileID: 8274150811824779301}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 4714684505203355516}
   - component: {fileID: 7085851504693656276}
   - component: {fileID: 5420112740015252824}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sphere (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 5412471229706213474}
   - component: {fileID: 2741835159957554382}
   - component: {fileID: 8078482751215720822}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 3303781574622932679}
   - component: {fileID: 5223202126282116090}
   - component: {fileID: 5786150750360108726}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sphere (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 7847765080271510129}
   - component: {fileID: 7847765080271510094}
   - component: {fileID: 2128368533593555562}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Grappler Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -574,7 +574,7 @@ GameObject:
   - component: {fileID: 5361176633965506194}
   - component: {fileID: 576990690958374476}
   - component: {fileID: 4891687082889793073}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: Sphere (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

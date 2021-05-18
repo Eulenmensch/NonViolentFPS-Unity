@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5011906935338415495}
   - component: {fileID: 7645411315748059699}
   - component: {fileID: 1133468762130020904}
+  - component: {fileID: 6844471675896363808}
   m_Layer: 11
-  m_Name: Pop Particles
+  m_Name: Enemy Spawn Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4870,3 +4871,15 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &6844471675896363808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2400247813746540298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f629a6db90524fb9b3706eb228decbe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

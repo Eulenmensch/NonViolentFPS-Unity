@@ -12,7 +12,10 @@ namespace NonViolentFPS.Shooting
 		protected override void ImpactAction(Collision _other)
 		{
 			AttachToPlayer(_other);
-			SpawnGrappler();
+			if (_other.gameObject.GetComponent<GrapplerEnemyNPC>() == null)
+			{
+				SpawnGrappler();
+			}
 		}
 
 		private void AttachToPlayer(Collision _other)
@@ -27,7 +30,8 @@ namespace NonViolentFPS.Shooting
 
 		private void SpawnGrappler()
 		{
-			Instantiate(grapplerPrefab, transform.position, Quaternion.identity);
+			var grappler = Instantiate(grapplerPrefab, transform.position, Quaternion.identity);
+			grappler.transform.SetParent(transform.parent);
 			Destroy(gameObject);
 		}
 	}

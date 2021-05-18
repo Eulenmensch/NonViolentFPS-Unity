@@ -5,7 +5,7 @@ namespace NonViolentFPS.Physics
     [RequireComponent( typeof( Rigidbody ) )]
     public class CustomGravity : MonoBehaviour
     {
-        [SerializeField] private float GroundGravity;       //The magnitude of the gravity affecting the body while grounded
+        [field: SerializeField] public float GroundGravity { get; set; }       //The magnitude of the gravity affecting the body while grounded
         [SerializeField] private float AirGravity;          //The magnitude of the gravity affecting the body while airborne
 
         private Rigidbody RB;                               //A reference to the object's rigidbody

@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b86e39f0630acd044915463d251c7fdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundGravity: 1
+  <GroundGravity>k__BackingField: 1
   AirGravity: 0
 --- !u!82 &8583382343265563572
 AudioSource:
