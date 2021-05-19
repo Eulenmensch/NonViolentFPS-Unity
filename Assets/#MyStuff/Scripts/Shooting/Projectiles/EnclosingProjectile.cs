@@ -11,6 +11,7 @@ namespace NonViolentFPS.Shooting
 	public class EnclosingProjectile : PhysicsProjectile
 	{
 		[SerializeField] private MMFeedbacks burstFeedbacks;
+		[SerializeField] private MMFeedbacks unfreezeFeedbacks;
 		[SerializeField] private float growthDuration;
 		[SerializeField] private float collisionGraceTime;
 		[SerializeField] private float yOffset;
@@ -100,6 +101,7 @@ namespace NonViolentFPS.Shooting
 
 		public void Freeze()
 		{
+			if (unfreezing) return;
 			if(!Activated)
 			{
 				DOTween.Kill(transform);
@@ -112,6 +114,8 @@ namespace NonViolentFPS.Shooting
 
 		public async void Unfreeze(float _unfreezeTime)
 		{
+			unfreezing = true;
+			unfreezeFeedbacks.PlayFeedbacks();
 			var timer = 0f;
 			while (timer <= _unfreezeTime)
 			{
@@ -119,12 +123,7 @@ namespace NonViolentFPS.Shooting
 				await Task.Yield();
 			}
 
-			doesImpactWithPlayer = true;
-			//TODO: Material Flicker
-			if(rendererRef != null)
-			{
-				rendererRef.material = defaultMaterial;
-			}
+			Burst();
 		}
 	}
 }
