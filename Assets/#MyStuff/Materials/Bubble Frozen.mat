@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bubble 3
+  m_Name: Bubble Frozen
   m_Shader: {fileID: 4800000, guid: 12a89afedb1bbd14b8e4bcc8bbe666ec, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
