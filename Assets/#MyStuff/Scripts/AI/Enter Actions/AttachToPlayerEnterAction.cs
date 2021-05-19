@@ -10,6 +10,7 @@ namespace NonViolentFPS.AI
 		public override void Enter(NPC _npc)
 		{
 			NPCEvents.Instance.AttachToPlayer(_npc);
+			Destroy(_npc.gameObject);
 		}
 	}
 }

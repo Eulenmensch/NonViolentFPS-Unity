@@ -48,7 +48,6 @@ namespace NonViolentFPS.Player
 				Instantiate(attachToPlayerComponent.prefabToAttach, attachmentPoint);
 				attachedEnemyCount++;
 				SetPlayerSpeed();
-				Destroy(_npc.gameObject);
 				break;
 			}
 		}
