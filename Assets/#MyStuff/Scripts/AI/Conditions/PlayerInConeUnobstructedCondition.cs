@@ -12,6 +12,7 @@ namespace NonViolentFPS.NPCs
 		public override UpdateType type => UpdateType.Physics;
 		public override bool Evaluate(NPC _npc)
 		{
+			if (_npc.Player == null) return false;
 			var selfPosition = _npc.transform.position;
 			var playerHalfHeight = _npc.Player.GetComponent<CapsuleCollider>().height / 2;
 			var playerPosition = _npc.Player.transform.position + Vector3.up * playerHalfHeight;
