@@ -20,10 +20,13 @@ namespace NonViolentFPS.Shooting
 		[SerializeField] private float maxTravelScale;
 		[SerializeField] private Material frozenMaterial;
 
+		public Transform AttachedTarget { get; private set; }
+
 		private Material defaultMaterial;
 		private Renderer rendererRef;
 		private Rigidbody rigidbodyRef;
 		private SphereCollider sphereCollider;
+		private bool unfreezing;
 
 		protected override void Start()
 		{
@@ -33,6 +36,7 @@ namespace NonViolentFPS.Shooting
 			defaultMaterial = rendererRef.material;
 			sphereCollider = GetComponent<SphereCollider>();
 			sphereCollider.enabled = false;
+			AttachedTarget = null;
 			EnableCollisionAfterSeconds(sphereCollider, collisionGraceTime);
 			transform.DOScale(Vector3.one *maxTravelScale, travelGrowthDuration).SetEase(Ease.OutExpo);
 		}
@@ -71,7 +75,7 @@ namespace NonViolentFPS.Shooting
 			rigidbodyRef.isKinematic = true;
 			Destroy(GetComponent<CustomGravity>());
 			Destroy( rigidbodyRef );
-
+			AttachedTarget = _other.transform;
 			ChildToOtherRigidbody(_other);
 			transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.OutCirc);
 		}
