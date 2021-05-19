@@ -13,11 +13,18 @@ namespace NonViolentFPS.AI
 		{
 			foreach (var collision in _npc.ActiveCollisions)
 			{
-				if (collision.gameObject.GetComponent<EnclosingProjectile>() != null)
+				var enclosingProjectile = collision.gameObject.GetComponent<EnclosingProjectile>();
+				if (enclosingProjectile != null && enclosingProjectile.AttachedTarget == _npc.transform)
 				{
 					return true;
 				}
 			}
+
+			if (_npc.GetComponentInChildren<EnclosingProjectile>())
+			{
+				return true;
+			}
+			
 			return false;
 		}
 	}
