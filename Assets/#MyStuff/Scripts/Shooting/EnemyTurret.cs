@@ -30,6 +30,9 @@ namespace NonViolentFPS.Shooting
 				FireProjectile();
 				timer = 0;
 			}
+			#if UNITY_EDITOR
+			DrawPath();
+			#endif
 		}
 
 		private void Start()
@@ -46,7 +49,15 @@ namespace NonViolentFPS.Shooting
 			}
 		}
 
-		private Vector3 CalculateLaunchVelocity()
+		private void FireProjectile()
+		{
+			var projectile = Instantiate(projectilePrefab, shootingOrigin.position, Quaternion.identity);
+			var projectileRigidbody = projectile.GetComponent<Rigidbody>();
+			projectile.transform.SetParent(projectileContainer);
+			projectileRigidbody.velocity = CalculateLaunchVelocity().launchVelocity;
+		}
+
+		private LaunchData CalculateLaunchVelocity()
 		{
 			var distanceToTarget = target.position - shootingOrigin.position;
 			var distanceToTargetXZ = new Vector3(distanceToTarget.x, 0, distanceToTarget.z);
@@ -56,17 +67,36 @@ namespace NonViolentFPS.Shooting
 			var launchVelocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * maxArcHeight);
 			var launchVelocityXZ = distanceToTargetXZ / time;
 			var launchVelocity = launchVelocityXZ + launchVelocityY;
-			Debug.Log(launchVelocity);
 
-			return launchVelocity;
+			return new LaunchData(launchVelocity, time);
 		}
 
-		private void FireProjectile()
+		private void DrawPath()
 		{
-			var projectile = Instantiate(projectilePrefab, shootingOrigin.position, Quaternion.identity);
-			var projectileRigidbody = projectile.GetComponent<Rigidbody>();
-			projectile.transform.SetParent(projectileContainer);
-			projectileRigidbody.velocity = CalculateLaunchVelocity();
+			var launchData = CalculateLaunchVelocity();
+			var previousDrawPoint = shootingOrigin.position;
+
+			const int resolution = 30;
+			for (int i = 0; i < resolution; i++)
+			{
+				var simulationTime = i / (float) resolution * launchData.timeToTarget;
+				var displacemnt = launchData.launchVelocity * simulationTime + Vector3.up * (gravity * simulationTime * simulationTime) / 2f;
+				var drawPoint = shootingOrigin.position + displacemnt;
+				Debug.DrawLine(previousDrawPoint, drawPoint, Color.white);
+				previousDrawPoint = drawPoint;
+			}
+		}
+
+		private readonly struct LaunchData
+		{
+			public readonly Vector3 launchVelocity;
+			public readonly float timeToTarget;
+
+			public LaunchData(Vector3 _launchVelocity, float _timeToTarget)
+			{
+				launchVelocity = _launchVelocity;
+				timeToTarget = _timeToTarget;
+			}
 		}
 	}
 }
