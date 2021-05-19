@@ -9,6 +9,7 @@ namespace NonViolentFPS.NPCs
 {
 	public abstract class NPC : SerializedMonoBehaviour
 	{
+		[ShowInInspector] private State currentState;
 		[SerializeField] private State startState;
 		[SerializeField] private State anyState;
 
@@ -33,6 +34,7 @@ namespace NonViolentFPS.NPCs
 		protected virtual void Update()
 		{
 			StateMachine.Update();
+			currentState = StateMachine.CurrentState;
 		}
 
 		private void FixedUpdate()
