@@ -12202,10 +12202,6 @@ MonoBehaviour:
     SerializationNodes: []
   guns:
   - {fileID: 11400000, guid: ad4253d2624ffa5449a4485f639f6b5a, type: 2}
-  - {fileID: 11400000, guid: 3b69c3cb4e65275469e8c3287380a548, type: 2}
-  - {fileID: 11400000, guid: d43b5ae005adb014cb2f18b96c4a4839, type: 2}
-  - {fileID: 11400000, guid: cc598f10eb83ab74f844165c95db755f, type: 2}
-  - {fileID: 11400000, guid: 28eb5f5fe6103fb4ab3ce104ddcaf9c8, type: 2}
   shootingOrigin: {fileID: 2568682266102548230}
   gunAttachmentPoint: {fileID: 2568682266512261468}
   projectileContainer: {fileID: 540147532}

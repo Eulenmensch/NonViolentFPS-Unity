@@ -44,7 +44,7 @@ namespace NonViolentFPS.NPCs
 			base.Update();
 			Animator.SetFloat("Velocity", Agent.velocity.magnitude);
 		}
-
+		#if UNITY_EDITOR
 		private void OnDrawGizmos()
 		{
 			if (Camera.current != Camera.main && Camera.current != SceneView.lastActiveSceneView.camera) return;
@@ -52,5 +52,6 @@ namespace NonViolentFPS.NPCs
 			Gizmos.color = Color.yellow;
 			Gizmos.DrawSphere(DefaultLocation, 0.3f);
 		}
+		#endif
 	}
 }

@@ -1,5 +1,6 @@
 using NonViolentFPS.Events;
 using NonViolentFPS.GameModes;
+using NonViolentFPS.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

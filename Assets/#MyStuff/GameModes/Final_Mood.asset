@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14d18990ec34cab87df94857cb42699, type: 3}
+  m_Name: Final_Mood
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  scenes:
+  - sceneAsset: {fileID: 102900000, guid: 49e0a33910a831040af10f36d8b3a0cb, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/Player Mood.unity
+  - sceneAsset: {fileID: 102900000, guid: 05c50d6aff84574488001d4cb8638331, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Default/HUD.unity
+  - sceneAsset: {fileID: 102900000, guid: 89efb2ba951b76545a3eea2ea92966a5, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Mood UI.unity
+  - sceneAsset: {fileID: 102900000, guid: 3100a90ef7464634ebd6a96d3b87af80, type: 3}
+    scenePath: Assets/#MyStuff/Scenes/Mood Level.unity
+  maxUnitsInFights: 200
+  gameDuration: 60

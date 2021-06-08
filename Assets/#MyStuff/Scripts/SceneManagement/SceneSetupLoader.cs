@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿#if UNITY_EDITOR
+using Sirenix.OdinInspector;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -22,3 +23,4 @@ namespace NonViolentFPS.SceneManagement
 		}
 	}
 }
+#endif
