@@ -7771,8 +7771,10 @@ MonoBehaviour:
   <MinTime>k__BackingField: 2
   <MaxTime>k__BackingField: 4
   <SpawnPoint>k__BackingField: {fileID: 1911645888711751082}
-  <prefabToAttach>k__BackingField: {fileID: 3573446902353708074, guid: 0d6f3d4080c1e344db2ec35514c476fa,
+  <PrefabToAttach>k__BackingField: {fileID: 3573446902353708074, guid: 0d6f3d4080c1e344db2ec35514c476fa,
     type: 3}
+  <SelfPrefab>k__BackingField: {fileID: 11400000, guid: d66f6c754cbec3444b3e1a47c854b69c,
+    type: 2}
   <GroundRayLength>k__BackingField: 1
   <Animator>k__BackingField: {fileID: 5866666021523583971}
 --- !u!195 &3240651724485733904

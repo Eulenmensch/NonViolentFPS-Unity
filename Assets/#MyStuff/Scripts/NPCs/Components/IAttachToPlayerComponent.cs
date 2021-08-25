@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using NonViolentFPS.Utility;
+using UnityEngine;
 
 namespace NonViolentFPS.NPCs
 {
 	public interface IAttachToPlayerComponent
 	{
-		GameObject prefabToAttach { get; set; }
+		GameObject PrefabToAttach { get; set; }
+		PrefabWrapper SelfPrefab { get; set; }
 	}
 }

@@ -737,6 +737,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  requiredShakeCount: 5
+  requiredMouseDistance: 50
+  shakeTimeWindow: 3
 --- !u!114 &2567950507133203239
 MonoBehaviour:
   m_ObjectHideFlags: 0

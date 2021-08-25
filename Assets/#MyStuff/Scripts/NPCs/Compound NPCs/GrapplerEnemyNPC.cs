@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NonViolentFPS.Utility;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -29,7 +30,8 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public float MaxTime { get; set; }
 		[field: SerializeField] public Transform SpawnPoint { get; set; }
 		public HashSet<GameObject> Particles { get; set; } = new HashSet<GameObject>();
-		[field: SerializeField] public GameObject prefabToAttach { get; set; }
+		[field: SerializeField] public GameObject PrefabToAttach { get; set; }
+		[field: SerializeField] public PrefabWrapper SelfPrefab { get; set; }
 		[field: SerializeField] public float GroundRayLength { get; set; }
 		[field: SerializeField] public Animator Animator { get; set; }
 
