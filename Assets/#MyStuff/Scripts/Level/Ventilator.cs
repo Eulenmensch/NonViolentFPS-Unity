@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CMF;
 using NonViolentFPS.Manager;
+using NonViolentFPS.Player;
 using UnityEngine;
 
 namespace NonViolentFPS.Level
@@ -55,6 +56,8 @@ namespace NonViolentFPS.Level
             if (other.gameObject.Equals(GameManager.Instance.Player))
             {
                 playerController = other.GetComponent<AdvancedWalkerController>();
+                //also detach any attached enemies
+                other.GetComponent<EnemyAttachingBehaviour>().DetachEnemies();
             }
             var otherRigidbody = other.attachedRigidbody;
             if (otherRigidbody == null || otherRigidbody.isKinematic) {return;}

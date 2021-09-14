@@ -73,7 +73,7 @@ namespace NonViolentFPS.Player
 			}
 		}
 
-		private void DetachEnemies()
+		public void DetachEnemies()
 		{
 			print("shaka shaka");
 			foreach (var enemyWrapper in attachedEnemyWrappers)
