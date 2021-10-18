@@ -8,10 +8,10 @@ namespace CMF
 	public class TurnTowardCameraDirection : MonoBehaviour {
 
 		public CameraController cameraController;
-		private Transform tr;
+		Transform tr;
 
 		//Setup;
-		private void Start () {
+		void Start () {
 			tr = transform;
 
 			if(cameraController == null)
@@ -19,7 +19,7 @@ namespace CMF
 		}
 		
 		//Update;
-		private void LateUpdate () {
+		void LateUpdate () {
 
 			if(!cameraController)
 				return;

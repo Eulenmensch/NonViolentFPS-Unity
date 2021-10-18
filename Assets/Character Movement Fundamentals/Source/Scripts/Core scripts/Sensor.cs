@@ -57,7 +57,7 @@ namespace CMF
 		public LayerMask layermask = 255;
 
 		//Layer number for 'Ignore Raycast' layer;
-		private int ignoreRaycastLayer;
+		int ignoreRaycastLayer;
 
 		//Spherecast settings;
 
@@ -87,8 +87,8 @@ namespace CMF
 		//Whether to draw debug information (hit positions, hit normals...) in the editor;
 		public bool isInDebugMode = false;
 
-		private List<Vector3> arrayNormals = new List<Vector3>();
-		private List<Vector3> arrayPoints = new List<Vector3>();
+		List<Vector3> arrayNormals = new List<Vector3>();
+		List<Vector3> arrayPoints = new List<Vector3>();
 
 		//Constructor;
 		public Sensor (Transform _transform, Collider _collider)
@@ -328,7 +328,7 @@ namespace CMF
 		}
 
 		//Calculate a direction in world coordinates based on the local axes of this gameobject's transform component;
-		private Vector3 GetCastDirection()
+		Vector3 GetCastDirection()
 		{
 			switch(castDirection)
 			{

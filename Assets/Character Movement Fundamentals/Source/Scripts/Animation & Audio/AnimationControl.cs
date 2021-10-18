@@ -6,19 +6,24 @@ namespace CMF
 {
 	//This script controls the character's animation by passing velocity values and other information ('isGrounded') to an animator component;
 	public class AnimationControl : MonoBehaviour {
-		private Controller controller;
-		private Animator animator;
-		private Transform animatorTransform;
-		private Transform tr;
+
+		Controller controller;
+		Animator animator;
+		Transform animatorTransform;
+		Transform tr;
 
 		//Whether the character is using the strafing blend tree;
 		public bool useStrafeAnimations = false;
 
-		private float smoothingFactor = 0.8f;
-		private Vector3 oldMovementVelocity = Vector3.zero;
+		//Velocity threshold for landing animation;
+		//Animation will only be triggered if downward velocity exceeds this threshold;
+		public float landVelocityThreshold = 5f;
+
+		private float smoothingFactor = 40f;
+		Vector3 oldMovementVelocity = Vector3.zero;
 
 		//Setup;
-		private void Awake () {
+		void Awake () {
 			controller = GetComponent<Controller>();
 			animator = GetComponentInChildren<Animator>();
 			animatorTransform = animator.transform;
@@ -27,7 +32,7 @@ namespace CMF
 		}
 
 		//OnEnable;
-		private void OnEnable()
+		void OnEnable()
 		{
 			//Connect events to controller events;
 			controller.OnLand += OnLand;
@@ -35,7 +40,7 @@ namespace CMF
 		}
 
 		//OnDisable;
-		private void OnDisable()
+		void OnDisable()
 		{
 			//Disconnect events to prevent calls to disabled gameobjects;
 			controller.OnLand -= OnLand;
@@ -43,7 +48,7 @@ namespace CMF
 		}
 		
 		//Update;
-		private void Update () {
+		void Update () {
 
 			//Get controller velocity;
 			Vector3 _velocity = controller.GetVelocity();
@@ -53,7 +58,7 @@ namespace CMF
 			Vector3 _verticalVelocity = _velocity - _horizontalVelocity;
 
 			//Smooth horizontal velocity for fluid animation;
-			_horizontalVelocity = Vector3.Lerp(oldMovementVelocity, _horizontalVelocity, smoothingFactor);
+			_horizontalVelocity = Vector3.Lerp(oldMovementVelocity, _horizontalVelocity, smoothingFactor * Time.deltaTime);
 			oldMovementVelocity = _horizontalVelocity;
 
 			animator.SetFloat("VerticalSpeed", _verticalVelocity.magnitude * VectorMath.GetDotProduct(_verticalVelocity.normalized, tr.up));
@@ -72,13 +77,16 @@ namespace CMF
 			animator.SetBool("IsStrafing", useStrafeAnimations);
 		}
 
-
-		private void OnLand(Vector3 _v)
+		void OnLand(Vector3 _v)
 		{
+			//Only trigger animation if downward velocity exceeds threshold;
+			if(VectorMath.GetDotProduct(_v, tr.up) > -landVelocityThreshold)
+				return;
+
 			animator.SetTrigger("OnLand");
 		}
 
-		private void OnJump(Vector3 _v)
+		void OnJump(Vector3 _v)
 		{
 			
 		}

@@ -456,6 +456,26 @@ namespace AmplifyShaderEditor
 			return newValue;
 		}
 
+		public string EditorGUITextArea( Rect position, string text )
+		{
+			string newValue = EditorGUI.TextArea( position, text );
+			if( !newValue.Equals( text ) )
+			{
+				UndoRecordObject( string.Format( MessageFormat, "TextArea", ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
+			}
+			return newValue;
+		}
+
+		public string EditorGUITextArea( Rect position, string text, [UnityEngine.Internal.DefaultValue( "EditorStyles.textField" )] GUIStyle style )
+		{
+			string newValue = EditorGUI.TextArea( position, text,style );
+			if( !newValue.Equals( text ) )
+			{
+				UndoRecordObject( string.Format( MessageFormat, "TextArea", ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
+			}
+			return newValue;
+		}
+
 		public string EditorGUITextField( Rect position, string label, string text, [UnityEngine.Internal.DefaultValue( "EditorStyles.textField" )] GUIStyle style )
 		{
 			string newValue = EditorGUI.TextField( position, label, text, style );

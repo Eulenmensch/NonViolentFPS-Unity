@@ -3,6 +3,30 @@ Character Movement Fundamentals
 Changelog:
 _____________________________________
 
+Version 2.2
+
+GENERAL:
+
+MOVER:
+- Added 'SetColliderThickness()' function to 'Mover', which can be used to change the thickness/width of the controller at runtime.
+- Most variables related to collider size inside the 'Mover' script are now not public anymore (since they really shouldn't be changed directly at runtime).
+- Instead, changing the controller's size/shape at runtime should be done only via the 'SetColliderHeight()'/'SetColliderThickness()'/'SetStepHeightRatio()' functions, which will automatically update the ground detection system based on the new size/shape.
+
+CONTROLLERS:
+- All air movement calculations inside 'AdvancedWalkerController' have been completely overhauled and now properly use the controller's momentum.
+- The 'Air Control' setting has been replaced with 'Air Control Rate' (higher values result in a more direct movement while the controller is in the air).
+- The slope movement calculations have also been overhauled and are now more effective at preventing the controller from going up slopes (which are too steep, based on slope limit).
+- A few minor, general code improvements to the 'AdvancedWalkerController'.
+
+CAMERA SYSTEM:
+- Fixed a bug inside 'Camera Mouse Input' that resulted in a 'NaN' error when setting Time.timeScale to '0f' at runtime.
+- Fixed a bug inside 'Camera Distance Raycaster' that could result in incorrect layermask settings.
+
+MISC:
+- A few minor code improvements to the 'AnimationControl' script.
+
+_____________________________________
+
 Version 2.1
 
 GENERAL:

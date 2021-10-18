@@ -10,11 +10,11 @@ public class AlignRigidbodyToTarget : MonoBehaviour {
     //Target transform used for alignment;
     public Transform target;
 
-    private Transform tr;
-    private Rigidbody r;
+    Transform tr;
+    Rigidbody r;
 
 	// Use this for initialization
-	private void Start () {
+	void Start () {
         tr = transform;
         r = GetComponent<Rigidbody>();
 
@@ -24,8 +24,8 @@ public class AlignRigidbodyToTarget : MonoBehaviour {
             this.enabled = false;
         }
 	}
-
-	private void FixedUpdate () {
+	
+	void FixedUpdate () {
 
         //Get this transform's 'forward' direction;
         Vector3 _forwardDirection = tr.forward;

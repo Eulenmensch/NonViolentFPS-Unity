@@ -12,13 +12,13 @@ public class ClickToMoveController : Controller
 	//Downward gravity;
 	public float gravity = 30f;
 
-	private float currentVerticalSpeed = 0f;
-	private bool isGrounded = false;
+	float currentVerticalSpeed = 0f;
+	bool isGrounded = false;
 
 	//Current position to move towards;
-	private Vector3 currentTargetPosition;
+	Vector3 currentTargetPosition;
 	//If the distance between controller and target position is smaller than this, the target is reached;
-	private float reachTargetThreshold = 0.001f;
+	float reachTargetThreshold = 0.001f;
 
 	//Whether the user can hold down the mouse button to continually move the controller;
 	public bool holdMouseButtonToMove = false;
@@ -40,29 +40,28 @@ public class ClickToMoveController : Controller
 	//If the controller is stuck walking against a wall, movement will be canceled if it hasn't moved at least a certain distance in a certain time;
 	//'timeOutTime' controls the time window during which the controller has to move (or else it stops moving);
 	public float timeOutTime = 1f;
-
-	private float currentTimeOutTime = 1f;
+	float currentTimeOutTime = 1f;
 	//This controls the minimum amount of distance needed to be moved (or else the controller stops moving);
 	public float timeOutDistanceThreshold = 0.05f;
-	private Vector3 lastPosition;
+	Vector3 lastPosition;
 
 	//Reference to the player's camera (used for raycasting);
 	public Camera playerCamera;
 
 	//Whether or not the controller currently has a valid target position to move towards;
-	private bool hasTarget = false;
+	bool hasTarget = false;
 
-	private Vector3 lastVelocity = Vector3.zero;
-	private Vector3 lastMovementVelocity = Vector3.zero;
+	Vector3 lastVelocity = Vector3.zero;
+	Vector3 lastMovementVelocity = Vector3.zero;
 
 	//Abstarct ground plane used when 'AbstractPlane' is selected;
-	private Plane groundPlane;
+	Plane groundPlane;
 
     //Reference to attached 'Mover' and transform component;
-    private Mover mover;
-    private Transform tr;
+    Mover mover;
+	Transform tr;
 
-    private void Start()
+    void Start()
     {
         //Get references to necessary components;
         mover = GetComponent<Mover>();
@@ -77,13 +76,13 @@ public class ClickToMoveController : Controller
 		groundPlane = new Plane(tr.up, tr.position);
     }
 
-    private void Update()
+	void Update()
 	{
 		//Handle mouse input (check for input, determine new target position);
 		HandleMouseInput();
 	}
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         //Run initial mover ground check;
         mover.CheckForGround();
@@ -114,7 +113,7 @@ public class ClickToMoveController : Controller
     }
 
 	//Calculate movement velocity based on the current target position;
-	private Vector3 CalculateMovementVelocity()
+	Vector3 CalculateMovementVelocity()
 	{
 		//Return no velocity if controller currently has no target;	
 		if(!hasTarget)
@@ -149,7 +148,7 @@ public class ClickToMoveController : Controller
 	}
 
 	//Calculate current gravity;
-	private void HandleGravity()
+	void HandleGravity()
 	{
 		//Handle gravity;
 		if(!isGrounded)
@@ -167,7 +166,7 @@ public class ClickToMoveController : Controller
 	}
 
 	//Handle mouse input (mouse clicks, [...]);
-	private void HandleMouseInput()
+	void HandleMouseInput()
 	{
 		//If no camera has been assigned, stop function execution;
 		if(playerCamera == null)
@@ -212,7 +211,7 @@ public class ClickToMoveController : Controller
 	}
 
 	//Handle timeout (stop controller from moving if it is stuck against level geometry);
-	private void HandleTimeOut()
+	void HandleTimeOut()
 	{
 		//If controller currently has no target, reset time and return;
 		if(!hasTarget)

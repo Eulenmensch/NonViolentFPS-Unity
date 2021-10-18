@@ -8,9 +8,9 @@ namespace CMF
 
 		//The target transform, whose rotation values will be copied and smoothed;
 		public Transform target;
-		private Transform tr;
+		Transform tr;
 
-		private Quaternion currentRotation;
+		Quaternion currentRotation;
 
 		//Speed that controls how fast the current rotation will be smoothed toward the target rotation;
 		public float smoothSpeed = 20f;
@@ -27,7 +27,7 @@ namespace CMF
 		public UpdateType updateType;
 
 		//Awake;
-		private void Awake () {
+		void Awake () {
 
 			//If no target has been selected, choose this transform's parent as target;
 			if(target == null)
@@ -38,25 +38,25 @@ namespace CMF
 		}
 
 		//OnEnable;
-		private void OnEnable()
+		void OnEnable()
 		{
 			//Reset current rotation when gameobject is re-enabled to prevent unwanted interpolation from last rotation;
 			ResetCurrentRotation();
 		}
 
-		private void Update () {
+		void Update () {
 			if(updateType == UpdateType.LateUpdate)
 				return;
 			SmoothUpdate();
 		}
 
-		private void LateUpdate () {
+		void LateUpdate () {
 			if(updateType == UpdateType.Update)
 				return;
 			SmoothUpdate();
 		}
 
-		private void SmoothUpdate()
+		void SmoothUpdate()
 		{
 			//Smooth current rotation;
 			currentRotation = Smooth (currentRotation, target.rotation, smoothSpeed);
@@ -66,7 +66,7 @@ namespace CMF
 		}
 
 		//Smooth a rotation toward a target rotation based on 'smoothTime';
-		private Quaternion Smooth(Quaternion _currentRotation, Quaternion _targetRotation, float _smoothSpeed)
+		Quaternion Smooth(Quaternion _currentRotation, Quaternion _targetRotation, float _smoothSpeed)
 		{
 			//If 'extrapolateRotation' is set to 'true', calculate a new target rotation;
 			if (extrapolateRotation && Quaternion.Angle(_currentRotation, _targetRotation) < 90f) {

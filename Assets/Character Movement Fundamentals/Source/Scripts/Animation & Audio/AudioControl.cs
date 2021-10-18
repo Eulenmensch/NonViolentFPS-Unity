@@ -8,18 +8,22 @@ namespace CMF
 	public class AudioControl : MonoBehaviour {
 
 		//References to components;
-		private Controller controller;
-		private Animator animator;
-		private Mover mover;
-		private Transform tr;
+		Controller controller;
+		Animator animator;
+		Mover mover;
+		Transform tr;
 		public AudioSource audioSource;
 
 		//Whether footsteps will be based on the currently playing animation or calculated based on walked distance (see further below);
 		public bool useAnimationBasedFootsteps = true;
 
+		//Velocity threshold for landing sound effect;
+		//Sound effect will only be played if downward velocity exceeds this threshold;
+		public float landVelocityThreshold = 5f;
+
 		//Footsteps will be played every time the traveled distance reaches this value (if 'useAnimationBasedFootsteps' is set to 'true');
 		public float footstepDistance = 0.2f;
-		private float currentFootstepDistance = 0f;
+		float currentFootstepDistance = 0f;
 
 		private float currentFootStepValue = 0f;
 
@@ -29,7 +33,7 @@ namespace CMF
 
 		//Range of random volume deviation used for footsteps;
 		//Footstep audio clips will be played at different volumes for a more "natural sounding" result;
-		public float RelativeRandomizedVolumeRange = 0.2f;
+		public float relativeRandomizedVolumeRange = 0.2f;
 
 		//Audio clips;
 		public AudioClip[] footStepClips;
@@ -37,7 +41,7 @@ namespace CMF
 		public AudioClip landClip;
 
 		//Setup;
-		private void Start () {
+		void Start () {
 			//Get component references;
 			controller = GetComponent<Controller>();
 			animator = GetComponentInChildren<Animator>();
@@ -53,7 +57,7 @@ namespace CMF
 		}
 		
 		//Update;
-		private void Update () {
+		void Update () {
 
 			//Get controller velocity;
 			Vector3 _velocity = controller.GetVelocity();
@@ -64,7 +68,7 @@ namespace CMF
 			FootStepUpdate(_horizontalVelocity.magnitude);
 		}
 
-		private void FootStepUpdate(float _movementSpeed)
+		void FootStepUpdate(float _movementSpeed)
 		{
 			float _speedThreshold = 0.05f;
 
@@ -97,19 +101,23 @@ namespace CMF
 			}
 		}
 
-		private void PlayFootstepSound(float _movementSpeed)
+		void PlayFootstepSound(float _movementSpeed)
 		{
 			int _footStepClipIndex = Random.Range(0, footStepClips.Length);
-			audioSource.PlayOneShot(footStepClips[_footStepClipIndex], audioClipVolume + audioClipVolume * Random.Range(-RelativeRandomizedVolumeRange, RelativeRandomizedVolumeRange));
+			audioSource.PlayOneShot(footStepClips[_footStepClipIndex], audioClipVolume + audioClipVolume * Random.Range(-relativeRandomizedVolumeRange, relativeRandomizedVolumeRange));
 		}
 
-		private void OnLand(Vector3 _v)
+		void OnLand(Vector3 _v)
 		{
+			//Only trigger sound if downward velocity exceeds threshold;
+			if(VectorMath.GetDotProduct(_v, tr.up) > -landVelocityThreshold)
+				return;
+
 			//Play land audio clip;
 			audioSource.PlayOneShot(landClip, audioClipVolume);
 		}
 
-		private void OnJump(Vector3 _v)
+		void OnJump(Vector3 _v)
 		{
 			//Play jump audio clip;
 			audioSource.PlayOneShot(jumpClip, audioClipVolume);

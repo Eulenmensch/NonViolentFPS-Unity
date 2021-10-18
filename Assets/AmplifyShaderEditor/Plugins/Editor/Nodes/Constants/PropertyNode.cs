@@ -27,10 +27,14 @@ namespace AmplifyShaderEditor
 	{
 		public string Name;
 		public string Attribute;
-		public PropertyAttributes( string name, string attribute )
+		public bool HasDeprecatedValue;
+		public string DeprecatedValue;
+		public PropertyAttributes( string name, string attribute , string deprecated = null )
 		{
 			Name = name;
 			Attribute = attribute;
+			DeprecatedValue = deprecated;
+			HasDeprecatedValue = deprecated != null;
 		}
 	}
 
@@ -40,7 +44,8 @@ namespace AmplifyShaderEditor
 		private const string LongNameEnder = "... )";
 		protected int m_longNameSize = 200;
 		//private const string InstancedPropertyWarning = "Instanced Property option shouldn't be used on official SRP templates as all property variables are already declared as instanced inside a CBuffer.\nPlease consider changing to Property option.";
-		private string TooltipFormatter = "{0}\n\nName: {1}\nValue: {2}";
+		private const string TooltipFormatter = "{0}\n\nName: {1}\nValue: {2}";
+		private const string InvalidAttributeFormatter = "Attribute {0} not found on node {1}. Please click on this message to select node and review its attributes section";
 		protected string GlobalTypeWarningText = "Global variables must be set via a C# script using the Shader.SetGlobal{0}(...) method.\nPlease note that setting a global variable will affect all shaders which are using it.";
 		private const string HybridInstancedStr = "Hybrid Instanced";
 		private const string AutoRegisterStr = "Auto-Register";
@@ -1599,10 +1604,11 @@ namespace AmplifyShaderEditor
 			int attribCount = m_availableAttribs.Count;
 			for( int i = 0; i < attribCount; i++ )
 			{
-				if( m_availableAttribs[ i ].Attribute.Equals( name ) )
+				if( m_availableAttribs[ i ].Attribute.Equals( name ) || 
+					(m_availableAttribs[ i ].HasDeprecatedValue && m_availableAttribs[ i ].DeprecatedValue.Equals( name ) ) )
 					return i;
 			}
-			return 0;
+			return -1;
 		}
 
 		public override void ReadFromString( ref string[] nodeParams )
@@ -1644,7 +1650,16 @@ namespace AmplifyShaderEditor
 				{
 					for( int i = 0; i < attribAmount; i++ )
 					{
-						m_selectedAttribs.Add( IdForAttrib( GetCurrentParam( ref nodeParams ) ) );
+						string attribute = GetCurrentParam( ref nodeParams );
+						int idForAttribute = IdForAttrib( attribute );
+						if( idForAttribute >= 0 )
+						{
+							m_selectedAttribs.Add( idForAttribute );
+						}
+						else
+						{
+							UIUtils.ShowMessage( UniqueId, string.Format( InvalidAttributeFormatter, attribute,m_propertyInspectorName ) , MessageSeverity.Warning );
+						}
 					}
 
 					m_visibleAttribsFoldout = true;
@@ -1741,9 +1756,10 @@ namespace AmplifyShaderEditor
 
 		public virtual void ReleaseRansomedProperty()
 		{
-			if( m_variableMode == VariableMode.Fetch && m_autoGlobalName )
+			if( m_variableMode == VariableMode.Fetch/* && m_autoGlobalName */)
 			{
-				CurrentVariableMode = VariableMode.Create;
+				//Fooling setter to have a different value 
+				m_variableMode = VariableMode.Create;
 				CurrentVariableMode = VariableMode.Fetch;
 			}
 		}
@@ -1809,6 +1825,11 @@ namespace AmplifyShaderEditor
 					m_variableMode = value;
 					if( value == VariableMode.Fetch )
 					{
+						// Release ownership on name
+						if( UIUtils.CheckUniformNameOwner( m_oldName ) == UniqueId )
+						{
+							UIUtils.ReleaseUniformName( UniqueId , m_oldName );
+						}
 						m_oldName = m_propertyName;
 					}
 					else
@@ -1828,11 +1849,18 @@ namespace AmplifyShaderEditor
 							m_propertyNameIsDirty = true;
 							OnPropertyNameChanged();
 						}
-						else if( UIUtils.CheckUniformNameOwner( m_propertyName ) != UniqueId )
+						else
 						{
-							string oldProperty = m_propertyName;
-							RegisterFirstAvailablePropertyName( false );
-							UIUtils.ShowMessage( UniqueId, string.Format( FetchToCreateOnDuplicateNodeMsg, m_propertyName, oldProperty ), MessageSeverity.Warning );
+							if( UIUtils.IsUniformNameAvailable( m_propertyName ) )
+							{
+								UIUtils.RegisterUniformName( UniqueId , m_propertyName );
+							}
+							else if( UIUtils.CheckUniformNameOwner( m_propertyName ) != UniqueId )
+							{
+								string oldProperty = m_propertyName;
+								RegisterFirstAvailablePropertyName( false );
+								UIUtils.ShowMessage( UniqueId, string.Format( FetchToCreateOnDuplicateNodeMsg, m_propertyName, oldProperty ), MessageSeverity.Warning );
+							}
 						}
 					}
 				}

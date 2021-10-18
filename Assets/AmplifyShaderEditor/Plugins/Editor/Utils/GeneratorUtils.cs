@@ -5,6 +5,8 @@ namespace AmplifyShaderEditor
 {
 	public static class GeneratorUtils
 	{
+		public const string VertexBlendWeightsStr = "ase_blendWeights";
+		public const string VertexBlendIndicesStr = "ase_blendIndices";
 		public const string ObjectScaleStr = "ase_objectScale";
 		public const string ParentObjectScaleStr = "ase_parentObjectScale";
 		public const string ScreenDepthStr = "ase_screenDepth";
@@ -300,7 +302,7 @@ namespace AmplifyShaderEditor
 		}
 
 		// SAMPLER STATES
-		static public string GenerateSamplerState( ref MasterNodeDataCollector dataCollector, int uniqueId, string propertyName, bool returnPropertyName = false )
+		static public string GenerateSamplerState( ref MasterNodeDataCollector dataCollector, int uniqueId, string propertyName, VariableMode varMode,  bool returnPropertyName = false )
 		{
 
 			string sampler = string.Format( Constants.SamplerFormat, propertyName );
@@ -316,7 +318,8 @@ namespace AmplifyShaderEditor
 				samplerDecl = string.Format( Constants.SamplerDeclSRPFormat, sampler ) + ";";
 			else
 				samplerDecl = string.Format( Constants.SamplerDeclFormat, sampler ) + ";";
-			dataCollector.AddToUniforms( uniqueId, samplerDecl );
+			if( varMode == VariableMode.Create )
+				dataCollector.AddToUniforms( uniqueId, samplerDecl );
 
 			if( returnPropertyName )
 				return propertyName;
@@ -642,9 +645,17 @@ namespace AmplifyShaderEditor
 
 
 			string value = GenerateVertexScreenPositionForValue( customVertexPosition, outputId, ref dataCollector, uniqueId, precision );
+
+			if( !dataCollector.IsFragmentCategory )
+			{
+				return value;
+			}
+
 			string screenPosVarName = "screenPosition" + outputId;
 			dataCollector.AddToInput( uniqueId, screenPosVarName, WirePortDataType.FLOAT4, precision );
 			dataCollector.AddToVertexLocalVariables( uniqueId, Constants.VertexShaderOutputStr + "." + screenPosVarName + " = " + value + ";" );
+
+			
 
 			string screenPosVarNameOnFrag = ScreenPositionStr + outputId;
 			string globalResult = Constants.InputVarStr + "." + screenPosVarName;
@@ -966,6 +977,79 @@ namespace AmplifyShaderEditor
 			return WorldLightDirStr;
 		}
 
+		private static readonly string[] SafeNormalizeBuiltin = 
+		{
+			"inline float{0} ASESafeNormalize(float{0} inVec)\n",
+			"{\n",
+			"\tfloat dp3 = max( 0.001f , dot( inVec , inVec ) );\n",
+			"\treturn inVec* rsqrt( dp3);\n",
+			"}\n"
+		};
+
+		private static readonly string[] SafeNormalizeSRP =
+		{
+			"real{0} ASESafeNormalize(float{0} inVec)\n",
+			"{\n",
+			"\treal dp3 = max(FLT_MIN, dot(inVec, inVec));\n",
+			"\treturn inVec* rsqrt( dp3);\n",
+			"}\n",
+		};
+
+		static public string NormalizeValue( ref MasterNodeDataCollector dataCollector , bool safeNormalize , WirePortDataType dataType, string value )
+		{
+			string normalizeInstruction = string.Empty;
+			if( safeNormalize )
+			{
+				string[] finalFunction = null;
+				string[] funcVersion = dataCollector.IsSRP ? SafeNormalizeSRP : SafeNormalizeBuiltin;
+
+				finalFunction = new string[ funcVersion.Length ];
+
+				switch( dataType )
+				{
+					case WirePortDataType.FLOAT:
+					finalFunction[0] = string.Format( funcVersion[ 0 ] , string.Empty );
+					break;
+					case WirePortDataType.FLOAT2:
+					finalFunction[ 0 ] = string.Format( funcVersion[ 0 ] , "2" );
+					break;
+					case WirePortDataType.FLOAT3:
+					finalFunction[ 0 ] = string.Format( funcVersion[ 0 ] , "3" );
+					break;
+					case WirePortDataType.FLOAT4:
+					case WirePortDataType.COLOR:
+					finalFunction[ 0 ] = string.Format( funcVersion[ 0 ] , "4" );
+					break;
+					default:
+					case WirePortDataType.FLOAT3x3:
+					case WirePortDataType.FLOAT4x4:
+					case WirePortDataType.INT:
+					case WirePortDataType.OBJECT:
+					case WirePortDataType.SAMPLER1D:
+					case WirePortDataType.SAMPLER2D:
+					case WirePortDataType.SAMPLER3D:
+					case WirePortDataType.SAMPLERCUBE:
+					case WirePortDataType.UINT:
+					case WirePortDataType.UINT4:
+					case WirePortDataType.SAMPLER2DARRAY:
+					case WirePortDataType.SAMPLERSTATE:return value;
+				}
+
+				for( int i = 1 ; i < funcVersion.Length ; i++ )
+				{
+					finalFunction[ i ] = funcVersion[ i ];
+				}
+				dataCollector.AddFunction( finalFunction[ 0 ] , finalFunction , false );
+				normalizeInstruction = "ASESafeNormalize";
+			}
+			else
+			{
+				normalizeInstruction = "normalize";
+			}
+
+			return normalizeInstruction = normalizeInstruction + "( " + value + " )";
+
+		}
 		// LIGHT DIRECTION Object
 		static public string GenerateObjectLightDirection( ref MasterNodeDataCollector dataCollector, int uniqueId, PrecisionType precision, string vertexPos )
 		{

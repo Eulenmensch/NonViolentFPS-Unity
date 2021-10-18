@@ -14,7 +14,7 @@ namespace CMF
         //Transform component of camera target;
 		public Transform cameraTargetTransform;
 
-		private Transform tr;
+		Transform tr;
 
 		//Whether a raycast or spherecast is used to scan for obstacles;
 		public CastType castType;
@@ -28,15 +28,15 @@ namespace CMF
 		public LayerMask layerMask = ~0;
 
 		//Layer number for 'Ignore Raycast' layer;
-		private int ignoreRaycastLayer;
+		int ignoreRaycastLayer;
 
 		//List of colliders to ignore when raycasting;
 		public Collider[] ignoreList;
 
 		//Array to store layers of colliders in ignore list;
-		private int[] ignoreListLayers;
+		int[] ignoreListLayers;
 
-		private float currentDistance;
+		float currentDistance;
 
 		//Additional distance which is added to the raycast's length to prevent the camera from clipping into level geometry;
 		//For most situations, the default value of '0.1f' is sufficient;
@@ -53,7 +53,7 @@ namespace CMF
 		//Radius of spherecast, only used if 'Spherecast' is chosen as 'castType';
 		public float spherecastRadius = 0.2f;
 
-		private void Awake () {
+		void Awake () {
 			tr = transform;
 
             //Setup array to store ignore list layers;
@@ -63,8 +63,10 @@ namespace CMF
             ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
 
             //Make sure that the selected layermask does not include the 'Ignore Raycast' layer;
-            layerMask ^= (1 << ignoreRaycastLayer);
-
+			if (layerMask == (layerMask | (1 << ignoreRaycastLayer))) {
+				layerMask ^= (1 << ignoreRaycastLayer);
+			}
+			
             if (cameraTransform == null)
                 Debug.LogWarning("No camera transform has been assigned.", this);
 
@@ -82,7 +84,7 @@ namespace CMF
 			currentDistance = (cameraTargetTransform.position - tr.position).magnitude; 
 		}
 
-		private void LateUpdate () {
+		void LateUpdate () {
 
 			//Check if ignore list length has been changed since last frame;
 			if(ignoreListLayers.Length != ignoreList.Length)
@@ -116,7 +118,7 @@ namespace CMF
 		}
 
 		//Calculate maximum distance by casting a ray (or sphere) from this transform to the camera target transform;
-		private float GetCameraDistance()
+		float GetCameraDistance()
 		{
 			RaycastHit _hit;
 

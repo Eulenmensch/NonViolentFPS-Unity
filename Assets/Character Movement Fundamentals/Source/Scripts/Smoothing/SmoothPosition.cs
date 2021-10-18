@@ -8,9 +8,9 @@ namespace CMF
 
 		//The target transform, whose position values will be copied and smoothed;
 		public Transform target;
-		private Transform tr;
+		Transform tr;
 
-		private Vector3 currentPosition;
+		Vector3 currentPosition;
 		
 		//Speed that controls how fast the current position will be smoothed toward the target position when 'Lerp' is selected as smoothType;
 		public float lerpSpeed = 20f;
@@ -39,12 +39,12 @@ namespace CMF
 		public SmoothType smoothType;
 
 		//Local position offset at the start of the game;
-		private Vector3 localPositionOffset;
+		Vector3 localPositionOffset;
 
-		private Vector3 refVelocity;
+		Vector3 refVelocity;
 		
 		//Awake;
-		private void Awake () {
+		void Awake () {
 			
 			//If no target has been selected, choose this transform's parent as the target;
 			if(target == null)
@@ -57,25 +57,25 @@ namespace CMF
 		}
 
 		//OnEnable;
-		private void OnEnable()
+		void OnEnable()
 		{
 			//Reset current position when gameobject is re-enabled to prevent unwanted interpolation from last position;
 			ResetCurrentPosition();
 		}
 
-		private void Update () {
+		void Update () {
 			if(updateType == UpdateType.LateUpdate)
 				return;
 			SmoothUpdate();
 		}
 
-		private void LateUpdate () {
+		void LateUpdate () {
 			if(updateType == UpdateType.Update)
 				return;
 			SmoothUpdate();
 		}
 
-		private void SmoothUpdate()
+		void SmoothUpdate()
 		{
 			//Smooth current position;
 			currentPosition = Smooth (currentPosition, target.position, lerpSpeed);
@@ -84,7 +84,7 @@ namespace CMF
 			tr.position = currentPosition;
 		}
 
-		private Vector3 Smooth(Vector3 _start, Vector3 _target, float _smoothTime)
+		Vector3 Smooth(Vector3 _start, Vector3 _target, float _smoothTime)
 		{
 			//Convert local position offset to world coordinates;
 			Vector3 _offset = tr.localToWorldMatrix * localPositionOffset;

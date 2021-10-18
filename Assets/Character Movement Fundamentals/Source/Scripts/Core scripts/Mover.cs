@@ -10,47 +10,47 @@ namespace CMF
 
 		//Collider variables;
 		[Header("Mover Options :")]
-		[Range(0f, 1f)] public float stepHeightRatio = 0.25f;
+		[Range(0f, 1f)][SerializeField] float stepHeightRatio = 0.25f;
 		[Header("Collider Options :")]
-		[SerializeField] public float colliderHeight = 2f;
-		[SerializeField] public float colliderThickness = 1f;
-		[SerializeField] public Vector3 colliderOffset = Vector3.zero;
+		[SerializeField] float colliderHeight = 2f;
+		[SerializeField] float colliderThickness = 1f;
+		[SerializeField] Vector3 colliderOffset = Vector3.zero;
 
 		//References to attached collider(s);
-		private BoxCollider boxCollider;
-		private SphereCollider sphereCollider;
-		private CapsuleCollider capsuleCollider;
+		BoxCollider boxCollider;
+		SphereCollider sphereCollider;
+		CapsuleCollider capsuleCollider;
 
 		//Sensor variables;
 		[Header("Sensor Options :")]
 		[SerializeField] public Sensor.CastType sensorType = Sensor.CastType.Raycast;
 		private float sensorRadiusModifier = 0.8f;
 		private int currentLayer;
-		[SerializeField] public bool isInDebugMode = false;
+		[SerializeField] bool isInDebugMode = false;
 		[Header("Sensor Array Options :")]
-		[SerializeField] [Range(1, 5)] public int sensorArrayRows = 1;
-		[SerializeField] [Range(3, 10)] public int sensorArrayRayCount = 6;
-		[SerializeField] public bool sensorArrayRowsAreOffset = false;
+		[SerializeField] [Range(1, 5)] int sensorArrayRows = 1;
+		[SerializeField] [Range(3, 10)] int sensorArrayRayCount = 6;
+		[SerializeField] bool sensorArrayRowsAreOffset = false;
 
 		[HideInInspector] public Vector3[] raycastArrayPreviewPositions;
 
 		//Ground detection variables;
-		private bool isGrounded = false;
+		bool isGrounded = false;
 
 		//Sensor range variables;
-		private bool IsUsingExtendedSensorRange  = true;
-		private float baseSensorRange = 0f;
+		bool IsUsingExtendedSensorRange  = true;
+		float baseSensorRange = 0f;
 
 		//Current upwards (or downwards) velocity necessary to keep the correct distance to the ground;
-		private Vector3 currentGroundAdjustmentVelocity = Vector3.zero;
+		Vector3 currentGroundAdjustmentVelocity = Vector3.zero;
 
 		//References to attached components;
-		private Collider col;
-		private Rigidbody rig;
-		private Transform tr;
-		private Sensor sensor;
+		Collider col;
+		Rigidbody rig;
+		Transform tr;
+		Sensor sensor;
 
-		private void Awake()
+		void Awake()
 		{
 			Setup();
 
@@ -60,11 +60,11 @@ namespace CMF
 			RecalibrateSensor();
 		}
 
-		private void Reset () {
+		void Reset () {
 			Setup();
 		}
 
-		private void OnValidate()
+		void OnValidate()
 		{
 			//Recalculate collider dimensions;
 			if(this.gameObject.activeInHierarchy)
@@ -77,7 +77,7 @@ namespace CMF
 		}
 
 		//Setup references to components;
-		private void Setup()
+		void Setup()
 		{
 			tr = transform;
 			col = GetComponent<Collider>();
@@ -108,7 +108,7 @@ namespace CMF
 		}
 
 		//Draw debug information if debug mode is enabled;
-		private void LateUpdate()
+		void LateUpdate()
 		{
 			if(isInDebugMode)
 				sensor.DrawDebug();
@@ -172,7 +172,7 @@ namespace CMF
 		}
 
 		//Recalibrate sensor variables;
-		private void RecalibrateSensor()
+		void RecalibrateSensor()
 		{
 			//Set sensor ray origin and direction;
 			sensor.SetCastOrigin(GetColliderCenter());
@@ -225,7 +225,7 @@ namespace CMF
 		}
 
 		//Recalculate sensor layermask based on current physics settings;
-		private void RecalculateSensorLayerMask()
+		void RecalculateSensorLayerMask()
 		{
 			int _layerMask = 0;
 			int _objectLayer = this.gameObject.layer;
@@ -251,7 +251,7 @@ namespace CMF
 		}
 
 		//Returns the collider's center in world coordinates;
-		private Vector3 GetColliderCenter()
+		Vector3 GetColliderCenter()
 		{
 			if(col == null)
 				Setup();
@@ -262,7 +262,7 @@ namespace CMF
 		//Check if mover is grounded;
 		//Store all relevant collision information for later;
 		//Calculate necessary adjustment velocity to keep the correct distance to the ground;
-		private void Check()
+		void Check()
 		{
 			//Reset ground adjustment velocity;
 			currentGroundAdjustmentVelocity = Vector3.zero;
@@ -335,6 +335,19 @@ namespace CMF
 				return;
 
 			colliderHeight = _newColliderHeight;
+			RecalculateColliderDimensions();
+		}
+
+		//Set thickness/width of collider;
+		public void SetColliderThickness(float _newColliderThickness)
+		{
+			if(colliderThickness == _newColliderThickness)
+				return;
+
+			if(_newColliderThickness < 0f)
+				_newColliderThickness = 0f;
+
+			colliderThickness = _newColliderThickness;
 			RecalculateColliderDimensions();
 		}
 

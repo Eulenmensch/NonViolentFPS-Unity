@@ -8,18 +8,18 @@ namespace CMF
 	public class FlipAtRightAngle : MonoBehaviour {
 
 		//Audiosource component which is played when switch is triggered;
-		private AudioSource audioSource;
+		AudioSource audioSource;
 
-		private Transform tr;
+		Transform tr;
 
-		private void Start()
+		void Start()
 		{
 			//Get component references;
 			tr = transform;
 			audioSource = GetComponent<AudioSource>();
 		}
 
-		private void OnTriggerEnter(Collider col)
+		void OnTriggerEnter(Collider col)
 		{
 			if(col.GetComponent<Controller>() == null)
 				return;
@@ -27,7 +27,7 @@ namespace CMF
 			SwitchDirection(tr.forward, col.GetComponent<Controller>());
 		}
 
-		private void SwitchDirection(Vector3 _newUpDirection, Controller _controller)
+		void SwitchDirection(Vector3 _newUpDirection, Controller _controller)
 		{
 			float _angleThreshold = 0.001f;
 
