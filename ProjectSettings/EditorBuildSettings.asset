@@ -59,4 +59,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/#MyStuff/Scenes/Default/Player Mood.unity
     guid: 49e0a33910a831040af10f36d8b3a0cb
+  - enabled: 1
+    path: Assets/#MyStuff/Scenes/Default/Player Rescue.unity
+    guid: 6800410cd5caf574f93a2fc13b5ca1a8
   m_configObjects: {}
