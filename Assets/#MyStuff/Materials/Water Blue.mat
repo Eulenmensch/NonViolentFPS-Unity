@@ -40,13 +40,13 @@ Material:
     - _DepthScale: 0.023
     - _Float0: 0.5764706
     - _FoamSpeed: 0.124
-    - _NormalSpeed: 0.117
+    - _NormalSpeed: 0.051
     - _NormalSpeed1: 0.008
     - _NormalSpeed2: 0.074
     - _Offset: 0
     - _PosterizeScale: 15.9
     - _Scale: 0.071
-    - _SpecularIntensity: 0.907
+    - _SpecularIntensity: 0.798
     - __dirty: 0
     m_Colors:
     - _Color0: {r: 0.5050285, g: 0.8656342, b: 0.9150943, a: 1}
