@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NonViolentFPS.AI;
+using NonViolentFPS.Events;
 using NonViolentFPS.Manager;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -19,6 +20,16 @@ namespace NonViolentFPS.NPCs
 		public List<Collision> ActiveCollisions { get; private set; }
 		public GameObject Player { get; private set; }
 
+		private void OnEnable()
+		{
+			GameEvents.Instance.OnPlayerLoaded += SetPlayer;
+		}
+
+		private void OnDisable()
+		{
+			GameEvents.Instance.OnPlayerLoaded -= SetPlayer;
+		}
+
 		protected virtual void Awake()
 		{
 			StateMachine = new StateMachine(this, anyState) {CurrentState = startState};
@@ -27,7 +38,6 @@ namespace NonViolentFPS.NPCs
 
 		protected virtual void Start()
 		{
-			Player = GameManager.Instance.Player;
 			ActiveCollisions = new List<Collision>();
 		}
 
@@ -52,6 +62,11 @@ namespace NonViolentFPS.NPCs
 		{
 			if (!ActiveCollisions.Contains(_other)) return;
 			ActiveCollisions.Remove(_other);
+		}
+
+		private void SetPlayer(Transform _player)
+		{
+			Player = _player.gameObject;
 		}
 
 		public static void ThrowComponentMissingError( Type _type)

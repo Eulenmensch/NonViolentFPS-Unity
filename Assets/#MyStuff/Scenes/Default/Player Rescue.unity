@@ -502,6 +502,7 @@ MonoBehaviour:
   slideGravity: 5
   slopeLimit: 80
   useLocalMomentum: 1
+  coyoteTime: 2.2
   cameraTransform: {fileID: 2569942780080362813}
 --- !u!114 &2464554092079305475
 MonoBehaviour:
