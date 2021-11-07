@@ -7699,7 +7699,9 @@ GameObject:
   - component: {fileID: 3240651724485733904}
   - component: {fileID: 3240651724485733907}
   - component: {fileID: 7225602460370144400}
-  m_Layer: 0
+  - component: {fileID: 8692688081460110668}
+  - component: {fileID: 4246806578094883805}
+  m_Layer: 11
   m_Name: Grappler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7729,7 +7731,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3240651724485733918}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d43f0f1d821b62141ac4504e5dc7bb41, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -7827,8 +7829,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff87dbe5cbfea74eb396d54dd836bdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drag: 0.2
-  angularDrag: 10
+  drag: 0.05
+  angularDrag: 8.46
+--- !u!114 &8692688081460110668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3240651724485733918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b86e39f0630acd044915463d251c7fdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <GroundGravity>k__BackingField: 13
+  AirGravity: 15
+--- !u!114 &4246806578094883805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3240651724485733918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74b79219e3683f242a026e6954ae1bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroundMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  GroundRayLength: 0.6
+  MaxSlopeAngle: 0
+  Space: 1
 --- !u!1 &3322415634214740404
 GameObject:
   m_ObjectHideFlags: 0
