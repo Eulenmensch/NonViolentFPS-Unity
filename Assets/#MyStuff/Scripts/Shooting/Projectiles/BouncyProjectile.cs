@@ -28,7 +28,7 @@ namespace NonViolentFPS.Shooting
             }
         }
 
-        protected override void ImpactAction(Collision _other)
+        protected override void UnactivatedImpactAction(Collision _other)
         {
             rigidbodyRef.isKinematic = true;
             Destroy( rigidbodyRef );

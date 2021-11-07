@@ -52,7 +52,7 @@ namespace NonViolentFPS.Shooting
             Line.SetPosition(1, BalloonStringStart.transform.position);
         }
 
-        protected override void ImpactAction(Collision _other)
+        protected override void UnactivatedImpactAction(Collision _other)
         {
             transform.DOScale(MaxSize, GrowthDuration).SetEase(Ease.OutBounce);
 

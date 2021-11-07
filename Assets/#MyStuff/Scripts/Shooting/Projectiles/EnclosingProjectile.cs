@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using NonViolentFPS.Extension_Classes;
 using NonViolentFPS.Manager;
 using NonViolentFPS.Physics;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace NonViolentFPS.Shooting
 {
 	public class EnclosingProjectile : PhysicsProjectile
 	{
+		[SerializeField] private LayerMask AttachableMask;
 		[SerializeField] private MMFeedbacks burstFeedbacks;
 		[SerializeField] private MMFeedbacks unfreezeFeedbacks;
 		[SerializeField] private float growthDuration;
@@ -20,6 +22,8 @@ namespace NonViolentFPS.Shooting
 		[SerializeField] private float travelGrowthDuration;
 		[SerializeField] private float maxTravelScale;
 		[SerializeField] private Material frozenMaterial;
+		[SerializeField] private bool burstAfterEnclosing;
+		[SerializeField] private float burstAfterEnclosingTime;
 
 		public Transform AttachedTarget { get; private set; }
 
@@ -28,6 +32,7 @@ namespace NonViolentFPS.Shooting
 		private Rigidbody rigidbodyRef;
 		private SphereCollider sphereCollider;
 		private bool unfreezing;
+		private bool hasBurst;
 
 		protected override void Start()
 		{
@@ -48,19 +53,27 @@ namespace NonViolentFPS.Shooting
 
 			if ( OtherRigidbody != null )
 			{
-				if(transform.position.y >= maxHeight) {return;}
+				if(transform.position.y >= maxHeight) return;
+				if (hasBurst) return;
 				OtherRigidbody.AddForceAtPosition( Vector3.up * riseForce, transform.position, ForceMode.Acceleration );
 			}
 		}
 
-		protected override void ImpactAction(Collision _other)
+		protected override void UnactivatedImpactAction(Collision _other)
 		{
 			DOTween.Kill(transform);
+			//if the gameObject is NOT on the attachable layer, burst
+			if (!AttachableMask.IsGameObjectInMask(_other.gameObject))
+			{
+				Burst();
+				return;
+			}
 			if (_other.rigidbody == null)
 			{
 				Burst();
 				return;
 			}
+			//burst if hitting another bubble
 			var enclosingProjectile = _other.collider.GetComponentInChildren<EnclosingProjectile>();
 			if (enclosingProjectile != null)
 			{
@@ -79,6 +92,15 @@ namespace NonViolentFPS.Shooting
 			AttachedTarget = _other.transform;
 			ChildToOtherRigidbody(_other);
 			transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.OutCirc);
+			if (burstAfterEnclosing)
+			{
+				BurstAfterSeconds(burstAfterEnclosingTime);
+			}
+		}
+
+		protected override void ActivatedImpactAction(Collision _other)
+		{
+			Burst();
 		}
 
 		private async void EnableCollisionAfterSeconds(SphereCollider _collider, float _seconds)
@@ -93,9 +115,22 @@ namespace NonViolentFPS.Shooting
 			_collider.enabled = true;
 		}
 
+		private async void BurstAfterSeconds(float _seconds)
+		{
+			var timer = 0f;
+			while (timer <= _seconds)
+			{
+				timer += Time.deltaTime;
+				await Task.Yield();
+			}
+
+			Burst();
+		}
+
 		private void Burst()
 		{
 			sphereCollider.enabled = false;
+			hasBurst = true;
 			burstFeedbacks.PlayFeedbacks();
 		}
 

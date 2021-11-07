@@ -9,7 +9,7 @@ namespace NonViolentFPS.Shooting
 	{
 		[SerializeField] private GameObject grapplerPrefab;
 
-		protected override void ImpactAction(Collision _other)
+		protected override void UnactivatedImpactAction(Collision _other)
 		{
 			if (_other.gameObject.Equals(GameManager.Instance.Player))
 			{

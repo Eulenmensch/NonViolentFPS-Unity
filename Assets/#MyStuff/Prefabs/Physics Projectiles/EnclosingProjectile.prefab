@@ -568,16 +568,21 @@ MonoBehaviour:
   activeAngularDrag: 5
   mMFeedbacks: {fileID: -2284264754132178773}
   doesImpactWithPlayer: 1
+  AttachableMask:
+    serializedVersion: 2
+    m_Bits: 2048
   burstFeedbacks: {fileID: 296257584172371004}
   unfreezeFeedbacks: {fileID: 4577470498436137226}
   growthDuration: 0.5
   collisionGraceTime: 0.3
-  yOffset: 0.3
-  riseForce: 10
-  maxHeight: 20
+  yOffset: 0
+  riseForce: 15
+  maxHeight: 100
   travelGrowthDuration: 3
   maxTravelScale: 1.7
   frozenMaterial: {fileID: 2100000, guid: 4093e76ce374bae4c831a303d628b73e, type: 2}
+  burstAfterEnclosing: 1
+  burstAfterEnclosingTime: 5
 --- !u!54 &8997202219762852826
 Rigidbody:
   m_ObjectHideFlags: 0

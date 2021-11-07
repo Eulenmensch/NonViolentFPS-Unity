@@ -40,7 +40,11 @@ namespace NonViolentFPS.Shooting
             Drag = GetComponent<QuadraticDrag>();
         }
 
-        protected abstract void ImpactAction(Collision _other);
+        protected abstract void UnactivatedImpactAction(Collision _other);
+
+        protected virtual void ActivatedImpactAction(Collision _other)
+        {
+        }
 
         protected void ChildToOtherRigidbody(Collision _other)
         {
@@ -68,10 +72,14 @@ namespace NonViolentFPS.Shooting
 
         private void OnCollisionEnter(Collision _other)
         {
-            if (Activated) { return; }
             if (!doesImpactWithPlayer && _other.gameObject.tag.Equals("Player")) { return; }
+            if (Activated)
+            {
+                ActivatedImpactAction(_other);
+                return;
+            }
             PlayMMFeedbacks();
-            ImpactAction(_other);
+            UnactivatedImpactAction(_other);
             Activate();
         }
     }
