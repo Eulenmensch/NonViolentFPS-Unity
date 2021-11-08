@@ -568,7 +568,7 @@ MonoBehaviour:
   activeAngularDrag: 5
   mMFeedbacks: {fileID: -2284264754132178773}
   doesImpactWithPlayer: 1
-  AttachableMask:
+  attachableMask:
     serializedVersion: 2
     m_Bits: 2048
   burstFeedbacks: {fileID: 296257584172371004}

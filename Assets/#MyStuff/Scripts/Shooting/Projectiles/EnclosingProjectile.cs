@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DG.Tweening;
+using Ludiq.Peek;
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Extension_Classes;
 using NonViolentFPS.Manager;
 using NonViolentFPS.Physics;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace NonViolentFPS.Shooting
 {
 	public class EnclosingProjectile : PhysicsProjectile
 	{
-		[SerializeField] private LayerMask AttachableMask;
+		[SerializeField] private LayerMask attachableMask;
 		[SerializeField] private MMFeedbacks burstFeedbacks;
 		[SerializeField] private MMFeedbacks unfreezeFeedbacks;
 		[SerializeField] private float growthDuration;
@@ -33,6 +35,7 @@ namespace NonViolentFPS.Shooting
 		private SphereCollider sphereCollider;
 		private bool unfreezing;
 		private bool hasBurst;
+		private Collider[] otherColliders;
 
 		protected override void Start()
 		{
@@ -53,9 +56,15 @@ namespace NonViolentFPS.Shooting
 
 			if ( OtherRigidbody != null )
 			{
-				if(transform.position.y >= maxHeight) return;
-				if (hasBurst) return;
-				OtherRigidbody.AddForceAtPosition( Vector3.up * riseForce, transform.position, ForceMode.Acceleration );
+				ApplyUpwardsForce();
+			}
+		}
+
+		private void Update()
+		{
+			if (AttachedTarget != null)
+			{
+				MoveWithEnclosedObject();
 			}
 		}
 
@@ -63,12 +72,7 @@ namespace NonViolentFPS.Shooting
 		{
 			DOTween.Kill(transform);
 			//if the gameObject is NOT on the attachable layer, burst
-			if (!AttachableMask.IsGameObjectInMask(_other.gameObject))
-			{
-				Burst();
-				return;
-			}
-			if (_other.rigidbody == null)
+			if (!attachableMask.IsGameObjectInMask(_other.gameObject))
 			{
 				Burst();
 				return;
@@ -87,11 +91,14 @@ namespace NonViolentFPS.Shooting
 			}
 
 			rigidbodyRef.isKinematic = true;
-			Destroy(GetComponent<CustomGravity>());
-			Destroy( rigidbodyRef );
 			AttachedTarget = _other.transform;
-			ChildToOtherRigidbody(_other);
-			transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.OutCirc);
+			OtherRigidbody = _other.gameObject.GetComponent<Rigidbody>();
+			otherColliders = _other.gameObject.GetComponentsInChildren<Collider>();
+			foreach (var otherCollider in otherColliders)
+			{
+				otherCollider.enabled = false;
+			}
+			// transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.OutCirc);
 			if (burstAfterEnclosing)
 			{
 				BurstAfterSeconds(burstAfterEnclosingTime);
@@ -100,7 +107,22 @@ namespace NonViolentFPS.Shooting
 
 		protected override void ActivatedImpactAction(Collision _other)
 		{
-			Burst();
+			if (_other.gameObject != AttachedTarget.gameObject)
+			{
+				Burst();
+			}
+		}
+
+		private void ApplyUpwardsForce()
+		{
+			if (transform.position.y >= maxHeight) return;
+			if (hasBurst) return;
+			OtherRigidbody.AddForceAtPosition(Vector3.up * riseForce, transform.position, ForceMode.Acceleration);
+		}
+
+		private void MoveWithEnclosedObject()
+		{
+			transform.position = AttachedTarget.position;
 		}
 
 		private async void EnableCollisionAfterSeconds(SphereCollider _collider, float _seconds)
@@ -131,6 +153,13 @@ namespace NonViolentFPS.Shooting
 		{
 			sphereCollider.enabled = false;
 			hasBurst = true;
+			if (AttachedTarget != null)
+			{
+				foreach (var otherCollider in otherColliders)
+				{
+					otherCollider.enabled = true;
+				}
+			}
 			burstFeedbacks.PlayFeedbacks();
 		}
 
