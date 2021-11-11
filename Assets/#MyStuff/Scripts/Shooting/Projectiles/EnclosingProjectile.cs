@@ -1,13 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DG.Tweening;
-using Ludiq.Peek;
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Extension_Classes;
 using NonViolentFPS.Manager;
-using NonViolentFPS.Physics;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 namespace NonViolentFPS.Shooting
 {
@@ -161,6 +157,7 @@ namespace NonViolentFPS.Shooting
 				}
 			}
 			burstFeedbacks.PlayFeedbacks();
+			// DestroySelf();
 		}
 
 		public void Freeze()
@@ -175,6 +172,16 @@ namespace NonViolentFPS.Shooting
 			doesImpactWithPlayer = false;
 			rendererRef.material = frozenMaterial;
 		}
+
+		// private async void DestroySelf()
+		// {
+		// 	while (burstFeedbacks.IsPlaying)
+		// 	{
+		// 		await Task.Yield();
+		// 	}
+		//
+		// 	Destroy(gameObject);
+		// }
 
 		public async void Unfreeze(float _unfreezeTime)
 		{
