@@ -11,7 +11,7 @@ namespace NonViolentFPS.NPCs
 	public class GrapplerEnemyNPC : NPC,
 		IChaseComponent,IDefaultLocationComponent,IRangeComponent,INavMeshMoveComponent,IRigidbodyComponent,IJumpComponent,
 		IGroundCheckComponent,IHeadComponent,ITimerComponent,IParticleSpawnComponent,IAttachToPlayerComponent,IGroundRayComponent,
-		IAnimatorComponent, IBubbleComponent
+		IAnimatorComponent, IBubbleComponent, IFacesComponent, IMeshRendererComponent
 	{
 		public Vector3 LastKnownPlayerLocation { get; set; }
 		public Vector3 DefaultLocation { get; set; }
@@ -36,6 +36,8 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public float GroundRayLength { get; set; }
 		[field: SerializeField] public Animator Animator { get; set; }
 		public PhysicsProjectile AttachedBubble { get; set; }
+		[field: SerializeField] public List<GameObject> Faces { get; set; }
+		[field: SerializeField] public MeshRenderer[] MeshRenderers { get; set; }
 
 		protected override void Start()
 		{

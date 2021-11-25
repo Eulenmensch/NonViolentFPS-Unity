@@ -36,6 +36,7 @@ namespace NonViolentFPS.AI
                 CurrentState.Exit( OwnerNPC );
                 CurrentState = _newState;
                 CurrentState.Enter( OwnerNPC );
+                Debug.Log(CurrentState.name);
             }
         }
     }
