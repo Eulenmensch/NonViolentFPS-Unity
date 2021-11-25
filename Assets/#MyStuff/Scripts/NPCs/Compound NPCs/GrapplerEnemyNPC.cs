@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NonViolentFPS.Shooting;
 using NonViolentFPS.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace NonViolentFPS.NPCs
 	public class GrapplerEnemyNPC : NPC,
 		IChaseComponent,IDefaultLocationComponent,IRangeComponent,INavMeshMoveComponent,IRigidbodyComponent,IJumpComponent,
 		IGroundCheckComponent,IHeadComponent,ITimerComponent,IParticleSpawnComponent,IAttachToPlayerComponent,IGroundRayComponent,
-		IAnimatorComponent
+		IAnimatorComponent, IBubbleComponent
 	{
 		public Vector3 LastKnownPlayerLocation { get; set; }
 		public Vector3 DefaultLocation { get; set; }
@@ -34,6 +35,7 @@ namespace NonViolentFPS.NPCs
 		[field: SerializeField] public PrefabWrapper SelfPrefab { get; set; }
 		[field: SerializeField] public float GroundRayLength { get; set; }
 		[field: SerializeField] public Animator Animator { get; set; }
+		public PhysicsProjectile AttachedBubble { get; set; }
 
 		protected override void Start()
 		{

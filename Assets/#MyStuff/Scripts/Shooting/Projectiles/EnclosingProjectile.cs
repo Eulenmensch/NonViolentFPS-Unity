@@ -3,6 +3,7 @@ using DG.Tweening;
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Extension_Classes;
 using NonViolentFPS.Manager;
+using NonViolentFPS.NPCs;
 using UnityEngine;
 
 namespace NonViolentFPS.Shooting
@@ -88,8 +89,15 @@ namespace NonViolentFPS.Shooting
 
 			rigidbodyRef.isKinematic = true;
 			AttachedTarget = _other.transform;
-			OtherRigidbody = _other.gameObject.GetComponent<Rigidbody>();
-			otherColliders = _other.gameObject.GetComponentsInChildren<Collider>();
+			//HACK: the inability of scriptable objects to subscribe to c# events forces me to
+			//		use the spaggethiness of the IBubbleComponent and manually setting its variable.
+			var bubbleComponent = AttachedTarget.gameObject.GetComponent<NPC>() as IBubbleComponent;
+			if (bubbleComponent != null)
+			{
+				bubbleComponent.AttachedBubble = this;
+			}
+			OtherRigidbody = AttachedTarget.gameObject.GetComponent<Rigidbody>();
+			otherColliders = AttachedTarget.gameObject.GetComponentsInChildren<Collider>();
 			foreach (var otherCollider in otherColliders)
 			{
 				otherCollider.enabled = false;
@@ -157,7 +165,11 @@ namespace NonViolentFPS.Shooting
 				}
 			}
 			burstFeedbacks.PlayFeedbacks();
-			// DestroySelf();
+			if(AttachedTarget == null) return;
+			if (AttachedTarget.gameObject.GetComponent<NPC>() is IBubbleComponent bubbleComponent)
+			{
+				bubbleComponent.AttachedBubble = null;
+			}
 		}
 
 		public void Freeze()

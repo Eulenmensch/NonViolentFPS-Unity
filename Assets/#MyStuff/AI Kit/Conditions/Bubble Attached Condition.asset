@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adc24ece15c5489d81af47e746df4e4f, type: 3}
-  m_Name: Set Animator Trigger PopOut Enter Action
+  m_Script: {fileID: 11500000, guid: a60428cb99924a0eb58a3fcc7bc80534, type: 3}
+  m_Name: Bubble Attached Condition
   m_EditorClassIdentifier: 
-  parameterName: PopOut
