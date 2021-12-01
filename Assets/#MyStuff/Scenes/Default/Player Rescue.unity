@@ -564,9 +564,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.5
+  m_Height: 1.75
   m_Direction: 1
-  m_Center: {x: 0, y: 1.25, z: 0}
+  m_Center: {x: 0, y: 1.125, z: 0}
 --- !u!81 &2487250960721894937
 AudioListener:
   m_ObjectHideFlags: 0
@@ -757,7 +757,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11313712620840698b25c875c98036bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glidingGravity: 4
+  glidingYMomentum: -0.5
+  glidingStartMomentum: -5
+  momentumTweenTime: 1.2
 --- !u!114 &2567950507133203239
 MonoBehaviour:
   m_ObjectHideFlags: 0
