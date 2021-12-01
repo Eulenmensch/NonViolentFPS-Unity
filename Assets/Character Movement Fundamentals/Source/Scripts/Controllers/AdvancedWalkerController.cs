@@ -53,6 +53,7 @@ namespace CMF
 		public float gravity = 30f;
 		[Tooltip("How fast the character will slide down steep slopes.")]
 		public float slideGravity = 5f;
+		private float defaultGravity;
 
 		//Acceptable slope angle limit;
 		public float slopeLimit = 80f;
@@ -62,7 +63,7 @@ namespace CMF
 
 		//Coyote Time;
 		public float coyoteTime;
-		private bool isInCoyoteTime;
+		public bool isInCoyoteTime;
 
 		//Enum describing basic controller states;
 		public enum ControllerState
@@ -71,10 +72,10 @@ namespace CMF
 			Sliding,
 			Falling,
 			Rising,
-			Jumping
+			Jumping,
 		}
 
-		ControllerState currentControllerState = ControllerState.Falling;
+		public ControllerState currentControllerState = ControllerState.Falling;
 
 		[Tooltip("Optional camera transform used for calculating movement direction. If assigned, character movement will take camera view into account.")]
 		public Transform cameraTransform;
@@ -95,6 +96,7 @@ namespace CMF
 		//This function is called right after Awake(); It can be overridden by inheriting scripts;
 		protected virtual void Setup()
 		{
+			defaultGravity = gravity;
 		}
 
 		void Update()
@@ -302,6 +304,27 @@ namespace CMF
 				return ControllerState.Sliding;
 			}
 
+			// //Gliding;
+			// if(currentControllerState == ControllerState.Gliding)
+			// {
+			// 	if(_isRising){
+			// 		return ControllerState.Rising;
+			// 	}
+			// 	if(mover.IsGrounded() && !_isSliding){
+			// 		OnGroundContactRegained();
+			// 		return ControllerState.Grounded;
+			// 	}
+			// 	if(_isSliding){
+			// 		return ControllerState.Sliding;
+			// 	}
+			//
+			// 	if (gravity == defaultGravity) //TODO: this is a hackjob that is safe as long as the gliding logic doesn't change
+			// 	{
+			// 		return ControllerState.Falling;
+			// 	}
+			// 	return ControllerState.Gliding;
+			// }
+
 			//Rising;
 			if(currentControllerState == ControllerState.Rising)
 			{
@@ -361,7 +384,7 @@ namespace CMF
         {
 	        if (currentControllerState == ControllerState.Grounded || isInCoyoteTime)
             {
-                if ((jumpKeyIsPressed == true || jumpKeyWasPressed) && !jumpInputIsLocked)
+                if ((/*jumpKeyIsPressed == true ||*/ jumpKeyWasPressed) && !jumpInputIsLocked)
                 {
                     //Call events;
                     OnGroundContactLost();
@@ -554,7 +577,6 @@ namespace CMF
 				OnLand(_collisionVelocity);
 				isInCoyoteTime = false;
 			}
-
 		}
 
 		//This function is called when the controller has collided with a ceiling while jumping or moving upwards;

@@ -503,6 +503,8 @@ MonoBehaviour:
   slopeLimit: 65
   useLocalMomentum: 1
   coyoteTime: 2.2
+  isInCoyoteTime: 0
+  currentControllerState: 2
   cameraTransform: {fileID: 2569942780080362813}
 --- !u!114 &2464554092079305475
 MonoBehaviour:
@@ -516,7 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98ace8715c2a184ca85247b18eb0853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepHeightRatio: 0.25
+  stepHeightRatio: 0.125
   colliderHeight: 2
   colliderThickness: 1
   colliderOffset: {x: 0, y: 0.5, z: 0}
@@ -663,6 +665,7 @@ GameObject:
   - component: {fileID: 3019848970974566531}
   - component: {fileID: 7857490242237326483}
   - component: {fileID: 2567950507133203234}
+  - component: {fileID: 2567950507133203235}
   m_Layer: 10
   m_Name: Player 01
   m_TagString: Player
@@ -742,6 +745,19 @@ MonoBehaviour:
   shakeTimeWindow: 3
   detachHeightOffset: 0
   detachLaunchForce: 0
+--- !u!114 &2567950507133203235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2567950507133203233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11313712620840698b25c875c98036bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glidingGravity: 4
 --- !u!114 &2567950507133203239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,6 +884,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fa36e62b-23db-45e8-b2ec-13724169195f
     m_ActionName: Player/Reload[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2567950507133203235}
+        m_TargetAssemblyTypeName: NonViolentFPS.Player.GlidingBehaviour, Assembly-CSharp
+        m_MethodName: Glide
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: da018886-4dd2-489f-9556-79c592b8f888
+    m_ActionName: Player/Glide[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
