@@ -2,6 +2,7 @@ using System;
 using CMF;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 namespace NonViolentFPS.Player
 {
@@ -9,37 +10,39 @@ namespace NonViolentFPS.Player
 	//TODO: DetermineControllerState() in the AdvancedWalkerController!
 	public class GlidingBehaviour : MonoBehaviour
 	{
-		[SerializeField] private float glidingGravity;
+		[SerializeField] private float glidingYMomentum;
+		[Tooltip("Should be negative in most cases. " +
+		         "This is the initial falling momentum when initiating a glide")]
+		[SerializeField] private float glidingStartMomentum;
+		[SerializeField] private float momentumTweenTime;
 
 		private AdvancedWalkerController controller;
-		private float defaultGravity;
 		private bool glideInputActive;
-
-		private void OnEnable()
-		{
-			controller.OnLand += ResetGravity;
-		}
-
-		private void OnDisable()
-		{
-			controller.OnLand -= ResetGravity;
-		}
+		private float finalYMomentum;
 
 		private void Awake()
 		{
 			controller = GetComponent<AdvancedWalkerController>();
-			defaultGravity = controller.gravity;
 		}
 
-		private void Update()
+		private void FixedUpdate()
 		{
-			if (glideInputActive)
+			ApplyGlideMomentum();
+		}
+
+		private void SetGlideMomentum()
+		{
+			finalYMomentum = glidingStartMomentum;
+			DOTween.To(()=> finalYMomentum, x=> finalYMomentum = x, glidingYMomentum, momentumTweenTime);
+		}
+
+		private void ApplyGlideMomentum()
+		{
+			if (glideInputActive && controller.currentControllerState == AdvancedWalkerController.ControllerState.Falling)
 			{
-				if (controller.currentControllerState == AdvancedWalkerController.ControllerState.Falling && !controller.isInCoyoteTime)
-				{
-					if (controller.gravity == glidingGravity) return;
-					controller.gravity = glidingGravity;
-				}
+				Vector3 momentum = controller.GetMomentum();
+				var glidingMomentum = new Vector3(momentum.x, finalYMomentum, momentum.z);
+				controller.SetMomentum(glidingMomentum);
 			}
 		}
 
@@ -47,19 +50,18 @@ namespace NonViolentFPS.Player
 		{
 			if (_context.started)
 			{
-				glideInputActive = true;
+				if(controller.currentControllerState == AdvancedWalkerController.ControllerState.Falling ||
+				   controller.currentControllerState == AdvancedWalkerController.ControllerState.Rising)
+				{
+					glideInputActive = true;
+					SetGlideMomentum();
+				}
 			}
 
 			if (_context.canceled)
 			{
 				glideInputActive = false;
-				controller.gravity = defaultGravity;
 			}
-		}
-
-		private void ResetGravity(Vector3 _vector3)
-		{
-			controller.gravity = defaultGravity;
 		}
 	}
 }
