@@ -7,6 +7,8 @@ namespace NonViolentFPS.AI
     [CreateAssetMenu( menuName = "AI Kit/Behaviours/LookAtPlayerBehaviour" )]
     public class LookAtPlayerBehaviour : AIBehaviour
     {
+        [SerializeField] private float tweenDuration;
+
         public override UpdateType type => UpdateType.Regular;
 
         public override void DoBehaviour(NPC _npc)
@@ -18,7 +20,7 @@ namespace NonViolentFPS.AI
                 return;
             }
 
-            headComponent.Head.DOLookAt( Camera.main.transform.position, 0.08f, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
+            headComponent.Head.DOLookAt( Camera.main.transform.position, tweenDuration, AxisConstraint.None, Vector3.up ).SetEase( Ease.InOutCirc );
         }
     }
 }

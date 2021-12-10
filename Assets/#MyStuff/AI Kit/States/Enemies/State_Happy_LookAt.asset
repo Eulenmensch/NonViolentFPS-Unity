@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
-  m_Name: State_Happy
+  m_Name: State_Happy_LookAt
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -24,8 +24,9 @@ MonoBehaviour:
   behaviours:
   - {fileID: 11400000, guid: e297d07dcc9a6ed48b63f072c7ca3aa0, type: 2}
   enterActions: []
-  exitActions: []
+  exitActions:
+  - {fileID: 11400000, guid: 6af3682fb5df0a24284b6eb55231368b, type: 2}
   transitions:
   - condition: {fileID: 11400000, guid: 1c782e4b19313514a98f414868d3746e, type: 2}
-    trueState: {fileID: 0}
-    falseState: {fileID: 0}
+    trueState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
+    falseState: {fileID: 11400000, guid: 2183a3b9c61ce72488d17130c229a2fa, type: 2}

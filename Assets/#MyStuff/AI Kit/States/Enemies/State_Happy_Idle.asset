@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
-  m_Name: State_Happy
+  m_Name: State_Happy_Idle
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,11 +21,10 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  behaviours:
-  - {fileID: 11400000, guid: e297d07dcc9a6ed48b63f072c7ca3aa0, type: 2}
+  behaviours: []
   enterActions: []
   exitActions: []
   transitions:
   - condition: {fileID: 11400000, guid: 1c782e4b19313514a98f414868d3746e, type: 2}
-    trueState: {fileID: 0}
-    falseState: {fileID: 0}
+    trueState: {fileID: 11400000, guid: 9a0301d1738251847a1015969b84b022, type: 2}
+    falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
