@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NonViolentFPS.AI
 {
 	[CreateAssetMenu(menuName = "AI Kit/Conditions/PlayerInAlertConeCondition")]
-	public class PlayerInDetectionConeCondition : Condition
+	public class PlayerInAlertConeCondition : Condition
 	{
 		public override UpdateType type => UpdateType.Regular;
 

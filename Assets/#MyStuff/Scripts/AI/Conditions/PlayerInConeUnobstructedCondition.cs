@@ -8,6 +8,7 @@ namespace NonViolentFPS.NPCs
 	{
 		[SerializeField] private float coneAngle;
 		[SerializeField] private float coneLength;
+		[SerializeField] private LayerMask hitMask;
 
 		public override UpdateType type => UpdateType.Physics;
 		public override bool Evaluate(NPC _npc)
@@ -21,15 +22,18 @@ namespace NonViolentFPS.NPCs
 
 			var playerWithinAngle = GetPlayerWithinAngle(_npc);
 			var playerUnobstructedAndInRange = GetPlayerUnobstructedAndInRange(_npc, selfPosition, playerDirection);
-
+			// Debug.Log("within angle: " + playerWithinAngle);
+			// Debug.Log("within unobstructed range: " + playerUnobstructedAndInRange);
 			return playerWithinAngle && playerUnobstructedAndInRange;
 		}
 
 		private bool GetPlayerUnobstructedAndInRange(NPC _npc, Vector3 _selfPosition, Vector3 _playerDirection)
 		{
 			var rayToPlayer = new Ray(_selfPosition, _playerDirection);
-			if (!UnityEngine.Physics.Raycast(rayToPlayer, out var hit, coneLength)) return false;
-			return hit.collider.gameObject == _npc.Player;
+			if (!UnityEngine.Physics.Raycast(rayToPlayer, out var hit, coneLength, hitMask)) return false;
+			Debug.DrawRay(_selfPosition, _playerDirection * coneLength, Color.magenta);
+			// return hit.collider.gameObject == _npc.Player;
+			return true;
 		}
 
 		private bool GetPlayerWithinAngle(NPC _npc)
