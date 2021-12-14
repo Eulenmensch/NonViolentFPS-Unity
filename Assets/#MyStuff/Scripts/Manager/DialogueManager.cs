@@ -23,6 +23,12 @@ namespace NonViolentFPS.Manager
         #endregion
 
         [SerializeField] private DialogueRunner yarnRunner;
+        public DialogueRunner YarnRunner
+        {
+            get => yarnRunner;
+            set => yarnRunner = value;
+        }
+
         [SerializeField] private DialogueUI yarnUI;
         [SerializeField] private Transform canvasTransform;
 

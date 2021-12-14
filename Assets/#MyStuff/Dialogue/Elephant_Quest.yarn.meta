@@ -1,0 +1,36 @@
+fileFormatVersion: 2
+guid: 83f904dc2ebc48244aa33f7342531053
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 94073015eacc34c1d8fc6786e43d60ca, type: 3}
+  baseLanguageID: en-US
+  stringIDs:
+  - Elephant_Quest-Start-0
+  - Elephant_Quest-Start-1
+  - Elephant_Quest-Start-2
+  - Elephant_Quest-Start-3
+  - Elephant_Quest-Start-4
+  - Elephant_Quest-Quest_Soap-5
+  - Elephant_Quest-Quest_Soap-6
+  - Elephant_Quest-Quest_Soap-7
+  - Elephant_Quest-Quest_Soap-8
+  - Elephant_Quest-Quest_Soap-9
+  - Elephant_Quest-Quest_Soap-10
+  - Elephant_Quest-Quest_Soap-11
+  - Elephant_Quest-End_Quest_Soap-12
+  - Elephant_Quest-End_Quest_Soap-13
+  - Elephant_Quest-End_Quest_Soap-14
+  - Elephant_Quest-End_Quest_Soap-15
+  - Elephant_Quest-End_Quest_Soap-16
+  - Elephant_Quest-End_Quest_Soap-17
+  compilationStatus: 1
+  isSuccesfullyCompiled: 1
+  compilationErrorMessage: 
+  baseLanguage: {fileID: 7128917941130120860, guid: 83f904dc2ebc48244aa33f7342531053,
+    type: 3}
+  localizations: []

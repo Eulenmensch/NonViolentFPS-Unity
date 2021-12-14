@@ -1,0 +1,84 @@
+title: Start
+tags: 
+position: 301.16766357421875,-170.90562438964844
+---
+<<if visited("Start") is false>>
+[[Quest_Intro]]
+
+<<else>>
+[[Quest_Complete_Eval]]
+
+<<endif>>
+===
+title: Quest_Soap
+tags: 
+position: 662.2193298339844,91.56556701660156
+---
+<<if visited("Quest_Soap") is false>>
+Anyways, I've been trying to make soap bubbles like yours but they always pop!
+Turns out I always sneeze when I dunk my trunk in the soap and the bubbles can't keep up with my strong snoozers.
+But there's an endless supply of helium balloons laughing down at me and my stumpy legs. You think you could get it for me?
+<<else>>
+Oh hey, you're back :) you think you can get the balloons for me?
+<<endif>>
+
+-> Yeah, I'll get it for you!
+    Thanks! See you soon! {accept_quest("balloon_fetch")}
+-> Not right now.
+    Wow, somehow I expected you to just say yes.
+    Maybe I should dial in my expectations a little... anyways
+    I'll be waiting here if you change your mind!
+===
+title: End_Quest_Soap
+tags: 
+position: 95.2659912109375,285.7517671585083
+---
+Wow, cool! You're the best!
+...
+...
+.........
+OK so I'm super sorry but my nose is pretty sensitive and I can't stand the way these balloons smell...
+If you have any use for them though, you're more than welcome to keep them!
+===
+
+title: Quest_Intro
+tags: 
+position: 630,-172
+---
+Thank you so much for getting rid of them! I've been standing on this stump here for 3 days already.
+-> Aren't you gonna come down from there?
+    Nah, I don't feel super safe yet. Also I've grown to like the view from up here!
+    [[ Quest_Soap ]]
+-> No Problem!
+    Cool! So...
+    [[ Quest_Soap ]]
+===
+
+
+title: Quest_Eval
+tags: 
+position: 372.63848939344393,88.67398574486361
+---
+<<if quest_accepted("balloon_fetch") is true>>
+Any update on the balloon situation?
+->On it!
+    Great! Thank you :)
+
+<<else>>
+[[Quest_Soap]]
+
+<<endif>>
+===
+
+title: Quest_Complete_Eval
+tags: 
+position: 81.76520149677475,-8.79113260205935
+---
+<<if quest_complete("balloon_fetch") is true>>
+[[End_Quest_Soap]]
+
+<<else>>
+[[Quest_Eval]]
+
+<<endif>>
+===

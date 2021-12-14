@@ -1,0 +1,10 @@
+title: Start
+tags: 
+position: 573,217
+---
+<<if encounter_clear("") is false>>
+    Argghhhhh go away you grabby gropers!
+<<else>>
+    Pheeew... I thought they'd never leave.
+<<endif>>
+===
