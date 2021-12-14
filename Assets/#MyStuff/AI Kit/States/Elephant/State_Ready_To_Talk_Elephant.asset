@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
-  m_Name: State_Defeated
+  m_Name: State_Ready_To_Talk_Elephant
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,15 +21,14 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  behaviours: []
+  behaviours:
+  - {fileID: 11400000, guid: e297d07dcc9a6ed48b63f072c7ca3aa0, type: 2}
+  - {fileID: 11400000, guid: acf9356ca7698fe4692e9b21f9d988d2, type: 2}
   enterActions:
-  - {fileID: 11400000, guid: 26b2b6e2d9584b54d9a8e7dc154f80e0, type: 2}
-  - {fileID: 11400000, guid: 9cb8d6baede692a4c979498c90328973, type: 2}
-  - {fileID: 11400000, guid: 2ca20d98cf8b0574795fb644082d32c9, type: 2}
-  - {fileID: 11400000, guid: 0d3ef4a7e841ee84db923d6ab38cb8b9, type: 2}
+  - {fileID: 11400000, guid: c46877dfc76728948b11a173fd94cf4e, type: 2}
   exitActions:
-  - {fileID: 11400000, guid: 63f87bec8e4bf1346857ba886030d2cd, type: 2}
+  - {fileID: 11400000, guid: a1aba6d98ecab034e88a5ad6cd8199dd, type: 2}
   transitions:
-  - condition: {fileID: 11400000, guid: 413265fb584889643a39ca8ba65b548a, type: 2}
+  - condition: {fileID: 11400000, guid: fa690091a4f9d3d46b55d50ba343467a, type: 2}
     trueState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
-    falseState: {fileID: 11400000, guid: 4fda505a4acd75d489612706bbc0c6c4, type: 2}
+    falseState: {fileID: 0}
