@@ -20,12 +20,12 @@ namespace NonViolentFPS.NPCs
 		public List<Collision> ActiveCollisions { get; private set; }
 		public GameObject Player { get; private set; }
 
-		private void OnEnable()
+		protected virtual void OnEnable()
 		{
 			GameEvents.Instance.OnPlayerLoaded += SetPlayer;
 		}
 
-		private void OnDisable()
+		protected virtual void OnDisable()
 		{
 			GameEvents.Instance.OnPlayerLoaded -= SetPlayer;
 		}
@@ -38,6 +38,7 @@ namespace NonViolentFPS.NPCs
 
 		protected virtual void Start()
 		{
+			NpcManager.Instance.NPCs.Add(this);
 			ActiveCollisions = new List<Collision>();
 		}
 
