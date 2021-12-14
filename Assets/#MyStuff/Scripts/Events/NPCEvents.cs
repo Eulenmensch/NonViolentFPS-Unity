@@ -22,5 +22,8 @@ namespace NonViolentFPS.Events
 
 		public event Action<NPC> OnAttachToPlayer;
 		public void AttachToPlayer(NPC _npc){OnAttachToPlayer?.Invoke(_npc);}
+
+		public event Action<NPC> OnDefeated;
+		public void Defeated(NPC _npc){OnDefeated?.Invoke(_npc);}
 	}
 }
