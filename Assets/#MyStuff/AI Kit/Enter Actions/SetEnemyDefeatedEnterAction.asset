@@ -9,11 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 020d9d3642114fb587f1319b9b56b72a, type: 3}
-  m_Name: PlayerInUnobstractedVisionAreaCondition 40Deg x 10Units
+  m_Script: {fileID: 11500000, guid: 67317a6575cf4685ad15faeedb51e34a, type: 3}
+  m_Name: SetEnemyDefeatedEnterAction
   m_EditorClassIdentifier: 
-  coneAngle: 40
-  coneLength: 10
-  hitMask:
-    serializedVersion: 2
-    m_Bits: 1024
