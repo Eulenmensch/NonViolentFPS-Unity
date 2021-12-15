@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
-  m_Name: State_Any_Elephant
+  m_Name: State_Elephant_Idle
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -24,4 +24,7 @@ MonoBehaviour:
   behaviours: []
   enterActions: []
   exitActions: []
-  transitions: []
+  transitions:
+  - condition: {fileID: 11400000, guid: fa690091a4f9d3d46b55d50ba343467a, type: 2}
+    trueState: {fileID: 11400000, guid: 42d934af479b8004eaf3f68bb7fee03b, type: 2}
+    falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}

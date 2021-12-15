@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d656ca0ec6eee7a4f831dec066cbcc5a, type: 3}
-  m_Name: State_Ready_To_Talk_Elephant
+  m_Name: State_Elaphant_Intro
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,12 +23,10 @@ MonoBehaviour:
     SerializationNodes: []
   behaviours:
   - {fileID: 11400000, guid: e297d07dcc9a6ed48b63f072c7ca3aa0, type: 2}
-  - {fileID: 11400000, guid: acf9356ca7698fe4692e9b21f9d988d2, type: 2}
   enterActions:
-  - {fileID: 11400000, guid: c46877dfc76728948b11a173fd94cf4e, type: 2}
-  exitActions:
-  - {fileID: 11400000, guid: a1aba6d98ecab034e88a5ad6cd8199dd, type: 2}
+  - {fileID: 11400000, guid: 49c187f394efd0b42a6dac20f72bd41c, type: 2}
+  exitActions: []
   transitions:
   - condition: {fileID: 11400000, guid: fa690091a4f9d3d46b55d50ba343467a, type: 2}
-    trueState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}
-    falseState: {fileID: 0}
+    trueState: {fileID: 11400000, guid: 42d934af479b8004eaf3f68bb7fee03b, type: 2}
+    falseState: {fileID: 11400000, guid: 843c294ec6db7c2438675051a0e1da16, type: 2}

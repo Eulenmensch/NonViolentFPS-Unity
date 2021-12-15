@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 020d9d3642114fb587f1319b9b56b72a, type: 3}
-  m_Name: PlayerInUnobstructedAlertAreaCondition 80Deg x 17 Units
+  m_Name: PlayerInUnobstructedAlertAreaCondition 40Deg x 5 Units
   m_EditorClassIdentifier: 
-  coneAngle: 80
-  coneLength: 17
+  coneAngle: 40
+  coneLength: 5
   hitMask:
     serializedVersion: 2
     m_Bits: 1024

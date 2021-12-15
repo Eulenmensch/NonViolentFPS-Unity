@@ -28,10 +28,10 @@ namespace NonViolentFPS.AI
 
                 DialogueManager.Instance.StartDialogue(dialogueComponent.YarnDialogue ,dialogueComponent.StartNode, dialogueComponent.CanvasAttachmentPoint);
 
-                if (interactionComponent.InteractionPrompt != null)
-                {
-                    interactionComponent.InteractionPrompt.SetActive(false);
-                }
+                // if (interactionComponent.InteractionPrompt != null)
+                // {
+                //     interactionComponent.InteractionPrompt.SetActive(false);
+                // }
             }
         }
     }

@@ -1,8 +1,8 @@
-title: Start
+title: Start_Quest
 tags: 
-position: 301.16766357421875,-170.90562438964844
+position: 299.16766357421875,-170.90562438964844
 ---
-<<if visited("Start") is false>>
+<<if visited("Start_Quest") is false>>
 [[Quest_Intro]]
 
 <<else>>
@@ -23,7 +23,8 @@ Oh hey, you're back :) you think you can get the balloons for me?
 <<endif>>
 
 -> Yeah, I'll get it for you!
-    Thanks! See you soon! {accept_quest("balloon_fetch")}
+    Thanks! See you soon! 
+    <<accept_quest>>
 -> Not right now.
     Wow, somehow I expected you to just say yes.
     Maybe I should dial in my expectations a little... anyways
