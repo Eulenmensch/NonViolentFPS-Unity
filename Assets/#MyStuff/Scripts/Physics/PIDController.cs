@@ -27,6 +27,9 @@ namespace NonViolentFPS.Physics
         //float lastIntegral;
         float lastProportional;
 
+        private Vector3 integralPos;
+        private Vector3 lastProportionalPos;
+
         //Pass in the value we want and the value we currently have, the code
         //returns a number that moves the affected value towards its goal
         public float Control(float targetValue, float currentValue)
@@ -41,6 +44,21 @@ namespace NonViolentFPS.Physics
             //This is the actual PID formula. This gives us the value that is returned
             float value = Kp * proportional + Ki * integral + Kd * derivative;
             value = Mathf.Clamp(value, Minimum, Maximum);
+
+            return value;
+        }
+
+        public Vector3 Control(Vector3 targetPosition, Vector3 currentPosition)
+        {
+            float deltaTime = Time.fixedDeltaTime;
+            Vector3 proportional = targetPosition - currentPosition;
+
+            Vector3 derivative = (proportional - lastProportionalPos);
+            integralPos += proportional * deltaTime;
+            lastProportionalPos = proportional;
+
+            Vector3 value = Kp * proportional + Ki * integralPos + Kd * derivative;
+            value = Vector3.ClampMagnitude(value, Maximum);
 
             return value;
         }
