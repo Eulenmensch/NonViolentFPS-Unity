@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using NonViolentFPS.Events;
 using Sirenix.OdinInspector;
@@ -58,6 +59,8 @@ namespace NonViolentFPS.Shooting
 		private Vector3 attachmentPointDefaultPosition;
 		private Vector3 attachmentPointDefaultRotation;
 
+		private LagBehindTarget[] lagBehindTargets;
+
 		public override void SetUpGun(ShooterCopy _shooter)
 		{
 			base.SetUpGun(_shooter);
@@ -75,6 +78,21 @@ namespace NonViolentFPS.Shooting
 				return;
 			}
 			ShootingOrigin = Visuals.ShootingOriginOverride;
+
+			lagBehindTargets = GunInstance.GetComponentsInChildren<LagBehindTarget>();
+			// foreach (var target in lagBehindTargets)
+			// {
+			// 	target.transform.parent = null;
+			// }
+		}
+
+		public override void CleanUpGun()
+		{
+			base.CleanUpGun();
+			foreach (var target in lagBehindTargets)
+			{
+				Destroy(target.gameObject);
+			}
 		}
 
 		private void CacheDefaultAttachmentPointTransform()

@@ -32,7 +32,7 @@ namespace NonViolentFPS.Shooting
 			UpdateAmmoUI();
 		}
 
-		public void CleanUpGun()
+		public virtual void CleanUpGun()
 		{
 			Destroy(GunInstance);
 		}
