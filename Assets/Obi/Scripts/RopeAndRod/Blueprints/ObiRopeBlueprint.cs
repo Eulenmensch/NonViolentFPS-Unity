@@ -11,7 +11,7 @@ namespace Obi
     public class ObiRopeBlueprint : ObiRopeBlueprintBase
     {
 
-        public int pooledParticles = 100; 
+        public int pooledParticles = 100;
 
         public const float DEFAULT_PARTICLE_MASS = 0.1f;
 
@@ -20,8 +20,8 @@ namespace Obi
             if (path.ControlPointCount < 2)
             {
                 ClearParticleGroups();
-                path.InsertControlPoint(0, Vector3.left, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, 1, 1, 1, Color.white,"control point");
-                path.InsertControlPoint(1, Vector3.right, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, 1, 1, 1, Color.white,"control point");
+                path.InsertControlPoint(0, Vector3.left, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, 1, 1, ObiUtils.MakeFilter(ObiUtils.CollideWithEverything,1), Color.white, "control point");
+                path.InsertControlPoint(1, Vector3.right, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, 1, 1, ObiUtils.MakeFilter(ObiUtils.CollideWithEverything, 1), Color.white, "control point");
             }
 
             path.RecalculateLenght(Matrix4x4.identity, 0.00001f, 7);
@@ -29,17 +29,17 @@ namespace Obi
             List<Vector3> particlePositions = new List<Vector3>();
             List<float> particleThicknesses = new List<float>();
             List<float> particleInvMasses = new List<float>();
-            List<int> particlePhases = new List<int>();
+            List<int> particleFilters = new List<int>();
             List<Color> particleColors = new List<Color>();
 
             // In case the path is open, add a first particle. In closed paths, the last particle is also the first one.
             if (!path.Closed)
             {
-                particlePositions.Add(path.points.GetPositionAtMu(path.Closed,0));
-                particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed,0));
-                particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed,0)));
-                particlePhases.Add(path.phases.GetAtMu(path.Closed,0));
-                particleColors.Add(path.colors.GetAtMu(path.Closed,0));
+                particlePositions.Add(path.points.GetPositionAtMu(path.Closed, 0));
+                particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed, 0));
+                particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed, 0)));
+                particleFilters.Add(path.filters.GetAtMu(path.Closed, 0));
+                particleColors.Add(path.colors.GetAtMu(path.Closed, 0));
             }
 
             // Create a particle group for the first control point:
@@ -63,11 +63,11 @@ namespace Obi
                 for (int j = 0; j < particlesInSpan; ++j)
                 {
                     float mu = path.GetMuAtLenght(upToSpanLength + distance * (j + 1));
-                    particlePositions.Add(path.points.GetPositionAtMu(path.Closed,mu));
-                    particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed,mu));
-                    particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed,mu)));
-                    particlePhases.Add(path.phases.GetAtMu(path.Closed,mu));
-                    particleColors.Add(path.colors.GetAtMu(path.Closed,mu));
+                    particlePositions.Add(path.points.GetPositionAtMu(path.Closed, mu));
+                    particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed, mu));
+                    particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed, mu)));
+                    particleFilters.Add(path.filters.GetAtMu(path.Closed, mu));
+                    particleColors.Add(path.colors.GetAtMu(path.Closed, mu));
                 }
 
                 // Create a particle group for each control point:
@@ -95,7 +95,7 @@ namespace Obi
             velocities = new Vector3[totalParticles];
             invMasses = new float[totalParticles];
             principalRadii = new Vector3[totalParticles];
-            phases = new int[totalParticles];
+            filters = new int[totalParticles];
             colors = new Color[totalParticles];
             restLengths = new float[totalParticles];
 
@@ -106,12 +106,15 @@ namespace Obi
                 restPositions[i] = positions[i];
                 restPositions[i][3] = 1; // activate rest position.
                 principalRadii[i] = Vector3.one * particleThicknesses[i] * thickness;
-                phases[i] = ObiUtils.MakePhase(particlePhases[i], 0);
+                filters[i] = particleFilters[i];
                 colors[i] = particleColors[i];
 
                 if (i % 100 == 0)
                     yield return new CoroutineJob.ProgressInfo("ObiRope: generating particles...", i / (float)m_ActiveParticleCount);
             }
+
+            // Create edge simplices:
+            CreateSimplices(numSegments);
 
             //Create distance constraints for the total number of particles, but only activate for the used ones.
             IEnumerator dc = CreateDistanceConstraints();
@@ -131,7 +134,6 @@ namespace Obi
                 m_RestLength += length;
 
         }
-
 
         protected virtual IEnumerator CreateDistanceConstraints()
         {
@@ -169,7 +171,7 @@ namespace Obi
                 var loopClosingBatch = new ObiDistanceConstraintsBatch();
                 distanceConstraintsData.AddBatch(loopClosingBatch);
 
-                Vector2Int indices = new Vector2Int(m_ActiveParticleCount-1, 0);
+                Vector2Int indices = new Vector2Int(m_ActiveParticleCount - 1, 0);
                 restLengths[m_ActiveParticleCount - 2] = Vector3.Distance(positions[indices.x], positions[indices.y]);
                 loopClosingBatch.AddConstraint(indices, restLengths[m_ActiveParticleCount - 2]);
                 loopClosingBatch.activeConstraintCount++;
@@ -186,7 +188,7 @@ namespace Obi
             bendConstraintsData.AddBatch(new ObiBendConstraintsBatch());
             bendConstraintsData.AddBatch(new ObiBendConstraintsBatch());
 
-            for (int i = 0; i < totalParticles-2; i++)
+            for (int i = 0; i < totalParticles - 2; i++)
             {
                 var batch = bendConstraintsData.batches[i % 3] as ObiBendConstraintsBatch;
 
@@ -221,6 +223,6 @@ namespace Obi
             }
         }
 
-     
+
     }
 }

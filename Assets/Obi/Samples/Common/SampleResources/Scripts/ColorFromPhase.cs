@@ -11,13 +11,13 @@ namespace Obi
 	[RequireComponent(typeof(ObiActor))]
 	public class ColorFromPhase : MonoBehaviour
 	{
-		private ObiActor actor;
+		ObiActor actor;
 
-		private void Awake(){
+		void Awake(){
 			actor = GetComponent<ObiActor>();
 		}
 
-		private void LateUpdate()
+		void LateUpdate()
 		{
             if (!isActiveAndEnabled || actor.solver == null)
 				return;

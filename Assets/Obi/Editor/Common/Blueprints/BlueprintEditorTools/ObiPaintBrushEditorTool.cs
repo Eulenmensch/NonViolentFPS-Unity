@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using System;
 
 namespace Obi
 {
@@ -9,8 +7,6 @@ namespace Obi
     {
         public ObiRaycastBrush paintBrush;
         public bool selectionMask = false;
-
-        protected bool visualizationOptions;
 
         public ObiMeshBasedActorBlueprintEditor meshBasedEditor
         {
@@ -85,13 +81,10 @@ namespace Obi
             GUILayout.Box(GUIContent.none, ObiEditorUtils.GetSeparatorLineStyle());
 
             EditorGUILayout.BeginVertical(EditorStyles.inspectorDefaultMargins);
-            visualizationOptions = EditorGUILayout.Foldout(visualizationOptions, "Visualization");
 
-            if (visualizationOptions)
-            {
                 editor.RenderModeSelector();
                 editor.currentProperty.VisualizationOptions();
-            }
+           
             EditorGUILayout.EndVertical();
         }
 

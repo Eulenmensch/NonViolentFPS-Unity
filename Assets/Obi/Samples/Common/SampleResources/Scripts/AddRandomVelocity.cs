@@ -7,8 +7,8 @@ using Obi;
 public class AddRandomVelocity : MonoBehaviour {
 
 	public float intensity = 5;
-
-	private void Update () {
+	
+	void Update () {
 		if (Input.GetKeyDown(KeyCode.Space)){
 			GetComponent<ObiActor>().AddForce(UnityEngine.Random.onUnitSphere*intensity,ForceMode.VelocityChange);
 		}

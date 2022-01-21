@@ -22,6 +22,8 @@ namespace Obi
         [SerializeField] protected float _torsionCompliance = 0;
         [SerializeField] protected float _bend1Compliance = 0;
         [SerializeField] protected float _bend2Compliance = 0;
+        [SerializeField] [Range(0, 0.1f)] protected float _plasticYield = 0;
+        [SerializeField] protected float _plasticCreep = 0;
 
         // chain constraints:
         [SerializeField] protected bool _chainConstraintsEnabled = true;
@@ -109,6 +111,25 @@ namespace Obi
         }
 
         /// <summary>  
+        /// Threshold for plastic behavior. 
+        /// </summary>
+        /// Once bending goes above this value, a percentage of the deformation (determined by <see cref="plasticCreep"/>) will be permanently absorbed into the rod's rest shape.
+        public float plasticYield
+        {
+            get { return _plasticYield; }
+            set { _plasticYield = value; SetConstraintsDirty(Oni.ConstraintType.BendTwist); }
+        }
+
+        /// <summary>  
+        /// Percentage of deformation that gets absorbed into the rest shape per second, once deformation goes above the <see cref="plasticYield"/> threshold.
+        /// </summary>
+        public float plasticCreep
+        {
+            get { return _plasticCreep; }
+            set { _plasticCreep = value; SetConstraintsDirty(Oni.ConstraintType.BendTwist); }
+        }
+
+        /// <summary>  
         /// Whether this actor's chain constraints are enabled.
         /// </summary>
         public bool chainConstraintsEnabled
@@ -158,6 +179,7 @@ namespace Obi
         protected override void OnValidate()
         {
             base.OnValidate();
+            SetConstraintsDirty(Oni.ConstraintType.BendTwist);
             SetupRuntimeConstraints();
         }
 
@@ -171,16 +193,32 @@ namespace Obi
         private void SetupRuntimeConstraints()
         {
             SetConstraintsDirty(Oni.ConstraintType.StretchShear);
-            SetConstraintsDirty(Oni.ConstraintType.BendTwist);
+            //SetConstraintsDirty(Oni.ConstraintType.BendTwist);
             SetConstraintsDirty(Oni.ConstraintType.Chain);
             SetSelfCollisions(selfCollisions);
             RecalculateRestLength();
+            SetSimplicesDirty();
+        }
+
+        public Vector3 GetBendTwistCompliance(ObiBendTwistConstraintsBatch batch, int constraintIndex)
+        {
+            return new Vector3(bend1Compliance, bend2Compliance, torsionCompliance);
+        }
+
+        public Vector2 GetBendTwistPlasticity(ObiBendTwistConstraintsBatch batch, int constraintIndex)
+        {
+            return new Vector2(plasticYield, plasticCreep);
+        }
+
+        public Vector3 GetStretchShearCompliance(ObiStretchShearConstraintsBatch batch, int constraintIndex)
+        {
+            return new Vector3(shear1Compliance, shear2Compliance, stretchCompliance);
         }
 
         protected override void RebuildElementsFromConstraintsInternal()
         {
             var dc = GetConstraintsByType(Oni.ConstraintType.StretchShear) as ObiConstraints<ObiStretchShearConstraintsBatch>;
-            if (dc == null)
+            if (dc == null || dc.GetBatchCount() < 2)
                 return;
 
             int constraintCount = dc.batches[0].activeConstraintCount + dc.batches[1].activeConstraintCount;
@@ -193,8 +231,8 @@ namespace Obi
                 int constraintIndex = i / 2;
 
                 var e = new ObiStructuralElement();
-                e.particle1 = batch.particleIndices[constraintIndex * 2];
-                e.particle2 = batch.particleIndices[constraintIndex * 2 + 1];
+                e.particle1 = solverIndices[batch.particleIndices[constraintIndex * 2]];
+                e.particle2 = solverIndices[batch.particleIndices[constraintIndex * 2 + 1]];
                 e.restLength = batch.restLengths[constraintIndex];
                 elements.Add(e);
             }
@@ -203,8 +241,8 @@ namespace Obi
             {
                 var batch = dc.batches[2];
                 var e = new ObiStructuralElement();
-                e.particle1 = batch.particleIndices[0];
-                e.particle2 = batch.particleIndices[1];
+                e.particle1 = solverIndices[batch.particleIndices[0]];
+                e.particle2 = solverIndices[batch.particleIndices[1]];
                 e.restLength = batch.restLengths[0];
                 elements.Add(e);
             }

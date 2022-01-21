@@ -26,6 +26,7 @@ namespace Obi
 
         SerializedProperty collisionMaterial;
         SerializedProperty selfCollisions;
+        SerializedProperty surfaceCollisions; 
 
         SerializedProperty stretchShearConstraintsEnabled;
         SerializedProperty stretchCompliance;
@@ -36,6 +37,8 @@ namespace Obi
         SerializedProperty torsionCompliance;
         SerializedProperty bend1Compliance;
         SerializedProperty bend2Compliance;
+        SerializedProperty plasticYield;
+        SerializedProperty plasticCreep;
 
         SerializedProperty chainConstraintsEnabled;
         SerializedProperty tightness;
@@ -52,6 +55,7 @@ namespace Obi
 
             collisionMaterial = serializedObject.FindProperty("m_CollisionMaterial");
             selfCollisions = serializedObject.FindProperty("m_SelfCollisions");
+            surfaceCollisions = serializedObject.FindProperty("m_SurfaceCollisions");
 
             stretchShearConstraintsEnabled = serializedObject.FindProperty("_stretchShearConstraintsEnabled");
             stretchCompliance = serializedObject.FindProperty("_stretchCompliance");
@@ -62,6 +66,8 @@ namespace Obi
             torsionCompliance = serializedObject.FindProperty("_torsionCompliance");
             bend1Compliance = serializedObject.FindProperty("_bend1Compliance");
             bend2Compliance = serializedObject.FindProperty("_bend2Compliance");
+            plasticYield = serializedObject.FindProperty("_plasticYield");
+            plasticCreep = serializedObject.FindProperty("_plasticCreep");
 
             chainConstraintsEnabled = serializedObject.FindProperty("_chainConstraintsEnabled");
             tightness = serializedObject.FindProperty("_tightness");
@@ -137,20 +143,23 @@ namespace Obi
             EditorGUILayout.LabelField("Collisions", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(collisionMaterial, new GUIContent("Collision material"));
             EditorGUILayout.PropertyField(selfCollisions, new GUIContent("Self collisions"));
+            EditorGUILayout.PropertyField(surfaceCollisions, new GUIContent("Surface-based collisions"));
 
             EditorGUILayout.Space();
-            ObiEditorUtils.DoToggleablePropertyGroup(stretchShearConstraintsEnabled, new GUIContent("StretchShear Constraints", Resources.Load<Texture2D>("Icons/ObiStretchShearConstraints Icon")),
+            ObiEditorUtils.DoToggleablePropertyGroup(stretchShearConstraintsEnabled, new GUIContent("Stretch & Shear Constraints", Resources.Load<Texture2D>("Icons/ObiStretchShearConstraints Icon")),
             () => {
                 EditorGUILayout.PropertyField(stretchCompliance, new GUIContent("Stretch compliance"));
-                EditorGUILayout.PropertyField(shear1Compliance, new GUIContent("Shear compliance 1"));
-                EditorGUILayout.PropertyField(shear2Compliance, new GUIContent("Shear compliance 2"));
+                EditorGUILayout.PropertyField(shear1Compliance, new GUIContent("Shear compliance X"));
+                EditorGUILayout.PropertyField(shear2Compliance, new GUIContent("Shear compliance Y"));
             });
 
-            ObiEditorUtils.DoToggleablePropertyGroup(bendTwistConstraintsEnabled, new GUIContent("Bend Twist Constraints", Resources.Load<Texture2D>("Icons/ObiBendTwistConstraints Icon")),
+            ObiEditorUtils.DoToggleablePropertyGroup(bendTwistConstraintsEnabled, new GUIContent("Bend & Twist Constraints", Resources.Load<Texture2D>("Icons/ObiBendTwistConstraints Icon")),
             () => {
                 EditorGUILayout.PropertyField(torsionCompliance, new GUIContent("Torsion compliance"));
-                EditorGUILayout.PropertyField(bend1Compliance, new GUIContent("Bend compliance 1"));
-                EditorGUILayout.PropertyField(bend2Compliance, new GUIContent("Bend compliance 2"));
+                EditorGUILayout.PropertyField(bend1Compliance, new GUIContent("Bend compliance X"));
+                EditorGUILayout.PropertyField(bend2Compliance, new GUIContent("Bend compliance Y"));
+                EditorGUILayout.PropertyField(plasticYield, new GUIContent("Plastic yield"));
+                EditorGUILayout.PropertyField(plasticCreep, new GUIContent("Plastic creep"));
             });
 
             ObiEditorUtils.DoToggleablePropertyGroup(chainConstraintsEnabled, new GUIContent("Chain Constraints", Resources.Load<Texture2D>("Icons/ObiChainConstraints Icon")),

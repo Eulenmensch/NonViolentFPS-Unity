@@ -6,15 +6,15 @@ using UnityEngine;
 public class WrapRopePlayerController : MonoBehaviour
 {
     public float acceleration = 50;
-    private Rigidbody rb;
+    Rigidbody rb;
 
-    private void Awake()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
-    private void Update()
+    void Update()
     {
         Vector3 direction = Vector3.zero;
 

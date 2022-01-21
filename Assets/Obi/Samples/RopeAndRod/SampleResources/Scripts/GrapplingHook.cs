@@ -32,7 +32,7 @@ public class GrapplingHook : MonoBehaviour
 
     private RaycastHit hookAttachment;
 
-    private void Awake()
+    void Awake()
     {
 
         // Create both the rope and the solver:	
@@ -91,10 +91,12 @@ public class GrapplingHook : MonoBehaviour
         yield return 0;
         Vector3 localHit = rope.transform.InverseTransformPoint(hookAttachment.point);
 
+        int filter = ObiUtils.MakeFilter(ObiUtils.CollideWithEverything,0);
+
         // Procedurally generate the rope path (a simple straight line):
         blueprint.path.Clear();
-        blueprint.path.AddControlPoint(Vector3.zero, -localHit.normalized, localHit.normalized, Vector3.up, 0.1f, 0.1f, 1, 1, Color.white, "Hook start");
-        blueprint.path.AddControlPoint(localHit, -localHit.normalized, localHit.normalized, Vector3.up, 0.1f, 0.1f, 1, 1, Color.white, "Hook end");
+        blueprint.path.AddControlPoint(Vector3.zero, -localHit.normalized, localHit.normalized, Vector3.up, 0.1f, 0.1f, 1, filter, Color.white, "Hook start");
+        blueprint.path.AddControlPoint(localHit, -localHit.normalized, localHit.normalized, Vector3.up, 0.1f, 0.1f, 1, filter, Color.white, "Hook end");
         blueprint.path.FlushEvents();
 
         // Generate the particle representation of the rope (wait until it has finished):
@@ -125,7 +127,7 @@ public class GrapplingHook : MonoBehaviour
     }
 
 
-    private void Update()
+    void Update()
     {
 
         if (Input.GetMouseButtonDown(0))

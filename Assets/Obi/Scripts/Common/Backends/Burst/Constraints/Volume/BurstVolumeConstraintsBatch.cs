@@ -11,7 +11,8 @@ namespace Obi
 {
     public class BurstVolumeConstraintsBatch : BurstConstraintsBatchImpl, IVolumeConstraintsBatchImpl
     {
-        private NativeArray<int> lastIndex;
+        private NativeArray<int> firstTriangle;
+        private NativeArray<int> numTriangles;
         private NativeArray<float> restVolumes;
         private NativeArray<float2> pressureStiffness;
 
@@ -22,14 +23,16 @@ namespace Obi
         }
 
         public void SetVolumeConstraints(ObiNativeIntList triangles,
-                                         ObiNativeIntList lastIndex,
+                                         ObiNativeIntList firstTriangle,
+                                         ObiNativeIntList numTriangles,
                                          ObiNativeFloatList restVolumes,
                                          ObiNativeVector2List pressureStiffness,
                                          ObiNativeFloatList lambdas,
                                          int count)
         {
             this.particleIndices = triangles.AsNativeArray<int>();
-            this.lastIndex = lastIndex.AsNativeArray<int>();
+            this.firstTriangle = firstTriangle.AsNativeArray<int>();
+            this.numTriangles = numTriangles.AsNativeArray<int>();
             this.restVolumes = restVolumes.AsNativeArray<float>();
             this.pressureStiffness = pressureStiffness.AsNativeArray<float2>();
             this.lambdas = lambdas.AsNativeArray<float>();
@@ -37,12 +40,13 @@ namespace Obi
         }
 
 
-        public override JobHandle Evaluate(JobHandle inputDeps, float deltaTime)
+        public override JobHandle Evaluate(JobHandle inputDeps, float stepTime, float substepTime, int substeps)
         {
             var projectConstraints = new VolumeConstraintsBatchJob()
             {
                 triangles = particleIndices,
-                lastIndex = lastIndex,
+                firstTriangle = firstTriangle,
+                numTriangles = numTriangles,
                 restVolumes = restVolumes,
                 pressureStiffness = pressureStiffness,
                 lambdas = lambdas,
@@ -54,21 +58,21 @@ namespace Obi
                 deltas = solverImplementation.positionDeltas,
                 counts = solverImplementation.positionConstraintCounts,
 
-                deltaTimeSqr = deltaTime * deltaTime
+                deltaTimeSqr = substepTime * substepTime
             };
 
             return projectConstraints.Schedule(m_ConstraintCount, 4, inputDeps);
         }
 
-        public override JobHandle Apply(JobHandle inputDeps, float deltaTime)
+        public override JobHandle Apply(JobHandle inputDeps, float substepTime)
         {
             var parameters = solverAbstraction.GetConstraintParameters(m_ConstraintType);
 
             var applyConstraints = new ApplyVolumeConstraintsBatchJob()
             {
                 triangles = particleIndices,
-                lastIndex = lastIndex,
-
+                firstTriangle = firstTriangle,
+                numTriangles = numTriangles,
                 positions = solverImplementation.positions,
                 deltas = solverImplementation.positionDeltas,
                 counts = solverImplementation.positionConstraintCounts,
@@ -83,7 +87,8 @@ namespace Obi
         public struct VolumeConstraintsBatchJob : IJobParallelFor
         {
             [ReadOnly] public NativeArray<int> triangles;
-            [ReadOnly] public NativeArray<int> lastIndex;
+            [ReadOnly] public NativeArray<int> firstTriangle;
+            [ReadOnly] public NativeArray<int> numTriangles;
             [ReadOnly] public NativeArray<float> restVolumes;
             [ReadOnly] public NativeArray<float2> pressureStiffness;
             public NativeArray<float> lambdas;
@@ -101,21 +106,13 @@ namespace Obi
             {
                 float compliance = pressureStiffness[i].y / deltaTimeSqr;
 
-                int firstTriangle = 0;
-                int numTriangles = lastIndex[i];
-                if (i > 0)
-                {
-                    firstTriangle = lastIndex[i - 1];
-                    numTriangles -= firstTriangle;
-                }
-
-                NativeList<int> particleIndices = new NativeList<int>(numTriangles * 3, Allocator.Temp);
+                NativeList<int> particleIndices = new NativeList<int>(numTriangles[i] * 3, Allocator.Temp);
 
                 // calculate volume:
                 float volume = 0;
-                for (int j = 0; j < numTriangles; ++j)
+                for (int j = 0; j < numTriangles[i]; ++j)
                 {
-                    int v = (firstTriangle + j) * 3;
+                    int v = (firstTriangle[i] + j) * 3;
                     int i1 = triangles[v];
                     int i2 = triangles[v + 1];
                     int i3 = triangles[v + 2];
@@ -135,9 +132,9 @@ namespace Obi
                 for (int j = 0; j < particleCount; ++j)
                     gradients[particleIndices[j]] = float4.zero;
 
-                for (int j = 0; j < numTriangles; ++j)
+                for (int j = 0; j < numTriangles[i]; ++j)
                 {
-                    int v = (firstTriangle + j) * 3;
+                    int v = (firstTriangle[i] + j) * 3;
                     int i1 = triangles[v];
                     int i2 = triangles[v + 1];
                     int i3 = triangles[v + 2];
@@ -176,9 +173,9 @@ namespace Obi
         [BurstCompile]
         public struct ApplyVolumeConstraintsBatchJob : IJobParallelFor
         {
-            [ReadOnly] public NativeArray<int> particleIndices;
             [ReadOnly] public NativeArray<int> triangles;
-            [ReadOnly] public NativeArray<int> lastIndex;
+            [ReadOnly] public NativeArray<int> firstTriangle;
+            [ReadOnly] public NativeArray<int> numTriangles;
             [ReadOnly] public float sorFactor;
 
             [NativeDisableContainerSafetyRestriction] [NativeDisableParallelForRestriction] public NativeArray<float4> positions;
@@ -188,17 +185,9 @@ namespace Obi
             public void Execute(int i)
             {
 
-                int firstTriangle = 0;
-                int numTriangles = lastIndex[i];
-                if (i > 0)
+                for (int j = 0; j < numTriangles[i]; ++j)
                 {
-                    firstTriangle = lastIndex[i - 1];
-                    numTriangles -= firstTriangle;
-                }
-
-                for (int j = 0; j < numTriangles; ++j)
-                {
-                    int v = (firstTriangle + j) * 3;
+                    int v = (firstTriangle[i] + j) * 3;
                     int p1 = triangles[v];
                     int p2 = triangles[v + 1];
                     int p3 = triangles[v + 2];

@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Obi
 {
-    [AddComponentMenu("Physics/Obi/Obi Rope Cursor", 882)]
+    [AddComponentMenu("Physics/Obi/Obi Rope Cursor", 883)]
     [RequireComponent(typeof(ObiRope))]
     public class ObiRopeCursor : MonoBehaviour
     {

@@ -156,9 +156,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
-  phase: 0
   thickness: 0.05
+  material: {fileID: 0}
+  filter: -65535
   m_SourceCollider: {fileID: 694935032}
   m_DistanceField: {fileID: 0}
 --- !u!23 &694935031
@@ -437,9 +437,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
-  phase: 0
   thickness: 0
+  material: {fileID: 0}
+  filter: -65535
   m_SourceCollider: {fileID: 1006563105}
   m_DistanceField: {fileID: 0}
 --- !u!1 &1201433689
@@ -647,9 +647,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
-  phase: 1
   thickness: 0
+  material: {fileID: 0}
+  filter: -131071
   m_SourceCollider: {fileID: 1247776990}
   m_DistanceField: {fileID: 0}
 --- !u!1 &1465091929
@@ -845,9 +845,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
-  phase: 0
   thickness: 0.05
+  material: {fileID: 0}
+  filter: -65535
   m_SourceCollider: {fileID: 1641461106}
   m_DistanceField: {fileID: 0}
 --- !u!1 &1694332649
@@ -1069,9 +1069,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
-  phase: 0
   thickness: 0.05
+  material: {fileID: 0}
+  filter: -65535
   m_SourceCollider: {fileID: 1735419979}
   m_DistanceField: {fileID: 0}
 --- !u!1 &1954069164
@@ -1298,7 +1298,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   solvers:
   - {fileID: 2108375382}
-  substepUnityPhysics: 1
   substeps: 3
 --- !u!114 &2108375382
 MonoBehaviour:
@@ -1319,10 +1318,16 @@ MonoBehaviour:
     interpolation: 0
     gravity: {x: 0, y: -9.81, z: 0}
     damping: 0
-    shockPropagation: 0
     maxAnisotropy: 3
-    maxDepenetration: 5
     sleepThreshold: 0.0001
+    collisionMargin: 0.02
+    maxDepenetration: 10
+    continuousCollisionDetection: 1
+    shockPropagation: 0
+    surfaceCollisionIterations: 8
+    surfaceCollisionTolerance: 0.005
+  gravity: {x: 0, y: -9.81, z: 0}
+  gravitySpace: 1
   worldLinearInertiaScale: 0
   worldAngularInertiaScale: 0
   distanceConstraintParameters:

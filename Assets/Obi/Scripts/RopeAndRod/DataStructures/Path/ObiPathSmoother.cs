@@ -118,7 +118,7 @@ namespace Obi
             }
         }
 
-        private void PathFrameFromParticle(ObiRopeBase actor, ref ObiPathFrame frame, int particleIndex)
+        private void PathFrameFromParticle(ObiRopeBase actor, ref ObiPathFrame frame, int particleIndex, bool interpolateOrientation = true)
         {
             // Update current frame values from particles:
             frame.position = w2l.MultiplyPoint3x4(actor.GetParticlePosition(particleIndex));
@@ -128,10 +128,12 @@ namespace Obi
             // Use particle orientation if possible:
             if (actor.usesOrientedParticles)
             {
-                Quaternion orientation = w2lRotation * Quaternion.SlerpUnclamped(actor.GetParticleOrientation(particleIndex), actor.GetParticleOrientation(Mathf.Max(0, particleIndex - 1)), 0.5f);
-                frame.normal = orientation * Vector3.up;
-                frame.binormal = orientation * Vector3.right;
-                frame.tangent = orientation * Vector3.forward;
+                Quaternion current = actor.GetParticleOrientation(particleIndex);
+                Quaternion previous = actor.GetParticleOrientation(Mathf.Max(0, particleIndex - 1));
+                Quaternion average = w2lRotation * (interpolateOrientation ? Quaternion.SlerpUnclamped(current, previous, 0.5f) : current);
+                frame.normal = average * Vector3.up;
+                frame.binormal = average * Vector3.right;
+                frame.tangent = average * Vector3.forward;
             }
         }
 
@@ -171,7 +173,7 @@ namespace Obi
                     frame_1.Reset();
                     frame_2.Reset();
 
-                    PathFrameFromParticle(actor, ref frame_1, actor.elements[chunkStart].particle1);
+                    PathFrameFromParticle(actor, ref frame_1, actor.elements[chunkStart].particle1, false);
 
                     frame_2 = frame_1;
 
@@ -228,7 +230,7 @@ namespace Obi
                     Chaikin(rawChunks[i], smoothChunks[i], smoothingLevels);
 
                     // count total curve sections and total curve length:
-                    smoothSections += smoothChunks[i].Count - 1;
+                    smoothSections += smoothChunks[i].Count;
                     smoothLength += CalculateChunkLength(smoothChunks[i]);
                 }
             }
@@ -236,7 +238,7 @@ namespace Obi
 
         public ObiPathFrame GetSectionAt(float mu)
         {
-            float edgeMu = smoothSections * Mathf.Clamp01(mu);
+            float edgeMu = smoothSections * Mathf.Clamp(mu,0,0.9999f);
             int index = (int)edgeMu;
             float sectionMu = edgeMu - index;
 
@@ -249,6 +251,7 @@ namespace Obi
                 {
                     chunkIndex = i;
                     indexInChunk = index - counter;
+                    break;
                 }
                 counter += smoothChunks[i].Count;
             }

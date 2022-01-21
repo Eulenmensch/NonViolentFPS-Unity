@@ -21,10 +21,10 @@ public class ExtrapolationCamera : MonoBehaviour
     [Min(0)]
     public float distanceFromTarget = 4;
 
-    private Vector3 lastPosition;
-    private Vector3 extrapolatedPos;
+    Vector3 lastPosition;
+    Vector3 extrapolatedPos;
 
-    private void Start()
+    void Start()
     {
         if (target != null)
             lastPosition = target.position;
@@ -46,7 +46,7 @@ public class ExtrapolationCamera : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
         if (target != null)
         {

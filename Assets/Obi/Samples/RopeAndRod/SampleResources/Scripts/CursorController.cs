@@ -6,20 +6,21 @@ using Obi;
 [RequireComponent(typeof(ObiRope))]
 public class CursorController : MonoBehaviour
 {
-	private ObiRopeCursor cursor;
-	private ObiRope rope;
+
+	ObiRopeCursor cursor;
+	ObiRope rope;
 	public float minLength = 0.1f;
     public float speed = 1;
 
 	// Use this for initialization
-	private void Start ()
+	void Start ()
     {
         rope = GetComponent<ObiRope>();
         cursor = GetComponent<ObiRopeCursor>();
 	}
 	
 	// Update is called once per frame
-	private void Update ()
+	void Update ()
     {
 		if (Input.GetKey(KeyCode.W) && cursor != null)
         {

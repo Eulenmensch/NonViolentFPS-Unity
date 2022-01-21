@@ -16,14 +16,13 @@ namespace Obi{
         public bool kinematicForParticles = false;
 
         public ObiRigidbodyHandle handle;
-		protected Vector3 velocity, angularVelocity;
 
 
 		public virtual void Awake()
         {
             handle = ObiColliderWorld.GetInstance().CreateRigidbody();
             handle.owner = this;
-            UpdateIfNeeded();
+            UpdateIfNeeded(1);
 		}
 
 		public void OnDestroy()
@@ -31,7 +30,7 @@ namespace Obi{
             ObiColliderWorld.GetInstance().DestroyRigidbody(handle);
         }
 
-		public abstract void UpdateIfNeeded();
+		public abstract void UpdateIfNeeded(float stepTime);
 
 		/**
 		 * Reads velocities back from the solver.

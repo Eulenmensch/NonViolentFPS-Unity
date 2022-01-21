@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 
 namespace Obi
 {
@@ -14,7 +11,6 @@ namespace Obi
         ObiTethersTool tethersTool;
 
         protected ReorderableList particleGroupList;
-        protected bool visualizationOptions;
         protected bool mixedPropertyValue = false;
 
         public ObiParticleSelectionEditorTool(ObiActorBlueprintEditor editor) : base(editor)
@@ -46,11 +42,13 @@ namespace Obi
                                                     editor.serializedObject.FindProperty("groups"),
                               false, true, true, true);
 
-            particleGroupList.drawHeaderCallback = (Rect rect) => {
+            particleGroupList.drawHeaderCallback = (Rect rect) =>
+            {
                 EditorGUI.LabelField(rect, "Groups");
             };
 
-            particleGroupList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) => {
+            particleGroupList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+            {
                 var element = particleGroupList.serializedProperty.GetArrayElementAtIndex(index);
                 rect.y += 4;
 
@@ -90,7 +88,8 @@ namespace Obi
 
             particleGroupList.elementHeight = (EditorGUIUtility.singleLineHeight + 2) * 2 + 8;
 
-            particleGroupList.onAddCallback = (ReorderableList list) => {
+            particleGroupList.onAddCallback = (ReorderableList list) =>
+            {
 
                 var group = editor.blueprint.AppendNewParticleGroup("new group");
 
@@ -103,7 +102,8 @@ namespace Obi
                 AssetDatabase.SaveAssets();
             };
 
-            particleGroupList.onRemoveCallback = (ReorderableList list) => {
+            particleGroupList.onRemoveCallback = (ReorderableList list) =>
+            {
                 editor.blueprint.RemoveParticleGroupAt(list.index);
             };
         }
@@ -237,13 +237,11 @@ namespace Obi
             GUILayout.Box(GUIContent.none, ObiEditorUtils.GetSeparatorLineStyle());
 
             EditorGUILayout.BeginVertical(EditorStyles.inspectorDefaultMargins);
-            visualizationOptions = EditorGUILayout.Foldout(visualizationOptions, "Visualization");
 
-            if (visualizationOptions)
-            {
                 editor.RenderModeSelector();
+                editor.dotRadiusScale = EditorGUILayout.Slider(new GUIContent("Particle dot size"), editor.dotRadiusScale, 0, 5);
                 editor.currentProperty.VisualizationOptions();
-            }
+           
             EditorGUILayout.EndVertical();
         }
 
@@ -257,7 +255,6 @@ namespace Obi
         {
             editor.selectedCount = 0;
             mixedPropertyValue = false;
-            int lastSelected = -1;
 
             // Find out how many selected particles we have, and whether they all have the same value for the current property:
             for (int i = 0; i < editor.selectionStatus.Length; i++)
@@ -266,16 +263,21 @@ namespace Obi
                 {
                     editor.selectedCount++;
 
-                    if (lastSelected >= 0 && !editor.currentProperty.Equals(lastSelected, i))
-                         mixedPropertyValue = true;
-
-                    lastSelected = i;
+                    if (editor.activeParticle >= 0)
+                    {
+                        if (!editor.currentProperty.Equals(editor.activeParticle, i))
+                            mixedPropertyValue = true;
+                    }
+                    else
+                        editor.activeParticle = i;
                 }
+                else if (editor.activeParticle == i)
+                    editor.activeParticle = -1;
             }
 
             // Set initial property value:
-            if (!mixedPropertyValue && lastSelected >= 0)
-                 editor.currentProperty.GetDefaultFromIndex(lastSelected);
+            if (!mixedPropertyValue && editor.activeParticle >= 0)
+                editor.currentProperty.GetDefaultFromIndex(editor.activeParticle);
 
             editor.Repaint();
             SceneView.RepaintAll();

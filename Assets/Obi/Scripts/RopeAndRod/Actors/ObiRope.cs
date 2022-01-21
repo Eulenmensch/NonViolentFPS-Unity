@@ -30,7 +30,9 @@ namespace Obi
         // bend constraints:
         [SerializeField] protected bool _bendConstraintsEnabled = true;
         [SerializeField] protected float _bendCompliance = 0;
-        [SerializeField] [Range(0, 0.5f)] protected float _maxBending = 0;
+        [SerializeField] [Range(0, 0.5f)] protected float _maxBending = 0.025f;
+        [SerializeField] [Range(0, 0.1f)] protected float _plasticYield = 0;
+        [SerializeField] protected float _plasticCreep = 0;
 
         /// <summary>  
         /// Whether particles in this actor colide with particles using the same phase value.
@@ -104,6 +106,25 @@ namespace Obi
         {
             get { return _maxBending; }
             set { _maxBending = value; SetConstraintsDirty(Oni.ConstraintType.Bending); }
+        }
+
+        /// <summary>  
+        /// Threshold for plastic behavior. 
+        /// </summary>
+        /// Once bending goes above this value, a percentage of the deformation (determined by <see cref="plasticCreep"/>) will be permanently absorbed into the rope's rest shape.
+        public float plasticYield
+        {
+            get { return _plasticYield; }
+            set { _plasticYield = value; SetConstraintsDirty(Oni.ConstraintType.Bending); }
+        }
+
+        /// <summary>  
+        /// Percentage of deformation that gets absorbed into the rest shape per second, once deformation goes above the <see cref="plasticYield"/> threshold.
+        /// </summary>
+        public float plasticCreep
+        {
+            get { return _plasticCreep; }
+            set { _plasticCreep = value; SetConstraintsDirty(Oni.ConstraintType.Bending); }
         }
 
         /// <summary>  
@@ -181,6 +202,7 @@ namespace Obi
             SetConstraintsDirty(Oni.ConstraintType.Bending);
             SetSelfCollisions(selfCollisions);
             RecalculateRestLength();
+            SetSimplicesDirty();
         }
 
         public override void Substep(float substepTime)
@@ -262,6 +284,11 @@ namespace Obi
             return solverIndices[activeParticleCount - 1];
         }
 
+
+        /// <summary>  
+        /// Tears any given rope element. After calling Tear() one or multiple times, a call to RebuildConstraintsFromElements is needed to
+        /// update the rope particle/constraint representation.
+        /// </summary>
         public bool Tear(ObiStructuralElement element)
         {
             // don't allow splitting if there are no free particles left in the pool.
@@ -400,8 +427,17 @@ namespace Obi
                 loopClosingBatch.ActivateConstraint(0);
             }
 
+            // edge simplices:
+            sharedBlueprint.edges = new int[elements.Count*2];
+            for (int i = 0; i < elements.Count; ++i)
+            {
+                sharedBlueprint.edges[i * 2] =     solver.particleToActor[elements[i].particle1].indexInActor;
+                sharedBlueprint.edges[i * 2 + 1] = solver.particleToActor[elements[i].particle2].indexInActor;
+            }
+
             SetConstraintsDirty(Oni.ConstraintType.Distance);
             SetConstraintsDirty(Oni.ConstraintType.Bending);
+            SetSimplicesDirty();
         }
     }
 }

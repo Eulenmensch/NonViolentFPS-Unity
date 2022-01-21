@@ -12,13 +12,14 @@ namespace Obi
         }
 
         public void SetVolumeConstraints(ObiNativeIntList triangles,
-                                      ObiNativeIntList firstIndex,
+                                      ObiNativeIntList firstTriangle,
+                                      ObiNativeIntList numTriangles,
                                       ObiNativeFloatList restVolumes,
                                       ObiNativeVector2List pressureStiffness,
                                       ObiNativeFloatList lambdas,
                                       int count)
         {
-            Oni.SetVolumeConstraints(oniBatch, triangles.GetIntPtr(), firstIndex.GetIntPtr(), restVolumes.GetIntPtr(), pressureStiffness.GetIntPtr(), lambdas.GetIntPtr(), count);
+            Oni.SetVolumeConstraints(oniBatch, triangles.GetIntPtr(), firstTriangle.GetIntPtr(), numTriangles.GetIntPtr(), restVolumes.GetIntPtr(), pressureStiffness.GetIntPtr(), lambdas.GetIntPtr(), count);
         }
     } 
 }

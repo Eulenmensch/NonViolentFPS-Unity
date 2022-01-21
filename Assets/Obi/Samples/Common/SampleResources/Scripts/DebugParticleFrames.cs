@@ -6,7 +6,8 @@ using Obi;
 [ExecuteInEditMode]
 [RequireComponent(typeof(ObiActor))]
 public class DebugParticleFrames : MonoBehaviour {
-	private ObiActor actor;
+
+	ObiActor actor;
 	public float size = 1;
 	
 	public void Awake()
@@ -15,7 +16,7 @@ public class DebugParticleFrames : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	private void OnDrawGizmos () 
+	void OnDrawGizmos () 
     {
         Vector4 b1 = new Vector4(1, 0, 0, 0);
         Vector4 b2 = new Vector4(0, 1, 0, 0);

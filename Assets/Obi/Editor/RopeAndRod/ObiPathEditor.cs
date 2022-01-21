@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 using System;
-using System.Collections;
 
 namespace Obi
 {
@@ -29,7 +28,8 @@ namespace Obi
 
         protected static Color handleColor = new Color(1, 0.55f, 0.1f);
 
-        public ObiPathEditor(UnityEngine.Object target, ObiPath path, bool useOrientation){
+        public ObiPathEditor(UnityEngine.Object target, ObiPath path, bool useOrientation)
+        {
             this.target = target;
             this.path = path;
             this.useOrientation = useOrientation;
@@ -51,7 +51,7 @@ namespace Obi
 
             // get a window ID:
             if (Event.current.type != EventType.Used)
-                windowId  = GUIUtility.GetControlID(FocusType.Passive);
+                windowId = GUIUtility.GetControlID(FocusType.Passive);
 
             Matrix4x4 prevMatrix = Handles.matrix;
             Handles.matrix = matrix;
@@ -97,7 +97,7 @@ namespace Obi
 
             float mu = ScreenPointToCurveMu(path, Event.current.mousePosition, matrix);
 
-            Vector3 pointOnSpline = matrix.MultiplyPoint3x4(path.points.GetPositionAtMu(path.Closed,mu));
+            Vector3 pointOnSpline = matrix.MultiplyPoint3x4(path.points.GetPositionAtMu(path.Closed, mu));
 
             float size = HandleUtility.GetHandleSize(pointOnSpline) * 0.12f;
 
@@ -134,12 +134,12 @@ namespace Obi
 
             float mu = ScreenPointToCurveMu(path, Event.current.mousePosition, matrix);
 
-            Vector3 pointOnSpline = matrix.MultiplyPoint3x4(path.points.GetPositionAtMu(path.Closed,mu));
+            Vector3 pointOnSpline = matrix.MultiplyPoint3x4(path.points.GetPositionAtMu(path.Closed, mu));
 
             float size = HandleUtility.GetHandleSize(pointOnSpline) * 0.12f;
 
             Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-   
+
             Handles.color = Color.red;
             Handles.DrawDottedLine(pointOnSpline, ray.origin, 4);
 
@@ -284,7 +284,7 @@ namespace Obi
 
                 if (useOrientation && orientTool)
                 {
-                    repaint |= OrientTool(selectionAverage,handleRotation);
+                    repaint |= OrientTool(selectionAverage, handleRotation);
                 }
                 else
                 {
@@ -428,7 +428,7 @@ namespace Obi
                         if (selectedStatus[i])
                         {
                             var wp = path.points[i];
-                            wp.Transform(Vector3.zero, delta, Vector3.one); 
+                            wp.Transform(Vector3.zero, delta, Vector3.one);
                             path.points[i] = wp;
                         }
                     }
@@ -486,7 +486,7 @@ namespace Obi
                     float offset = 0.05f;
                     float thickness = (path.thicknesses[i] * scale) + offset;
                     thickness = DoRadiusHandle(orientation, position, thickness);
-                    path.thicknesses[i] = Mathf.Max(0,(thickness - offset) / scale);
+                    path.thicknesses[i] = Mathf.Max(0, (thickness - offset) / scale);
                 }
             }
             Handles.color = oldColor;
@@ -505,7 +505,7 @@ namespace Obi
         {
 
             DrawToolButtons();
-           
+
             DrawControlPointInspector();
 
         }
@@ -549,7 +549,7 @@ namespace Obi
 
         private void DrawControlPointInspector()
         {
-            
+
             GUI.enabled = selectedCount > 0;
             EditorGUILayout.BeginVertical();
 
@@ -577,7 +577,7 @@ namespace Obi
             }
 
             EditorGUI.BeginChangeCheck();
-            var newMode = (ObiWingedPoint.TangentMode) EditorGUILayout.EnumPopup("Tangent mode",mode, GUI.skin.FindStyle("DropDown"), GUILayout.MinWidth(94));
+            var newMode = (ObiWingedPoint.TangentMode)EditorGUILayout.EnumPopup("Tangent mode", mode, GUI.skin.FindStyle("DropDown"), GUILayout.MinWidth(94));
             EditorGUI.showMixedValue = false;
             if (EditorGUI.EndChangeCheck())
             {
@@ -610,7 +610,7 @@ namespace Obi
                         thickness = path.thicknesses[i];
                         firstSelected = false;
                     }
-                    else if (!Mathf.Approximately(thickness,path.thicknesses[i]))
+                    else if (!Mathf.Approximately(thickness, path.thicknesses[i]))
                     {
                         EditorGUI.showMixedValue = true;
                         break;
@@ -619,7 +619,7 @@ namespace Obi
             }
 
             EditorGUI.BeginChangeCheck();
-            thickness = EditorGUILayout.FloatField("Thickness",thickness,GUILayout.MinWidth(94));
+            thickness = EditorGUILayout.FloatField("Thickness", thickness, GUILayout.MinWidth(94));
             EditorGUI.showMixedValue = false;
             if (EditorGUI.EndChangeCheck())
             {
@@ -629,7 +629,7 @@ namespace Obi
                 for (int i = 0; i < path.ControlPointCount; ++i)
                 {
                     if (selectedStatus[i])
-                        path.thicknesses[i] = Mathf.Max(0,thickness);
+                        path.thicknesses[i] = Mathf.Max(0, thickness);
                 }
                 path.FlushEvents();
                 needsRepaint = true;
@@ -657,7 +657,7 @@ namespace Obi
             }
 
             EditorGUI.BeginChangeCheck();
-            mass = EditorGUILayout.FloatField("Mass",mass,GUILayout.MinWidth(94));
+            mass = EditorGUILayout.FloatField("Mass", mass, GUILayout.MinWidth(94));
             EditorGUI.showMixedValue = false;
             if (EditorGUI.EndChangeCheck())
             {
@@ -714,9 +714,9 @@ namespace Obi
                 }
             }
 
-            // phase:
+            // category:
             EditorGUI.showMixedValue = false;
-            int phase = 0;
+            int category = 0;
             firstSelected = true;
             for (int i = 0; i < path.ControlPointCount; ++i)
             {
@@ -724,10 +724,10 @@ namespace Obi
                 {
                     if (firstSelected)
                     {
-                        phase = path.phases[i];
+                        category = ObiUtils.GetCategoryFromFilter(path.filters[i]);
                         firstSelected = false;
                     }
-                    else if (!Mathf.Approximately(phase, path.phases[i]))
+                    else if (!Mathf.Approximately(category, ObiUtils.GetCategoryFromFilter(path.filters[i])))
                     {
                         EditorGUI.showMixedValue = true;
                         break;
@@ -736,17 +736,53 @@ namespace Obi
             }
 
             EditorGUI.BeginChangeCheck();
-            phase = EditorGUILayout.IntField("Phase", phase, GUILayout.MinWidth(94));
+            category = EditorGUILayout.Popup("Category", category, ObiUtils.categoryNames, GUILayout.MinWidth(94));
             EditorGUI.showMixedValue = false;
             if (EditorGUI.EndChangeCheck())
             {
-
-                Undo.RecordObject(target, "Change control point phase");
+                Undo.RecordObject(target, "Change control point category");
 
                 for (int i = 0; i < path.ControlPointCount; ++i)
                 {
                     if (selectedStatus[i])
-                        path.phases[i] = phase;
+                        path.filters[i] = ObiUtils.MakeFilter(ObiUtils.GetMaskFromFilter(path.filters[i]),category);
+                }
+                path.FlushEvents();
+                needsRepaint = true;
+            }
+
+            // mask:
+            EditorGUI.showMixedValue = false;
+            int mask = 0;
+            firstSelected = true;
+            for (int i = 0; i < path.ControlPointCount; ++i)
+            {
+                if (selectedStatus[i])
+                {
+                    if (firstSelected)
+                    {
+                        mask = ObiUtils.GetMaskFromFilter(path.filters[i]);
+                        firstSelected = false;
+                    }
+                    else if (!Mathf.Approximately(mask, ObiUtils.GetMaskFromFilter(path.filters[i])))
+                    {
+                        EditorGUI.showMixedValue = true;
+                        break;
+                    }
+                }
+            }
+
+            EditorGUI.BeginChangeCheck();
+            mask = EditorGUILayout.MaskField("Collides with", mask, ObiUtils.categoryNames, GUILayout.MinWidth(94));
+            EditorGUI.showMixedValue = false;
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(target, "Change control point mask");
+
+                for (int i = 0; i < path.ControlPointCount; ++i)
+                {
+                    if (selectedStatus[i])
+                        path.filters[i] = ObiUtils.MakeFilter(mask,ObiUtils.GetCategoryFromFilter(path.filters[i]));
                 }
                 path.FlushEvents();
                 needsRepaint = true;
@@ -774,7 +810,7 @@ namespace Obi
             }
 
             EditorGUI.BeginChangeCheck();
-            color = EditorGUILayout.ColorField("Color",color,GUILayout.MinWidth(94));
+            color = EditorGUILayout.ColorField("Color", color, GUILayout.MinWidth(94));
             EditorGUI.showMixedValue = false;
             if (EditorGUI.EndChangeCheck())
             {
@@ -812,7 +848,7 @@ namespace Obi
             }
 
             EditorGUI.BeginChangeCheck();
-            name = EditorGUILayout.DelayedTextField("Name",name,GUILayout.MinWidth(94));
+            name = EditorGUILayout.DelayedTextField("Name", name, GUILayout.MinWidth(94));
             EditorGUI.showMixedValue = false;
             if (EditorGUI.EndChangeCheck())
             {
@@ -852,7 +888,9 @@ namespace Obi
                     -Camera.current.transform.up,
                 };
 
-            }else{
+            }
+            else
+            {
                 camToPosition = position - Camera.current.transform.position;
                 Handles.DrawWireDisc(position, rotation * Vector3.forward, radius);
 

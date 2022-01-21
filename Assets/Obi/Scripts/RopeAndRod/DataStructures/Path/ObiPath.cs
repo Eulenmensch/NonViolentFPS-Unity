@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace Obi
 {
@@ -21,7 +22,9 @@ namespace Obi
         [HideInInspector] [SerializeField] ObiThicknessDataChannel m_Thickness = new ObiThicknessDataChannel();
         [HideInInspector] [SerializeField] ObiMassDataChannel m_Masses = new ObiMassDataChannel();
         [HideInInspector] [SerializeField] ObiRotationalMassDataChannel m_RotationalMasses = new ObiRotationalMassDataChannel();
-        [HideInInspector] [SerializeField] ObiPhaseDataChannel m_Phases = new ObiPhaseDataChannel();
+
+        [FormerlySerializedAs("m_Phases")]
+        [HideInInspector] [SerializeField] ObiPhaseDataChannel m_Filters = new ObiPhaseDataChannel();
 
         [HideInInspector] [SerializeField] private bool m_Closed = false;
 
@@ -43,7 +46,7 @@ namespace Obi
             yield return m_Thickness;
             yield return m_Masses;
             yield return m_RotationalMasses;
-            yield return m_Phases;
+            yield return m_Filters;
         }
 
         public ObiPointsDataChannel points { get { return m_Points; }}
@@ -52,7 +55,7 @@ namespace Obi
         public ObiThicknessDataChannel thicknesses { get { return m_Thickness; } }
         public ObiMassDataChannel masses { get { return m_Masses; } }
         public ObiRotationalMassDataChannel rotationalMasses { get { return m_RotationalMasses; } }
-        public ObiPhaseDataChannel phases { get { return m_Phases; } }
+        public ObiPhaseDataChannel filters { get { return m_Filters; } }
 
         public ReadOnlyCollection<float> ArcLengthTable
         {
@@ -268,12 +271,12 @@ namespace Obi
             return m_Names[index];
         }
 
-        public void AddControlPoint(Vector3 position, Vector3 inTangentVector, Vector3 outTangentVector, Vector3 normal, float mass, float rotationalMass, float thickness, int phase, Color color, string name)
+        public void AddControlPoint(Vector3 position, Vector3 inTangentVector, Vector3 outTangentVector, Vector3 normal, float mass, float rotationalMass, float thickness, int filter, Color color, string name)
         {
-            InsertControlPoint(ControlPointCount, position, inTangentVector, outTangentVector, normal,  mass, rotationalMass, thickness, phase, color, name);
+            InsertControlPoint(ControlPointCount, position, inTangentVector, outTangentVector, normal,  mass, rotationalMass, thickness, filter, color, name);
         }
 
-        public void InsertControlPoint(int index, Vector3 position, Vector3 inTangentVector, Vector3 outTangentVector, Vector3 normal, float mass, float rotationalMass, float thickness, int phase, Color color, string name)
+        public void InsertControlPoint(int index, Vector3 position, Vector3 inTangentVector, Vector3 outTangentVector, Vector3 normal, float mass, float rotationalMass, float thickness, int filter, Color color, string name)
         {
             m_Points.data.Insert(index, new ObiWingedPoint(inTangentVector,position,outTangentVector));
             m_Colors.data.Insert(index, color);
@@ -281,7 +284,7 @@ namespace Obi
             m_Thickness.data.Insert(index, thickness);
             m_Masses.data.Insert(index, mass);
             m_RotationalMasses.data.Insert(index, rotationalMass);
-            m_Phases.data.Insert(index, phase);
+            m_Filters.data.Insert(index, filter);
             m_Names.Insert(index,name);
 
             if (OnControlPointAdded != null)
@@ -348,12 +351,12 @@ namespace Obi
                                                                        m_RotationalMasses[next],
                                                                        m_RotationalMasses[next], p);
 
-                    int phase = m_Phases.Evaluate(m_Phases[i],
-                                                  m_Phases[i],
-                                                  m_Phases[next],
-                                                  m_Phases[next], p);
+                    int filter = m_Filters.Evaluate(m_Filters[i],
+                                                    m_Filters[i],
+                                                    m_Filters[next],
+                                                    m_Filters[next], p);
 
-                    InsertControlPoint(i + 1, P0112_1223, P01_12 - P0112_1223, P12_23 - P0112_1223, normal, mass,rotationalMass, thickness, phase, color, GetName(i));
+                    InsertControlPoint(i + 1, P0112_1223, P01_12 - P0112_1223, P12_23 - P0112_1223, normal, mass,rotationalMass, thickness, filter, color, GetName(i));
 
                     return i + 1;
                 }

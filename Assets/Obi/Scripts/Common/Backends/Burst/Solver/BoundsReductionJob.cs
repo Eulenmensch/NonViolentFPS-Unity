@@ -20,7 +20,8 @@ namespace Obi
 
         public void Execute(int i)
         {
-            bounds[i] = new BurstAabb(positions[i] - radii[i].x, positions[i] + radii[i].x);
+            int p = activeParticles[i];
+            bounds[i] = new BurstAabb(positions[p] - radii[p].x, positions[p] + radii[p].x);
         }
     }
 

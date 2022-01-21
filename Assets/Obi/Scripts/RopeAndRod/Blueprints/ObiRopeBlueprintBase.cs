@@ -62,6 +62,16 @@ namespace Obi
             RemoveParticleGroupAt(index);
         }
 
+        protected void CreateSimplices(int numSegments)
+        {
+            edges = new int[numSegments * 2];
+            for (int i = 0; i < numSegments; ++i)
+            {
+                edges[i * 2] = i % totalParticles;
+                edges[i * 2 + 1] = (i + 1) % totalParticles;
+            }
+        }
+
         protected override IEnumerator Initialize() { yield return null; }
     }
 }

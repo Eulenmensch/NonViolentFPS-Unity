@@ -16,7 +16,7 @@ public class ActorSpawner : MonoBehaviour {
 	private float timeFromLastSpawn = 0;
 	
 	// Update is called once per frame
-	private void Update () {
+	void Update () {
 
 		timeFromLastSpawn += Time.deltaTime;
 
@@ -25,7 +25,7 @@ public class ActorSpawner : MonoBehaviour {
 			GameObject go = Instantiate(template.gameObject,transform.position,Quaternion.identity);
             go.transform.SetParent(transform.parent);
 
-            go.GetComponent<ObiActor>().SetPhase(basePhase + phase);
+            go.GetComponent<ObiActor>().SetFilterCategory(basePhase + phase);
 
 			phase++;
 			instances++;

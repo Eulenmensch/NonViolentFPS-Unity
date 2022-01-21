@@ -7,7 +7,8 @@ using Obi;
 [RequireComponent(typeof(ObiSolver))]
 public class WrapRopeGameController : MonoBehaviour
 {
-	private ObiSolver solver;
+
+	ObiSolver solver;
 
 	public Wrappable[] wrappables;
 	public UnityEvent onFinish = new UnityEvent();
@@ -18,7 +19,7 @@ public class WrapRopeGameController : MonoBehaviour
 	}
 
 	// Start is called before the first frame update
-	private void OnEnable()
+	void OnEnable()
 	{
 		solver.OnCollision += Solver_OnCollision;
 	}
@@ -58,7 +59,7 @@ public class WrapRopeGameController : MonoBehaviour
 			// look for actual contacts only:
 			if (contact.distance < 0.025f)
 			{
-				var col = world.colliderHandles[contact.other].owner;
+				var col = world.colliderHandles[contact.bodyB].owner;
 				if (col != null)
 				{
 					var wrappable = col.GetComponent<Wrappable>();

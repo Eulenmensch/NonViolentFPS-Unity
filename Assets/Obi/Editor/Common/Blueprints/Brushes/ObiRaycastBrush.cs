@@ -11,6 +11,7 @@ namespace Obi
     {
         public Matrix4x4 raycastTransform = Matrix4x4.identity;
         public Mesh raycastTarget = null;
+        public bool drawVolume = false;
 
         private ObiRaycastHit hit;
 
@@ -59,6 +60,12 @@ namespace Obi
                     Handles.DrawLine(hit.position, hit.position + hit.normal.normalized * radius);
                     Handles.DrawWireDisc(hit.position, hit.normal, radius);
                     Handles.DrawWireDisc(hit.position, hit.normal, innerRadius * radius);
+
+                    if (drawVolume)
+                    {
+                        Handles.color = new Color(brushColor.r, brushColor.g, brushColor.b,0.2f);
+                        Handles.SphereHandleCap(0, hit.position, Quaternion.identity, radius * 2, EventType.Repaint);
+                    }
                 }
             }
 		}

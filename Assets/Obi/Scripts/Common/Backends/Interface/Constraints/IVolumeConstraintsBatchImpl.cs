@@ -6,7 +6,8 @@ namespace Obi
     public interface IVolumeConstraintsBatchImpl : IConstraintsBatchImpl
     {
         void SetVolumeConstraints(ObiNativeIntList triangles,
-                                  ObiNativeIntList firstIndex,
+                                  ObiNativeIntList firstTriangle,
+                                  ObiNativeIntList numTriangles,
                                   ObiNativeFloatList restVolumes,
                                   ObiNativeVector2List pressureStiffness,
                                   ObiNativeFloatList lambdas,

@@ -23,8 +23,8 @@ namespace Obi
             if (path.ControlPointCount < 2)
             {
                 ClearParticleGroups();
-                path.InsertControlPoint(0, Vector3.left, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, DEFAULT_PARTICLE_ROTATIONAL_MASS, 1, 1, Color.white, "control point");
-                path.InsertControlPoint(1, Vector3.right, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, DEFAULT_PARTICLE_ROTATIONAL_MASS, 1, 1, Color.white, "control point");
+                path.InsertControlPoint(0, Vector3.left, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, DEFAULT_PARTICLE_ROTATIONAL_MASS, 1, ObiUtils.MakeFilter(ObiUtils.CollideWithEverything, 1), Color.white, "control point");
+                path.InsertControlPoint(1, Vector3.right, Vector3.left * 0.25f, Vector3.right * 0.25f, Vector3.up, DEFAULT_PARTICLE_MASS, DEFAULT_PARTICLE_ROTATIONAL_MASS, 1, ObiUtils.MakeFilter(ObiUtils.CollideWithEverything, 1), Color.white, "control point");
             }
 
             path.RecalculateLenght(Matrix4x4.identity, 0.00001f, 7);
@@ -34,19 +34,19 @@ namespace Obi
             List<float> particleThicknesses = new List<float>();
             List<float> particleInvMasses = new List<float>();
             List<float> particleInvRotationalMasses = new List<float>();
-            List<int> particlePhases = new List<int>();
+            List<int> particleFilters = new List<int>();
             List<Color> particleColors = new List<Color>();
 
             // In case the path is open, add a first particle. In closed paths, the last particle is also the first one.
             if (!path.Closed)
             {
-                particlePositions.Add(path.points.GetPositionAtMu(path.Closed,0));
-                particleNormals.Add(path.normals.GetAtMu(path.Closed,0));
-                particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed,0));
-                particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed,0)));
+                particlePositions.Add(path.points.GetPositionAtMu(path.Closed, 0));
+                particleNormals.Add(path.normals.GetAtMu(path.Closed, 0));
+                particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed, 0));
+                particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed, 0)));
                 particleInvRotationalMasses.Add(ObiUtils.MassToInvMass(path.rotationalMasses.GetAtMu(path.Closed, 0)));
-                particlePhases.Add(path.phases.GetAtMu(path.Closed, 0));
-                particleColors.Add(path.colors.GetAtMu(path.Closed,0));
+                particleFilters.Add(path.filters.GetAtMu(path.Closed, 0));
+                particleColors.Add(path.colors.GetAtMu(path.Closed, 0));
             }
 
             // Create a particle group for the first control point:
@@ -70,21 +70,21 @@ namespace Obi
                 for (int j = 0; j < particlesInSpan; ++j)
                 {
                     float mu = path.GetMuAtLenght(upToSpanLength + distance * (j + 1));
-                    particlePositions.Add(path.points.GetPositionAtMu(path.Closed,mu));
-                    particleNormals.Add(path.normals.GetAtMu(path.Closed,mu));
-                    particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed,mu));
-                    particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed,mu)));
+                    particlePositions.Add(path.points.GetPositionAtMu(path.Closed, mu));
+                    particleNormals.Add(path.normals.GetAtMu(path.Closed, mu));
+                    particleThicknesses.Add(path.thicknesses.GetAtMu(path.Closed, mu));
+                    particleInvMasses.Add(ObiUtils.MassToInvMass(path.masses.GetAtMu(path.Closed, mu)));
                     particleInvRotationalMasses.Add(ObiUtils.MassToInvMass(path.rotationalMasses.GetAtMu(path.Closed, mu)));
-                    particlePhases.Add(path.phases.GetAtMu(path.Closed,mu));
-                    particleColors.Add(path.colors.GetAtMu(path.Closed,mu));
+                    particleFilters.Add(path.filters.GetAtMu(path.Closed, mu));
+                    particleColors.Add(path.colors.GetAtMu(path.Closed, mu));
                 }
 
                 // Create a particle group for each control point:
                 if (!(path.Closed && i == spans - 1))
-                { 
+                {
                     groups[i + 1].particleIndices.Clear();
                     groups[i + 1].particleIndices.Add(particlePositions.Count - 1);
-                }   
+                }
 
                 if (i % 100 == 0)
                     yield return new CoroutineJob.ProgressInfo("ObiRope: generating particles...", i / (float)spans);
@@ -106,7 +106,7 @@ namespace Obi
             invMasses = new float[totalParticles];
             invRotationalMasses = new float[totalParticles];
             principalRadii = new Vector3[totalParticles];
-            phases = new int[totalParticles];
+            filters = new int[totalParticles];
             restPositions = new Vector4[totalParticles];
             restOrientations = new Quaternion[totalParticles];
             colors = new Color[totalParticles];
@@ -120,12 +120,15 @@ namespace Obi
                 restPositions[i] = positions[i];
                 restPositions[i][3] = 1; // activate rest position.
                 principalRadii[i] = Vector3.one * particleThicknesses[i] * thickness;
-                phases[i] = ObiUtils.MakePhase(particlePhases[i], 0);
+                filters[i] = particleFilters[i];
                 colors[i] = particleColors[i];
 
                 if (i % 100 == 0)
                     yield return new CoroutineJob.ProgressInfo("ObiRod: generating particles...", i / (float)m_ActiveParticleCount);
             }
+
+            // Create edge simplices:
+            CreateSimplices(numSegments);
 
             // Create distance constraints for the total number of particles, but only activate for the used ones.
             IEnumerator dc = CreateStretchShearConstraints(particleNormals);
@@ -198,7 +201,7 @@ namespace Obi
 
                 frame.Transport(positions[indices.x], d.normalized, 0);
 
-                orientations[m_ActiveParticleCount-1] = Quaternion.LookRotation(frame.tangent, particleNormals[indices.x]);
+                orientations[m_ActiveParticleCount - 1] = Quaternion.LookRotation(frame.tangent, particleNormals[indices.x]);
                 restOrientations[m_ActiveParticleCount - 1] = orientations[m_ActiveParticleCount - 1];
 
                 loopClosingBatch.AddConstraint(indices, indices.x, restLengths[m_ActiveParticleCount - 2], Quaternion.identity);

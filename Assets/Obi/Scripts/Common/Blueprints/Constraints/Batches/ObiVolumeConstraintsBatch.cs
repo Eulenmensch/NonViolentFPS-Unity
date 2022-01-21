@@ -11,9 +11,14 @@ namespace Obi
         protected IVolumeConstraintsBatchImpl m_BatchImpl; 
 
         /// <summary>
-        /// index of the last triangle for each constraint.
+        /// index of the first triangle for each constraint (exclusive prefix sum).
         /// </summary>
-        [HideInInspector] public ObiNativeIntList lastIndices = new ObiNativeIntList();           
+        [HideInInspector] public ObiNativeIntList firstTriangle = new ObiNativeIntList();
+
+        /// <summary>
+        /// number of triangles for each constraint.
+        /// </summary>
+        [HideInInspector] public ObiNativeIntList numTriangles = new ObiNativeIntList();
 
         /// <summary>
         /// rest volume for each constraint.
@@ -43,17 +48,19 @@ namespace Obi
         {
             RegisterConstraint();
 
-            particleIndices.AddRange(triangles);
+            firstTriangle.Add((int)particleIndices.count / 3);
+            numTriangles.Add((int)triangles.Length / 3);
             restVolumes.Add(restVolume);
             pressureStiffness.Add(new Vector2(1,0));
-            lastIndices.Add((int)particleIndices.count / 3);
+            particleIndices.AddRange(triangles);
         }
 
         public override void Clear()
         {
             base.Clear();
             particleIndices.Clear();
-            lastIndices.Clear();
+            firstTriangle.Clear();
+            numTriangles.Clear();
             restVolumes.Clear();
             pressureStiffness.Clear();
         }
@@ -65,7 +72,8 @@ namespace Obi
 
         protected override void SwapConstraints(int sourceIndex, int destIndex)
         {
-            lastIndices.Swap(sourceIndex, destIndex);
+            firstTriangle.Swap(sourceIndex, destIndex);
+            numTriangles.Swap(sourceIndex, destIndex);
             restVolumes.Swap(sourceIndex, destIndex);
             pressureStiffness.Swap(sourceIndex, destIndex);
         }
@@ -81,22 +89,27 @@ namespace Obi
                     return;
 
                 int initialIndexCount = particleIndices.count;
-                int numActiveTriangles = batch.activeConstraintCount > 0 ? batch.lastIndices[batch.activeConstraintCount-1] : 0;
+
+                int numActiveTriangles = 0;
+                for (int i = 0; i < batch.constraintCount; ++i)
+                    numActiveTriangles += batch.numTriangles[i];
 
                 particleIndices.ResizeUninitialized(initialIndexCount + numActiveTriangles * 3);
-                lastIndices.ResizeUninitialized(lastIndices.count + batch.activeConstraintCount);
+                firstTriangle.ResizeUninitialized(firstTriangle.count + batch.activeConstraintCount);
+                numTriangles.ResizeUninitialized(numTriangles.count + batch.activeConstraintCount);
                 restVolumes.ResizeUninitialized(m_ActiveConstraintCount + batch.activeConstraintCount);
                 pressureStiffness.ResizeUninitialized(m_ActiveConstraintCount + batch.activeConstraintCount);
                 lambdas.ResizeInitialized(m_ActiveConstraintCount + batch.activeConstraintCount);
 
+                numTriangles.CopyFrom(batch.numTriangles, 0, m_ActiveConstraintCount, batch.activeConstraintCount);
                 restVolumes.CopyFrom(batch.restVolumes, 0, m_ActiveConstraintCount, batch.activeConstraintCount);
                 pressureStiffness.CopyReplicate(new Vector2(user.pressure, user.compressionCompliance), m_ActiveConstraintCount, batch.activeConstraintCount);
 
                 for (int i = 0; i < numActiveTriangles * 3; ++i)
                     particleIndices[initialIndexCount + i] = actor.solverIndices[batch.particleIndices[i]];
 
-                for (int i = 0; i < batch.activeConstraintCount; ++i)
-                    lastIndices[m_ActiveConstraintCount + i] = initialIndexCount/3 + batch.lastIndices[i];
+                for (int i = 0; i < batch.activeConstraintCount + 1; ++i)
+                    firstTriangle[m_ActiveConstraintCount + i] = initialIndexCount/3 + batch.firstTriangle[i];
 
                 base.Merge(actor, other);
             }
@@ -108,7 +121,7 @@ namespace Obi
             m_BatchImpl = solver.implementation.CreateConstraintsBatch(constraintType) as IVolumeConstraintsBatchImpl;
 
             if (m_BatchImpl != null)
-                m_BatchImpl.SetVolumeConstraints(particleIndices, lastIndices, restVolumes, pressureStiffness, lambdas, m_ActiveConstraintCount);
+                m_BatchImpl.SetVolumeConstraints(particleIndices, firstTriangle, numTriangles, restVolumes, pressureStiffness, lambdas, m_ActiveConstraintCount);
         }
 
         public override void RemoveFromSolver(ObiSolver solver)
@@ -116,35 +129,6 @@ namespace Obi
             //Remove batch:
             solver.implementation.DestroyConstraintsBatch(m_BatchImpl as IConstraintsBatchImpl);
         }
-
-        /*public override void AddToSolver(ObiSolver solver)
-        {
-            // create and add the implementation:
-            if (m_Constraints != null && m_Constraints.implementation != null)
-            {
-                m_BatchImpl = m_Constraints.implementation.CreateConstraintsBatch();
-            }
-
-            if (m_BatchImpl != null)
-            {
-                lambdas.Clear();
-
-				//for (int i = 0; i < particleIndices.count; i++)
-					//particleIndices[i] = constraints.GetActor().solverIndices[m_Source.particleIndices[i]];
-
-                for (int i = 0; i < restVolumes.count; i++)
-					lambdas.Add(0);
-
-				m_BatchImpl.SetVolumeConstraints(particleIndices, firstTriangle, restVolumes, pressureStiffness, lambdas, m_ConstraintCount);
-                m_BatchImpl.SetActiveConstraints(m_ActiveConstraintCount);
-            }
-        }
-
-        public override void RemoveFromSolver(ObiSolver solver)
-        {
-            if (m_Constraints != null && m_Constraints.implementation != null)
-                m_Constraints.implementation.RemoveBatch(m_BatchImpl);
-        }*/
 
         public void SetParameters(float compliance, float pressure)
         {

@@ -27,6 +27,7 @@ namespace Obi
 
         SerializedProperty collisionMaterial;
         SerializedProperty selfCollisions;
+        SerializedProperty surfaceCollisions;
 
         SerializedProperty distanceConstraintsEnabled;
         SerializedProperty stretchingScale;
@@ -36,12 +37,14 @@ namespace Obi
         SerializedProperty bendConstraintsEnabled;
         SerializedProperty bendCompliance;
         SerializedProperty maxBending;
+        SerializedProperty plasticYield;
+        SerializedProperty plasticCreep;
 
         SerializedProperty tearingEnabled;
         SerializedProperty tearResistanceMultiplier;
         SerializedProperty tearRate;
 
-        protected bool editMode = false;
+        protected static bool editMode = false;
 
         GUIStyle editLabelStyle;
 
@@ -53,6 +56,7 @@ namespace Obi
 
             collisionMaterial = serializedObject.FindProperty("m_CollisionMaterial");
             selfCollisions = serializedObject.FindProperty("m_SelfCollisions");
+            surfaceCollisions = serializedObject.FindProperty("m_SurfaceCollisions");
 
             distanceConstraintsEnabled = serializedObject.FindProperty("_distanceConstraintsEnabled");
             stretchingScale = serializedObject.FindProperty("_stretchingScale");
@@ -62,6 +66,8 @@ namespace Obi
             bendConstraintsEnabled = serializedObject.FindProperty("_bendConstraintsEnabled");
             bendCompliance = serializedObject.FindProperty("_bendCompliance");
             maxBending = serializedObject.FindProperty("_maxBending");
+            plasticYield = serializedObject.FindProperty("_plasticYield");
+            plasticCreep = serializedObject.FindProperty("_plasticCreep");
 
             tearingEnabled = serializedObject.FindProperty("tearingEnabled");
             tearResistanceMultiplier = serializedObject.FindProperty("tearResistanceMultiplier");
@@ -140,6 +146,7 @@ namespace Obi
             EditorGUILayout.LabelField("Collisions", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(collisionMaterial, new GUIContent("Collision material"));
             EditorGUILayout.PropertyField(selfCollisions, new GUIContent("Self collisions"));
+            EditorGUILayout.PropertyField(surfaceCollisions, new GUIContent("Surface-based collisions"));
 
             EditorGUILayout.Space();
             ObiEditorUtils.DoToggleablePropertyGroup(tearingEnabled, new GUIContent("Tearing"),
@@ -161,6 +168,8 @@ namespace Obi
             {
                 EditorGUILayout.PropertyField(bendCompliance, new GUIContent("Bend compliance"));
                 EditorGUILayout.PropertyField(maxBending, new GUIContent("Max bending"));
+                EditorGUILayout.PropertyField(plasticYield, new GUIContent("Plastic yield"));
+                EditorGUILayout.PropertyField(plasticCreep, new GUIContent("Plastic creep"));
             });
 
 

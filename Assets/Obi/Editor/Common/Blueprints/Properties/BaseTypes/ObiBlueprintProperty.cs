@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Obi
 {
     public abstract class ObiBlueprintPropertyBase
     {
-        protected List<ObiBrushMode> brushModes = new List<ObiBrushMode>();
+        protected List<IObiBrushMode> brushModes = new List<IObiBrushMode>();
         private int selectedBrushMode;
 
         public abstract string name

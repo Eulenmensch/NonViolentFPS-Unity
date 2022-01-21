@@ -1,6 +1,92 @@
 # Change Log
 All notable changes to “Obi - Advanced ropes for Unity” will be documented in this file.
 
+## [6.3]
+
+### Added
+- New ObiBone actor, creates a particle-based representation of a bone hierarchy and simulates it using rod constraints.
+- Built-in support for applying solver gravity in world-space.
+
+### Fixed
+- Bug in attachments: prefab modifications were not being applied to the component.
+- Slight reduction in solver memory allocation.
+- Object disposed exception when using contact callbacks with a non-visible solver.
+
+## [6.2]
+
+#IMPORTANT: If updating from an older version, you’ll need to readjust collision filtering in your scenes.
+Phase-based collision filtering has been replaced by mask/categroy based system.
+
+### Added
+- New spatial query API, that allows to perform efficient distance, overlap and raycast queries.
+
+### Changed
+- Collision phase filtering has been replaced by a category/mask system. If you upgrade existing projects to Obi 6.2, you will have to set up categories and masks appropiately.
+
+
+## [6.1]
+
+### Added
+- RopeCutting sample scene, where screen-space line dragged by the user is used to cut multiple 3D ropes.
+- Snake sample scene, where a snake-like character implemented using a rope can be controlled by the user.
+
+### Changed
+- Decreased minimum error in distance fields to 1e-07
+
+### Fixed
+- Bug in Oni backend: collision stickiness resulted in rapid particle separation from the collision surface.
+- Bug that caused NaN velocity assignments to rigidbodies after removing all actors from a solver.
+
+## [6.0.1]
+
+### Fixed
+- Bug in Burst backend, resulting in InvalidOperationException when enabling Burst safety checks.
+- Bug in ObiSolver that caused particleToActor array entries to be null.
+
+## [6.0]
+
+### Added
+- Optional simplex-based surface collion pipeline for more accurate collision detection/response.
+- Predictive variable-step constraint solving that makes syncing Unity's physics no longer necessary when using substeps.
+- Amount of CCD is now adjustable per-solver.
+- Collision margin is now adjustable per-solver.
+- Bend and bend/twist constraints now support plasticity.
+- One-sided collision detection between particles. Particles with one-sided collision detection will always project penetrating particles to the side defined by their associated normal.
+
+### Fixed
+- Bug in dynamic particle attachments that would case colliders parented under a solver to lose their attachments upon enabling/reenabling a solver. 
+
+### Changed
+- Contacts "particle" and "other" have been renamed to "bodyA" and "bodyB". bodyB might be a simplex or collider index, depending on the contact type.To access
+particle indices from simplex indices, use the solver.simplices array.
+
+## [5.6.2]
+
+### Fixed
+- Missed collisions using certain meshes for MeshColliders, due to a bug in bounding interval hierarchy generation.
+- Corrected orientation error in the first particle of rods, when there's multiple rods in a solver.
+- Corrected rendering error in rods, when there's multiple rods in a solver.
+
+## [5.6.1]
+
+### Fixed
+- Bug in Burst backend: solver bounding box size was typically underestimated.
+- Bug in Burst backend: when using volume constraints: "InvalidOperationException: The NativeContainer ApplyVolumeConstraintsBatchJob.particleIndices has not been assigned or constructed"
+- Bug in Burst backend: not releasing native arrays when empty solvers -with zero actors in them- are present in the scene.
+- Bug in Oni backend: volume constraints not working properly when multiple actors are present in the solver.
+- Fixed crash when using ObiLateUpdater or ObiLateFixedUpdater with the Burst backend.
+- Reduced GC allocation in dynamic particle attachments.
+- Fixed bug in Skin constraints, that caused them to fail restricting particle movement in certain circumstances.
+
+### Changed
+- Updated Oni iOS library to XCode 12.1. Make sure to use XCode 12.1 or up to build for iOS when using the Oni backend.
+- ObiKinematicVelocities component has been removed. Its functionality is now built into the engine, and automatically used for kinematic rigidbodies.
+
+### Added
+- Sample ObiContactDispatcher component, that will call custom enter/stay/exit contact events.
+- Support for multiple solvers in sample script in ObiContactGrabber.
+- Added util LookAroundCamera component.
+
 ## [5.6]
 
 ### Added

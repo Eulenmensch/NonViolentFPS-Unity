@@ -39,29 +39,29 @@ namespace Obi
             batch.Destroy();
         }
 
-        protected override JobHandle EvaluateSequential(JobHandle inputDeps, float deltaTime)
+        protected override JobHandle EvaluateSequential(JobHandle inputDeps, float stepTime, float substepTime, int substeps)
         {
-            return EvaluateParallel(inputDeps,deltaTime);
+            return EvaluateParallel(inputDeps, stepTime, substepTime, substeps);
         }
 
-        protected override JobHandle EvaluateParallel(JobHandle inputDeps, float deltaTime)
+        protected override JobHandle EvaluateParallel(JobHandle inputDeps, float stepTime, float substepTime, int substeps)
         {
             inputDeps = UpdateInteractions(inputDeps);
 
             // evaluate all batches as a chain of dependencies:
             for (int i = 0; i < batches.Count; ++i)
             {
-                inputDeps = batches[i].Evaluate(inputDeps, deltaTime);
+                inputDeps = batches[i].Evaluate(inputDeps, stepTime, substepTime, substeps);
                 m_Solver.ScheduleBatchedJobsIfNeeded();
             }
 
             // calculate per-particle lambdas:
-            inputDeps = CalculateLambdas(inputDeps, deltaTime);
+            inputDeps = CalculateLambdas(inputDeps, substepTime);
 
             // then apply them:
             for (int i = 0; i < batches.Count; ++i)
             {
-                inputDeps = batches[i].Apply(inputDeps, deltaTime);
+                inputDeps = batches[i].Apply(inputDeps, substepTime);
                 m_Solver.ScheduleBatchedJobsIfNeeded();
             }
 
@@ -405,11 +405,11 @@ namespace Obi
             {
                 int i = fluidParticles[p];
 
-                if (smoothPositions[i].w > 0)
+                if (smoothPositions[i].w > 0 && (anisotropies[i].c0[0] + anisotropies[i].c1[1] + anisotropies[i].c2[2]) > 0.01f)
                 {
                     float3 singularValues;
                     float3x3 u;
-                    BurstMath.EigenSolve(anisotropies[i] / smoothPositions[i].w, out singularValues, out u); //TODO: smoothPositions.w is always 1? we divided it all by w in AverageSmoothPositionsJob...
+                    BurstMath.EigenSolve(anisotropies[i] / smoothPositions[i].w, out singularValues, out u);
 
                     float max = singularValues[0];
                     float3 s = math.max(singularValues,new float3(max / maxAnisotropy)) / max * principalRadii[i].x;
