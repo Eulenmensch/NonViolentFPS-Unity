@@ -3,6 +3,7 @@ using CMF;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
+using NonViolentFPS.Manager;
 
 namespace NonViolentFPS.Player
 {
@@ -15,6 +16,7 @@ namespace NonViolentFPS.Player
 		         "This is the initial falling momentum when initiating a glide")]
 		[SerializeField] private float glidingStartMomentum;
 		[SerializeField] private float momentumTweenTime;
+		[SerializeField] private InputActionAsset playerInput;
 
 		private AdvancedWalkerController controller;
 		private bool glideInputActive;
@@ -22,7 +24,24 @@ namespace NonViolentFPS.Player
 
 		private void Awake()
 		{
-			controller = GetComponent<AdvancedWalkerController>();
+			Debug.Log(playerInput["Glide"]);
+			playerInput["Glide"].started += Glide;
+			playerInput["Glide"].canceled += Glide;
+		}
+
+		private void OnEnable()
+		{
+			playerInput.Enable();
+		}
+
+		private void OnDisable()
+		{
+			playerInput.Disable();
+		}
+
+		private void Start()
+		{
+			controller = GameManager.Instance.Player.GetComponent<AdvancedWalkerController>();
 		}
 
 		private void FixedUpdate()
