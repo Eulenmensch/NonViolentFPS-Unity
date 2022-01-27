@@ -1,9 +1,9 @@
-using System;
 using CMF;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using NonViolentFPS.Manager;
+using NonViolentFPS.Shooting;
 
 namespace NonViolentFPS.Player
 {
@@ -18,13 +18,16 @@ namespace NonViolentFPS.Player
 		[SerializeField] private float momentumTweenTime;
 		[SerializeField] private InputActionAsset playerInput;
 
+		[SerializeField] private Vector3 glidePosition, glideRotation;
+		[SerializeField] private float glideAnimDuration;
+
 		private AdvancedWalkerController controller;
 		private bool glideInputActive;
 		private float finalYMomentum;
+		private BubbleWandGun bubbleWandGun;
 
 		private void Awake()
 		{
-			Debug.Log(playerInput["Glide"]);
 			playerInput["Glide"].started += Glide;
 			playerInput["Glide"].canceled += Glide;
 		}
@@ -37,11 +40,14 @@ namespace NonViolentFPS.Player
 		private void OnDisable()
 		{
 			playerInput.Disable();
+			playerInput["Glide"].started -= Glide;
+			playerInput["Glide"].canceled -= Glide;
 		}
 
 		private void Start()
 		{
-			controller = GameManager.Instance.Player.GetComponent<AdvancedWalkerController>();
+			controller = GameManager.Instance.Player.GetComponentInParent<AdvancedWalkerController>();
+			bubbleWandGun = GameManager.Instance.Player.GetComponent<ShooterCopy>().ActiveGun as BubbleWandGun;
 		}
 
 		private void FixedUpdate()
@@ -74,12 +80,14 @@ namespace NonViolentFPS.Player
 				{
 					glideInputActive = true;
 					SetGlideMomentum();
+					bubbleWandGun.AnimateGunTarget(glidePosition, glideRotation, glideAnimDuration);
 				}
 			}
 
 			if (_context.canceled)
 			{
 				glideInputActive = false;
+				bubbleWandGun.AnimateGunTarget(bubbleWandGun.gunTargetDefaultPosition, bubbleWandGun.gunTargetDefaultRotation, glideAnimDuration);
 			}
 		}
 	}

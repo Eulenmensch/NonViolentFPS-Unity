@@ -58,8 +58,12 @@ namespace NonViolentFPS.Shooting
 
 		private Vector3 attachmentPointDefaultPosition;
 		private Vector3 attachmentPointDefaultRotation;
+		public Vector3 gunTargetDefaultPosition { get; private set; }
+		public Vector3 gunTargetDefaultRotation { get; private set; }
 
 		private LagBehindTarget[] lagBehindTargets;
+
+		private BubbleWandVisuals bubbleWandVisuals;
 
 		public override void SetUpGun(ShooterCopy _shooter)
 		{
@@ -78,6 +82,14 @@ namespace NonViolentFPS.Shooting
 				return;
 			}
 			ShootingOrigin = Visuals.ShootingOriginOverride;
+
+			bubbleWandVisuals = Visuals as BubbleWandVisuals;
+			if (bubbleWandVisuals == null)
+			{
+				Debug.Log("The attached Visuals aren't of the type " + nameof(BubbleWandVisuals));
+			}
+
+			CacheDefaultGunTargetTransform();
 
 			lagBehindTargets = GunInstance.GetComponentsInChildren<LagBehindTarget>();
 			// foreach (var target in lagBehindTargets)
@@ -99,6 +111,12 @@ namespace NonViolentFPS.Shooting
 		{
 			attachmentPointDefaultPosition = AttachmentPoint.localPosition;
 			attachmentPointDefaultRotation = AttachmentPoint.localRotation.eulerAngles;
+		}
+
+		private void CacheDefaultGunTargetTransform()
+		{
+			gunTargetDefaultPosition = bubbleWandVisuals.GunTarget.localPosition;
+			gunTargetDefaultRotation = bubbleWandVisuals.GunTarget.localRotation.eulerAngles;
 		}
 
 		public void PrimaryFireEnter()
@@ -187,6 +205,12 @@ namespace NonViolentFPS.Shooting
 		{
 			Shooter.GunAttachmentPoint.DOLocalMove(_targetPosition, _animationDuration).SetEase(Ease.InOutCirc);
 			Shooter.GunAttachmentPoint.DOLocalRotate(_targetRotation, _animationDuration).SetEase(Ease.InOutCirc);
+		}
+
+		public void AnimateGunTarget(Vector3 _targetPosition, Vector3 _targetRotation, float _animationDuration)
+		{
+			bubbleWandVisuals.GunTarget.DOLocalMove(_targetPosition, _animationDuration).SetEase(Ease.InOutCirc);
+			bubbleWandVisuals.GunTarget.DOLocalRotate(_targetRotation, _animationDuration).SetEase(Ease.InOutCirc);
 		}
 
 		private static Vector3 GetPlayerForwardVelocity()

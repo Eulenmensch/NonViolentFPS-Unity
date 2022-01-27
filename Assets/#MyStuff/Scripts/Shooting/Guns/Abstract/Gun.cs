@@ -12,7 +12,7 @@ namespace NonViolentFPS.Shooting
 		private GameObject gunPrefab;
 
 		protected ShooterCopy Shooter;
-		protected GunVisuals Visuals;
+		protected GunVisuals Visuals { get; private set; }
 		protected Transform ShootingOrigin;
 		protected Transform AttachmentPoint;
 		protected GameObject GunInstance;
@@ -44,13 +44,13 @@ namespace NonViolentFPS.Shooting
 			GunInstance.transform.localRotation = Quaternion.identity;
 		}
 
-		protected void PlayFeedbacks(MMFeedbacks _feedbacks)
+		protected static void PlayFeedbacks(MMFeedbacks _feedbacks)
 		{
 			if (_feedbacks == null) return;
 			_feedbacks.PlayFeedbacks();
 		}
 
-		protected void StopFeedbacks(MMFeedbacks _feedbacks)
+		protected static void StopFeedbacks(MMFeedbacks _feedbacks)
 		{
 			if (_feedbacks == null) return;
 			_feedbacks.StopFeedbacks();
