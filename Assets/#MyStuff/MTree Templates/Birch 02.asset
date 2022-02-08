@@ -1,0 +1,327 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4079982147170803744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156ba2a5f4fc7bf47b493b7cbf9c7f19, type: 3}
+  m_Name: Trunk
+  m_EditorClassIdentifier: 
+  seed: 605
+  id: 510560694
+  parent: {fileID: 0}
+  chiildren:
+  - {fileID: -3383229090062357887}
+  enabled: 1
+  showDeleteButton: 0
+  rect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 200
+    height: 37
+  deleteRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  radiusMultiplier: 0.36
+  radius:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9933777
+      value: 0.4125061
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  length: 15
+  number: 1
+  randomness: 0.051
+  originAttraction: 0.137
+  resolution: 1.5
+  rootShape:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2
+      outSlope: -2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rootRadius: 1.191
+  rootInnerRadius: 0.201
+  rootHeight: 2.04
+  rootResolution: 3
+  flareNumber: 5
+  spinAmount: 0.1
+  displacementStrength: 1
+  displacementSize: 2.5
+  heightOffset: 0.5
+--- !u!114 &-3383229090062357887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9305034f8c13a7747ac8c4719c0f237d, type: 3}
+  m_Name: Split
+  m_EditorClassIdentifier: 
+  seed: 89
+  id: -1684113929
+  parent: {fileID: -4079982147170803744}
+  chiildren:
+  - {fileID: 2534327802352701787}
+  enabled: 1
+  showDeleteButton: 1
+  rect:
+    serializedVersion: 2
+    x: 30
+    y: 34
+    width: 200
+    height: 37
+  deleteRect:
+    serializedVersion: 2
+    x: 200
+    y: 43
+    width: 18
+    height: 18
+  number: 5
+  splitAngle: 0.87
+  splitRadius: 0.6
+  start: 0.26
+  spread: 0.626
+--- !u!114 &-2183990428904912612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d8cd2303af54543a4524493d539ae8, type: 3}
+  m_Name: Leaves
+  m_EditorClassIdentifier: 
+  seed: 777
+  id: 1162935251
+  parent: {fileID: 2534327802352701787}
+  chiildren: []
+  enabled: 1
+  showDeleteButton: 1
+  rect:
+    serializedVersion: 2
+    x: 90
+    y: 102
+    width: 200
+    height: 37
+  deleteRect:
+    serializedVersion: 2
+    x: 260
+    y: 111
+    width: 18
+    height: 18
+  leafType: 0
+  number: 250
+  customLeafMesh: {fileID: 0}
+  maxRadius: 0.25
+  size: 2
+  overrideNormals: 1
+  minWeight: 0.2
+  maxWeight: 0.5
+  length: 2
+  lengthCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -0.5
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -0.5
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  uLoops: 2
+  resolution: 1
+  gravityStrength: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c179839cc7e1e4bb7fdb33c0866483, type: 3}
+  m_Name: Birch 02
+  m_EditorClassIdentifier: 
+  treeFunctions:
+  - {fileID: -4079982147170803744}
+  - {fileID: -3383229090062357887}
+  - {fileID: 2534327802352701787}
+  - {fileID: -2183990428904912612}
+--- !u!114 &2534327802352701787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a7c716bf67b2c4ca1923c770d36116, type: 3}
+  m_Name: Grow
+  m_EditorClassIdentifier: 
+  seed: 484
+  id: 713417561
+  parent: {fileID: -3383229090062357887}
+  chiildren:
+  - {fileID: -2183990428904912612}
+  enabled: 1
+  showDeleteButton: 1
+  rect:
+    serializedVersion: 2
+    x: 60
+    y: 68
+    width: 200
+    height: 37
+  deleteRect:
+    serializedVersion: 2
+    x: 230
+    y: 77
+    width: 18
+    height: 18
+  length: 7.23
+  lengthCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -0.19999999
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.8
+      inSlope: -0.19999999
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  resolution: 1
+  splitProba: 0.1
+  splitAngle: 1.154
+  maxSplits: 2
+  radius:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.98239136
+      value: 0.4437561
+      inSlope: -0.5
+      outSlope: -0.5
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  splitProbaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 0.5
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.5
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  splitRadius: 0.785
+  randomness: 0.299
+  upAttraction: 1
+  gravityStrength: -5.78

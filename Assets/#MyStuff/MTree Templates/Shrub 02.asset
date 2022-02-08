@@ -1,0 +1,214 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4174839732943523741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9305034f8c13a7747ac8c4719c0f237d, type: 3}
+  m_Name: Split
+  m_EditorClassIdentifier: 
+  seed: 824
+  id: -1944059775
+  parent: {fileID: -956594436216158803}
+  chiildren:
+  - {fileID: 5434131923780358040}
+  enabled: 1
+  showDeleteButton: 1
+  rect:
+    serializedVersion: 2
+    x: 30
+    y: 34
+    width: 200
+    height: 37
+  deleteRect:
+    serializedVersion: 2
+    x: 200
+    y: 43
+    width: 18
+    height: 18
+  number: 25
+  splitAngle: 0.5
+  splitRadius: 0.6
+  start: 0.2
+  spread: 1
+--- !u!114 &-956594436216158803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156ba2a5f4fc7bf47b493b7cbf9c7f19, type: 3}
+  m_Name: Trunk
+  m_EditorClassIdentifier: 
+  seed: 729
+  id: 1351515200
+  parent: {fileID: 0}
+  chiildren:
+  - {fileID: -4174839732943523741}
+  enabled: 1
+  showDeleteButton: 0
+  rect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 200
+    height: 37
+  deleteRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  radiusMultiplier: 0.13
+  radius:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  length: 1
+  number: 1
+  randomness: 0.1
+  originAttraction: 0.1
+  resolution: 1.5
+  rootShape:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2
+      outSlope: -2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rootRadius: 0.25
+  rootInnerRadius: 0.2
+  rootHeight: 1
+  rootResolution: 3
+  flareNumber: 5
+  spinAmount: 0.1
+  displacementStrength: 1
+  displacementSize: 2.5
+  heightOffset: 0.5
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c179839cc7e1e4bb7fdb33c0866483, type: 3}
+  m_Name: Shrub 02
+  m_EditorClassIdentifier: 
+  treeFunctions:
+  - {fileID: -956594436216158803}
+  - {fileID: -4174839732943523741}
+  - {fileID: 5434131923780358040}
+--- !u!114 &5434131923780358040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d8cd2303af54543a4524493d539ae8, type: 3}
+  m_Name: Leaves
+  m_EditorClassIdentifier: 
+  seed: 761
+  id: 1788405028
+  parent: {fileID: -4174839732943523741}
+  chiildren: []
+  enabled: 1
+  showDeleteButton: 1
+  rect:
+    serializedVersion: 2
+    x: 60
+    y: 68
+    width: 200
+    height: 37
+  deleteRect:
+    serializedVersion: 2
+    x: 230
+    y: 77
+    width: 18
+    height: 18
+  leafType: 0
+  number: 20
+  customLeafMesh: {fileID: 0}
+  maxRadius: 0.25
+  size: 2
+  overrideNormals: 1
+  minWeight: 0.31428573
+  maxWeight: 0.8071425
+  length: 2
+  lengthCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -0.5
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -0.5
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  uLoops: 2
+  resolution: 1
+  gravityStrength: 1
