@@ -46,12 +46,14 @@ namespace NonViolentFPS.NPCs
 		{
 			base.OnEnable();
 			NPCEvents.Instance.OnDefeated += CheckEncounterClear;
+			PlayerEvents.Instance.OnPickUpCollected += CompleteQuest;
 		}
 
 		protected override void OnDisable()
 		{
 			base.OnDisable();
 			NPCEvents.Instance.OnDefeated -= CheckEncounterClear;
+			PlayerEvents.Instance.OnPickUpCollected -= CompleteQuest;
 		}
 
 		private void CheckEncounterClear(NPC _grappler)
@@ -87,7 +89,7 @@ namespace NonViolentFPS.NPCs
 			questToGive.Accepted = true;
 		}
 
-		private void CompleteQuest()
+		private void CompleteQuest(GameObject _gameObject)
 		{
 			questToGive.Completed = true;
 		}

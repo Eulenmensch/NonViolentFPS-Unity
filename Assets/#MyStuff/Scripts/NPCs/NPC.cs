@@ -19,6 +19,8 @@ namespace NonViolentFPS.NPCs
 		//Used by most NPCs and would not make sense to encapsulate in an interface
 		public List<Collision> ActiveCollisions { get; private set; }
 		public GameObject Player { get; private set; }
+		public Guid NPCID { get; private set; }
+
 
 		protected virtual void OnEnable()
 		{
@@ -39,7 +41,13 @@ namespace NonViolentFPS.NPCs
 		protected virtual void Start()
 		{
 			NpcManager.Instance.NPCs.Add(this);
+			NPCID = Guid.NewGuid();
 			ActiveCollisions = new List<Collision>();
+		}
+
+		private void OnDestroy()
+		{
+			NpcManager.Instance.NPCs.Remove(this);
 		}
 
 		protected virtual void Update()

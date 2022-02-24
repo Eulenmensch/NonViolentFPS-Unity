@@ -39,9 +39,9 @@ namespace NonViolentFPS.Player
 
 		private void OnDisable()
 		{
-			playerInput.Disable();
 			playerInput["Glide"].started -= Glide;
 			playerInput["Glide"].canceled -= Glide;
+			playerInput.Disable();
 		}
 
 		private void Start()
@@ -71,7 +71,7 @@ namespace NonViolentFPS.Player
 			}
 		}
 
-		public void Glide(InputAction.CallbackContext _context)
+		private void Glide(InputAction.CallbackContext _context)
 		{
 			if (_context.started)
 			{
