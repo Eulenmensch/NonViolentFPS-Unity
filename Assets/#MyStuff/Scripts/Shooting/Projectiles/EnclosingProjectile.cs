@@ -2,8 +2,10 @@
 using DG.Tweening;
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Extension_Classes;
+using NonViolentFPS.Level;
 using NonViolentFPS.Manager;
 using NonViolentFPS.NPCs;
+using Obi;
 using UnityEngine;
 
 namespace NonViolentFPS.Shooting
@@ -65,9 +67,14 @@ namespace NonViolentFPS.Shooting
 			}
 		}
 
-		protected override void UnactivatedImpactAction(Collision _other)
+		protected override void UnactivatedImpactAction(Collider _other)
 		{
 			DOTween.Kill(transform);
+			//if the impacted thing is a windzone, ignore the impact
+			if (_other.GetComponent<Ventilator>() != null)
+			{
+				return;
+			}
 			//if the gameObject is NOT on the attachable layer, burst
 			if (!attachableMask.IsGameObjectInMask(_other.gameObject))
 			{
@@ -75,7 +82,7 @@ namespace NonViolentFPS.Shooting
 				return;
 			}
 			//burst if hitting another bubble
-			var enclosingProjectile = _other.collider.GetComponentInChildren<EnclosingProjectile>();
+			var enclosingProjectile = _other.GetComponentInChildren<EnclosingProjectile>();
 			if (enclosingProjectile != null)
 			{
 				Burst();
@@ -91,17 +98,19 @@ namespace NonViolentFPS.Shooting
 			AttachedTarget = _other.transform;
 			//HACK: the inability of scriptable objects to subscribe to c# events forces me to
 			//		use the spaggethiness of the IBubbleComponent and manually setting its variable.
-			var bubbleComponent = AttachedTarget.gameObject.GetComponent<NPC>() as IBubbleComponent;
-			if (bubbleComponent != null)
+			if (AttachedTarget.gameObject.GetComponent<NPC>() is IBubbleComponent bubbleComponent)
 			{
 				bubbleComponent.AttachedBubble = this;
 			}
 			OtherRigidbody = AttachedTarget.gameObject.GetComponent<Rigidbody>();
+
+			//disable the enclosed collider to avoid physics going haywire due to multiple colliders
 			otherColliders = AttachedTarget.gameObject.GetComponentsInChildren<Collider>();
-			foreach (var otherCollider in otherColliders)
-			{
-				otherCollider.enabled = false;
-			}
+			// foreach (var otherCollider in otherColliders)
+			// {
+			// 	otherCollider.enabled = false;
+			// }
+
 			// transform.DOLocalMove(Vector3.up * yOffset, growthDuration).SetEase(Ease.OutCirc);
 			if (burstAfterEnclosing)
 			{
@@ -111,8 +120,14 @@ namespace NonViolentFPS.Shooting
 
 		protected override void ActivatedImpactAction(Collision _other)
 		{
+			print(_other.gameObject.name);
+			if (_other.gameObject.GetComponent<ObiCollider>() != null)
+			{
+				return;
+			}
 			if (_other.gameObject != AttachedTarget.gameObject)
 			{
+				print(_other.gameObject.name);
 				Burst();
 			}
 		}

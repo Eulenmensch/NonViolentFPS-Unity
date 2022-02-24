@@ -1,3 +1,4 @@
+using System;
 using MoreMountains.Feedbacks;
 using NonViolentFPS.Physics;
 using UnityEngine;
@@ -40,11 +41,11 @@ namespace NonViolentFPS.Shooting
             Drag = GetComponent<QuadraticDrag>();
         }
 
-        protected abstract void UnactivatedImpactAction(Collision _other);
+        protected virtual void UnactivatedImpactAction(Collision _other){}
+        protected virtual void UnactivatedImpactAction(Collider _other){}
 
-        protected virtual void ActivatedImpactAction(Collision _other)
-        {
-        }
+        protected virtual void ActivatedImpactAction(Collision _other){}
+        protected virtual void ActivatedImpactAction(Collider _other){}
 
         protected void ChildToOtherRigidbody(Collision _other)
         {
@@ -71,6 +72,19 @@ namespace NonViolentFPS.Shooting
         }
 
         private void OnCollisionEnter(Collision _other)
+        {
+            if (!doesImpactWithPlayer && _other.gameObject.tag.Equals("Player")) { return; }
+            if (Activated)
+            {
+                ActivatedImpactAction(_other);
+                return;
+            }
+            PlayMMFeedbacks();
+            UnactivatedImpactAction(_other);
+            Activate();
+        }
+
+        private void OnTriggerEnter(Collider _other)
         {
             if (!doesImpactWithPlayer && _other.gameObject.tag.Equals("Player")) { return; }
             if (Activated)
