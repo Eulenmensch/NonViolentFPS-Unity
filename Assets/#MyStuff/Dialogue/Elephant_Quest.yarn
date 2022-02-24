@@ -16,8 +16,9 @@ position: 662.2193298339844,91.56556701660156
 ---
 <<if visited("Quest_Soap") is false>>
 Anyways, I've been trying to make soap bubbles like yours but they always pop!
-Turns out I always sneeze when I dunk my trunk in the soap and the bubbles can't keep up with my strong snoozers.
-But there's an endless supply of helium balloons laughing down at me and my stumpy legs. You think you could get it for me?
+Turns out I always sneeze when I dunk my trunk in the soap and the bubbles can't keep up.
+I can see a bottle of extra tough, elephant certified soap on that hill but my stumpy legs won't carry me all the way up there.
+You think you could get it for me?
 <<else>>
 Oh hey, you're back :) you think you can get the balloons for me?
 <<endif>>
@@ -32,14 +33,14 @@ Oh hey, you're back :) you think you can get the balloons for me?
 ===
 title: End_Quest_Soap
 tags: 
-position: 95.2659912109375,285.7517671585083
+position: 94.11729431152344,286.9004487991333
 ---
 Wow, cool! You're the best!
 ...
 ...
 .........
-OK so I'm super sorry but my nose is pretty sensitive and I can't stand the way these balloons smell...
-If you have any use for them though, you're more than welcome to keep them!
+OK so I'm super sorry but my nose is pretty sensitive and I can't stand the way this soap smells...
+If you have any use for it though, you're more than welcome to keep it!
 ===
 
 title: Quest_Intro
@@ -61,7 +62,7 @@ tags:
 position: 372.63848939344393,88.67398574486361
 ---
 <<if quest_accepted("balloon_fetch") is true>>
-Any update on the balloon situation?
+Any update on the soap situation?
 ->On it!
     Great! Thank you :)
 
