@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Yellow
+  m_Name: Tree
   m_Shader: {fileID: 4800000, guid: d6a63ae4fb654514fa785ba913237935, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -28,12 +28,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Cutoff: 0.94
+    - _Cutoff: 0.93
     - _Shininess: 0.1
     - __dirty: 0
     m_Colors:
-    - _Albedo: {r: 0.97900003, g: 0.6642797, b: 0.12335399, a: 1}
+    - _Albedo: {r: 0.6226415, g: 0.61503106, b: 0.6079566, a: 1}
     - _MainColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
-    - _Shadow: {r: 1, g: 0, b: 1, a: 1}
+    - _Shadow: {r: 0.31132078, g: 0.033775374, b: 0.31132078, a: 1}
     - _SpecularColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
   m_BuildTextureStacks: []
