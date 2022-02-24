@@ -46,5 +46,8 @@ namespace NonViolentFPS.Events
 
 		public event Action OnReloadCompleted;
 		public void ReloadCompleted(){OnReloadCompleted?.Invoke();}
+
+		public event Action<GameObject> OnPickUpCollected;
+		public void PickUpCollected(GameObject _particles){OnPickUpCollected?.Invoke(_particles);}
 	}
 }
